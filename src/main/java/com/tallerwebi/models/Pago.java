@@ -1,4 +1,4 @@
-package com.tallerwebi.dominio;
+package com.tallerwebi.models;
 
 public class Pago {
 
