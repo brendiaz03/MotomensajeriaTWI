@@ -16,4 +16,6 @@ public class Cliente extends UsuarioDos {
 
     public Cliente(){
     }
+
+    /*Esto es un comentario de prueba*/
 }
