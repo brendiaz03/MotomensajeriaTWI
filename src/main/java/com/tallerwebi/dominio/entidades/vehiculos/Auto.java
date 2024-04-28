@@ -8,12 +8,12 @@ import javax.persistence.Entity;
 @Entity
 public class Auto extends Vehiculo {
 
-    public Auto(VehiculoDto vehiculoDto) {
+/*    public Auto(VehiculoDto vehiculoDto) {
         super(vehiculoDto.getMarca(), vehiculoDto.getModelo(), vehiculoDto.getPatente(), vehiculoDto.getColor(), vehiculoDto.getPesoSoportado(), vehiculoDto.getDimensionDisponible(), TipoVehiculo.AUTO);
-    }
+    }*/
 
     public Auto(Vehiculo vehiculo) {
-        super(vehiculo.getMarca(), vehiculo.getModelo(), vehiculo.getPatente(), vehiculo.getColor(), vehiculo.getPesoSoportado(), vehiculo.getDimensionDisponible(), TipoVehiculo.AUTO);
+        super(vehiculo.getMarca(), vehiculo.getModelo(), vehiculo.getPatente(), vehiculo.getColor(), vehiculo.getPesoSoportado(), vehiculo.getDimensionDisponibleAloAlto(), vehiculo.getDimensionDisponibleAloAncho(), vehiculo.getProfundidad(), TipoVehiculo.MOTO);
     }
 
     public Auto() {

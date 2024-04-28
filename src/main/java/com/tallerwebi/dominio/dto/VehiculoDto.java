@@ -9,7 +9,9 @@ public class VehiculoDto {
     private String patente;
     private String color;
     private Double pesoSoportado;
-    private Double dimensionDisponible;
+    private Double dimensionDisponibleAloAlto;
+    private Double dimensionDisponibleAloAncho;
+    private Double profundidad;
     private TipoVehiculo tipoVehiculo;
 
     public String getMarca() {
@@ -52,19 +54,35 @@ public class VehiculoDto {
         this.pesoSoportado = pesoSoportado;
     }
 
-    public Double getDimensionDisponible() {
-        return dimensionDisponible;
-    }
-
-    public void setDimensionDisponible(Double dimensionDisponible) {
-        this.dimensionDisponible = dimensionDisponible;
-    }
-
     public TipoVehiculo getTipoVehiculo() {
         return tipoVehiculo;
     }
 
     public void setTipoVehiculo(TipoVehiculo tipoVehiculo) {
         this.tipoVehiculo = tipoVehiculo;
+    }
+
+    public Double getProfundidad() {
+        return profundidad;
+    }
+
+    public void setProfundidad(Double profundidad) {
+        this.profundidad = profundidad;
+    }
+
+    public Double getDimensionDisponibleAloAlto() {
+        return dimensionDisponibleAloAlto;
+    }
+
+    public void setDimensionDisponibleAloAlto(Double dimensionDisponibleAloAlto) {
+        this.dimensionDisponibleAloAlto = dimensionDisponibleAloAlto;
+    }
+
+    public Double getDimensionDisponibleAloAncho() {
+        return dimensionDisponibleAloAncho;
+    }
+
+    public void setDimensionDisponibleAloAncho(Double dimensionDisponibleAloAncho) {
+        this.dimensionDisponibleAloAncho = dimensionDisponibleAloAncho;
     }
 }

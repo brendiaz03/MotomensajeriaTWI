@@ -12,22 +12,26 @@ public class Vehiculo {
 
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
-    private Long idVehiculo;
+    private Integer idVehiculo;
     private String marca;
     private String modelo;
     private String patente;
     private String color;
     private Double pesoSoportado;
-    private Double dimensionDisponible;
+    private Double dimensionDisponibleAloAlto;
+    private Double dimensionDisponibleAloAncho;
+    private Double profundidad;
     private TipoVehiculo tipoVehiculo;
 
-    public Vehiculo(String marca, String modelo, String patente, String color, Double pesoSoportado, Double dimensionDisponible, TipoVehiculo tipoVehiculo) {
+    public Vehiculo(String marca, String modelo, String patente, String color, Double pesoSoportado, Double dimensionDisponibleAloAlto, Double dimensionDisponibleAloAncho, Double profundidad, TipoVehiculo tipoVehiculo) {
         this.marca = marca;
         this.modelo = modelo;
         this.patente = patente;
         this.color = color;
         this.pesoSoportado = pesoSoportado;
-        this.dimensionDisponible = dimensionDisponible;
+        this.dimensionDisponibleAloAlto = dimensionDisponibleAloAlto;
+        this.dimensionDisponibleAloAncho = dimensionDisponibleAloAncho;
+        this.profundidad = profundidad;
         this.tipoVehiculo = tipoVehiculo;
     }
 
@@ -35,11 +39,11 @@ public class Vehiculo {
 
     }
 
-    public void setIdVehiculo(Long id) {
+    public void setIdVehiculo(Integer id) {
         this.idVehiculo = id;
     }
 
-    public Long getIdVehiculo() {
+    public Integer getIdVehiculo() {
         return idVehiculo;
     }
 
@@ -83,14 +87,6 @@ public class Vehiculo {
         this.pesoSoportado = pesoSoportado;
     }
 
-    public Double getDimensionDisponible() {
-        return dimensionDisponible;
-    }
-
-    public void setDimensionDisponible(Double dimensionDisponible) {
-        this.dimensionDisponible = dimensionDisponible;
-    }
-
     public TipoVehiculo getTipoVehiculo() {
         return tipoVehiculo;
     }
@@ -98,4 +94,30 @@ public class Vehiculo {
     public void setTipoVehiculo(TipoVehiculo tipoVehiculo) {
         this.tipoVehiculo = tipoVehiculo;
     }
+
+    public Double getProfundidad() {
+        return profundidad;
+    }
+
+    public void setProfundidad(Double profundidad) {
+        this.profundidad = profundidad;
+    }
+
+    public Double getDimensionDisponibleAloAlto() {
+        return dimensionDisponibleAloAlto;
+    }
+
+    public void setDimensionDisponibleAloAlto(Double dimensionDisponibleAloAlto) {
+        this.dimensionDisponibleAloAlto = dimensionDisponibleAloAlto;
+    }
+
+    public Double getDimensionDisponibleAloAncho() {
+        return dimensionDisponibleAloAncho;
+    }
+
+    public void setDimensionDisponibleAloAncho(Double dimensionDisponibleAloAncho) {
+        this.dimensionDisponibleAloAncho = dimensionDisponibleAloAncho;
+    }
+
 }
+
