@@ -1,4 +1,4 @@
-package com.tallerwebi.presentacion;
+/*package com.tallerwebi.presentacion;
 
 import com.tallerwebi.dominio.ServicioLogin;
 import com.tallerwebi.dominio.Usuario;
@@ -76,5 +76,6 @@ public class ControladorLogin {
     public ModelAndView inicio() {
         return new ModelAndView("redirect:/login");
     }
-}
+
+}*/
 

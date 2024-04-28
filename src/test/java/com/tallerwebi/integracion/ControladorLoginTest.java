@@ -1,4 +1,4 @@
-package com.tallerwebi.integracion;
+/*package com.tallerwebi.integracion;
 
 import com.tallerwebi.integracion.config.HibernateTestConfig;
 import com.tallerwebi.integracion.config.SpringWebTestConfig;
@@ -49,7 +49,7 @@ public class ControladorLoginTest {
 	public void debeRetornarLaPaginaLoginCuandoSeNavegaALaRaiz() throws Exception {
 
 		MvcResult result = this.mockMvc.perform(get("/"))
-				/*.andDo(print())*/
+				/*.andDo(print())* ESTABA COMENTADO
 				.andExpect(status().is3xxRedirection())
 				.andReturn();
 
@@ -72,4 +72,4 @@ public class ControladorLoginTest {
 		assertThat(modelAndView.getModel().get("datosLogin").toString(),  containsString("com.tallerwebi.presentacion.DatosLogin"));
 
 	}
-}
+}*/
