@@ -8,8 +8,8 @@ import javax.persistence.Entity;
 @Entity
 public class Auto extends Vehiculo {
 
-    public Auto(VehiculoDto vehiculoDto) {
-        super(vehiculoDto.getMarca(), vehiculoDto.getModelo(), vehiculoDto.getPatente(), vehiculoDto.getColor(), vehiculoDto.getPesoSoportado(), vehiculoDto.getDimensionDisponible(), TipoVehiculo.AUTO);
+    public Auto(String marca, String modelo, String patente, String color, Double pesoSoportado, Double dimensionDisponible, TipoVehiculo tipoVehiculo) {
+        super(marca, modelo, patente, color, pesoSoportado, dimensionDisponible, tipoVehiculo);
     }
 
     public Auto(Vehiculo vehiculo) {

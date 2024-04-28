@@ -8,16 +8,17 @@ import javax.persistence.Entity;
 @Entity
 public class Conductor extends UsuarioDos {
 
-    private Long idVehiculo;
+    private Integer idVehiculo;
     private String cvu;
 
     public Conductor() {
 
     }
 
-    public Conductor(ConductorDto conductorDto) {
-        super(conductorDto.getEmail(), conductorDto.getPassword(), conductorDto.getNombre(), conductorDto.getApellido(), conductorDto.getNumeroDeDni(), conductorDto.getDomicilio(), conductorDto.getTelefono(), conductorDto.getUsuario());
-        this.cvu = conductorDto.getCvu();
+    public Conductor(String email, String password, String nombre, String apellido, Integer numeroDeDni, String domicilio, Integer telefono, String usuario, Integer idVehiculo, String cvu) {
+        super(email, password, nombre, apellido, numeroDeDni, domicilio, telefono, usuario);
+        this.idVehiculo = idVehiculo;
+        this.cvu = cvu;
     }
 
     public Conductor(String email, String password){
@@ -29,11 +30,11 @@ public class Conductor extends UsuarioDos {
         this.idVehiculo = vehiculo.getIdVehiculo();
     }
 
-    public Long getIdVehiculo() {
+    public Integer getIdVehiculo() {
         return idVehiculo;
     }
 
-    public void setIdVehiculo(Long idVehiculo) {
+    public void setIdVehiculo(Integer idVehiculo) {
         this.idVehiculo = idVehiculo;
     }
 
@@ -45,7 +46,7 @@ public class Conductor extends UsuarioDos {
         this.cvu = cvu;
     }
 
-    public void actualizarIdVehiculo(Long idVehiculo) {
+    public void actualizarIdVehiculo(Integer idVehiculo) {
         this.idVehiculo = idVehiculo;
     }
 }

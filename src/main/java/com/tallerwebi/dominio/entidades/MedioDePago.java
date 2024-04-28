@@ -7,7 +7,6 @@ public class MedioDePago {
 
     @Id
     private int id;
-    private Integer idMedioDePago;
     private Boolean esPagoElectronico;
     private String nombreDelTitularDeLaTarjeta;
     private Integer numeroDeTarjeta;
@@ -16,11 +15,11 @@ public class MedioDePago {
     private Integer idCliente;
 
     public Integer getIdMedioDePago() {
-        return idMedioDePago;
+        return id;
     }
 
     public void setIdMedioDePago(Integer idMedioDePago) {
-        this.idMedioDePago = idMedioDePago;
+        this.id = idMedioDePago;
     }
 
     public Integer getIdCliente() {

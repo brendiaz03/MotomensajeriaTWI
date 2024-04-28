@@ -10,7 +10,7 @@ public abstract class UsuarioDos {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
     private String email;
     private String password;
     private Boolean activo;
@@ -130,11 +130,11 @@ public abstract class UsuarioDos {
         activo = true;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 }

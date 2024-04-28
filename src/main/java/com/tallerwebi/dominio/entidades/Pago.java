@@ -10,18 +10,18 @@ public class Pago {
 
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
-    private Integer idPago;
+    private Integer id;
     private Integer idCliente;
     private Integer idConductor;
     private Integer idPaquete;
     private Double valorDelEnvio;
 
     public Integer getIdPago() {
-        return idPago;
+        return id;
     }
 
     public void setIdPago(Integer idDelPago) {
-        this.idPago = idDelPago;
+        this.id = idDelPago;
     }
 
     public Double getValorDelEnvio() {
