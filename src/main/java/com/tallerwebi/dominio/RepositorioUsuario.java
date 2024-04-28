@@ -1,4 +1,4 @@
-package com.tallerwebi.dominio;
+/*package com.tallerwebi.dominio;
 
 public interface RepositorioUsuario {
 
@@ -8,3 +8,4 @@ public interface RepositorioUsuario {
     void modificar(Usuario usuario);
 }
 
+*/

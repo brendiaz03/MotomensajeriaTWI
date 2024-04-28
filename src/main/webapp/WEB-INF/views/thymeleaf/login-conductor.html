@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <title>Taller Web I</title>
+    <title>Motomensajeria</title>
 
     <!-- Boostrap core css -->
     <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.0/css/bootstrap.min.css}"/>
@@ -22,12 +22,12 @@
 
 <main role="main" class="container">
 
-    <div><a id="log-conductor" href="login-conductor">Logearme como Conductor</a></div>
+    <div><a id="log-usuario" href="login-usuario">Logearme como Usuario</a></div>
 
 
     <div class = "container">
         <div id="loginbox" style="margin-top:50px;" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
-            <form action="#" th:action="@{/validar-login}" method="POST" th:object="${datosLogin}">
+            <form action="#" th:action="@{/validar-login-conductor}" method="POST" th:object="${conductor}">
                 <h3 class="form-signin-heading">Taller Web I</h3>
                 <hr class="colorgraph"><br>
 
