@@ -92,11 +92,12 @@ public class LoginController {
 
 
     @RequestMapping(path = "/validar-login-conductor", method = RequestMethod.POST)
-    public ModelAndView validarLoginConductor(@ModelAttribute("conductor") Conductor conductor) {
+    public ModelAndView validarLoginConductor(@ModelAttribute("conductor") Conductor conductor, HttpServletRequest request) {
         ModelMap model = new ModelMap();
 
         Conductor conductorBuscado = this.loginService.consultarConductor(conductor.getEmail(), conductor.getPassword());
         if (conductorBuscado != null) {
+            request.getSession().getAttribute("id");
             return new ModelAndView("redirect:/home");
         } else {
             model.put("error", "Usuario o clave incorrecta");

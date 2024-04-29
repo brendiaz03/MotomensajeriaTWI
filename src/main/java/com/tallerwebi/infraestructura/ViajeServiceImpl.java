@@ -6,13 +6,16 @@ import com.tallerwebi.dominio.entidades.usuarios.Conductor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+
 @Service
-public class ViajeServicioImpl implements ViajeService {
+@Transactional
+public class ViajeServiceImpl implements ViajeService {
 
     private ViajeRepository viajeRepository;
 
     @Autowired
-    public ViajeServicioImpl (ViajeRepository viajeRepository){
+    public ViajeServiceImpl(ViajeRepository viajeRepository){
         this.viajeRepository=viajeRepository;
     }
 

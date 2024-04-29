@@ -1,17 +1,15 @@
 package com.tallerwebi.presentacion;
-
 import com.tallerwebi.dominio.ViajeService;
 import com.tallerwebi.dominio.entidades.Viaje;
-import com.tallerwebi.dominio.entidades.usuarios.Cliente;
 import com.tallerwebi.dominio.entidades.usuarios.Conductor;
-import com.tallerwebi.dominio.entidades.vehiculos.Vehiculo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpServletRequest;
 
 @Controller
 public class ViajeController {
@@ -27,17 +25,9 @@ public class ViajeController {
     @RequestMapping (path="/vista-viaje", method= RequestMethod.GET)
 
     public ModelAndView mostrarVistaViaje (){
-        /* ModelMap model=new ModelMap();
+        ModelMap model=new ModelMap();
         model.put("viaje", new Viaje());
-        */
-        return new ModelAndView("viaje");
-    }
-
-    @RequestMapping("/login-usuario")
-    public ModelAndView mostrarLoginCliente() {
-        ModelMap model = new ModelMap();
-        model.put("cliente", new Cliente());
-        return new ModelAndView("login-usuario", model);
+        return new ModelAndView("viaje", model);
     }
 
 
@@ -49,7 +39,15 @@ public class ViajeController {
     }
 
     @RequestMapping (path = "/buscar-conductor", method = RequestMethod.POST)
-    public Conductor buscarConductor (Integer idConductor){
-        return this.viajeService.buscarConductor(idConductor);
+    public ModelAndView buscarConductor (Integer id){
+
+        Conductor nuevo=this.viajeService.buscarConductor(id);
+        if(nuevo==null){
+            return mostrarVistaViaje();
+        }else{
+            return new ModelAndView("redirect:/home");
+        }
+
+
     }
 }
