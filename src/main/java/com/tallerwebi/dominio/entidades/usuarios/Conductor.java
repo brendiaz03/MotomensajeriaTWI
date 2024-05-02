@@ -18,11 +18,11 @@ public class Conductor extends UsuarioDos {
     public Conductor() {
 
     }
-
+  
     public Conductor(String email, String password){
         super(email, password);
     }
-
+  
     public Integer getIdVehiculo() {
         return idVehiculo;
     }

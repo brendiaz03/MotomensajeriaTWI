@@ -100,3 +100,7 @@ public class HibernateConfig {
         EntityManagerFactory factory = Persistence.createEntityManagerFactory("MiUnidadDePersistencia");
     }*/
 }
+
+
+
+

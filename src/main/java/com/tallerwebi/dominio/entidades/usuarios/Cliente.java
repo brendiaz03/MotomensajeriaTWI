@@ -11,10 +11,6 @@ public class Cliente extends UsuarioDos {
     private Integer idUsuario;
     private String tipoUsuario;
 
-    public Cliente (String email, String password) {
-        super(email, password);
-    }
-
     public Cliente(){
     }
 

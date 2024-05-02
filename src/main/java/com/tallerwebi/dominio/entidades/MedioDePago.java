@@ -5,7 +5,6 @@ import java.util.Date;
 
 public class MedioDePago {
 
-    @Id
     private Integer id;
     private Integer idMedioDePago;
     private Boolean esPagoElectronico;
@@ -16,11 +15,11 @@ public class MedioDePago {
     private Integer idCliente;
 
     public Integer getIdMedioDePago() {
-        return idMedioDePago;
+        return id;
     }
 
     public void setIdMedioDePago(Integer idMedioDePago) {
-        this.idMedioDePago = idMedioDePago;
+        this.id = idMedioDePago;
     }
 
     public Integer getIdCliente() {
