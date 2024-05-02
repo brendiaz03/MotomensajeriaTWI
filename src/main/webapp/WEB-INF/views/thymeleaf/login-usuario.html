@@ -4,12 +4,10 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <title>Taller Web I</title>
+    <title>Motomensajeria</title>
 
-    <!-- Boostrap core css -->
     <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.0/css/bootstrap.min.css}"/>
 
-    <!-- custom style -->
     <link rel="stylesheet" th:href="@{/css/main.css}"/>
 
 </head>
@@ -18,35 +16,47 @@
 
 <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
     <a class="navbar-brand" href="#">UNLAM</a>
+    <a id="log-conductor" href="login-conductor" class="btn btn-sm btn-outline-light text-uppercase" style="margin-left: auto;">Logearme como Conductor</a>
 </nav>
 
-<main role="main" class="container">
+<main role="main" class="container mt-5">
 
-    <div><a id="log-conductor" href="login-conductor">Logearme como Conductor</a></div>
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div id="loginbox" class="card shadow-lg">
+                <div class="card-header text-center bg-primary text-white">
+                    <h3 class="card-title">Iniciar Sesion</h3>
+                </div>
+                <div class="card-body">
+                    <form action="#" th:action="@{/validar-login-usuario}" method="POST" th:object="${DatosLogin}">
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Correo electrónico:</label>
+                            <input th:field="*{email}" id="email" type="email" class="form-control" required/>
+                        </div>
 
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Contraseña:</label>
+                            <input th:field="*{password}" type="password" id="password" class="form-control" required/>
+                        </div>
 
-    <div class = "container">
-        <div id="loginbox" style="margin-top:50px;" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
-            <form action="#" th:action="@{/validar-login-cliente}" method="POST" th:object="${cliente}">
-                <h3 class="form-signin-heading">Taller Web I</h3>
-                <hr class="colorgraph"><br>
+                        <div class="text-center">
+                            <button id="btn-login" class="btn btn-lg btn-primary btn-block mt-4" Type="Submit">Iniciar Sesión</button>
+                        </div>
 
-                <input th:field="*{email}" id="email" type="email" class="form-control" required/>
-                <input th:field="*{password}" type="password" id="password" class="form-control" required/>
+                    </form>
 
-                <button id="btn-login" class="btn btn-lg btn-primary btn-block" Type="Submit">Login</button>
-
-                <p th:if="${error != null}" class="alert alert-danger" th:text="'Error ' + ${error}">
-                </p>
-            </form>
-            <a id="ir-a-registrarme-user" href="nuevo-usuario">Registrarme como Usuario</a><br>
-            <a id="ir-a-registrarme-conductor" href="nuevo-conductor">Registrarme como Conductor</a>
+                    <div class="mt-4 text-center">
+                        <a id="ir-a-registrarme-user" href="nuevo-usuario" class="btn btn-secondary btn-lg">Registrarme como Usuario</a>
+                        <a id="ir-a-registrarme-conductor" href="nuevo-conductor" class="btn btn-success btn-lg">Registrarme como Conductor</a>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-</main>
-<!-- /.container -->
 
-<!-- Boostrap core js -->
+</main>
+
 <script type="text/javascript" th:src="@{webjars/bootstrap/5.2.0/js/bootstrap.min.js}"></script>
+
 </body>
 </html>

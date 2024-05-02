@@ -16,7 +16,6 @@
 
 <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
     <a class="navbar-brand" href="#">UNLAM</a>
-    <a id="log-usuario" href="login-usuario" class="btn btn-sm btn-outline-light text-uppercase" style="margin-left: auto;">Logearme como Usuario</a>
 </nav>
 
 <main role="main" class="container mt-5">
@@ -25,30 +24,31 @@
         <div class="col-md-6">
             <div id="loginbox" class="card shadow-lg">
                 <div class="card-header text-center bg-primary text-white">
-                    <h3 class="card-title">Iniciar Sesion</h3>
+                    <h3 class="card-title">Agregar Paquete</h3>
                 </div>
                 <div class="card-body">
-                    <form action="#" th:action="@{/validar-login-conductor}" method="POST" th:object="${DatosLogin}">
+                    <form action="#" th:action="@{/validar-paquete}" method="POST" th:object="${datosPaquete}">
                         <div class="mb-3">
-                            <label for="email" class="form-label">Correo electrónico:</label>
-                            <input th:field="*{email}" id="email" type="email" class="form-control" required/>
+                            <label for="domicilio-salida" class="form-label">Domicilio de Salida:</label>
+                            <input th:field="*{domicilioSalida}" id="domicilio-salida" type="text" class="form-control" required/>
                         </div>
 
                         <div class="mb-3">
-                            <label for="password" class="form-label">Contraseña:</label>
-                            <input th:field="*{password}" type="password" id="password" class="form-control" required/>
+                            <label for="domicilio-entrega" class="form-label">Domicilio de Llegada:</label>
+                            <input th:field="*{domicilioEntrega}" id="domicilio-entrega" type="text" class="form-control" required/>
                         </div>
+
+                        <div class="mb-3">
+                            <label for="codigo-postal" class="form-label">Codigo Postal:</label>
+                            <input th:field="*{codigoPostal}" id="codigo-postal" type="number" class="form-control" required/>
+                        </div>
+
 
                         <div class="text-center">
-                            <button id="btn-login" class="btn btn-lg btn-primary btn-block mt-4" Type="Submit">Iniciar Sesión</button>
+                            <button id="btn-login" class="btn btn-lg btn-primary btn-block mt-4" Type="Submit">Agregar Paquete</button>
                         </div>
 
                     </form>
-
-                    <div class="mt-4 text-center">
-                        <a id="ir-a-registrarme-user" href="nuevo-usuario" class="btn btn-secondary btn-lg">Registrarme como Usuario</a>
-                        <a id="ir-a-registrarme-conductor" href="nuevo-conductor" class="btn btn-success btn-lg">Registrarme como Conductor</a>
-                    </div>
                 </div>
             </div>
         </div>

@@ -1,4 +1,4 @@
-/*package com.tallerwebi.presentacion;
+package com.tallerwebi.presentacion;
 
 public class DatosLogin {
     private String email;
@@ -27,5 +27,4 @@ public class DatosLogin {
     public void setPassword(String password) {
         this.password = password;
     }
-}*/
-
+}

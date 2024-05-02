@@ -10,7 +10,7 @@ public interface LoginService {
 
     void guardarCliente(Cliente cliente) throws UsuarioExistente;
 
-    Conductor consultarConductor(String email, String password);
+    Conductor validarConductor(String email, String password);
 
-    Cliente consultarCliente(String email, String password);
+    Cliente validarCliente(String email, String password);
 }

@@ -1,6 +1,9 @@
 package com.tallerwebi.dominio;
 
-import com.tallerwebi.dominio.entidades.usuarios.Cliente;
-
 public interface ClienteService {
+    Paquete buscarPaquete(Integer idPaquete);
+
+    Double calcularEnvio(String domicilioSalida, String domicilioEntrega);
+
+    void guardarPaquete(Paquete paqueteActual);
 }

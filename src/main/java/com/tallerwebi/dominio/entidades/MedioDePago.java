@@ -6,7 +6,7 @@ import java.util.Date;
 public class MedioDePago {
 
     @Id
-    private int id;
+    private Integer id;
     private Integer idMedioDePago;
     private Boolean esPagoElectronico;
     private String nombreDelTitularDeLaTarjeta;

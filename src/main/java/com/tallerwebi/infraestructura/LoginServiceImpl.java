@@ -31,12 +31,12 @@ public class LoginServiceImpl implements LoginService {
     }
 
     @Override
-    public Conductor consultarConductor(String email, String password) {
-        return this.loginRepository.buscarConductor(email, password);
+    public Conductor validarConductor(String email, String password) {
+        return this.loginRepository.validarConductor(email, password);
     }
 
     @Override
-    public Cliente consultarCliente(String email, String password) {
-        return this.loginRepository.buscarCliente(email, password);
+    public Cliente validarCliente(String email, String password) {
+        return this.loginRepository.validarCliente(email, password);
     }
 }

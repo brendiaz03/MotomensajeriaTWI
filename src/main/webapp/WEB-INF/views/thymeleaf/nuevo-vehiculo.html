@@ -7,33 +7,40 @@
     <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.0/css/bootstrap.min.css}"/>
     <link rel="stylesheet" th:href="@{/css/main.css}"/>
 </head>
-<body style="background-color: #f0f0f0;">
-
-<form action="#" th:action="@{/agregar-vehiculo-conductor}" method="post" th:object="${vehiculo}">
-    <label for="marca">Marca:</label>
-    <input th:field="*{marca}" type="text" id="marca" name="marca" required><br>
-
-    <label for="modelo">Modelo:</label>
-    <input th:field="*{modelo}" type="text" id="modelo" name="modelo" required><br>
-
-    <label for="patente">Patente:</label>
-    <input th:field="*{patente}" type="text" id="patente" name="patente" required><br>
-
-    <label for="color">Color:</label>
-    <input th:field="*{color}" type="text" id="color" name="color" required><br>
-
-    <label for="tipoVehiculo">Tipo de Vehículo:</label>
-    <select th:field="*{tipoVehiculo}" id="tipoVehiculo" name="tipoVehiculo" required>
-        <option value="AUTO">Auto</option>
-        <option value="MOTO">Moto</option>
-        <option value="CAMION">Camion</option>
-        <option th:if="${vehiculo.tipoVehiculo ne 'AUTO' and vehiculo.tipoVehiculo ne 'MOTO' and vehiculo.tipoVehiculo ne 'CAMION'}" th:value="${vehiculo.tipoVehiculo}" th:text="${vehiculo.tipoVehiculo}"></option>
-    </select><br>
-
-    <!-- <input type="hidden" id="email" name="email" value="email_del_conductor"> -->
-
-    <button type="submit">Agregar Vehículo</button>
-</form>
+<body style="background-color: #e8f0fe;">
+<div class="container mt-3">
+    <h1 class="text-center mb-4" style="color: #2196F3;">Asociar Vehículo</h1>
+    <form action="#" th:action="@{/agregar-vehiculo-conductor}" method="post" th:object="${vehiculo}" class="row">
+        <div class="col-md-6 mb-3">
+            <label for="marca" class="form-label">Marca:</label>
+            <input th:field="*{marca}" type="text" class="form-control" id="marca" name="marca" required>
+        </div>
+        <div class="col-md-6 mb-3">
+            <label for="modelo" class="form-label">Modelo:</label>
+            <input th:field="*{modelo}" type="text" class="form-control" id="modelo" name="modelo" required>
+        </div>
+        <div class="col-md-6 mb-3">
+            <label for="patente" class="form-label">Patente:</label>
+            <input th:field="*{patente}" type="text" class="form-control" id="patente" name="patente" required>
+        </div>
+        <div class="col-md-6 mb-3">
+            <label for="color" class="form-label">Color:</label>
+            <input th:field="*{color}" type="text" class="form-control" id="color" name="color" required>
+        </div>
+        <div class="col-md-6 mb-3">
+            <label for="tipoVehiculo" class="form-label">Tipo de Vehículo:</label>
+            <select th:field="*{tipoVehiculo}" id="tipoVehiculo" name="tipoVehiculo" class="form-control" required>
+                <option value="AUTO">Auto</option>
+                <option value="MOTO">Moto</option>
+                <option value="CAMION">Camion</option>
+                <option th:if="${vehiculo.tipoVehiculo ne 'AUTO' and vehiculo.tipoVehiculo ne 'MOTO' and vehiculo.tipoVehiculo ne 'CAMION'}" th:value="${vehiculo.tipoVehiculo}" th:text="${vehiculo.tipoVehiculo}"></option>
+            </select>
+        </div>
+        <div class="col-12">
+            <button type="submit" class="btn btn-primary">Agregar Vehículo</button>
+        </div>
+    </form>
+</div>
 
 <script type="text/javascript" th:src="@{webjars/bootstrap/5.2.0/js/bootstrap.min.js}"></script>
 </body>
