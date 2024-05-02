@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.util.List;
 
 @Controller
 public class LoginController {
@@ -35,14 +37,14 @@ public class LoginController {
     @RequestMapping("/login-usuario")
     public ModelAndView mostrarLoginCliente() {
         ModelMap model = new ModelMap();
-        model.put("cliente", new Cliente());
+        model.put("DatosLogin", new DatosLogin());
         return new ModelAndView("login-usuario", model);
     }
 
     @RequestMapping("/login-conductor")
     public ModelAndView mostrarLoginConductor() {
         ModelMap model = new ModelMap();
-        model.put("conductor", new Conductor());
+        model.put("DatosLogin", new DatosLogin());
         return new ModelAndView("login-conductor", model);
     }
 
@@ -90,14 +92,13 @@ public class LoginController {
         return new ModelAndView("redirect:/login-conductor");
     }
 
-
     @RequestMapping(path = "/validar-login-conductor", method = RequestMethod.POST)
-    public ModelAndView validarLoginConductor(@ModelAttribute("conductor") Conductor conductor, HttpServletRequest request) {
+    public ModelAndView validarLoginConductor(@ModelAttribute("DatosLogin") DatosLogin datos, HttpServletRequest request) {
         ModelMap model = new ModelMap();
 
-        Conductor conductorBuscado = this.loginService.consultarConductor(conductor.getEmail(), conductor.getPassword());
+        Conductor conductorBuscado = this.loginService.validarConductor(datos.getEmail(), datos.getPassword());
         if (conductorBuscado != null) {
-            request.getSession().getAttribute("id");
+            request.getSession().setAttribute("EMAIL", conductorBuscado.getEmail());
             return new ModelAndView("redirect:/home");
         } else {
             model.put("error", "Usuario o clave incorrecta");
@@ -105,17 +106,19 @@ public class LoginController {
         return new ModelAndView("login-conductor", model);
     }
 
-    @RequestMapping(path = "/validar-login-cliente", method = RequestMethod.POST)
-    public ModelAndView validarLoginCliente(@ModelAttribute("cliente") Cliente cliente, HttpServletRequest request) {
+    @RequestMapping(path = "/validar-login-usuario", method = RequestMethod.POST)
+    public ModelAndView validarLoginCliente(@ModelAttribute("DatosLogin") DatosLogin datos, HttpServletRequest request) {
         ModelMap model = new ModelMap();
 
-        Cliente clienteBuscado = this.loginService.consultarCliente(cliente.getEmail(), cliente.getPassword());
+        Cliente clienteBuscado = this.loginService.validarCliente(datos.getEmail(), datos.getPassword());
         if (clienteBuscado != null) {
-            request.getSession();
+            clienteBuscado.setId(1);
+            request.getSession().setAttribute("IDCLIENTE", clienteBuscado.getId());
             return new ModelAndView("redirect:/home");
         } else {
             model.put("error", "Usuario o clave incorrecta");
         }
         return new ModelAndView("login-usuario", model);
+
     }
 }

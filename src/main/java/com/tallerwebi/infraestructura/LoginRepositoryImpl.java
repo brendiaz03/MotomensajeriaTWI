@@ -3,7 +3,6 @@ package com.tallerwebi.infraestructura;
 import com.tallerwebi.dominio.LoginRepository;
 import com.tallerwebi.dominio.entidades.usuarios.Cliente;
 import com.tallerwebi.dominio.entidades.usuarios.Conductor;
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,16 +29,20 @@ public class LoginRepositoryImpl implements LoginRepository {
     }
 
     @Override
-    public Cliente buscarCliente(String email, String password) {
+    public Cliente validarCliente(String email, String password) {
         return (Cliente) sessionFactory.getCurrentSession().createCriteria(Cliente.class)
                 .add(Restrictions.eq("email", email))
+                .add(Restrictions.eq("password", password))
                 .uniqueResult();
+
+        //SELECT * FROM Cliente WHERE email = email AND password = password;
     }
 
     @Override
-    public Conductor buscarConductor(String email, String password) {
+    public Conductor validarConductor(String email, String password) {
         return (Conductor) sessionFactory.getCurrentSession().createCriteria(Conductor.class)
                 .add(Restrictions.eq("email", email))
+                .add(Restrictions.eq("password", password))
                 .uniqueResult();
     }
 }

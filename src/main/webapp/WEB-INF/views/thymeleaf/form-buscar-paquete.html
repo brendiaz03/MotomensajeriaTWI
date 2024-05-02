@@ -1,0 +1,51 @@
+<!DOCTYPE HTML>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>Motomensajeria</title>
+
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.0/css/bootstrap.min.css}"/>
+
+    <link rel="stylesheet" th:href="@{/css/main.css}"/>
+
+</head>
+
+<body>
+
+<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+    <a class="navbar-brand" href="#">UNLAM</a>
+</nav>
+
+<main role="main" class="container mt-5">
+
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div id="loginbox" class="card shadow-lg">
+                <div class="card-header text-center bg-primary text-white">
+                    <h3 class="card-title">Buscar Paquete</h3>
+                </div>
+                <div class="card-body">
+                    <form action="#" th:action="@{/ver-paquete}" method="POST" th:object="${paquete}">
+                        <div class="mb-3">
+                            <label for="paquete" class="form-label">Numero de Paquete:</label>
+                            <input th:field="*{idPaquete}" id="paquete" type="number" class="form-control" required/>
+                        </div>
+
+                        <div class="text-center">
+                            <button id="btn-login" class="btn btn-lg btn-primary btn-block mt-4" Type="Submit">Buscar Paquete</button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</main>
+
+<script type="text/javascript" th:src="@{webjars/bootstrap/5.2.0/js/bootstrap.min.js}"></script>
+
+</body>
+</html>

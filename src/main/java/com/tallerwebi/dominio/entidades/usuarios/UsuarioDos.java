@@ -6,7 +6,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public abstract class UsuarioDos {
+public class UsuarioDos {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,36 +22,17 @@ public abstract class UsuarioDos {
     private String usuario;
 
 
-    public UsuarioDos(String email, String password, String nombre, String apellido, Integer numeroDeDni, String domicilio, Integer telefono, String usuario) {
-        this.email = email;
-        this.password = password;
-        this.nombre = nombre;
-        this.apellido = apellido;
-        this.numeroDeDni = numeroDeDni;
-        this.domicilio = domicilio;
-        this.telefono = telefono;
-        this.usuario = usuario;
-        this.activo = false;
-    }
-
     public UsuarioDos() {
 
     }
 
-    //Loguearse
     public UsuarioDos(String email, String password) {
         this.email = email;
         this.password = password;
     }
 
-    //Registrarse
-    public UsuarioDos(String nombre, String apellido, Integer numeroDeDni, String usuario, String email, String password) {
-        this.nombre = nombre;
-        this.apellido = apellido;
-        this.numeroDeDni = numeroDeDni;
-        this.usuario = usuario;
+    public UsuarioDos(String email) {
         this.email = email;
-        this.password = password;
     }
 
     public String getUsuario() {

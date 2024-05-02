@@ -1,19 +1,32 @@
 package com.tallerwebi.dominio.entidades.usuarios;
 
-import com.tallerwebi.dominio.dto.ClienteDto;
-
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 @Entity
 public class Cliente extends UsuarioDos {
 
-    public Cliente(String email, String password, String nombre, String apellido, Integer numeroDeDni, String domicilio, Integer telefono, String usuario) {
-        super(email, password, nombre, apellido, numeroDeDni, domicilio, telefono, usuario);
+    private Integer idUsuario;
+    private String tipoUsuario;
+
+    public Cliente(){
     }
 
-    public Cliente (String email, String password) {
-        super(email, password);
+    public Integer getIdUsuario() {
+        return idUsuario;
     }
-    public Cliente(){
+
+    public void setIdUsuario(Integer idUsuario) {
+        this.idUsuario = idUsuario;
+    }
+
+    public String getTipoUsuario() {
+        return tipoUsuario;
+    }
+
+    public void setTipoUsuario(String tipoUsuario) {
+        this.tipoUsuario = tipoUsuario;
     }
 }

@@ -6,43 +6,71 @@
 
   <title>Taller Web I</title>
 
-  <!-- Boostrap core css -->
   <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.0/css/bootstrap.min.css}"/>
 
-  <!-- custom style -->
   <link rel="stylesheet" th:href="@{/css/main.css}"/>
 
 </head>
 
-<body>
-
+<body class="bg-light">
 <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
   <a class="navbar-brand" href="#">UNLAM</a>
 </nav>
 
 <main role="main" class="container">
 
-  <div class = "container">
-    <div id="loginbox" style="margin-top:50px;" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
+
+  <div class="col-md-6 offset-md-3">
+
+
+
+    <div class="form-container bg-white p-4 rounded shadow">
+      <h1 class="text-center mt-2">Nuevo Usuario</h1>
+
       <form action="#" th:action="@{/registrar-usuario}" method="POST" th:object="${cliente}">
-        <h3 class="form-signin-heading">Nuevo Usuario</h3>
         <hr class="colorgraph"><br>
 
-        <input th:field="*{email}" id="email" class="form-control" required/>
-        <input th:field="*{password}" type="password" id="password" class="form-control" required/>
+        <div class="mb-3">
+          <label for="nombre" class="form-label">Nombre:</label>
+          <input th:field="*{nombre}" type="text" class="form-control form-control-lg" id="nombre" required>
+        </div>
 
-        <button id="btn-registrarme" class="btn btn-lg btn-primary btn-block" Type="Submit">Registrarme</button>
+        <div class="mb-3">
+          <label for="apellido" class="form-label">Apellido:</label>
+          <input th:field="*{apellido}" type="text" class="form-control form-control-lg" id="apellido" required>
+        </div>
+
+        <div class="mb-3">
+          <label for="dni" class="form-label">Número de DNI:</label>
+          <input th:field="*{numeroDeDni}" type="number" class="form-control form-control-lg" id="dni" required>
+        </div>
+
+        <div class="mb-3">
+          <label for="username" class="form-label">Usuario:</label>
+          <input th:field="*{usuario}" type="text" class="form-control form-control-lg" id="username" required>
+        </div>
+
+        <div class="mb-3">
+          <label for="email" class="form-label">Correo electrónico:</label>
+          <input th:field="*{email}" type="email" class="form-control form-control-lg" id="email" required>
+        </div>
+
+        <div class="mb-3">
+          <label for="password" class="form-label">Contraseña:</label>
+          <input th:field="*{password}" type="password" class="form-control form-control-lg" id="password" required>
+        </div>
+
+        <button type="submit" class="btn btn-lg btn-primary btn-block">Registrarme</button>
         <p th:if="${error != null}" class="alert alert-danger" th:text="'Error ' + ${error}">
         </p>
       </form>
 
     </div>
   </div>
+  </div>
+  </div>
 
 </main>
-<!-- /.container -->
-
-<!-- Boostrap core js -->
 <script type="text/javascript" th:src="@{webjars/bootstrap/5.2.0/js/bootstrap.min.js}"></script>
 </body>
 </html>

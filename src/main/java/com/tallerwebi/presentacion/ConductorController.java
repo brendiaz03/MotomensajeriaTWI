@@ -12,7 +12,11 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 @Controller
 public class ConductorController {
@@ -24,7 +28,7 @@ public class ConductorController {
         this.conductorService = conductorService;
     }
 
-    @RequestMapping(path = "/agregar-vehiculo", method = RequestMethod.GET)
+    @RequestMapping(path = "/asociar-vehiculo", method = RequestMethod.GET)
     public ModelAndView mostrarFormAgregarVehiculo() {
         ModelMap model = new ModelMap();
         model.put("vehiculo", new Vehiculo());
@@ -33,42 +37,16 @@ public class ConductorController {
 
     //Este es el que quiero pero no funciona PTM
     @RequestMapping(path = "/agregar-vehiculo-conductor", method = RequestMethod.POST)
-    public ModelAndView agregarVehiculoAConductor(Conductor conductor, Vehiculo datosVehiculo) {
-        Vehiculo vehiculoCreado = obtenerDatosDelVehiculoYCrearlo(datosVehiculo);
-        Conductor conductorActual = buscarConductorPorEmail(conductor.getEmail());
-        conductorActual.actualizarIdVehiculo(vehiculoCreado.getIdVehiculo());
+    public ModelAndView agregarVehiculoAConductor(@ModelAttribute Vehiculo datosVehiculo, HttpServletRequest request) {
+        String email = (String) request.getSession().getAttribute("EMAIL");
+        Conductor conductorActual = buscarConductorPorEmail(email);
+        this.conductorService.guardarVehiculo(datosVehiculo);
+        conductorActual.actualizarIdVehiculo(datosVehiculo.getIdVehiculo());
         this.conductorService.actualizarInfoDelConductor(conductorActual);
-        return new ModelAndView("nuevo-vehiculo");
+        return new ModelAndView("redirect:/home");
     }
-
-    //Este funciona pero no es lo que quiero
-
-    /*
-    @RequestMapping(path = "/agregar-vehiculo-dos", method = RequestMethod.POST)
-    public ModelAndView agregarVehiculo(Vehiculo datosVehiculo) {
-        Vehiculo vehiculo = obtenerDatosDelVehiculoYCrearlo(datosVehiculo);
-        this.conductorService.guardarVehiculo(vehiculo);
-        return new ModelAndView("nuevo-vehiculo");
-    }*/
 
     private Conductor buscarConductorPorEmail(String email) {
         return this.conductorService.buscarConductorPorEmail(email);
-    }
-
-    private Vehiculo obtenerDatosDelVehiculoYCrearlo(@ModelAttribute("vehiculo") Vehiculo datosVehiculo) {
-        if (datosVehiculo == null || datosVehiculo.getTipoVehiculo() == null) {
-            throw new IllegalArgumentException("Datos de vehículo incompletos");
-        }
-
-        switch (datosVehiculo.getTipoVehiculo()) {
-            case AUTO:
-                return new Auto(datosVehiculo);
-            case MOTO:
-                return new Moto(datosVehiculo);
-            case CAMION:
-                return new Camion(datosVehiculo);
-            default:
-                throw new IllegalArgumentException("Tipo de vehículo desconocido");
-        }
     }
 }

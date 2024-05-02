@@ -3,13 +3,10 @@ package com.tallerwebi.infraestructura;
 import com.tallerwebi.dominio.ConductorRepository;
 import com.tallerwebi.dominio.entidades.usuarios.Conductor;
 import com.tallerwebi.dominio.entidades.vehiculos.Vehiculo;
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-
-import javax.transaction.Transactional;
 
 @Repository
 public class ConductorRepositoryImpl implements ConductorRepository {
