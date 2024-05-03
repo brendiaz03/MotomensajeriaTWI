@@ -1,11 +1,8 @@
 package com.tallerwebi.presentacion;
 
-import com.tallerwebi.dominio.ConductorService;
-import com.tallerwebi.dominio.entidades.usuarios.Conductor;
-import com.tallerwebi.dominio.entidades.vehiculos.Auto;
-import com.tallerwebi.dominio.entidades.vehiculos.Camion;
-import com.tallerwebi.dominio.entidades.vehiculos.Moto;
-import com.tallerwebi.dominio.entidades.vehiculos.Vehiculo;
+import com.tallerwebi.dominio.conductor.IRepositorioConductor;
+import com.tallerwebi.dominio.conductor.Conductor;
+import com.tallerwebi.dominio.conductor.IServiceConductor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -14,61 +11,45 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+
 @Controller
 public class ConductorController {
+    //se le inyectan los metodos del service, de la interfaz del service
+    //aca vamos a exponer los endpoint y modelandview para que se vean las pantallas en el server
 
-    private ConductorService conductorService;
+    private IServiceConductor serviceConductor;
 
     @Autowired
-    public ConductorController(ConductorService conductorService) {
-        this.conductorService = conductorService;
+    public ConductorController(IServiceConductor _serviceConductor){
+        this.serviceConductor = _serviceConductor;
     }
 
-    @RequestMapping(path = "/agregar-vehiculo", method = RequestMethod.GET)
-    public ModelAndView mostrarFormAgregarVehiculo() {
+    @RequestMapping("/home")
+    public ModelAndView irAHome() {
+        ModelMap modelo = new ModelMap();
+        return new ModelAndView("home");
+    }
+
+    @RequestMapping("/form-conductor")
+    public ModelAndView irAFormConductor() {
+        ModelMap modelo = new ModelMap();
+        modelo.addAttribute("conductor", new Conductor());
+        return new ModelAndView("form-conductor", modelo);
+    }
+
+    @RequestMapping(path = "/registrar-conductor", method = RequestMethod.POST)
+    public ModelAndView registrarConductor(@ModelAttribute("conductor") Conductor conductor) {
         ModelMap model = new ModelMap();
-        model.put("vehiculo", new Vehiculo());
-        return new ModelAndView("nuevo-vehiculo", model);
-    }
-
-    //Este es el que quiero pero no funciona PTM
-    @RequestMapping(path = "/agregar-vehiculo-conductor", method = RequestMethod.POST)
-    public ModelAndView agregarVehiculoAConductor(Conductor conductor, Vehiculo datosVehiculo) {
-        Vehiculo vehiculoCreado = obtenerDatosDelVehiculoYCrearlo(datosVehiculo);
-        Conductor conductorActual = buscarConductorPorEmail(conductor.getEmail());
-        conductorActual.actualizarIdVehiculo(vehiculoCreado.getIdVehiculo());
-        this.conductorService.actualizarInfoDelConductor(conductorActual);
-        return new ModelAndView("nuevo-vehiculo");
-    }
-
-    //Este funciona pero no es lo que quiero
-
-    /*
-    @RequestMapping(path = "/agregar-vehiculo-dos", method = RequestMethod.POST)
-    public ModelAndView agregarVehiculo(Vehiculo datosVehiculo) {
-        Vehiculo vehiculo = obtenerDatosDelVehiculoYCrearlo(datosVehiculo);
-        this.conductorService.guardarVehiculo(vehiculo);
-        return new ModelAndView("nuevo-vehiculo");
-    }*/
-
-    private Conductor buscarConductorPorEmail(String email) {
-        return this.conductorService.buscarConductorPorEmail(email);
-    }
-
-    private Vehiculo obtenerDatosDelVehiculoYCrearlo(@ModelAttribute("vehiculo") Vehiculo datosVehiculo) {
-        if (datosVehiculo == null || datosVehiculo.getTipoVehiculo() == null) {
-            throw new IllegalArgumentException("Datos de vehículo incompletos");
+        try {
+            serviceConductor.verificarIngresoConductor(conductor);
+    }catch (Exception e){
+            model.put("error", "Error al registrar el nuevo usuario");
+            return new ModelAndView("form-conductor", model);
         }
-
-        switch (datosVehiculo.getTipoVehiculo()) {
-            case AUTO:
-                return new Auto(datosVehiculo);
-            case MOTO:
-                return new Moto(datosVehiculo);
-            case CAMION:
-                return new Camion(datosVehiculo);
-            default:
-                throw new IllegalArgumentException("Tipo de vehículo desconocido");
-        }
+        return new ModelAndView("redirect:/home").addObject("success", "Conductor registrado exitosamente");
     }
+
+
+
 }
+
