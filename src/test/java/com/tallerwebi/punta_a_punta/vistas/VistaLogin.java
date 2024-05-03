@@ -1,4 +1,4 @@
-/*package com.tallerwebi.punta_a_punta.vistas;
+package com.tallerwebi.punta_a_punta.vistas;
 
 import com.microsoft.playwright.Page;
 
@@ -28,4 +28,4 @@ public class VistaLogin extends VistaWeb {
     public void darClickEnIniciarSesion(){
         this.darClickEnElElemento("#btn-login");
     }
-}*/
+}
