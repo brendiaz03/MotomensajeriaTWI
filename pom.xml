@@ -107,15 +107,25 @@
             <version>${playwright.version}</version>
             <scope>test</scope>
         </dependency>
-        <!-- compile only, deployed container will provide this -->
-        <!--
         <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
-            <version>${servletapi.version}</version>
-            <scope>provided</scope>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.30</version>
         </dependency>
-        -->
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.2.5</version> <!-- Ajusta la versión según tu preferencia -->
+        </dependency>
+
+        <!-- compile only, deployed container will provide this -->
+<!--        <dependency>-->
+<!--            <groupId>javax.servlet</groupId>-->
+<!--            <artifactId>javax.servlet-api</artifactId>-->
+<!--            <version>${servletapi.version}</version>-->
+<!--            <scope>provided</scope>-->
+<!--        </dependency>-->
+
     </dependencies>
 
     <build>

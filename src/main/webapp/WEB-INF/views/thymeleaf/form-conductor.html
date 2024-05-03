@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Conductor</title>
+    <!-- Boostrap core css -->
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.0/css/bootstrap.min.css}"/>
+
+    <!-- custom style -->
+    <link rel="stylesheet" th:href="@{/css/home.css}"/></head>
+<body>
+<div class="container mt-3">
+    <h1 class="text-center mb-4">Formulario de Conductor</h1>
+    <form th:action="@{/registrar-conductor}" method="post" th:object="${conductor}">
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="email" class="form-label">Email:</label>
+                <input type="email" class="form-control" id="email" name="email" th:field="*{email}" required>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="password" class="form-label">Contraseña:</label>
+                <input type="password" class="form-control" id="password" name="password" th:field="*{password}" required>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="nombre" class="form-label">Nombre:</label>
+                <input type="text" class="form-control" id="nombre" name="nombre" th:field="*{nombre}" required>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="apellido" class="form-label">Apellido:</label>
+                <input type="text" class="form-control" id="apellido" name="apellido" th:field="*{apellido}" required>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="numeroDeDni" class="form-label">Número de DNI:</label>
+                <input type="text" class="form-control" id="numeroDeDni" name="numeroDeDni" th:field="*{numeroDeDni}" required>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="domicilio" class="form-label">Domicilio:</label>
+                <input type="text" class="form-control" id="domicilio" name="domicilio" th:field="*{domicilio}" required>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="nroTelefono" class="form-label">Número de Teléfono:</label>
+                <input type="text" class="form-control" id="nroTelefono" name="nroTelefono" th:field="*{nroTelefono}" required>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="nombreUsuario" class="form-label">Nombre de Usuario:</label>
+                <input type="text" class="form-control" id="nombreUsuario" name="nombreUsuario" th:field="*{nombreUsuario}" required>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="cvu" class="form-label">CVU:</label>
+                <input type="text" class="form-control" id="cvu" name="cvu" th:field="*{cvu}" required>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Guardar</button>
+    </form>
+</div>
+</body>
+</html>

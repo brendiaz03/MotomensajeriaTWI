@@ -1,4 +1,4 @@
-/*package com.tallerwebi.punta_a_punta.vistas;
+package com.tallerwebi.punta_a_punta.vistas;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
@@ -29,4 +29,4 @@ public class VistaWeb {
     private Locator obtenerElemento(String selectorCSS){
         return page.locator(selectorCSS);
     }
-}*/
+}
