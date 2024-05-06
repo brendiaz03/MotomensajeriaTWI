@@ -47,7 +47,7 @@ public class ServiceConductorTest {
 
     @Test
     public void verificarDatosCorrectosDelFormularioDeConductor() throws Exception {
-        Conductor nuevoConductor = new Conductor("Jose", "Perez", 12345678, "juan@example.com", "password", "juanito", "Calle Falsa 123", "1234567890", "cvu123456");
+        Conductor nuevoConductor = new Conductor("Jose", "Perez", 12345678, "juan@example.com", "password", "juanito", "Calle Falsa 123", "1234567890", "0001002900001234567891");
 
         String resultado = iServiceConductor.verificarDatosDeRegistro(nuevoConductor);
 
