@@ -2,7 +2,6 @@ package com.tallerwebi.infraestructura;
 
 import com.tallerwebi.dominio.conductor.Conductor;
 import com.tallerwebi.dominio.conductor.IRepositoryConductor;
-import org.hibernate.HibernateException;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
 

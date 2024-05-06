@@ -1,11 +1,8 @@
 package com.tallerwebi.dominio.conductor;
 
-import com.tallerwebi.infraestructura.RepositoryConductorImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.regex.Pattern;
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 public class ServiceConductorImpl implements IServiceConductor {

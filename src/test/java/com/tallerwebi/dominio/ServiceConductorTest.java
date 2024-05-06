@@ -4,12 +4,9 @@ import com.tallerwebi.dominio.conductor.Conductor;
 import com.tallerwebi.dominio.conductor.IRepositoryConductor;
 import com.tallerwebi.dominio.conductor.IServiceConductor;
 import com.tallerwebi.dominio.conductor.ServiceConductorImpl;
-import com.tallerwebi.infraestructura.RepositoryConductorImpl;
 import org.hibernate.SessionFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
