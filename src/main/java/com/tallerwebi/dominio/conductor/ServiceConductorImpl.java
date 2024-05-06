@@ -1,33 +1,81 @@
 package com.tallerwebi.dominio.conductor;
 
-import com.tallerwebi.infraestructura.RepositorioConductorImpl;
+import com.tallerwebi.infraestructura.RepositoryConductorImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.*;
+import org.springframework.stereotype.Service;
+import java.util.regex.Pattern;
+import java.util.ArrayList;
+import java.util.List;
 
-import javax.transaction.Transactional;
-
-@Service("servicioConductor")
-@Transactional
+@Service
 public class ServiceConductorImpl implements IServiceConductor {
-    //implementa su propia interfaz con metodos que luego se pueden usar en el controller
-    //se le inyecta el repositorio para poder usar los metodos que conectan con la base de datos
-    //es un intermedio entre los controllers y los repositorys
 
-    private RepositorioConductorImpl repositorioConductor;
+    private IRepositoryConductor iRepositoryConductor;
 
     @Autowired
-    public ServiceConductorImpl(RepositorioConductorImpl _repositorioConductor){
-        this.repositorioConductor = _repositorioConductor;
+    public ServiceConductorImpl(IRepositoryConductor iRepositoryConductor) {
+        this.iRepositoryConductor = iRepositoryConductor;
     }
 
+//    @Override
+//    public List<Conductor> get() {
+//        return null;
+//    }
+
+//    @Override
+//    public List<Conductor> obtenerConductoresPorDomicilio(String domicilio) { //Prueba
+//        List<Conductor> conductoresFitlrados = new ArrayList<>();
+//
+//        for (Conductor conductor: this.conductores){
+//            if (conductor.getDomicilio().equals(domicilio)){
+//                conductoresFitlrados.add(conductor);
+//            }
+//        }
+//        return conductoresFitlrados;
+//   }
 
     @Override
-    public void verificarIngresoConductor(Conductor conductor) {
-        Conductor nuevo = repositorioConductor.buscarConductorPorNroDni(conductor.getNumeroDeDni());
-        if(nuevo == null){
-            repositorioConductor.ingresarConductor(conductor);
-        }else {
-            System.out.println("habria que tirar una exception y hacerlo con un trycatch en general");
+    public String verificarDatosDeRegistro(Conductor nuevoConductor) throws Exception {
+
+        String filtroEmail = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+        Pattern filtroEmailP = Pattern.compile(filtroEmail);
+
+        Boolean dniCorrecto = false;
+        Boolean emailCorrecto = false;
+        Boolean passwordCorrecto = false;
+        Boolean cvuCorrecto = false;
+
+        if (nuevoConductor.getNumeroDeDni() >= 10000000 && nuevoConductor.getNumeroDeDni() <= 99999999) {
+            dniCorrecto = true;
+            if (filtroEmailP.matcher(nuevoConductor.getEmail()).matches()) {
+                emailCorrecto = true;
+                if (nuevoConductor.getPassword().length() >= 6 && nuevoConductor.getPassword().length() <= 20) {
+                    passwordCorrecto = true;
+                    if (nuevoConductor.getCvu().length() == 22) {
+                        cvuCorrecto = true;
+                    } else {
+                        throw new Exception("cvuInvalido");
+                    }
+                } else {
+                    throw new Exception("passwordInvalido");
+                }
+            } else {
+                throw new Exception("emailInvalido");
+            }
+        } else {
+            throw new Exception("dniInvalido");
         }
+
+        if (dniCorrecto && emailCorrecto && passwordCorrecto && cvuCorrecto) {
+            System.out.println(nuevoConductor);
+
+            this.iRepositoryConductor.registrar(nuevoConductor);
+            return "Datos cargados con exito";
+        } else {
+            return "Error";
+        }
+
+        }
+
+
     }
-}

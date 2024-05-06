@@ -1,76 +1,42 @@
 package com.tallerwebi.dominio.conductor;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 @Entity
-@Table(name = "Conductor")
 public class Conductor {
+
+    private String nombre;
+    private String apellido;
+    private Integer numeroDeDni;
+    private String email;
+    private String password;
+    private String nombreUsuario;
+    private String domicilio;
+    private String nroTelefono;
+    //private Integer idVehiculo;
+    private String cvu;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "email", length = 50)
-    private String email;
-
-    @Column(name = "password", length = 50)
-    private String password;
-
-    @Column(name = "nombre", length = 50)
-    private String nombre;
-
-    @Column(name = "apellido", length = 50)
-    private String apellido;
-
-    @Column(name = "numeroDeDni")
-    private Integer numeroDeDni;
-
-    @Column(name = "domicilio", length = 50)
-    private String domicilio;
-
-    @Column(name = "nroTelefono")
-    private Integer nroTelefono;
-
-    @Column(name = "nombreUsuario", length = 50)
-    private String nombreUsuario;
-
-    @Column(name = "cvu", length = 50)
-    private String cvu;
-
-    public Conductor(String email, String password, String nombre, String apellido, String domicilio, Integer numeroDeDni, Integer nroTelefono, String nombreUsuario, String cvu) {
-        this.email = email;
-        this.password = password;
-        this.nombre = nombre;
-        this.apellido = apellido;
-        this.domicilio = domicilio;
-        this.numeroDeDni = numeroDeDni;
-        this.nroTelefono = nroTelefono;
-        this.nombreUsuario = nombreUsuario;
-        this.cvu = cvu;
-    }
-    public Conductor() {}
-
-    public Long getId() {
-        return id;
+    public Conductor(String nombre, String apellido, Integer numeroDeDni, String email, String password, String nombreUsuario, String domicilio, String nroTelefono, String cvu) {
+        this.nombre=nombre;
+        this.apellido=apellido;
+        this.numeroDeDni=numeroDeDni;
+        this.email=email;
+        this.password=password;
+        this.nombreUsuario=nombreUsuario;
+        this.domicilio=domicilio;
+        this.nroTelefono=nroTelefono;
+        //this.idVehiculo=idVehiculo;
+        this.cvu=cvu;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    public Conductor() {
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public String getNombre() {
@@ -97,12 +63,28 @@ public class Conductor {
         this.numeroDeDni = numeroDeDni;
     }
 
-    public Integer getNroTelefono() {
-        return nroTelefono;
+    public String getEmail() {
+        return email;
     }
 
-    public void setNroTelefono(Integer nroTelefono) {
-        this.nroTelefono = nroTelefono;
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getNombreUsuario() {
+        return nombreUsuario;
+    }
+
+    public void setNombreUsuario(String nombreUsuario) {
+        this.nombreUsuario = nombreUsuario;
     }
 
     public String getDomicilio() {
@@ -113,6 +95,22 @@ public class Conductor {
         this.domicilio = domicilio;
     }
 
+    public String getNroTelefono() {
+        return nroTelefono;
+    }
+
+    public void setNroTelefono(String nroTelefono) {
+        this.nroTelefono = nroTelefono;
+    }
+
+//    public Integer getIdVehiculo() {
+//        return idVehiculo;
+//    }
+//
+//    public void setIdVehiculo(Integer idVehiculo) {
+//        this.idVehiculo = idVehiculo;
+//    }
+
     public String getCvu() {
         return cvu;
     }
@@ -121,11 +119,11 @@ public class Conductor {
         this.cvu = cvu;
     }
 
-    public String getNombreUsuario() {
-        return nombreUsuario;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public void setNombreUsuario(String nombreUsuario) {
-        this.nombreUsuario = nombreUsuario;
+    public Long getId() {
+        return id;
     }
 }

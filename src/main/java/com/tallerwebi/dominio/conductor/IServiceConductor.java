@@ -1,8 +1,12 @@
 package com.tallerwebi.dominio.conductor;
 
+import java.util.List;
 
 public interface IServiceConductor {
-    ///interfaz que va a implementar el servicio de esta entidad
-    void verificarIngresoConductor(Conductor conductor);
-}
 
+//    List<Conductor> get();
+//
+//    List <Conductor> obtenerConductoresPorDomicilio(String domicilio); //Prueba
+
+    String verificarDatosDeRegistro(Conductor nuevoConductor) throws Exception;
+}
