@@ -2,6 +2,7 @@ package com.tallerwebi.presentacion;
 
 import com.tallerwebi.dominio.conductor.Conductor;
 import com.tallerwebi.dominio.conductor.IServiceConductor;
+import com.tallerwebi.dominio.imagen.IImageService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
@@ -17,6 +18,7 @@ public class ControllerConductorTest {
 
    private ControllerConductor controllerConductor;
    private IServiceConductor iServiceConductor;
+   private IImageService iimageService;
    //private IRepositoryConductor iRepositoryConductor;
    // private SessionFactory sessionFactory;
 
@@ -24,8 +26,9 @@ public class ControllerConductorTest {
    public void init() throws Exception {
        //this.iRepositoryConductor= new RepositoryConductorImpl(sessionFactory);
        //this.iServiceConductor= new ServiceConductorImpl((RepositoryConductorImpl) iRepositoryConductor);
-       this.iServiceConductor= mock(IServiceConductor.class); //con el mock solamente probaria los métodos de controlador y nada más (obvio que depende de en que instancia lo pruebe xd
-       this.controllerConductor = new ControllerConductor(this.iServiceConductor);
+       this.iServiceConductor= mock(IServiceConductor.class);
+       this.iimageService= mock(IImageService.class);//con el mock solamente probaria los métodos de controlador y nada más (obvio que depende de en que instancia lo pruebe xd
+       this.controllerConductor = new ControllerConductor(this.iServiceConductor, this.iimageService);
 
    }
 
