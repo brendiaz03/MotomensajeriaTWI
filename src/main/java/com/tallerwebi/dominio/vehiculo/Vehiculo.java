@@ -44,6 +44,10 @@ public class Vehiculo {
         this.idConductor = idConductor;
     }
 
+    public Vehiculo(long l, TipoVehiculo auto) {
+
+    }
+
     public Vehiculo() {
 
     }
