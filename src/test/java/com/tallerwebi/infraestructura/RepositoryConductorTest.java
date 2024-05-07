@@ -15,7 +15,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import javax.transaction.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -28,7 +27,8 @@ import static org.hamcrest.Matchers.equalTo;
 @Repository
 public class RepositoryConductorTest {
 
-    @Autowired private SessionFactory sessionFactory;
+    @Autowired
+    private SessionFactory sessionFactory;
 
    private IRepositoryConductor iRepositoryConductor;
 
@@ -55,36 +55,35 @@ public class RepositoryConductorTest {
     @Transactional
     @Rollback
     public void queSePuedaRegistrarUnConductor(){
+        Conductor nuevoConductor= new Conductor(1, "Piccolo", "Daimaku", 42952910, "piccolo.daimaku@gmail.com", "pico123", "Namekian", "Pueyrredon 3339", "1161639242", "1234567890123456789012");
+        Boolean resultado= this.iRepositoryConductor.registrar(nuevoConductor);
 
-        Conductor nuevoConductor= new Conductor("Piccolo","Daimaku",42952902,"piccolo.daimaku@gmail.com","pico123","Namekian","Pueyrredon 3339","1161639242","1234567890123456789012");
-        this.iRepositoryConductor.registrar(nuevoConductor);
-        Conductor conductorObtenido= (Conductor) this.sessionFactory.getCurrentSession().createQuery("FROM Conductor WHERE id=1").getSingleResult();
-
-        assertThat(conductorObtenido,equalTo(conductorObtenido));
+//        Conductor conductorObtenido= (Conductor) this.sessionFactory.getCurrentSession().createQuery("FROM Conductor WHERE numeroDeDni=42952910").getSingleResult();
+//        System.out.println(conductorObtenido.getEmail());
+//        assertThat(conductorObtenido,equalTo(nuevoConductor));
+        assertThat(resultado,equalTo(true));
 }
 
-//    @Test
-//    @Transactional
-//    @Rollback // Se encarga de dejar t0do como estaba antes de ejecutar
-//    public void queSePuedaBuscarUnConductorPorNumeroDeDni (){
-//
-//       Conductor nuevoConductor= new Conductor("Piccolo","Daimaku",42952902,"piccolo.daimaku@gmail.com","pico123","Namekian","Pueyrredon 3339","1161639242","1234567890123456789012");
-//       Conductor nuevoConductor2= new Conductor("Goku","Son",42952903,"goku.son@gmail.com","goku123","Gokuwu","Pueyrredon 3340","1161639243","1234567890123456789013");
-//
-//       this.sessionFactory.getCurrentSession().save(nuevoConductor);
-//       this.sessionFactory.getCurrentSession().save(nuevoConductor2);
-//
-//       Conductor conductorBuscado = this.iRepositoryConductor.buscarConductor(42952903);
-//
-//       assertThat(nuevoConductor2,equalTo(conductorBuscado));
-//    }
+    @Test
+    @Transactional
+    @Rollback // Se encarga de dejar t0do como estaba antes de ejecutar
+    public void queSePuedaBuscarUnConductorPorID (){
+       Conductor nuevoConductor= new Conductor(13, "Goku", "Son", 42952910, "goku.son@gmail.com", "goku1235", "Gokuwu", "Pueyrredon 3340", "1161639243", "1234567891234567891234");
+       this.sessionFactory.getCurrentSession().save(nuevoConductor);
+       System.out.println(nuevoConductor.getId());
+        System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+
+        Conductor conductorBuscado = this.iRepositoryConductor.buscarConductor(13);
+       //hay un problema, el conductor se agrega a la DB pero no se muestra.
+       assertThat(conductorBuscado.getNumeroDeDni(),equalTo(42952910));
+    }
 //
 //    @Test
 //    @Transactional
 //    @Rollback
 //    public void queSePuedaActualizarDatosDelConductor(){
 //
-//        Conductor nuevoConductor= new Conductor("Piccolo","Daimaku",42952902,"piccolo.daimaku@gmail.com","pico123","Namekian","Pueyrredon 3339","1161639242","1234567890123456789012");
+//        Conductor nuevoConductor= new Conductor(1, "Piccolo", "Daimaku", 42952902, "piccolo.daimaku@gmail.com", "pico123", "Namekian", "Pueyrredon 3339", "1161639242", "1234567890123456789012");
 //        this.sessionFactory.getCurrentSession().save(nuevoConductor);
 //
 //        //Guarda al conductor con Domicilio = Pueyrredon 3339

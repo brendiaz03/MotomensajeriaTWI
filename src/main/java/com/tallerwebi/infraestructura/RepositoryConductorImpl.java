@@ -6,6 +6,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import javax.transaction.Transactional;
 
@@ -19,31 +20,40 @@ public class RepositoryConductorImpl implements IRepositoryConductor {
     }
     @Override
     @Transactional
-    public void registrar(Conductor nuevoConductor){
-        System.out.println(nuevoConductor.getNombre());
-        System.out.println(nuevoConductor.getApellido());
-        System.out.println(nuevoConductor.getNumeroDeDni());
-        System.out.println(nuevoConductor.getEmail());
-        System.out.println(nuevoConductor.getPassword());
-        System.out.println(nuevoConductor.getNombreUsuario());
-        System.out.println(nuevoConductor.getNroTelefono());
-        System.out.println(nuevoConductor.getDomicilio());
-        System.out.println(nuevoConductor.getCvu());
+    public Boolean registrar(Conductor nuevoConductor){
+//        System.out.println(nuevoConductor.getNombre());
+//        System.out.println(nuevoConductor.getApellido());
+//        System.out.println(nuevoConductor.getNumeroDeDni());
+//        System.out.println(nuevoConductor.getEmail());
+//        System.out.println(nuevoConductor.getPassword());
+//        System.out.println(nuevoConductor.getNombreUsuario());
+//        System.out.println(nuevoConductor.getNroTelefono());
+//        System.out.println(nuevoConductor.getDomicilio());
+//        System.out.println(nuevoConductor.getCvu());
 
 //        try{
-            this.sessionFactory.getCurrentSession().save(nuevoConductor);
+         if(this.buscarConductor(nuevoConductor.getId())==null){
+             this.sessionFactory.getCurrentSession().save(nuevoConductor);
+             return true;
+        }else{
+            return false;
+         }
 //        }catch(HibernateException e){
 //            throw new HibernateException("No se guardo el conductor");
 //        }
+
     }
 
     @Override
-    public Conductor buscarConductor(Integer dni) {
-        String hql= "FROM Conductor WHERE numeroDeDni =: dni";
+    public Conductor buscarConductor(Integer id) {
+        String hql= "FROM Conductor WHERE id =: id";
         Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
-        query.setParameter("dni", dni);
-
-        return (Conductor) query.getSingleResult();
+        query.setParameter("id", id);
+        try {
+            return (Conductor) query.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
     }
 
     @Override
@@ -55,6 +65,7 @@ public class RepositoryConductorImpl implements IRepositoryConductor {
         query.setParameter("domicilio", nuevoConductor.getDomicilio());
         query.executeUpdate(); //Sirve tambien para DELETE
         return nuevoConductor;
+
     }
 
 

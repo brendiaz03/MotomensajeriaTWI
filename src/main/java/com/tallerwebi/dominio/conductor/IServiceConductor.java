@@ -8,5 +8,5 @@ public interface IServiceConductor {
 //
 //    List <Conductor> obtenerConductoresPorDomicilio(String domicilio); //Prueba
 
-    String verificarDatosDeRegistro(Conductor nuevoConductor) throws Exception;
+    Boolean verificarDatosDeRegistro(Conductor nuevoConductor) throws Exception;
 }
