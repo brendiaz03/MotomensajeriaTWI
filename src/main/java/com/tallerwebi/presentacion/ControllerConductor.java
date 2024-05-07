@@ -1,14 +1,12 @@
 package com.tallerwebi.presentacion;
 
-import com.tallerwebi.dominio.conductor.Conductor;
-import com.tallerwebi.dominio.conductor.IServiceConductor;
+import com.tallerwebi.dominio.conductor.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
@@ -21,6 +19,7 @@ public class ControllerConductor {
         this.iServiceConductor=iServiceConductor;
     }
 
+
     @RequestMapping("/home")
     public ModelAndView mostrarHome(){
         String viewName= "home";
@@ -28,11 +27,11 @@ public class ControllerConductor {
         return new ModelAndView(viewName,model);
     }
         @RequestMapping("/registro-conductor")
-        public ModelAndView mostrarRegistroConductor(){
+        public ModelAndView mostrarRegistroConductor(String mensajeError){
         String viewName= "registro-conductor";
         ModelMap model = new ModelMap();
         model.put("conductor", new Conductor());
-        model.put("message","Bienvenido");
+        model.put("mensajeError", mensajeError);
         return new ModelAndView(viewName,model);
     }
 
@@ -44,16 +43,27 @@ public class ControllerConductor {
 
     @PostMapping("/registro-conductor")
     public ModelAndView registrarConductor(@ModelAttribute("conductor") Conductor nuevoConductor) throws Exception {
-        ModelMap model=new ModelMap();
-        if(iServiceConductor.verificarDatosDeRegistro(nuevoConductor).equals("Datos cargados con exito")){
-            return this.mostrarRegistroConductor();
-        };
-
-        return new ModelAndView("redirect:/home",model);
+        try {
+            if(iServiceConductor.verificarDatosDeRegistro(nuevoConductor)){
+                System.out.println("ESTAMOS JOYA");
+                return this.mostrarHome();
+            }
+        } catch (DniInvalidoException e) {
+            return this.mostrarRegistroConductor(e.getMessage());
+        } catch (EmailInvalidoException e) {
+            return this.mostrarRegistroConductor(e.getMessage());
+        } catch (PasswordInvalidoException e) {
+            return this.mostrarRegistroConductor(e.getMessage());
+        } catch (CVUInvalidoException e) {
+            return this.mostrarRegistroConductor(e.getMessage());
+        }
+        return this.mostrarRegistroConductor("Se ha producido un error en el servidor.");
+        }
     }
+
+
 
 //    public ModelAndView registrarConductor(Conductor nuevoConductor, org.springframework.mock.web.MockHttpServletRequest request) {
 //
 //
-//    }
-}
+//    }}
