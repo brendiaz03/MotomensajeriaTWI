@@ -21,27 +21,13 @@ public class RepositoryConductorImpl implements IRepositoryConductor {
     @Override
     @Transactional
     public Boolean registrar(Conductor nuevoConductor){
-//        System.out.println(nuevoConductor.getNombre());
-//        System.out.println(nuevoConductor.getApellido());
-//        System.out.println(nuevoConductor.getNumeroDeDni());
-//        System.out.println(nuevoConductor.getEmail());
-//        System.out.println(nuevoConductor.getPassword());
-//        System.out.println(nuevoConductor.getNombreUsuario());
-//        System.out.println(nuevoConductor.getNroTelefono());
-//        System.out.println(nuevoConductor.getDomicilio());
-//        System.out.println(nuevoConductor.getCvu());
 
-//        try{
          if(this.buscarConductor(nuevoConductor.getId())==null){
              this.sessionFactory.getCurrentSession().save(nuevoConductor);
              return true;
         }else{
             return false;
          }
-//        }catch(HibernateException e){
-//            throw new HibernateException("No se guardo el conductor");
-//        }
-
     }
 
     @Override
