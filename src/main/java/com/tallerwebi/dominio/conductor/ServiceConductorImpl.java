@@ -35,47 +35,46 @@ public class ServiceConductorImpl implements IServiceConductor {
 //   }
 
     @Override
-    public String verificarDatosDeRegistro(Conductor nuevoConductor) throws Exception {
+    public Boolean verificarDatosDeRegistro(Conductor nuevoConductor) throws DniInvalidoException,EmailInvalidoException,PasswordInvalidoException,CVUInvalidoException {
+        if (this.verificarDniValido(nuevoConductor.getNumeroDeDni()) && this.verificarEmailValido(nuevoConductor.getEmail())
+                && this.verificarPasswordValido(nuevoConductor.getPassword()) && this.verificarCVUValido(nuevoConductor.getCvu())) {
+            if (this.iRepositoryConductor.registrar(nuevoConductor)) {
+                return true;
+            }
+        }
+       return false;
+    }
+
+    public Boolean verificarDniValido(Integer dni) throws DniInvalidoException {
+        if (dni>= 10000000 && dni <= 99999999) {
+            return true;
+        } else {
+            throw new DniInvalidoException("DNI Inválido");
+        }
+    }
+
+    public Boolean verificarEmailValido(String email) throws EmailInvalidoException {
 
         String filtroEmail = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
         Pattern filtroEmailP = Pattern.compile(filtroEmail);
-
-        Boolean dniCorrecto = false;
-        Boolean emailCorrecto = false;
-        Boolean passwordCorrecto = false;
-        Boolean cvuCorrecto = false;
-
-        if (nuevoConductor.getNumeroDeDni() >= 10000000 && nuevoConductor.getNumeroDeDni() <= 99999999) {
-            dniCorrecto = true;
-            if (filtroEmailP.matcher(nuevoConductor.getEmail()).matches()) {
-                emailCorrecto = true;
-                if (nuevoConductor.getPassword().length() >= 6 && nuevoConductor.getPassword().length() <= 20) {
-                    passwordCorrecto = true;
-                    if (nuevoConductor.getCvu().length() == 22) {
-                        cvuCorrecto = true;
-                    } else {
-                        throw new Exception("cvuInvalido");
-                    }
-                } else {
-                    throw new Exception("passwordInvalido");
-                }
-            } else {
-                throw new Exception("emailInvalido");
-            }
+        if (filtroEmailP.matcher(email).matches()) {
+            return true;
         } else {
-            throw new Exception("dniInvalido");
+            throw new EmailInvalidoException("E-mail Inválido");
         }
-
-        if (dniCorrecto && emailCorrecto && passwordCorrecto && cvuCorrecto) {
-            System.out.println(nuevoConductor);
-
-            this.iRepositoryConductor.registrar(nuevoConductor);
-            return "Datos cargados con exito";
-        } else {
-            return "Error";
-        }
-
-        }
-
-
     }
+    public Boolean verificarPasswordValido(String password) throws PasswordInvalidoException {
+        if (password.length() >= 6 && password.length() <= 20) {
+            return true;
+        } else {
+        throw new PasswordInvalidoException("Contraseña Inválida");
+        }
+    }
+    public Boolean verificarCVUValido(String cvu) throws CVUInvalidoException {
+        if (cvu.length() == 22) {
+        return true;
+        }
+        throw new CVUInvalidoException("CVU Inválido");
+        }
+
+}
