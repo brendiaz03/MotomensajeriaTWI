@@ -20,9 +20,9 @@ public class Conductor {
     private String cvu;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
-    public Conductor(String nombre, String apellido, Integer numeroDeDni, String email, String password, String nombreUsuario, String domicilio, String nroTelefono, String cvu) {
+    public Conductor(Integer id, String nombre, String apellido, Integer numeroDeDni, String email, String password, String nombreUsuario, String domicilio, String nroTelefono, String cvu) {
         this.nombre=nombre;
         this.apellido=apellido;
         this.numeroDeDni=numeroDeDni;
@@ -119,11 +119,11 @@ public class Conductor {
         this.cvu = cvu;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 }

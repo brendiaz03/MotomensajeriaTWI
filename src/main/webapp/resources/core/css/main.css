@@ -14,6 +14,16 @@ h2{
 	color:#FF0000;
 }
 
-.navbar-brand{
-    margin:0 2rem;
+
+.navbar-brand {
+    margin-right: 50%; /* Espacio entre el icono y los enlaces */
+}
+.navbar-nav {
+    margin-right: auto; /* Empuja los enlaces hacia la izquierda */
+}
+.navbar-nav .nav-link {
+    margin-right: 20%; /* Espacio entre los enlaces */
+}
+.navbar-nav .btn-ingresar {
+    margin-left: 20%; /* Espacio entre los enlaces y el botón */
 }

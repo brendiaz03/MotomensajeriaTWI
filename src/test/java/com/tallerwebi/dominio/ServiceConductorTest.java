@@ -1,15 +1,21 @@
 package com.tallerwebi.dominio;
 
+<<<<<<< HEAD
 import com.tallerwebi.dominio.conductor.Conductor;
 import com.tallerwebi.dominio.conductor.IRepositoryConductor;
 import com.tallerwebi.dominio.conductor.IServiceConductor;
 import com.tallerwebi.dominio.conductor.ServiceConductorImpl;
+=======
+import com.tallerwebi.dominio.conductor.*;
+>>>>>>> origin
 import org.hibernate.SessionFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.*;
 
 
@@ -43,13 +49,25 @@ public class ServiceConductorTest {
 //    }
 
     @Test
+    public void queAlIngresarUnDniInvalidoLanceUnaExcepcion() throws Exception {
+       Conductor nuevoConductor = new Conductor(7, "Jose", "Perez", 999999999, "juan@example.com", "password", "juanito", "Calle Falsa 123", "1234567890", "0001002900001234567891");
+        try {
+            iServiceConductor.verificarDatosDeRegistro(nuevoConductor);
+            fail("Se esperaba una excepción");
+        } catch (DniInvalidoException e) {
+            assertThat(e.getMessage(), containsString("DNI Inválido"));
+        } catch (Exception e) {
+            fail("Se esperaba una DniInvalidoException, pero se lanzó " + e.getClass().getSimpleName());
+        }
+    }
+    @Test
     public void verificarDatosCorrectosDelFormularioDeConductor() throws Exception {
-        Conductor nuevoConductor = new Conductor("Jose", "Perez", 12345678, "juan@example.com", "password", "juanito", "Calle Falsa 123", "1234567890", "0001002900001234567891");
+        Conductor nuevoConductor = new Conductor(1, "Jose", "Perez", 12345678, "juan@example.com", "password", "juanito", "Calle Falsa 123", "1234567890", "0001002900001234567891");
 
-        String resultado = iServiceConductor.verificarDatosDeRegistro(nuevoConductor);
+        when(iRepositoryConductor.registrar(nuevoConductor)).thenReturn(true);
+        Boolean resultado = iServiceConductor.verificarDatosDeRegistro(nuevoConductor);
 
-
-        assertThat(resultado,equalTo("Datos cargados con exito"));
+        assertThat(resultado,equalTo(true));
     }
 
 
