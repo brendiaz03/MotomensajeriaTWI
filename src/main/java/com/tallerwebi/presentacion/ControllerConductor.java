@@ -31,7 +31,9 @@ public class ControllerConductor {
         String viewName= "registro-conductor";
         ModelMap model = new ModelMap();
         model.put("conductor", new Conductor());
-        model.put("mensajeError", mensajeError);
+        if(mensajeError!=""){
+            model.put("mensajeError", mensajeError);
+        }
         return new ModelAndView(viewName,model);
     }
 
