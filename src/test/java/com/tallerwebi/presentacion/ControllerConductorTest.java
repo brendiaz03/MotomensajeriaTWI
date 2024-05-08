@@ -15,8 +15,6 @@ public class ControllerConductorTest {
 
    private ControllerConductor controllerConductor;
    private IServiceConductor iServiceConductor;
-   //private IRepositoryConductor iRepositoryConductor;
-   // private SessionFactory sessionFactory;
 
    @BeforeEach //antes que ejecuten los test, se ejecute este método (como un constructor de test)
    public void init() throws Exception {
@@ -27,14 +25,13 @@ public class ControllerConductorTest {
    }
     @Test
     public void queAlSolicitarLaPantallaRegistrarmeSeMuestreElFormularioDeRegistroDelConductor(){
-
         ModelAndView mav= this.controllerConductor.mostrarRegistroConductor("");
         assertThat(mav.getViewName(),equalToIgnoringCase("registro-conductor"));
     }
 
     @Test
     public void queUnConductorCompleteElFormulario() throws Exception {
-        Conductor nuevoConductor = new Conductor(1, "Juan", "Perez", 42952902, "juan@example.com", "password1", "juanito", "Calle Falsa 123", "1561639242", "0001002900001234567891");
+        Conductor nuevoConductor = new Conductor("Juan", "Perez", 42952902, "juan@example.com", "password1", "juanito", "Calle Falsa 123", "1561639242", "0001002900001234567891");
         when(iServiceConductor.verificarDatosDeRegistro(nuevoConductor)).thenReturn(true);
         ModelAndView modelAndView = this.controllerConductor.registrarConductor(nuevoConductor);
 
