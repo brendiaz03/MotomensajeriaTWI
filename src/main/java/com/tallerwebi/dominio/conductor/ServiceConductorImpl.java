@@ -10,7 +10,7 @@ import java.util.List;
 @Service
 public class ServiceConductorImpl implements IServiceConductor {
 
-    private IRepositoryConductor iRepositoryConductor;
+    private final IRepositoryConductor iRepositoryConductor;
 
     @Autowired
     public ServiceConductorImpl(IRepositoryConductor iRepositoryConductor) {
