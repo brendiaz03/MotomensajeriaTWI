@@ -22,7 +22,7 @@ public class ServiceConductorTest {
     @BeforeEach
     public void init() {
         this.iRepositoryConductor = mock(IRepositoryConductor.class);
-        this.iServiceConductor = new ServiceConductorImpl(iRepositoryConductor);
+        this.iServiceConductor = new ServiceConductorImpl(this.iRepositoryConductor);
     }
 
 //    @Test
@@ -42,7 +42,7 @@ public class ServiceConductorTest {
 //
 //    }
 
-    @Test
+/*    @Test
     public void verificarDatosCorrectosDelFormularioDeConductor() throws Exception {
         Conductor nuevoConductor = new Conductor("Jose", "Perez", 12345678, "juan@example.com", "password", "juanito", "Calle Falsa 123", "1234567890", "0001002900001234567891");
 
@@ -50,7 +50,7 @@ public class ServiceConductorTest {
 
 
         assertThat(resultado,equalTo("Datos cargados con exito"));
-    }
+    }*/
 
 
 

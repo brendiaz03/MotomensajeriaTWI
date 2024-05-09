@@ -2,7 +2,12 @@ package com.tallerwebi.presentacion.vehiculo;
 import com.tallerwebi.dominio.enums.TipoVehiculo;
 import com.tallerwebi.dominio.vehiculo.IServicioVehiculo;
 import com.tallerwebi.dominio.vehiculo.Vehiculo;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -10,10 +15,12 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.ArrayList;
 import java.util.List;
 
+@Controller
 public class ControladorVehiculo{
 
     private IServicioVehiculo servicioVehiculo;
 
+    @Autowired
     public ControladorVehiculo(IServicioVehiculo servicioVehiculo) {
 
         this.servicioVehiculo = servicioVehiculo;
@@ -61,4 +68,12 @@ public class ControladorVehiculo{
         return new ModelAndView(viewName, model);
 
     }
+
+    public List<Vehiculo> obtenerTodosLosVehiculos() {
+
+        List<Vehiculo>vehiculos = this.servicioVehiculo.obtenerTodosLosVehiculos();
+
+        return vehiculos;
+    }
+
 }

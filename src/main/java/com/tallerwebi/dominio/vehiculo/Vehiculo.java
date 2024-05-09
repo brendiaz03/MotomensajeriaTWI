@@ -33,6 +33,9 @@ public class Vehiculo {
     @Column(name = "idConductor")
     private Long idConductor;
 
+    @Column(name = "idConductorTest")
+    private Integer idConductorTest;
+
     public Vehiculo(Long id, String patente, String color, String modelo, TipoVehiculo tipoDeVehiculo, double pesoSoportado, double dimensionDisponible, Long idConductor) {
         this.id = id;
         this.patente = patente;
@@ -44,12 +47,29 @@ public class Vehiculo {
         this.idConductor = idConductor;
     }
 
+    public Vehiculo(String patente, String color, String modelo, Integer idConductorTest) {
+        this.patente = patente;
+        this.color = color;
+        this.modelo = modelo;
+        this.idConductorTest = idConductorTest;
+    }
+
+    public Vehiculo() {
+    }
+
     public Vehiculo(long l, TipoVehiculo auto) {
 
     }
 
-    public Vehiculo() {
+    public Vehiculo(Vehiculo vehiculo) {
 
+    }
+
+    public Vehiculo(String patente, String color, String modelo) {
+        this.patente = patente;
+        this.color = color;
+        this.modelo = modelo;
+     //   this.idConductor = idConductor;
     }
 
     public Long getId() {
@@ -114,6 +134,14 @@ public class Vehiculo {
 
     public void setIdConductor(Long idConductor) {
         this.idConductor = idConductor;
+    }
+
+    public Integer getIdConductorTest() {
+        return idConductorTest;
+    }
+
+    public void setIdConductorTest(Integer idConductorTest) {
+        this.idConductorTest = idConductorTest;
     }
 }
 

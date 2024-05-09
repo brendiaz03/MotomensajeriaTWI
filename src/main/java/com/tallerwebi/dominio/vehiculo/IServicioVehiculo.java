@@ -6,7 +6,6 @@ import com.tallerwebi.dominio.conductor.Conductor;
 
 import java.util.List;
 
-@Repository
 public interface IServicioVehiculo {
 
     List<Vehiculo> get();
@@ -17,7 +16,13 @@ public interface IServicioVehiculo {
 
     Boolean queSePuedaRegistrarUnNuevoVehiculoConElDniDelConductor(List<Vehiculo> vehiculos, Vehiculo vehiculo, Conductor conductor, List<Conductor>conductores);
 
-    Boolean modificarVehiculo(List<Vehiculo> vehiculos, Vehiculo vehiculo, Conductor conductor, List<Conductor>conductores);
+    //Boolean modificarVehiculo(List<Vehiculo> vehiculos, Vehiculo vehiculo, Conductor conductor, List<Conductor>conductores);
 
     Boolean queExistaElConductorEnLaListaDeConductores(Conductor conductor, List<Conductor>conductores);
+
+    List<Vehiculo> obtenerTodosLosVehiculos();
+
+    Vehiculo obtenerVehiculoPorIdDelConductor(Integer id);
+
+    List<Vehiculo> obtenerTodosLosVehiculosDelConductor(Integer id);
 }

@@ -54,7 +54,7 @@ public class RepositoryConductorTest {
     @Transactional
     @Rollback
     public void queSePuedaRegistrarUnConductor(){
-        Conductor nuevoConductor= new Conductor(1, "Piccolo", "Daimaku", 42952910, "piccolo.daimaku@gmail.com", "pico123", "Namekian", "Pueyrredon 3339", "1161639242", "1234567890123456789012");
+        Conductor nuevoConductor= new Conductor("Piccolo", "Daimaku", 42952910, "piccolo.daimaku@gmail.com", "pico123", "Namekian", "Pueyrredon 3339", "1161639242", "1234567890123456789012");
         Boolean resultado= this.iRepositoryConductor.registrar(nuevoConductor);
 
 //        Conductor conductorObtenido= (Conductor) this.sessionFactory.getCurrentSession().createQuery("FROM Conductor WHERE numeroDeDni=42952910").getSingleResult();
@@ -67,7 +67,7 @@ public class RepositoryConductorTest {
     @Transactional
     @Rollback // Se encarga de dejar t0do como estaba antes de ejecutar
     public void queSePuedaBuscarUnConductorPorID (){
-       Conductor nuevoConductor= new Conductor(13, "Goku", "Son", 42952910, "goku.son@gmail.com", "goku1235", "Gokuwu", "Pueyrredon 3340", "1161639243", "1234567891234567891234");
+       Conductor nuevoConductor= new Conductor("Goku", "Son", 42952910, "goku.son@gmail.com", "goku1235", "Gokuwu", "Pueyrredon 3340", "1161639243", "1234567891234567891234");
        this.sessionFactory.getCurrentSession().save(nuevoConductor);
        System.out.println(nuevoConductor.getId());
         System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");

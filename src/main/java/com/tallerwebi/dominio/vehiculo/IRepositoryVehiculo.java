@@ -4,10 +4,14 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Repository
 public interface IRepositoryVehiculo {
 
     List<Vehiculo> get();
     List<Vehiculo> getByTipoVehiculo(TipoVehiculo tipoVehiculo);
 
+    List<Vehiculo> obtenerTodosLosVehiculos();
+
+    Vehiculo obtenerVehiculoPorElIdDelConductor(Integer numeroDeDni);
+
+    List<Vehiculo> obtenerTodosLosVehiculosDelConductor(Integer id);
 }

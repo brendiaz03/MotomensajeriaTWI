@@ -1,13 +1,15 @@
 package com.tallerwebi.dominio.vehiculo;
-
+import com.tallerwebi.dominio.vehiculo.IRepositoryVehiculo;
 import com.tallerwebi.dominio.conductor.Conductor;
 import com.tallerwebi.dominio.enums.TipoVehiculo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.sql.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +22,8 @@ public class ServicioVehiculoImpl implements IServicioVehiculo {
 
     private List<Conductor>conductores;
 
-    public ServicioVehiculoImpl(List<Vehiculo> vehiculos, IRepositoryVehiculo irepositoryVehiculo) {
+    @Autowired
+    public ServicioVehiculoImpl(IRepositoryVehiculo irepositoryVehiculo) {
         this.vehiculos = vehiculos;
 
         this.irepositoryVehiculo = irepositoryVehiculo;
@@ -28,7 +31,8 @@ public class ServicioVehiculoImpl implements IServicioVehiculo {
 
     @Override
     public List<Vehiculo> get() {
-        return vehiculos;
+        //return vehiculos;
+        return this.convertToDatosVehiculos(this.irepositoryVehiculo.get());
     }
 
     @Override
@@ -45,66 +49,21 @@ public class ServicioVehiculoImpl implements IServicioVehiculo {
 //    }
 
     @Override
-    public Boolean modificarVehiculo(List<Vehiculo> vehiculos, Vehiculo vehiculoAmodificar, Conductor conductor, List<Conductor>conductores) {
+    public List<Vehiculo> getByTipoDeVehiculo(TipoVehiculo tipoVehiculo) {
+        List<Vehiculo> resultado = new ArrayList<>();
 
-        if (!queExistaElConductorEnLaListaDeConductores(conductor, conductores)) {
-            return false; // Si el conductor no existe, no se puede modificar el vehículo
-        }
-
-        // Verificar si el vehículo a modificar existe en la lista de vehículos
-        boolean vehiculoEncontrado = false;
-        for (Vehiculo vehiculoGuardado : vehiculos) {
-            if (vehiculoGuardado.getId().equals(vehiculoAmodificar.getId())) {
-                vehiculoEncontrado = true;
-                // Realizar las modificaciones en el vehículo
-                vehiculoGuardado.setPatente(vehiculoAmodificar.getPatente());
-                vehiculoGuardado.setColor(vehiculoAmodificar.getColor());
-                vehiculoGuardado.setModelo(vehiculoAmodificar.getModelo());
-                vehiculoGuardado.setTipoDeVehiculo(vehiculoAmodificar.getTipoDeVehiculo());
-                vehiculoGuardado.setPesoSoportado(vehiculoAmodificar.getPesoSoportado());
-                vehiculoGuardado.setDimensionDisponible(vehiculoAmodificar.getDimensionDisponible());
-                vehiculoGuardado.setIdConductor(vehiculoAmodificar.getIdConductor());
-                break; // Salir del bucle una vez que se haya encontrado el vehículo
-            }
-        }
-
-        // Si el vehículo no se encuentra en la lista, no se puede modificar
-        if (!vehiculoEncontrado) {
-            return false;
-        }
-
-        return true; // Se modificó el vehículo exitosamente
-
-
-        /*if (queExistaElConductorEnLaListaDeConductores(conductor, conductores)) {
-
-            for (Vehiculo vehiculoGuardado : vehiculos) {
-                if (vehiculoGuardado.getId().equals(vehiculoAmodificar.getId())) {
-                }
-            }
+        Vehiculo nuevo = new Vehiculo();
+        Vehiculo nuevo1 = new Vehiculo();
+        Vehiculo nuevo2 = new Vehiculo();
 
         for (Vehiculo vehiculo : vehiculos) {
-            if (vehiculo.getId().equals(vehiculoAmodificar.getId())) {
-                vehiculo.setPatente(vehiculoAmodificar.getPatente());
-                vehiculo.setColor(vehiculoAmodificar.getColor());
-                vehiculo.setModelo(vehiculoAmodificar.getModelo());
-                vehiculo.setTipoDeVehiculo(vehiculoAmodificar.getTipoDeVehiculo());
-                vehiculo.setPesoSoportado(vehiculoAmodificar.getPesoSoportado());
-                vehiculo.setDimensionDisponible(vehiculoAmodificar.getDimensionDisponible());
-                vehiculo.setIdConductor(vehiculoAmodificar.getIdConductor());
+            if (vehiculo.getTipoDeVehiculo().equals(tipoVehiculo)) {
+                resultado.add(vehiculo);
             }
         }
+        return resultado;
     }
-        return true;*/
-
-      //  public Boolean modificarVehiculo(List<Vehiculo> vehiculos, Vehiculo vehiculoAmodificar, Conductor conductor, List<Conductor> conductores) {
-            // Verificar si el conductor existe en la lista de conductores
-
-
-    }
-
-    @Override
-    public List<Vehiculo> getByTipoDeVehiculo(TipoVehiculo tipoVehiculo) {
+    /*public List<Vehiculo> getByTipoDeVehiculo(TipoVehiculo tipoVehiculo) {
 
         List<Vehiculo> vehiculos = new ArrayList<>();
         List<Vehiculo>vehiculosEncontrados = new ArrayList<>();
@@ -125,7 +84,88 @@ public class ServicioVehiculoImpl implements IServicioVehiculo {
 
         }
         return vehiculosEncontrados;
+    }*/
+
+    private List<Vehiculo> convertToDatosVehiculos(List<Vehiculo> vehiculos){
+        List<Vehiculo> datosDeVehiculos = new ArrayList<>();
+
+        Vehiculo vehiculo1 = new Vehiculo(2L, "DEF456", "Azul", "Camioneta", TipoVehiculo.MOTO, 2000.0, 8.0, 2L);
+        //Vehiculo vehiculo1 = new Vehiculo(2L, "DEF456", "Azul", "Camioneta", TipoVehiculo.MOTO, 2000.0, 8.0, 2L);
+
+        for (Vehiculo vehiculo: vehiculos){
+            // Suponiendo que Vehiculo tenga un constructor de copia
+            datosDeVehiculos.add(new Vehiculo(vehiculo));
+        }
+        return datosDeVehiculos;
     }
+
+    /*@Override
+    public Boolean modificarVehiculo(List<Vehiculo> vehiculos, Vehiculo vehiculoAModificar, Conductor conductor, List<Conductor> conductores) {
+
+        Boolean conductorEncontrado = buscarConductor(conductor.getNumeroDeDni());
+
+        if (conductorEncontrado) {
+            return true;
+        }
+
+        boolean vehiculoEncontrado = false;
+
+        for (Vehiculo vehiculoGuardado : vehiculos) {
+            if (vehiculoGuardado.getId().equals(vehiculoAModificar.getId())) {
+             /*   vehiculoEncontrado = true;
+                vehiculoGuardado.setPatente(vehiculoAModificar.getPatente());
+                vehiculoGuardado.setColor(vehiculoAModificar.getColor());
+                vehiculoGuardado.setModelo(vehiculoAModificar.getModelo());
+                vehiculoGuardado.setTipoDeVehiculo(vehiculoAModificar.getTipoDeVehiculo());
+                vehiculoGuardado.setPesoSoportado(vehiculoAModificar.getPesoSoportado());
+                vehiculoGuardado.setDimensionDisponible(vehiculoAModificar.getDimensionDisponible());
+                vehiculoGuardado.setIdConductor(vehiculoAModificar.getIdConductor());
+                break;*/
+                // if (vehiculoGuardado.getId().equals(vehiculoAModificar.getId())) {
+                // Realizar las modificaciones en el vehículo encontrado
+            /*    int index = vehiculos.indexOf(vehiculoGuardado);
+                vehiculos.set(index, vehiculoAModificar); // Reemplaza el vehículo en la lista
+                return true; // Modificación exitosa
+            }
+
+        }*/
+
+        // return vehiculoEncontrado;
+        // }
+
+/*
+    @Override
+    public Boolean modificarVehiculo(List<Vehiculo> vehiculos, Vehiculo vehiculoAmodificar, Conductor conductor, List<Conductor>conductores) {
+
+        if (!buscarConductor(conductor.getId())) {
+            return false; // Si el conductor no existe, no se puede modificar el vehículo
+        }
+
+        // Verificar si el vehículo a modificar existe en la lista de vehículos
+        boolean vehiculoEncontrado = false;
+        for (Vehiculo vehiculoGuardado : vehiculos) {
+            if (vehiculoGuardado.getId().equals(vehiculoAmodificar.getId())) {
+                vehiculoEncontrado = true;
+                // Realizar las modificaciones en el vehículo
+                vehiculoGuardado.setPatente(vehiculoAmodificar.getPatente());
+                vehiculoGuardado.setColor(vehiculoAmodificar.getColor());
+                vehiculoGuardado.setModelo(vehiculoAmodificar.getModelo());
+                vehiculoGuardado.setTipoDeVehiculo(vehiculoAmodificar.getTipoDeVehiculo());
+                vehiculoGuardado.setPesoSoportado(vehiculoAmodificar.getPesoSoportado());
+                vehiculoGuardado.setDimensionDisponible(vehiculoAmodificar.getDimensionDisponible());
+                vehiculoGuardado.setIdConductor(vehiculoAmodificar.getIdConductor());
+                break;
+            }
+        }
+
+        // Si el vehículo no se encuentra en la lista, no se puede modificar
+        if (!vehiculoEncontrado) {
+            return false;
+        }
+
+        return true; //
+
+    }*/
 
     /*@RequestMapping(path = "/buscar-vehiculo", method = RequestMethod.GET)
     public ModelAndView buscarVehiculosPorId(Vehiculo vehiculo){
@@ -152,14 +192,13 @@ public class ServicioVehiculoImpl implements IServicioVehiculo {
         /*return null;
     }*/
 
-
     /*REGISTRAR Y BUSCAR
      * 1RO QUE ESTÉ COMPLETO EL FORMULARIO DE INGRESO DEL VEHÍCULO -> CONTROLADOR
      * 2DO VERIFICA SI ESTÁ TODO OK ->SERVICIO
      * 3RO QUE SE PUEDA REGISTRAR UN VEHICULO Y QUE NO EXISTA OTRO IGUAL REPETIDO -> REPOSITORIO*/
 
     @RequestMapping(path = "registro-vehiculo", method = RequestMethod.GET)
-    public ModelAndView registroVehiculo(Vehiculo vehiculo, Conductor conductor) {
+    public ModelAndView registroVehiculo(Vehiculo vehiculo, Conductor conductor){
 
         String viewName = "registro-vehiculo";
 
@@ -169,7 +208,9 @@ public class ServicioVehiculoImpl implements IServicioVehiculo {
 
         if(queSePuedaRegistrarUnNuevoVehiculoConElDniDelConductor(vehiculos, vehiculo, conductor, conductores)){
             vehiculos.add(vehiculo);
-        }
+        } /*else{
+            throw new VehiculoExistenteException("El vehículo ya está registrado para este conductor");
+        }*/
 
         return new ModelAndView(viewName, model);
     }
@@ -215,7 +256,22 @@ public class ServicioVehiculoImpl implements IServicioVehiculo {
         }
         return true;
     }
+
+    @Override
+    public List<Vehiculo> obtenerTodosLosVehiculos() {
+        return this.irepositoryVehiculo.obtenerTodosLosVehiculos();
     }
+
+    @Override
+    public Vehiculo obtenerVehiculoPorIdDelConductor(Integer id) {
+        return this.irepositoryVehiculo.obtenerVehiculoPorElIdDelConductor(id);
+    }
+
+    @Override
+    public List<Vehiculo> obtenerTodosLosVehiculosDelConductor(Integer id) {
+        return this.irepositoryVehiculo.obtenerTodosLosVehiculosDelConductor(id);
+    }
+}
 
 
 
