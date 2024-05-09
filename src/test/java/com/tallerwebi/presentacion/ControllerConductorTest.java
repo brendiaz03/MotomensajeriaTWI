@@ -43,44 +43,10 @@ public class ControllerConductorTest {
 
         ModelAndView modelAndView = this.controllerConductor.registrarConductor(nuevoConductor);
 
+        assertThat(modelAndView.getViewName(),equalToIgnoringCase("home"));
+
+
         verify(iServiceConductor, times(1)).verificarDatosDeRegistro(nuevoConductor);
     }
-
-//    @Test
-//    public void queUnConductorConUnDniInvalidoTireUnaExcepcion() throws Exception {
-//        Conductor nuevoConductor = new Conductor("Juan", "Perez", 42952902, "juan@example.com", "password1", "juanito", "Calle Falsa 123", "1561639242", "0001002900001234567891");
-//        when(iServiceConductor.verificarDatosDeRegistro(nuevoConductor)).thenReturn(false);
-//        ModelAndView modelAndView = this.controllerConductor.registrarConductor(nuevoConductor);
-//
-//        assertEquals("home", modelAndView.getViewName());
-//        verify(iServiceConductor, times(1)).verificarDatosDeRegistro(nuevoConductor);
-//    }
-//    @Test
-//    public void queUnConductorConUnEmailInvalidoTireUnaExcepcion() throws Exception {
-//        Conductor nuevoConductor = new Conductor("Juan", "Perez", 42952902, "juan@example.com", "password1", "juanito", "Calle Falsa 123", "1561639242", "0001002900001234567891");
-//        when(iServiceConductor.verificarDatosDeRegistro(nuevoConductor)).thenReturn(false);
-//        ModelAndView modelAndView = this.controllerConductor.registrarConductor(nuevoConductor);
-//
-//        assertEquals("home", modelAndView.getViewName());
-//        verify(iServiceConductor, times(1)).verificarDatosDeRegistro(nuevoConductor);
-//    }
-//    @Test
-//    public void queUnConductorConUnPasswordlInvalidoTireUnaExcepcion() throws Exception {
-//        Conductor nuevoConductor = new Conductor("Juan", "Perez", 42952902, "juan@example.com", "password1", "juanito", "Calle Falsa 123", "1561639242", "0001002900001234567891");
-//        when(iServiceConductor.verificarDatosDeRegistro(nuevoConductor)).thenReturn(false);
-//        ModelAndView modelAndView = this.controllerConductor.registrarConductor(nuevoConductor);
-//
-//        assertEquals("home", modelAndView.getViewName());
-//        verify(iServiceConductor, times(1)).verificarDatosDeRegistro(nuevoConductor);
-//    }
-//    @Test
-//    public void queUnConductorConUnCVUInvalidoTireUnaExcepcion() throws Exception {
-//        Conductor nuevoConductor = new Conductor("Juan", "Perez", 42952902, "juan@example.com", "password1", "juanito", "Calle Falsa 123", "1561639242", "0001002900001234567891");
-//        when(iServiceConductor.verificarDatosDeRegistro(nuevoConductor)).thenReturn(false);
-//        ModelAndView modelAndView = this.controllerConductor.registrarConductor(nuevoConductor);
-//
-//        assertEquals("home", modelAndView.getViewName());
-//        verify(iServiceConductor, times(1)).verificarDatosDeRegistro(nuevoConductor);
-//    }
 
 }

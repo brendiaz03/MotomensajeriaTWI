@@ -6,15 +6,8 @@ import com.tallerwebi.dominio.imagen.Imagen;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-
-import java.util.List;
-
-import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 @Controller
 public class ControllerConductor {
@@ -51,14 +44,16 @@ public class ControllerConductor {
         if(mensajeError!=""){
             model.put("mensajeError", mensajeError);
         }
+        Imagen logo = iimageService.getImagenByName("logo");
+            model.put("logo", logo);
+            Imagen auto = iimageService.getImagenByName("auto");
+            model.put("auto", auto);
+            Imagen fondo = iimageService.getImagenByName("fondo");
+            model.put("fondo", fondo);
+            Imagen botonPS = iimageService.getImagenByName("botonPS");
+            model.put("botonPS", botonPS);
         return new ModelAndView(viewName,model);
     }
-
-//    public ModelAndView obtenerDatosDelFormulario(Conductor nuevoConductor) throws Exception {
-//        iServiceConductor.verificarDatosDeRegistro(nuevoConductor);
-//
-//        return new ModelAndView("redirect:/home");
-//    }
 
     @PostMapping("/registro-conductor")
     public ModelAndView registrarConductor(@ModelAttribute("conductor") Conductor nuevoConductor) throws Exception {
@@ -66,20 +61,10 @@ public class ControllerConductor {
             if(iServiceConductor.verificarDatosDeRegistro(nuevoConductor)){
                 return this.mostrarHome();
             }
-        } catch (DniInvalidoException e) {
-            return this.mostrarRegistroConductor(e.getMessage());
-        } catch (EmailInvalidoException e) {
-            return this.mostrarRegistroConductor(e.getMessage());
-        } catch (PasswordInvalidoException e) {
-            return this.mostrarRegistroConductor(e.getMessage());
-        } catch (CVUInvalidoException e) {
-            return this.mostrarRegistroConductor(e.getMessage());
-        }
+       } catch (ConductorDuplicadoException e) {
+           return this.mostrarRegistroConductor(e.getMessage());
+       }
         return this.mostrarRegistroConductor("Se ha producido un error en el servidor.");
     }
 
-//    public ModelAndView registrarConductor(Conductor nuevoConductor, org.springframework.mock.web.MockHttpServletRequest request) {
-//
-//
-//    }
 }
