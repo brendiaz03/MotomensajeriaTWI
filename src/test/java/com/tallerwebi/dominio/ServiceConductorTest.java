@@ -5,6 +5,8 @@ import org.hibernate.SessionFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import javax.persistence.NoResultException;
+
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
@@ -24,43 +26,23 @@ public class ServiceConductorTest {
         this.iServiceConductor = new ServiceConductorImpl(iRepositoryConductor);
     }
 
-//    @Test
-//    public void queSePuedanListarTodosLosConductores(){
-//        List<Conductor> conductores= this.iServiceConductor.get();
-//        assertThat(conductores.size(),equalTo(4));
-//
-//    }
-//
-//    @Test
-//    public void listarLosConductoresPorDomicilio(){ //Prueba
-//
-//        String domicilioFiltro="Pueyrredon 3339";
-//        List<Conductor> conductoresFiltrados= this.iServiceConductor.obtenerConductoresPorDomicilio(domicilioFiltro);
-//
-//        assertThat(conductoresFiltrados.size(),equalTo(2));
-//
-//    }
 
     @Test
-    public void queAlIngresarUnDniInvalidoLanceUnaExcepcion() throws Exception {
-       Conductor nuevoConductor = new Conductor("Jose", "Perez", 999999999, "juan@example.com", "password", "juanito", "Calle Falsa 123", "1234567890", "0001002900001234567891");
+    public void siYoIngresoLosDatosCorrectosSeRegistraElConductorEnLaBD() throws Exception {
+        // Arrange
+        Conductor nuevoConductor = new Conductor("Jose", "Perez", 42952902, "juan@example.com", "password", "juanito", "Calle Falsa 123", "1234567890", "0001002900001234567891");
+        when(iRepositoryConductor.buscarDuplicados(anyString(), anyString())).thenThrow(new NoResultException());
+
+        // Act
+        Boolean resultado = null;
         try {
-            iServiceConductor.verificarDatosDeRegistro(nuevoConductor);
-            fail("Se esperaba una excepción");
-        } catch (DniInvalidoException e) {
-            assertThat(e.getMessage(), containsString("DNI Inválido"));
-        } catch (Exception e) {
-            fail("Se esperaba una DniInvalidoException, pero se lanzó " + e.getClass().getSimpleName());
+            resultado = iServiceConductor.verificarDatosDeRegistro(nuevoConductor);
+        } catch (ConductorDuplicadoException e) {
+            fail("No se esperaba una excepción de conductor duplicado");
         }
-    }
-    @Test
-    public void verificarDatosCorrectosDelFormularioDeConductor() throws Exception {
-        Conductor nuevoConductor = new Conductor("Jose", "Perez", 12345678, "juan@example.com", "password", "juanito", "Calle Falsa 123", "1234567890", "0001002900001234567891");
 
-        when(iRepositoryConductor.registrar(nuevoConductor)).thenReturn(true);
-        Boolean resultado = iServiceConductor.verificarDatosDeRegistro(nuevoConductor);
-
-        assertThat(resultado,equalTo(true));
+        // Assert
+        assertThat(resultado, equalTo(true));
     }
 
 

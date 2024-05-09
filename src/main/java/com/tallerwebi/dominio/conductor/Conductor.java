@@ -16,7 +16,6 @@ public class Conductor {
     private String nombreUsuario;
     private String domicilio;
     private String nroTelefono;
-    //private Integer idVehiculo;
     private String cvu;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
