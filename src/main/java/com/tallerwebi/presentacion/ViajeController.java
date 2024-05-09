@@ -38,7 +38,7 @@ public class ViajeController {
         //En este codigo traigo todos los viajes existentes, pero despues tengo que traer los que el conductor acepta.
 
         //Este Integer debe ser session de IdCliente cuando se loguea
-        Integer idCliente = 1;
+        Integer idCliente = 3;
         List<DatosViaje> viajesObtenidos = this.viajeService.obtenerLosViajesAceptadosPorElConductor(idCliente);
 
         //this.viajesObtenidos = this.viajeService.obtenerViajes();
