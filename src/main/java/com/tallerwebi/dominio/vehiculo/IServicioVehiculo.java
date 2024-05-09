@@ -1,7 +1,6 @@
 package com.tallerwebi.dominio.vehiculo;
 
 import com.tallerwebi.dominio.enums.TipoVehiculo;
-import org.springframework.stereotype.Repository;
 import com.tallerwebi.dominio.conductor.Conductor;
 
 import java.util.List;
@@ -14,7 +13,7 @@ public interface IServicioVehiculo {
 
     List<Vehiculo> setVehiculos();
 
-    Boolean queSePuedaRegistrarUnNuevoVehiculoConElDniDelConductor(List<Vehiculo> vehiculos, Vehiculo vehiculo, Conductor conductor, List<Conductor>conductores);
+   // Boolean queSePuedaRegistrarUnNuevoVehiculoConElIdDelConductor(Vehiculo nuevoVehiculo, Conductor conductor);
 
     //Boolean modificarVehiculo(List<Vehiculo> vehiculos, Vehiculo vehiculo, Conductor conductor, List<Conductor>conductores);
 
@@ -25,4 +24,6 @@ public interface IServicioVehiculo {
     Vehiculo obtenerVehiculoPorIdDelConductor(Integer id);
 
     List<Vehiculo> obtenerTodosLosVehiculosDelConductor(Integer id);
+
+    Boolean queSePuedaRegistrarUnNuevoVehiculoConElIdDelConductorServicio(Vehiculo vehiculo1, Conductor nuevoConductor);
 }

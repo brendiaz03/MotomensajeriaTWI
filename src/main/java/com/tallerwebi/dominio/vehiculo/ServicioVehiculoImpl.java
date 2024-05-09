@@ -1,5 +1,4 @@
 package com.tallerwebi.dominio.vehiculo;
-import com.tallerwebi.dominio.vehiculo.IRepositoryVehiculo;
 import com.tallerwebi.dominio.conductor.Conductor;
 import com.tallerwebi.dominio.enums.TipoVehiculo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,8 +7,9 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,6 +21,8 @@ public class ServicioVehiculoImpl implements IServicioVehiculo {
     private IRepositoryVehiculo irepositoryVehiculo;
 
     private List<Conductor>conductores;
+
+    private EntityManager entityManager;
 
     @Autowired
     public ServicioVehiculoImpl(IRepositoryVehiculo irepositoryVehiculo) {
@@ -89,7 +91,7 @@ public class ServicioVehiculoImpl implements IServicioVehiculo {
     private List<Vehiculo> convertToDatosVehiculos(List<Vehiculo> vehiculos){
         List<Vehiculo> datosDeVehiculos = new ArrayList<>();
 
-        Vehiculo vehiculo1 = new Vehiculo(2L, "DEF456", "Azul", "Camioneta", TipoVehiculo.MOTO, 2000.0, 8.0, 2L);
+        Vehiculo vehiculo1 = new Vehiculo(4554L, "DEF456", "Azul", "Camioneta", TipoVehiculo.MOTO, 2000.0, 8.0, 245);
         //Vehiculo vehiculo1 = new Vehiculo(2L, "DEF456", "Azul", "Camioneta", TipoVehiculo.MOTO, 2000.0, 8.0, 2L);
 
         for (Vehiculo vehiculo: vehiculos){
@@ -206,7 +208,7 @@ public class ServicioVehiculoImpl implements IServicioVehiculo {
 
         model.put("message", "Bienvenido al registro de su vehiculo");
 
-        if(queSePuedaRegistrarUnNuevoVehiculoConElDniDelConductor(vehiculos, vehiculo, conductor, conductores)){
+        if(queSePuedaRegistrarUnNuevoVehiculoConElIdDelConductorServicio(vehiculo, conductor)){
             vehiculos.add(vehiculo);
         } /*else{
             throw new VehiculoExistenteException("El vehículo ya está registrado para este conductor");
@@ -216,27 +218,27 @@ public class ServicioVehiculoImpl implements IServicioVehiculo {
     }
 
     @Override
-    public Boolean queSePuedaRegistrarUnNuevoVehiculoConElDniDelConductor(List<Vehiculo> vehiculos, Vehiculo nuevoVehiculo, Conductor conductor, List<Conductor>conductores) {
-
-            if (!queExistaElConductorEnLaListaDeConductores(conductor, conductores)) {
-                return false;
-            }
-
-            for (Vehiculo vehiculoGuardado : vehiculos) {
-                if (vehiculoGuardado.getId().equals(nuevoVehiculo.getId())) {
-                    return false;
-                }
-            }
-
-            for (Vehiculo vehiculoGuardado : vehiculos) {
-                if (vehiculoGuardado.getIdConductor().equals(conductor.getId())) {
-                    return false;
-                }
-            }
-
-            // Si todas las verificaciones pasan, se puede registrar el vehículo
-            return true;
+    public Boolean queSePuedaRegistrarUnNuevoVehiculoConElIdDelConductorServicio(Vehiculo nuevoVehiculo, Conductor conductor) {
+        if (conductor == null || conductor.getId() == null) {
+            return false;
         }
+
+        try {
+            // Asigna el ID del conductor al vehículo
+            nuevoVehiculo.setIdConductor(conductor.getId());
+
+            // Persiste el vehículo en la base de datos
+            entityManager.persist(nuevoVehiculo);
+            entityManager.flush();  // Asegura que la operación se complete
+
+            return true;
+        } catch (Exception e) {
+            // Manejo de la excepción en caso de error en la transacción
+            System.out.println("Error al guardar el vehículo: " + e.getMessage());
+            return false;
+        }
+
+    }
 
         @Override
         public Boolean queExistaElConductorEnLaListaDeConductores(Conductor conductor, List<Conductor>conductores) {
@@ -271,6 +273,7 @@ public class ServicioVehiculoImpl implements IServicioVehiculo {
     public List<Vehiculo> obtenerTodosLosVehiculosDelConductor(Integer id) {
         return this.irepositoryVehiculo.obtenerTodosLosVehiculosDelConductor(id);
     }
+
 }
 
 

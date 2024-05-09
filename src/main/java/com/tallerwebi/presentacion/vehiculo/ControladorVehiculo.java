@@ -1,4 +1,6 @@
 package com.tallerwebi.presentacion.vehiculo;
+import com.tallerwebi.dominio.conductor.Conductor;
+import com.tallerwebi.dominio.conductor.ConductorDuplicadoException;
 import com.tallerwebi.dominio.enums.TipoVehiculo;
 import com.tallerwebi.dominio.imagen.IImageService;
 import com.tallerwebi.dominio.imagen.Imagen;
@@ -9,9 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
@@ -24,12 +24,12 @@ public class ControladorVehiculo{
 
     private IImageService iImageService;
 
-    private IServicioVehiculo servicioVehiculo;
+    private IServicioVehiculo iServicioVehiculo;
 
     @Autowired
-    public ControladorVehiculo(IServicioVehiculo servicioVehiculo, IImageService _iImageService) {
+    public ControladorVehiculo(IServicioVehiculo iServicioVehiculo, IImageService _iImageService) {
 
-        this.servicioVehiculo = servicioVehiculo;
+        this.iServicioVehiculo = iServicioVehiculo;
 
         this.iImageService = _iImageService;
 
@@ -50,8 +50,19 @@ public class ControladorVehiculo{
 
         return new ModelAndView(viewName, model);
     }
-/*
-    @RequestMapping(path = "/buscar-vehiculo", method = RequestMethod.GET)
+
+    @PostMapping("/vehiculo")
+    public ModelAndView registrarVehiculo(@ModelAttribute("vehiculo") Vehiculo nuevoVehiculo, Conductor conductor) {
+        Vehiculo vehiculoExistente = iServicioVehiculo.obtenerVehiculoPorIdDelConductor(conductor.getId());
+
+        if (vehiculoExistente == null || !vehiculoExistente.getIdConductor().equals(nuevoVehiculo.getIdConductor())) {
+            return new ModelAndView("redirect:/home");
+        }
+
+        return this.mostrarRegistroDelVehiculo();
+    }
+
+    /*@RequestMapping(path = "/buscar-vehiculo", method = RequestMethod.GET)
     public ModelAndView filtrarVehiculosPorTipo(TipoVehiculo tipoVehiculo){
 
         String viewName = "buscar-vehiculos";
@@ -74,7 +85,7 @@ public class ControladorVehiculo{
         return new ModelAndView(viewName, model);
 
     }
-
+/*
     public List<Vehiculo> obtenerTodosLosVehiculos() {
 
         List<Vehiculo>vehiculos = this.servicioVehiculo.obtenerTodosLosVehiculos();

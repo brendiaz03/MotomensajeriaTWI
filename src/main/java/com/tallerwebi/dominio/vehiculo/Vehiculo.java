@@ -31,12 +31,9 @@ public class Vehiculo {
     private double dimensionDisponible;
 
     @Column(name = "idConductor")
-    private Long idConductor;
+    private Integer idConductor;
 
-    @Column(name = "idConductorTest")
-    private Integer idConductorTest;
-
-    public Vehiculo(Long id, String patente, String color, String modelo, TipoVehiculo tipoDeVehiculo, double pesoSoportado, double dimensionDisponible, Long idConductor) {
+    public Vehiculo(Long id, String patente, String color, String modelo, TipoVehiculo tipoDeVehiculo, double pesoSoportado, double dimensionDisponible, Integer idConductor) {
         this.id = id;
         this.patente = patente;
         this.color = color;
@@ -45,13 +42,6 @@ public class Vehiculo {
         this.pesoSoportado = pesoSoportado;
         this.dimensionDisponible = dimensionDisponible;
         this.idConductor = idConductor;
-    }
-
-    public Vehiculo(String patente, String color, String modelo, Integer idConductorTest) {
-        this.patente = patente;
-        this.color = color;
-        this.modelo = modelo;
-        this.idConductorTest = idConductorTest;
     }
 
     public Vehiculo() {
@@ -128,20 +118,12 @@ public class Vehiculo {
         this.dimensionDisponible = dimensionDisponible;
     }
 
-    public Long getIdConductor() {
+    public Integer getIdConductor() {
         return idConductor;
     }
 
-    public void setIdConductor(Long idConductor) {
+    public void setIdConductor(Integer idConductor) {
         this.idConductor = idConductor;
-    }
-
-    public Integer getIdConductorTest() {
-        return idConductorTest;
-    }
-
-    public void setIdConductorTest(Integer idConductorTest) {
-        this.idConductorTest = idConductorTest;
     }
 }
 

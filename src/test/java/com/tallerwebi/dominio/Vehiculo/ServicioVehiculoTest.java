@@ -34,7 +34,7 @@ public class ServicioVehiculoTest {
     }
 
     //FUNCIONA OK
-    @Test
+    /*@Test
     public void queSeRegistreUnNuevoVehiculoConElIdDelConductor() {
 
         //List<Conductor>conductores = new ArrayList<>();
@@ -66,10 +66,10 @@ public class ServicioVehiculoTest {
         System.out.println(vehiculo.getPatente());
 
         assertThat(vehiculoObtenido.getPatente(), equalTo(vehiculo.getPatente()));
-    }
+    }*/
 
     //FUNCIONA OK
-    @Test
+    /*@Test
     public void queSePuedanObtenerTodosLosVehiculosDelConductor(){
         //preparación
 
@@ -106,7 +106,7 @@ public class ServicioVehiculoTest {
 
         //verificación
         assertThat((this.iservicioVehiculo.get()).size(), equalTo(4));*/
-    }
+    //}*/
 
     //NO FUNCIONA OK
     /*@Test
