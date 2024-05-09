@@ -1,67 +1,82 @@
-<!--<!DOCTYPE html>-->
-<!--<html lang="es" xmlns:th="http://www.thymeleaf.org">-->
-<!--<head>-->
-<!--    <meta charset="UTF-8">-->
-<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
-<!--    <title>Iniciar Sesión</title>-->
-<!--    <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.0/css/bootstrap.min.css}"/>-->
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil</title>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.0/css/bootstrap.min.css}"/>
 
-<!--    &lt;!&ndash; custom style &ndash;&gt;-->
-<!--    <link rel="stylesheet" th:href="@{css/login.css}"/>-->
-<!--    <link rel="stylesheet" th:href="@{css/main.css}"/>-->
-<!--</head>-->
-<!--<body>-->
-<!--<header>-->
-<!--    <nav class="navbar navbar-expand-lg mx-4">-->
-<!--        <div class="d-flex align-items-center bg-violet"> &lt;!&ndash; Div pegado a la izquierda &ndash;&gt;-->
-<!--            <a th:href="home" class="mx-2">-->
-<!--                <img th:src="${logo.getImagenBase64()}" class="d-block w-100 bg-violet" alt=",,," style="height: 50px;width: 50px">-->
-<!--            </a>-->
-<!--        </div>-->
+    <!-- custom style -->
+    <link rel="stylesheet" th:href="@{css/login.css}"/>
+    <link rel="stylesheet" th:href="@{css/main.css}"/>
+</head>
+<body>
+<header>
+    <nav class="navbar navbar-expand-lg mx-4">
+        <div class="d-flex align-items-center bg-violet"> <!-- Div pegado a la izquierda -->
+            <a th:href="home" class="mx-2">
+                <img th:src="${logo.getImagenBase64()}" class="d-block w-100 bg-violet" alt=",,," style="height: 50px;width: 50px">
+            </a>
+        </div>
 
-<!--        <div class="collapse navbar-collapse justify-content-end"> &lt;!&ndash; Div pegado a la derecha &ndash;&gt;-->
-<!--            <ul class="navbar-nav mr-auto">-->
-<!--                <li class="nav-item active  p-2">-->
-<!--                    <a th:href="home" class="nav-link p-2 text-white" href="#">Inicio</a>-->
-<!--                </li>-->
-<!--                <li class="nav-item p-2">-->
-<!--                    <a class="nav-link p-2 text-white" href="#">Compañía</a>-->
-<!--                </li>-->
-<!--                <li class="nav-item p-2">-->
-<!--                    <a class="nav-link p-2 text-white" href="#">Ayuda</a>-->
-<!--                </li>-->
-<!--            </ul>-->
-<!--            <a th:unless="${isUsuarioLogueado}" th:href="@{login}" class="btn-custom">Ingresar</a>-->
-<!--            &lt;!&ndash; Muestra el botón de usuario solo si el usuario está logueado &ndash;&gt;-->
-<!--            <a th:if="${isUsuarioLogueado}" th:href="perfil-conductor" class="btn mx-2">-->
-<!--                <img th:src="${user.getImagenBase64()}" alt=",,," style="height: 20px;width: 20px">-->
-<!--            </a>-->
-<!--        </div>-->
-<!--    </nav>-->
-<!--</header>-->
-<!--<main>-->
-<!--    <div class="container d-flex justify-content-center">-->
-<!--        <div class="card mx-3" style="width: 18rem; background-color: white;">-->
-<!--            <div class="container d-flex justify-content-center align-items-center">-->
-<!--                <div class="rounded-circle bg-secondary" style="width: 100px; height: 100px;">-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            <div class="card-body">-->
-<!--                <h5 class="card-title">Card Title 1</h5>-->
-<!--                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>-->
-<!--                <a href="#" class="btn btn-primary">Button</a>-->
-<!--            </div>-->
-<!--        </div>-->
+        <div class="collapse navbar-collapse justify-content-end"> <!-- Div pegado a la derecha -->
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active  p-2">
+                    <a th:href="home" class="nav-link p-2 text-white" href="#">Inicio</a>
+                </li>
+                <li class="nav-item p-2">
+                    <a class="nav-link p-2 text-white" href="#">Compañía</a>
+                </li>
+                <li class="nav-item p-2">
+                    <a class="nav-link p-2 text-white" href="#">Ayuda</a>
+                </li>
+            </ul>
+            <a th:href="perfil-conductor" class="btn mx-2">
+                <img th:src="${user.getImagenBase64()}" alt=",,," style="height: 20px;width: 20px">
+            </a>
+        </div>
+    </nav>
+</header>
+<main>
+    <div class="container d-flex justify-content-center">
+        <div class="card mx-3 p-3" style="width: 18rem;height: 35rem; background-color: white;">
+            <div class="container d-flex justify-content-center align-items-center">
+                <div class="rounded-circle bg-secondary d-flex justify-content-center align-items-center" style="width: 100px; height: 100px;">
+                    <img th:src="${user.getImagenBase64()}" class="d-block" alt=",,," style="width: 40%; height: 40%;">
+                </div>
+            </div>
+            <div class="card-body">
+                <h5 class="card-title text-center">Brenda diaz</h5>
+                <p class="card-text text-center">brendiaaz03@gmail.com</p>
+            </div>
+            <div class="card-body">
+                <p class="card-text "><strong>Perfil</strong></p>
+                <p class="card-text "><strong>Vehiculo</strong></p>
+                <p class="card-text "><strong>Historial de Viajes</strong></p>
+                <p class="card-text "><strong>Cuenta</strong></p>
+                <p class="card-text "><strong>Soporte en linea</strong></p>
+            </div>
+        </div>
 
-<!--        <div class="card mx-3" style="width: 18rem; background-color: white;">-->
-<!--            <img src="https://picsum.photos/200" class="card-img-top" alt="Card image">-->
-<!--            <div class="card-body">-->
-<!--                <h5 class="card-title">Card Title 2</h5>-->
-<!--                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>-->
-<!--                <a href="#" class="btn btn-primary">Button</a>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--</main>-->
-<!--</body>-->
-<!--</html>-->
+        <div class="card mx-3 p-3" style="width: 30rem;height: 35rem; background-color: white;">
+            <div class="card-body">
+                <h5 class="card-title text-center p-2"><strong>Perfil</strong></h5>
+                <div class="d-flex justify-content-between pt-3">
+                    <p class="card-text"><strong>Mis datos personales</strong></p>
+                    <a href="#">Editar
+                    </a>
+                </div>
+            </div>
+            <div class="card-body">
+                <p><strong>Número de Telefono</strong></p>
+                <p>qweqeqrqwrq</p>
+            </div>
+            <div class="card-body">
+                <p><strong>Email</strong></p>
+                <p>brendiaaz03@gmail.com</p>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>

@@ -9,6 +9,8 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpSession;
+
 @Controller
 @SessionAttributes("isUsuarioLogueado")
 public class ControllerConductor {
@@ -23,20 +25,6 @@ public class ControllerConductor {
         this.iimageService=imageService;
     }
 
-//    @RequestMapping("/home")
-//    public ModelAndView mostrarHome(){
-//        String viewName= "home";
-//        ModelMap model = new ModelMap();
-//        Imagen logo = iimageService.getImagenByName("logo");
-//        model.put("logo", logo);
-//        Imagen auto = iimageService.getImagenByName("auto");
-//        model.put("auto", auto);
-//        Imagen fondo = iimageService.getImagenByName("fondo");
-//        model.put("fondo", fondo);
-//        Imagen botonPS = iimageService.getImagenByName("botonPS");
-//        model.put("botonPS", botonPS);
-//        return new ModelAndView(viewName,model);
-//    }
         @RequestMapping(value = "/registro-conductor")
         public ModelAndView mostrarRegistroConductor(String mensajeError){
         String viewName= "registro-conductor";
@@ -68,26 +56,25 @@ public class ControllerConductor {
         return this.mostrarRegistroConductor("Se ha producido un error en el servidor.");
     }
 
-//    @RequestMapping(path = "/perfil", method = RequestMethod.GET)
-//    public ModelAndView irAPerfil(HttpSession session) {
-//        ModelMap model = new ModelMap();
-//        Boolean isUsuarioLogueado = (Boolean) session.getAttribute("isUsuarioLogueado");
-//        String nombre = (String) session.getAttribute("NOMBRE");
-//        String apellido = (String) session.getAttribute("APELLIDO");
-//        Integer idUsuario = (Integer) session.getAttribute("IDUSUARIO");
-//        System.out.println(nombre + " " + apellido + " " + idUsuario);
-//
-//        //Conductor conductor = iServiceConductor.obtenerConductorPorId(idUsuario);
-//        Imagen logo = iimageService.getImagenByName("logo");
-//        model.put("logo", logo);
-//        Imagen user = iimageService.getImagenByName("userIcon");
-//        model.put("user", user);
-//        model.put("isUsuarioLogueado", isUsuarioLogueado);
-//        model.put("nombreUsuario", nombre);
-//        model.put("apellidoUsuario", apellido);
-//        model.put("idUsuario", idUsuario);
-//        //model.put("conductor", conductor );
-//        return new ModelAndView("perfil-conductor",model);
-//    }
+    @RequestMapping(path = "/perfil", method = RequestMethod.GET)
+    public ModelAndView irAPerfil(HttpSession session) {
+        ModelMap model = new ModelMap();
+        Boolean isUsuarioLogueado = (Boolean) session.getAttribute("isUsuarioLogueado");
+        String nombre = (String) session.getAttribute("NOMBRE");
+        String apellido = (String) session.getAttribute("APELLIDO");
+        Integer idUsuario = (Integer) session.getAttribute("IDUSUARIO");
+
+        Conductor conductor = iServiceConductor.obtenerConductorPorId(idUsuario);
+        Imagen logo = iimageService.getImagenByName("logo");
+        model.put("logo", logo);
+        Imagen user = iimageService.getImagenByName("userIcon");
+        model.put("user", user);
+        model.put("isUsuarioLogueado", isUsuarioLogueado);
+        model.put("nombreUsuario", nombre);
+        model.put("apellidoUsuario", apellido);
+        model.put("idUsuario", idUsuario);
+        model.put("conductor", conductor );
+        return new ModelAndView("perfil-conductor",model);
+    }
 
 }
