@@ -37,6 +37,14 @@ public class Conductor {
 
     }
 
+    public Conductor(String email, String password, String nombre, String apellido, Integer numeroDeDni) {
+        this.email = email;
+        this.password = password;
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.numeroDeDni = numeroDeDni;
+    }
+
     public String getNombre() {
         return nombre;
     }
