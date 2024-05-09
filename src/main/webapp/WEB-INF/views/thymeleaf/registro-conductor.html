@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Conductor</title>
+    <!-- Boostrap core css -->
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.0/css/bootstrap.min.css}"/>
+
+    <!-- custom style -->
+    <!--<link rel="stylesheet" th:href="@{/css/home.css}"/></head>-->
+    <link rel="stylesheet" th:href="@{/css/registro-conductor.css}"/>
+    <link rel="stylesheet" th:href="@{/css/main.css}"/>
+</head>
+
+<body>
+<header>
+    <nav class="navbar navbar-expand-lg mx-4">
+        <div class="d-flex align-items-center bg-violet"> <!-- Div pegado a la izquierda -->
+            <a th:href="home" class="btn mx-2">
+                <img th:src="${logo.getImagenBase64()}" class="d-block w-100 bg-violet" alt=",,," style="height: 50px;width: 50px">
+            </a>
+        </div>
+
+        <div class="collapse navbar-collapse justify-content-end"> <!-- Div pegado a la derecha -->
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active  p-2">
+                    <a th:href="home" class="nav-link p-2 text-white" href="#">Inicio</a>
+                </li>
+                <li class="nav-item p-2">
+                    <a class="nav-link p-2 text-white" href="#">Compañía</a>
+                </li>
+                <li class="nav-item p-2">
+                    <a class="nav-link p-2 text-white" href="#">Ayuda</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</header>
+<main class="main_registro">
+
+<div class="formulario_fondo">
+    <h1 class="titulo_registroConductor">Registrarme</h1>
+    <form  th:action="@{/registro-conductor}" method="post" th:object="${conductor}">
+      <section class="formulario">
+        <div class="columna">
+            <div>
+                <label for="nombre" class="nombre fuente_formulario_registro">Nombre</label>
+                <input type="text" class="form-control" id="nombre" name="nombre" th:field="*{nombre}" required>
+            </div>
+            <div>
+                <label for="apellido" class="apellido fuente_formulario_registro">Apellido</label>
+                <input type="text" class="form-control" id="apellido" name="apellido" th:field="*{apellido}" required>
+            </div>
+            <div >
+                <label for="domicilio" class="domicilio fuente_formulario_registro">Domicilio</label>
+                <input type="text" class="form-control" id="domicilio" name="domicilio" th:field="*{domicilio}" required>
+            </div>
+            <div>
+                <label for="nroTelefono" class="telefono fuente_formulario_registro">Número de Teléfono</label>
+                <input type="number" class="form-control" id="nroTelefono" name="nroTelefono" th:field="*{nroTelefono}" required>
+            </div>
+            <div>
+                <label for="numeroDeDni" class="dni fuente_formulario_registro">Número de DNI</label>
+                <input type="number" class="form-control" id="numeroDeDni" name="numeroDeDni" th:field="*{numeroDeDni}" required>
+            </div>
+        </div>
+        <div class="columna">
+            <div>
+                <label for="nombreUsuario" class="nombreUsuario fuente_formulario_registro">Nombre de Usuario</label>
+                <input type="text" class="form-control" id="nombreUsuario" name="nombreUsuario" th:field="*{nombreUsuario}" required>
+            </div>
+            <div>
+                <label for="email" class="email fuente_formulario_registro">Email</label>
+                <input type="email" class="form-control" id="email" name="email" th:field="*{email}" required>
+            </div>
+            <div>
+                <label for="password" class="password fuente_formulario_registro">Contraseña</label>
+                <input type="password" class="form-control" id="password" name="password" th:field="*{password}" required>
+            </div>
+            <div >
+                <label for="confirmarPassword" class="confirmarPassword fuente_formulario_registro">Confirmar Contraseña</label>
+                <input type="password" class="form-control" id="confirmarPassword" name="confirmarPassword" required>
+            </div>
+            <div>
+                <label for="cvu" class="cvu fuente_formulario_registro">CVU</label>
+                <input type="number" class="form-control" id="cvu" name="cvu" th:field="*{cvu}" required>
+            </div>
+        </div>
+
+      </section>
+        <section class="errores" th:if="${mensajeError != null and !mensajeError.isEmpty()}">
+                <p th:text="${mensajeError}">Mensaje de error predeterminado</p>
+        </section>
+        <section class="botones">
+            <a href="home.html" id="boton_cancelar"><button type="button" class="boton_cancelar">Cancelar</button></a>
+
+            <button type="submit" class="boton_submit">Ingresar</button>
+        </section>
+    </form>
+</div>
+
+</div>
+
+</main>
+<footer>
+
+</footer>
+</body>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    document.addEventListener('DOMContentLoaded', function() {
+        var form = document.querySelector('form');
+        form.addEventListener('submit', function(event) {
+            var password = document.getElementById('password').value;
+            var confirmarPassword = document.getElementById('confirmarPassword').value;
+
+            if (password !== confirmarPassword) {
+                event.preventDefault();
+                alert('La contraseña y la confirmación de la contraseña no coinciden.');
+                return;
+            }
+
+            var cvuInput = document.getElementById('cvu');
+            var dniInput = document.getElementById('numeroDeDni');
+
+            // Validar CVU
+            if (cvuInput.value.length !== 22) {
+                event.preventDefault();
+                alert('El CVU debe tener exactamente 22 números.');
+                return;
+            }
+
+            // Validar DNI
+            var dni = parseInt(dniInput.value);
+            if (dni < 1000000 || dni > 99999999 || isNaN(dni)) {
+                event.preventDefault();
+                alert('El número de DNI debe ser mayor o igual a 1000000 y menor o igual a 99999999.');
+                return;
+            }
+        });
+
+        var boton_cancelar = document.getElementById('boton_cancelar');
+        boton_cancelar.addEventListener('click', function(event) {
+            event.preventDefault();
+            window.location.href = boton_cancelar.href;
+        });
+    });
+    /*]]>*/
+</script>
+
+
+</html>

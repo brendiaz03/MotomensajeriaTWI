@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión</title>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.0/css/bootstrap.min.css}"/>
+
+    <!-- custom style -->
+    <link rel="stylesheet" th:href="@{css/login.css}"/>
+    <link rel="stylesheet" th:href="@{css/main.css}"/>
+    <link rel="stylesheet" th:href="@{css/registro-conductor.css}"/>
+
+</head>
+<body>
+<header>
+    <nav class="navbar navbar-expand-lg mx-4">
+        <div class="d-flex align-items-center bg-violet"> <!-- Div pegado a la izquierda -->
+            <a th:href="home" class="btn mx-2">
+                <img th:src="${logo.getImagenBase64()}" class="d-block w-100 bg-violet" alt=",,," style="height: 50px;width: 50px">
+            </a>
+        </div>
+
+        <div class="collapse navbar-collapse justify-content-end"> <!-- Div pegado a la derecha -->
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active  p-2">
+                    <a th:href="home" class="nav-link p-2 text-white" href="#">Inicio</a>
+                </li>
+                <li class="nav-item p-2">
+                    <a class="nav-link p-2 text-white" href="#">Compañía</a>
+                </li>
+                <li class="nav-item p-2">
+                    <a class="nav-link p-2 text-white" href="#">Ayuda</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</header>
+<main class="main_login">
+    <div class="formulario_fondo_login">
+        <h1 style="text-align: center" class="titulo_loginConductor">Iniciar Sesión</h1>
+        <form action="#" th:action="@{/validar-login}" method="POST" th:object="${datosLogin}">
+            <section class="formulario">
+             <div class="columna">
+                 <div>
+                    <label for="usuario" class="form-label">Usuario:</label>
+                    <input type="text" class="form-control" id="usuario" name="usuario" th:field="*{usuario}" required>
+                 </div>
+                 <div>
+                    <label for="password" class="form-label">Contraseña:</label>
+                    <input type="password" class="form-control" id="password" name="password" th:field="*{password}" required>
+                 </div>
+                 <section class="sub_columna">
+                     <div>
+                         <a href="/recuperar-contraseña">¿Olvidaste tu contraseña contraseña?</a>
+                     </div>
+                     <div>
+                         <button type="submit" class="boton_submit">Ingresar</button>
+                     </div>
+                     <div>
+                         <a th:href="registro-conductor" id="boton_Redireccion"><button type="button" class="boton_Redireccion">Registrarse</button></a>
+                         </a>
+                     </div>
+                 </section>
+             </div>
+            </section>
+        </form>
+    </div>
+</main>
+
+</body>
+</html>

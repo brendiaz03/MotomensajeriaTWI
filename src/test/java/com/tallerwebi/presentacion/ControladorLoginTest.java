@@ -1,105 +1,70 @@
-/*package com.tallerwebi.presentacion;
+package com.tallerwebi.presentacion;
 
-import com.tallerwebi.dominio.IServicioLogin;
-import com.tallerwebi.dominio.Usuario;
-import com.tallerwebi.dominio.excepcion.ConductorExistenteException;
+import com.tallerwebi.dominio.conductor.Conductor;
+import com.tallerwebi.dominio.imagen.IImageService;
+import com.tallerwebi.dominio.login.DatosLoginConductor;
+import com.tallerwebi.dominio.login.ILoginService;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.springframework.web.servlet.ModelAndView;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.text.IsEqualIgnoringCase.equalToIgnoringCase;
 import static org.mockito.Mockito.*;
+import org.junit.jupiter.api.Test;
+import org.springframework.web.servlet.ModelAndView;
+
 
 public class ControladorLoginTest {
 
-	private ConductorController controladorLogin;
-	private Usuario usuarioMock;
-	private DatosLogin datosLoginMock;
 	private HttpServletRequest requestMock;
 	private HttpSession sessionMock;
-	private IServicioLogin servicioLoginMock;
+	private LoginController controladorLogin;
+	private ILoginService servicioLoginMock;
+	private IImageService servicioImagenMock;
+	private Conductor usuarioMock;
+	private DatosLoginConductor datosLoginMock;
 
 
 	@BeforeEach
-	public void init(){
-		datosLoginMock = new DatosLogin("dami@unlam.com", "123");
-		usuarioMock = mock(Usuario.class);
-		when(usuarioMock.getEmail()).thenReturn("dami@unlam.com");
+	public void init() {
 		requestMock = mock(HttpServletRequest.class);
 		sessionMock = mock(HttpSession.class);
-		servicioLoginMock = mock(IServicioLogin.class);
-		controladorLogin = new ConductorController(servicioLoginMock);
+		servicioLoginMock = mock(ILoginService.class);
+		servicioImagenMock = mock(IImageService.class);
+		when(requestMock.getSession()).thenReturn(sessionMock);
+		controladorLogin = new LoginController(servicioLoginMock, servicioImagenMock);
+		usuarioMock = mock(Conductor.class);
+		when(usuarioMock.getNombreUsuario()).thenReturn("b");
+		when(usuarioMock.getPassword()).thenReturn("b");  // Establecer una contraseña válida
+		datosLoginMock = new DatosLoginConductor("dami@unlam.com", "123");
 	}
 
 	@Test
-	public void loginConUsuarioYPasswordInorrectosDeberiaLlevarALoginNuevamente(){
+	public void loginConUsuarioYPasswordIncorrectosDeberiaLlevarALoginNuevamente(){
 		// preparacion
 		when(servicioLoginMock.consultarUsuario(anyString(), anyString())).thenReturn(null);
 
 		// ejecucion
-		//ModelAndView modelAndView = controladorLogin.validarLogin(datosLoginMock, requestMock);
-
-		// validacion
-		//assertThat(modelAndView.getViewName(), equalToIgnoringCase("login"));
-		//assertThat(modelAndView.getModel().get("error").toString(), equalToIgnoringCase("Usuario o clave incorrecta"));
-		verify(sessionMock, times(0)).setAttribute("ROL", "ADMIN");
-	}
-	
-	@Test
-	public void loginConUsuarioYPasswordCorrectosDeberiaLLevarAHome(){
-		// preparacion
-		Usuario usuarioEncontradoMock = mock(Usuario.class);
-		//when(usuarioEncontradoMock.getRol()).thenReturn("ADMIN");
-
-		when(requestMock.getSession()).thenReturn(sessionMock);
-		when(servicioLoginMock.consultarUsuario(anyString(), anyString())).thenReturn(usuarioEncontradoMock);
-		
-		// ejecucion
 		ModelAndView modelAndView = controladorLogin.validarLogin(datosLoginMock, requestMock);
-		
-		// validacion
-		assertThat(modelAndView.getViewName(), equalToIgnoringCase("redirect:/home"));
-		//verify(sessionMock, times(1)).setAttribute("ROL", usuarioEncontradoMock.getRol());
-	}
-
-	@Test
-	public void registrameSiUsuarioNoExisteDeberiaCrearUsuarioYVolverAlLogin() throws ConductorExistenteException {
-
-		// ejecucion
-		ModelAndView modelAndView = controladorLogin.registrarme(usuarioMock);
 
 		// validacion
 		assertThat(modelAndView.getViewName(), equalToIgnoringCase("redirect:/login"));
-		verify(servicioLoginMock, times(1)).registrar(usuarioMock);
+		assertThat(modelAndView.getModel().get("error").toString(), equalToIgnoringCase("Usuario o clave incorrecta"));
 	}
 
 	@Test
-	public void registrarmeSiUsuarioExisteDeberiaVolverAFormularioYMostrarError() throws ConductorExistenteException {
+	public void loginConUsuarioYPasswordCorrectosDeberiaLLevarAHome(){
 		// preparacion
-		doThrow(ConductorExistenteException.class).when(servicioLoginMock).registrar(usuarioMock);
+		Conductor usuarioEncontradoMock = mock(Conductor.class);
+
+		when(requestMock.getSession()).thenReturn(sessionMock);
+		when(servicioLoginMock.consultarUsuario(anyString(), anyString())).thenReturn(usuarioEncontradoMock);
 
 		// ejecucion
-		ModelAndView modelAndView = controladorLogin.registrarme(usuarioMock);
+		ModelAndView modelAndView = controladorLogin.validarLogin(datosLoginMock, requestMock);
 
 		// validacion
-		assertThat(modelAndView.getViewName(), equalToIgnoringCase("nuevo-usuario"));
-		assertThat(modelAndView.getModel().get("error").toString(), equalToIgnoringCase("El usuario ya existe"));
+		assertThat(modelAndView.getViewName(), equalToIgnoringCase("redirect:/home"));
 	}
 
-	@Test
-	public void errorEnRegistrarmeDeberiaVolverAFormularioYMostrarError() throws ConductorExistenteException {
-		// preparacion
-		doThrow(RuntimeException.class).when(servicioLoginMock).registrar(usuarioMock);
-
-		// ejecucion
-		ModelAndView modelAndView = controladorLogin.registrarme(usuarioMock);
-
-		// validacion
-		assertThat(modelAndView.getViewName(), equalToIgnoringCase("nuevo-usuario"));
-		assertThat(modelAndView.getModel().get("error").toString(), equalToIgnoringCase("Error al registrar el nuevo usuario"));
-	}
-}*/
+}

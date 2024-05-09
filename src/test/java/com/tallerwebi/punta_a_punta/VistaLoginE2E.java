@@ -46,7 +46,7 @@
 //    @Test
 //    void deberiaDecirUNLAMEnElNavbar() {
 //        String texto = vistaLogin.obtenerTextoDeLaBarraDeNavegacion();
-//        assertThat("UNLAM", equalToIgnoringCase(texto));
+//        assertThat("Inicio", equalToIgnoringCase(texto));
 //    }
 //
 //    @Test

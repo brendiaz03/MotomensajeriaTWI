@@ -1,0 +1,73 @@
+<!DOCTYPE HTML>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.0/css/bootstrap.min.css}"/>
+  <link rel="stylesheet" th:href="@{css/main.css}"/>
+  <link rel="stylesheet" th:href="@{css/homeStyle.css}"/>
+  <title>Motomensajeria</title>
+
+  <!-- Boostrap core css -->
+
+
+</head>
+<body>
+<header>
+  <nav class="navbar navbar-expand-lg mx-4">
+    <div class="d-flex align-items-center bg-violet"> <!-- Div pegado a la izquierda -->
+      <a th:href="home" class="mx-2">
+        <img th:src="${logo.getImagenBase64()}" class="d-block w-100 bg-violet" alt=",,," style="height: 50px;width: 50px">
+      </a>
+    </div>
+
+    <div class="collapse navbar-collapse justify-content-end"> <!-- Div pegado a la derecha -->
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active  p-2">
+          <a th:href="home" class="nav-link p-2 text-white" href="#">Inicio</a>
+        </li>
+        <li class="nav-item p-2">
+          <a class="nav-link p-2 text-white" href="#">Compañía</a>
+        </li>
+        <li class="nav-item p-2">
+          <a class="nav-link p-2 text-white" href="#">Ayuda</a>
+        </li>
+      </ul>
+      <a th:unless="${isUsuarioLogueado}" th:href="@{login}" class="btn-custom">Ingresar</a>
+      <!-- Muestra el botón de usuario solo si el usuario está logueado -->
+      <a th:if="${isUsuarioLogueado}" th:href="perfil" class="btn mx-2">
+        <img th:src="${user.getImagenBase64()}" alt=",,," style="height: 20px;width: 20px">
+      </a>
+    </div>
+  </nav>
+</header>
+<main role="main" class="container ">
+
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="contenido d-flex justify-content-center align-items-center mt-lg-3">
+          <div class="texto text-center text-white" id="letrasHome">
+            <h2 class="m-0">¡Conduce, entrega, triunfa!</h2>
+            <h2 class="m-0">Únete a esta comunidad de envíos.</h2>
+            <p class="m-0">Confía en nosotros para generar grandes ganancias.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="contenido d-flex justify-content-center align-items-center">
+          <div class="imagen text-center">
+            <img th:src="${auto.getImagenBase64()}" class="d-block mx-auto" alt="Imagen de Auto" style="width: 180%; height: 200%;">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</main>
+<!-- /.container -->
+
+<!-- Boostrap core js -->
+<script type="text/javascript" th:src="@{webjars/bootstrap/5.2.0/js/bootstrap.min.js}"></script>
+</body>
+</html>
