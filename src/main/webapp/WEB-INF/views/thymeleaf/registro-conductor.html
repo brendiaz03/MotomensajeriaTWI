@@ -17,13 +17,15 @@
 <header>
     <nav class="navbar navbar-expand-lg mx-4">
         <div class="d-flex align-items-center bg-violet"> <!-- Div pegado a la izquierda -->
-            <img th:src="${logo.getImagenBase64()}" class="d-block w-100 bg-violet" alt=",,," style="height: 50px;width: 50px">
+            <a th:href="home" class="btn mx-2">
+                <img th:src="${logo.getImagenBase64()}" class="d-block w-100 bg-violet" alt=",,," style="height: 50px;width: 50px">
+            </a>
         </div>
 
         <div class="collapse navbar-collapse justify-content-end"> <!-- Div pegado a la derecha -->
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item active  p-2">
-                    <a class="nav-link p-2 text-white" href="#">Inicio</a>
+                    <a th:href="home" class="nav-link p-2 text-white" href="#">Inicio</a>
                 </li>
                 <li class="nav-item p-2">
                     <a class="nav-link p-2 text-white" href="#">Compañía</a>
@@ -32,11 +34,10 @@
                     <a class="nav-link p-2 text-white" href="#">Ayuda</a>
                 </li>
             </ul>
-
         </div>
     </nav>
 </header>
-<main>
+<main class="main_registro">
 
 <div class="formulario_fondo">
     <h1 class="titulo_registroConductor">Registrarme</h1>
@@ -57,11 +58,11 @@
             </div>
             <div>
                 <label for="nroTelefono" class="telefono fuente_formulario_registro">Número de Teléfono</label>
-                <input type="text" class="form-control" id="nroTelefono" name="nroTelefono" th:field="*{nroTelefono}" required>
+                <input type="number" class="form-control" id="nroTelefono" name="nroTelefono" th:field="*{nroTelefono}" required>
             </div>
             <div>
                 <label for="numeroDeDni" class="dni fuente_formulario_registro">Número de DNI</label>
-                <input type="text" class="form-control" id="numeroDeDni" name="numeroDeDni" th:field="*{numeroDeDni}" required>
+                <input type="number" class="form-control" id="numeroDeDni" name="numeroDeDni" th:field="*{numeroDeDni}" required>
             </div>
         </div>
         <div class="columna">
@@ -83,7 +84,7 @@
             </div>
             <div>
                 <label for="cvu" class="cvu fuente_formulario_registro">CVU</label>
-                <input type="text" class="form-control" id="cvu" name="cvu" th:field="*{cvu}" required>
+                <input type="number" class="form-control" id="cvu" name="cvu" th:field="*{cvu}" required>
             </div>
         </div>
 
@@ -92,7 +93,7 @@
                 <p th:text="${mensajeError}">Mensaje de error predeterminado</p>
         </section>
         <section class="botones">
-            <a href="home.html"><button type="" class="boton_cancelar">Cancelar</button></a>
+            <a href="home.html" id="boton_cancelar"><button type="button" class="boton_cancelar">Cancelar</button></a>
 
             <button type="submit" class="boton_submit">Ingresar</button>
         </section>
@@ -117,9 +118,36 @@
             if (password !== confirmarPassword) {
                 event.preventDefault();
                 alert('La contraseña y la confirmación de la contraseña no coinciden.');
+                return;
             }
+
+            var cvuInput = document.getElementById('cvu');
+            var dniInput = document.getElementById('numeroDeDni');
+
+            // Validar CVU
+            if (cvuInput.value.length !== 22) {
+                event.preventDefault();
+                alert('El CVU debe tener exactamente 22 números.');
+                return;
+            }
+
+            // Validar DNI
+            var dni = parseInt(dniInput.value);
+            if (dni < 1000000 || dni > 99999999 || isNaN(dni)) {
+                event.preventDefault();
+                alert('El número de DNI debe ser mayor o igual a 1000000 y menor o igual a 99999999.');
+                return;
+            }
+        });
+
+        var boton_cancelar = document.getElementById('boton_cancelar');
+        boton_cancelar.addEventListener('click', function(event) {
+            event.preventDefault();
+            window.location.href = boton_cancelar.href;
         });
     });
     /*]]>*/
 </script>
+
+
 </html>

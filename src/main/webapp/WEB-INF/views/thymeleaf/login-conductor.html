@@ -9,6 +9,8 @@
     <!-- custom style -->
     <link rel="stylesheet" th:href="@{css/login.css}"/>
     <link rel="stylesheet" th:href="@{css/main.css}"/>
+    <link rel="stylesheet" th:href="@{css/registro-conductor.css}"/>
+
 </head>
 <body>
 <header>
@@ -34,28 +36,34 @@
         </div>
     </nav>
 </header>
-<main>
-    <div class="container d-flex justify-content-center align-items-center">
-        <form action="#" th:action="@{/validar-login}" method="POST" th:object="${datosLogin}" class="custom-form" style="width: 50%;">
-            <h3 class="text-center">Iniciar Sesión</h3>
-            <div class="mb-3">
-                <label for="usuario" class="form-label">Usuario:</label>
-                <input type="text" class="form-control" id="usuario" name="usuario" th:field="*{usuario}" required>
-            </div>
-            <div class="mb-3">
-                <label for="password" class="form-label">Contraseña:</label>
-                <input type="password" class="form-control" id="password" name="password" th:field="*{password}" required>
-            </div>
-            <div class="mb-3">
-                <a href="/recuperar-contraseña">¿Olvidaste tu contraseña contraseña?</a>
-            </div>
-            <div class="mb-3 text-center">
-                <button type="submit" class="btn btn-primary">Ingresar</button>
-            </div>
-            <div class="mb-3 text-center">
-                <a th:href="registro-conductor" class="btn mx-2">
-                </a>
-            </div>
+<main class="main_login">
+    <div class="formulario_fondo_login">
+        <h1 style="text-align: center" class="titulo_loginConductor">Iniciar Sesión</h1>
+        <form action="#" th:action="@{/validar-login}" method="POST" th:object="${datosLogin}">
+            <section class="formulario">
+             <div class="columna">
+                 <div>
+                    <label for="usuario" class="form-label">Usuario:</label>
+                    <input type="text" class="form-control" id="usuario" name="usuario" th:field="*{usuario}" required>
+                 </div>
+                 <div>
+                    <label for="password" class="form-label">Contraseña:</label>
+                    <input type="password" class="form-control" id="password" name="password" th:field="*{password}" required>
+                 </div>
+                 <section class="sub_columna">
+                     <div>
+                         <a href="/recuperar-contraseña">¿Olvidaste tu contraseña contraseña?</a>
+                     </div>
+                     <div>
+                         <button type="submit" class="boton_submit">Ingresar</button>
+                     </div>
+                     <div>
+                         <a th:href="registro-conductor" id="boton_Redireccion"><button type="button" class="boton_Redireccion">Registrarse</button></a>
+                         </a>
+                     </div>
+                 </section>
+             </div>
+            </section>
         </form>
     </div>
 </main>
