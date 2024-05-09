@@ -17,23 +17,6 @@ public class ServiceConductorImpl implements IServiceConductor {
         this.iRepositoryConductor = iRepositoryConductor;
     }
 
-//    @Override
-//    public List<Conductor> get() {
-//        return null;
-//    }
-
-//    @Override
-//    public List<Conductor> obtenerConductoresPorDomicilio(String domicilio) { //Prueba
-//        List<Conductor> conductoresFitlrados = new ArrayList<>();
-//
-//        for (Conductor conductor: this.conductores){
-//            if (conductor.getDomicilio().equals(domicilio)){
-//                conductoresFitlrados.add(conductor);
-//            }
-//        }
-//        return conductoresFitlrados;
-//   }
-
     @Override
     public Boolean verificarDatosDeRegistro(Conductor nuevoConductor) throws DniInvalidoException,EmailInvalidoException,PasswordInvalidoException,CVUInvalidoException {
         if (this.verificarDniValido(nuevoConductor.getNumeroDeDni()) && this.verificarEmailValido(nuevoConductor.getEmail())
@@ -43,6 +26,11 @@ public class ServiceConductorImpl implements IServiceConductor {
             }
         }
        return false;
+    }
+
+    @Override
+    public Conductor obtenerConductorPorId(Integer id) {
+        return iRepositoryConductor.buscarConductor(id);
     }
 
     public Boolean verificarDniValido(Integer dni) throws DniInvalidoException {

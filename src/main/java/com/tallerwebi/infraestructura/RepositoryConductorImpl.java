@@ -4,6 +4,7 @@ import com.tallerwebi.dominio.conductor.Conductor;
 import com.tallerwebi.dominio.conductor.IRepositoryConductor;
 import org.hibernate.HibernateException;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.NoResultException;
@@ -45,6 +46,7 @@ public class RepositoryConductorImpl implements IRepositoryConductor {
     }
 
     @Override
+    @Transactional
     public Conductor buscarConductor(Integer id) {
         String hql= "FROM Conductor WHERE id =: id";
         Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
@@ -67,7 +69,5 @@ public class RepositoryConductorImpl implements IRepositoryConductor {
         return nuevoConductor;
 
     }
-
-
 
 }

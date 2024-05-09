@@ -3,21 +3,14 @@ package com.tallerwebi.presentacion;
 import com.tallerwebi.dominio.conductor.Conductor;
 import com.tallerwebi.dominio.conductor.IServiceConductor;
 import com.tallerwebi.dominio.imagen.IImageService;
-import com.tallerwebi.dominio.imagen.Imagen;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.List;
-
-import static org.springframework.web.bind.annotation.RequestMethod.POST;
-
 @Controller
+@SessionAttributes("isUsuarioLogueado")
 public class ControllerConductor {
 
     private IServiceConductor iServiceConductor;
@@ -30,20 +23,6 @@ public class ControllerConductor {
         this.iimageService=imageService;
     }
 
-    @RequestMapping("/home")
-    public ModelAndView mostrarHome(){
-        String viewName= "home";
-        ModelMap model = new ModelMap();
-        Imagen logo = iimageService.getImagenByName("logo");
-        model.put("logo", logo);
-        Imagen auto = iimageService.getImagenByName("auto");
-        model.put("auto", auto);
-        Imagen fondo = iimageService.getImagenByName("fondo");
-        model.put("fondo", fondo);
-        Imagen botonPS = iimageService.getImagenByName("botonPS");
-        model.put("botonPS", botonPS);
-        return new ModelAndView(viewName,model);
-    }
         @RequestMapping(value = "/registro-conductor")
         public ModelAndView mostrarRegistroConductor(){
         String viewName= "registro-conductor";
@@ -52,12 +31,6 @@ public class ControllerConductor {
         model.put("message","Bienvenido");
         return new ModelAndView(viewName,model);
     }
-
-//    public ModelAndView obtenerDatosDelFormulario(Conductor nuevoConductor) throws Exception {
-//        iServiceConductor.verificarDatosDeRegistro(nuevoConductor);
-//
-//        return new ModelAndView("redirect:/home");
-//    }
 
     @PostMapping("/registro-conductor")
     public ModelAndView registrarConductor(@ModelAttribute("conductor") Conductor nuevoConductor) throws Exception {
@@ -69,8 +42,26 @@ public class ControllerConductor {
         return new ModelAndView("redirect:/home",model);
     }
 
-//    public ModelAndView registrarConductor(Conductor nuevoConductor, org.springframework.mock.web.MockHttpServletRequest request) {
+//    @RequestMapping(path = "/perfil", method = RequestMethod.GET)
+//    public ModelAndView irAPerfil(HttpSession session) {
+//        ModelMap model = new ModelMap();
+//        Boolean isUsuarioLogueado = (Boolean) session.getAttribute("isUsuarioLogueado");
+//        String nombre = (String) session.getAttribute("NOMBRE");
+//        String apellido = (String) session.getAttribute("APELLIDO");
+//        Integer idUsuario = (Integer) session.getAttribute("IDUSUARIO");
+//        System.out.println(nombre + " " + apellido + " " + idUsuario);
 //
-//
+//        //Conductor conductor = iServiceConductor.obtenerConductorPorId(idUsuario);
+//        Imagen logo = iimageService.getImagenByName("logo");
+//        model.put("logo", logo);
+//        Imagen user = iimageService.getImagenByName("userIcon");
+//        model.put("user", user);
+//        model.put("isUsuarioLogueado", isUsuarioLogueado);
+//        model.put("nombreUsuario", nombre);
+//        model.put("apellidoUsuario", apellido);
+//        model.put("idUsuario", idUsuario);
+//        //model.put("conductor", conductor );
+//        return new ModelAndView("perfil-conductor",model);
 //    }
+
 }

@@ -43,7 +43,7 @@ public class ServiceConductorTest {
 
     @Test
     public void queAlIngresarUnDniInvalidoLanceUnaExcepcion() throws Exception {
-       Conductor nuevoConductor = new Conductor(7, "Jose", "Perez", 999999999, "juan@example.com", "password", "juanito", "Calle Falsa 123", "1234567890", "0001002900001234567891");
+       Conductor nuevoConductor = new Conductor("Jose", "Perez", 999999999, "juan@example.com", "password", "juanito", "Calle Falsa 123", "1234567890", "0001002900001234567891");
         try {
             iServiceConductor.verificarDatosDeRegistro(nuevoConductor);
             fail("Se esperaba una excepción");
@@ -55,7 +55,7 @@ public class ServiceConductorTest {
     }
     @Test
     public void verificarDatosCorrectosDelFormularioDeConductor() throws Exception {
-        Conductor nuevoConductor = new Conductor(1, "Jose", "Perez", 12345678, "juan@example.com", "password", "juanito", "Calle Falsa 123", "1234567890", "0001002900001234567891");
+        Conductor nuevoConductor = new Conductor("Jose", "Perez", 12345678, "juan@example.com", "password", "juanito", "Calle Falsa 123", "1234567890", "0001002900001234567891");
 
         when(iRepositoryConductor.registrar(nuevoConductor)).thenReturn(true);
         Boolean resultado = iServiceConductor.verificarDatosDeRegistro(nuevoConductor);
