@@ -16,7 +16,6 @@ public class Conductor {
     private String nombreUsuario;
     private String domicilio;
     private String nroTelefono;
-    //private Integer idVehiculo;
     private String cvu;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,7 +30,6 @@ public class Conductor {
         this.nombreUsuario=nombreUsuario;
         this.domicilio=domicilio;
         this.nroTelefono=nroTelefono;
-        //this.idVehiculo=idVehiculo;
         this.cvu=cvu;
     }
 
@@ -110,14 +108,6 @@ public class Conductor {
     public void setNroTelefono(String nroTelefono) {
         this.nroTelefono = nroTelefono;
     }
-
-//    public Integer getIdVehiculo() {
-//        return idVehiculo;
-//    }
-//
-//    public void setIdVehiculo(Integer idVehiculo) {
-//        this.idVehiculo = idVehiculo;
-//    }
 
     public String getCvu() {
         return cvu;
