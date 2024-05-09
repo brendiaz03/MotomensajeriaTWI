@@ -88,23 +88,13 @@ public class RepositoryConductorTest {
     @Transactional
     public void queAlBuscarUnConductorPorIDDevuelvaUnHibernateException() {
         // Arrange
-        Integer id=2;
+        Integer id=4;
         // Assert
             assertThrows(NoResultException.class, () -> {
             iRepositoryConductor.buscarConductor(id);
         });
     }
 
-//    @Test
-//    @Transactional
-//    public void queRegistreUnConductor() {
-//        // Arrange
-//        Integer id=2;
-//        // Assert
-//        assertThrows(NoResultException.class, () -> {
-//            iRepositoryConductor.buscarConductor(id);
-//        });
-//    }
 }
 
 

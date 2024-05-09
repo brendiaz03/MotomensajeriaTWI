@@ -1,29 +1,17 @@
 body {
-  padding-top: 5rem;
+    background-image: url('imagenes/fondo.jpg'); /* Ruta de la imagen de fondo */
+    background-size: cover; /* Cubre todo el tamaño del cuerpo */
+    background-position: center; /* Posición centrada de la imagen */
 }
-.starter-template {
-  padding: 3rem 1.5rem;
-  text-align: center;
-}
-
-h1{
-	color:#0000FF;
-}
-
-h2{
-	color:#FF0000;
+.btn-custom {
+    color: #370a37; /* Texto violeta */
+    background-color: white; /* Fondo blanco */
+    border-color: white; /* Borde violeta */
+    border-radius: 50px;
+    padding: 5px 30px 5px 30px ;
 }
 
-
-.navbar-brand {
-    margin-right: 50%; /* Espacio entre el icono y los enlaces */
-}
-.navbar-nav {
-    margin-right: auto; /* Empuja los enlaces hacia la izquierda */
-}
-.navbar-nav .nav-link {
-    margin-right: 20%; /* Espacio entre los enlaces */
-}
-.navbar-nav .btn-ingresar {
-    margin-left: 20%; /* Espacio entre los enlaces y el botón */
+.btn-custom:hover {
+    color: white; /* Cambiar el color del texto a blanco al pasar el ratón */
+    background-color: #870c8a; /* Cambiar el fondo a violeta al pasar el ratón */
 }

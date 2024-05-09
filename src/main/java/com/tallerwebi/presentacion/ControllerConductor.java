@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
+@SessionAttributes("isUsuarioLogueado")
 public class ControllerConductor {
 
     private IServiceConductor iServiceConductor;
@@ -66,5 +67,27 @@ public class ControllerConductor {
        }
         return this.mostrarRegistroConductor("Se ha producido un error en el servidor.");
     }
+
+//    @RequestMapping(path = "/perfil", method = RequestMethod.GET)
+//    public ModelAndView irAPerfil(HttpSession session) {
+//        ModelMap model = new ModelMap();
+//        Boolean isUsuarioLogueado = (Boolean) session.getAttribute("isUsuarioLogueado");
+//        String nombre = (String) session.getAttribute("NOMBRE");
+//        String apellido = (String) session.getAttribute("APELLIDO");
+//        Integer idUsuario = (Integer) session.getAttribute("IDUSUARIO");
+//        System.out.println(nombre + " " + apellido + " " + idUsuario);
+//
+//        //Conductor conductor = iServiceConductor.obtenerConductorPorId(idUsuario);
+//        Imagen logo = iimageService.getImagenByName("logo");
+//        model.put("logo", logo);
+//        Imagen user = iimageService.getImagenByName("userIcon");
+//        model.put("user", user);
+//        model.put("isUsuarioLogueado", isUsuarioLogueado);
+//        model.put("nombreUsuario", nombre);
+//        model.put("apellidoUsuario", apellido);
+//        model.put("idUsuario", idUsuario);
+//        //model.put("conductor", conductor );
+//        return new ModelAndView("perfil-conductor",model);
+//    }
 
 }
