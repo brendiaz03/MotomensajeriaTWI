@@ -1,29 +1,6 @@
 package com.tallerwebi.presentacion.VehiculoTest;
 
-import com.tallerwebi.dominio.conductor.Conductor;
-import com.tallerwebi.dominio.enums.TipoVehiculo;
-import com.tallerwebi.dominio.imagen.IImageService;
-import com.tallerwebi.dominio.vehiculo.IRepositoryVehiculo;
-import com.tallerwebi.dominio.vehiculo.IServicioVehiculo;
-import com.tallerwebi.dominio.vehiculo.ServicioVehiculoImpl;
-import com.tallerwebi.dominio.vehiculo.Vehiculo;
-import com.tallerwebi.infraestructura.RepositoryVehiculoImpl;
-import com.tallerwebi.presentacion.vehiculo.ControladorVehiculo;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.servlet.ModelAndView;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalToIgnoringCase;
-import static org.hamcrest.core.IsEqual.equalTo;
-import static org.mockito.Mockito.*;
 ///*
 //@Nested
 //class ControladorVehiculoTest {

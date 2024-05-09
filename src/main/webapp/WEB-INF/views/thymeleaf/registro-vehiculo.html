@@ -47,14 +47,18 @@
                         <label for="patente" class="apellido fuente_formulario_registro">Patente</label>
                         <input type="text" class="form-control" id="patente" name="patente" th:field="*{patente}" required>
                     </div>
-                    <div >
-                        <label for="color" class="domicilio fuente_formulario_registro">Color</label>
+
+                    <div> <label for="color" class="nombre fuente_formulario_registro">Color</label><br>
                         <input type="text" class="form-control" id="color" name="color" th:field="*{color}" required>
+
                     </div>
+
                     <div>
-                        <label for="modelo" class="telefono fuente_formulario_registro">Modelo</label>
+                        <label for="modelo" class="nombre fuente_formulario_registro">Modelo</label><br>
                         <input type="text" class="form-control" id="modelo" name="modelo" th:field="*{modelo}" required>
+
                     </div>
+
                     <div>
                         <label for="tipoDeVehiculo" class="nombre fuente_formulario_registro">Tipo de Vehículo</label><br>
                         <br>
@@ -67,11 +71,11 @@
                     <div class="columna">
                         <div>
                             <label for="pesoSoportado" class="nombreUsuario fuente_formulario_registro">Peso Soportado por el Vehículo</label>
-                            <input type="number" class="form-control" id="pesoSoportado" name="pesoSoportado" th:field="*{pesoSoportado}" required>
+                            <input type="text" class="form-control" id="pesoSoportado" name="pesoSoportado" th:field="*{pesoSoportado}" required>
                         </div>
                         <div>
                             <label for="dimensionDisponible" class="email fuente_formulario_registro">Dimension Disponible del Vehículo</label>
-                            <input type="number" class="form-control" id="dimensionDisponible" name="dimensionDisponible" th:field="*{dimensionDisponible}" required>
+                            <input type="text" class="form-control" id="dimensionDisponible" name="dimensionDisponible" th:field="*{dimensionDisponible}" required>
                         </div>
 
                     </div>

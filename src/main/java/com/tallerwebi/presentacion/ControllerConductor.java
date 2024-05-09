@@ -48,7 +48,7 @@ public class ControllerConductor {
     public ModelAndView registrarConductor(@ModelAttribute("conductor") Conductor nuevoConductor) throws Exception {
        try {
             if(iServiceConductor.verificarDatosDeRegistro(nuevoConductor)){
-                return new ModelAndView("redirect:/home");
+                return new ModelAndView("redirect:/vehiculo");
             }
        } catch (ConductorDuplicadoException e) {
            return this.mostrarRegistroConductor(e.getMessage());
@@ -67,7 +67,7 @@ public class ControllerConductor {
         Conductor conductor = iServiceConductor.obtenerConductorPorId(idUsuario);
         Imagen logo = iimageService.getImagenByName("logo");
         model.put("logo", logo);
-        Imagen user = iimageService.getImagenByName("userIcon");
+        Imagen user = iimageService.getImagenByName("user");
         model.put("user", user);
         model.put("isUsuarioLogueado", isUsuarioLogueado);
         model.put("nombreUsuario", nombre);
