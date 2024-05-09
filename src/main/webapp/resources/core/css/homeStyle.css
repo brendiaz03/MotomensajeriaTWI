@@ -1,7 +1,14 @@
+
+@font-face {
+    font-family: 'Codec Pro';
+    src: url('CodecPro-Bold.ttf') format('truetype');
+}
 body {
+    font-family: "Codec Pro",sans-serif;
     background-image: url('imagenes/fondo.jpg'); /* Ruta de la imagen de fondo */
     background-size: cover; /* Cubre todo el tamaño del cuerpo */
     background-position: center; /* Posición centrada de la imagen */
+
 }
 #letrasHome{
     margin-top: 150px;
