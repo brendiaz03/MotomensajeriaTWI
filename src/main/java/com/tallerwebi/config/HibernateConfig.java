@@ -22,7 +22,7 @@ public class HibernateConfig {
 //        dataSource.setUrl("jdbc:hsqldb:mem:db_");
         dataSource.setUrl("jdbc:mysql://localhost:3306/motomensajeriafinal");
         dataSource.setUsername("root");
-        dataSource.setPassword("060195Aa.");
+        dataSource.setPassword("4215");
         return dataSource;
     }
 

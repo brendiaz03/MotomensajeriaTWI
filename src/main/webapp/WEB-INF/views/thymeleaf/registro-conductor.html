@@ -58,7 +58,7 @@
             </div>
             <div>
                 <label for="nroTelefono" class="telefono fuente_formulario_registro">Número de Teléfono</label>
-                <input type="number" class="form-control" id="nroTelefono" name="nroTelefono" th:field="*{nroTelefono}" required>
+                <input type="text" class="form-control" id="nroTelefono" name="nroTelefono" th:field="*{nroTelefono}" required>
             </div>
             <div>
                 <label for="numeroDeDni" class="dni fuente_formulario_registro">Número de DNI</label>
@@ -121,21 +121,13 @@
                 return;
             }
 
-            var cvuInput = document.getElementById('cvu');
             var dniInput = document.getElementById('numeroDeDni');
-
-            // Validar CVU
-            if (cvuInput.value.length !== 22) {
-                event.preventDefault();
-                alert('El CVU debe tener exactamente 22 números.');
-                return;
-            }
 
             // Validar DNI
             var dni = parseInt(dniInput.value);
             if (dni < 1000000 || dni > 99999999 || isNaN(dni)) {
                 event.preventDefault();
-                alert('El número de DNI debe ser mayor o igual a 1000000 y menor o igual a 99999999.');
+                alert('Ingrese un número de DNI válido.');
                 return;
             }
         });

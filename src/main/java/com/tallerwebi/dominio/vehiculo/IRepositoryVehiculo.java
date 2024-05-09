@@ -6,4 +6,7 @@ import java.util.List;
 
 public interface IRepositoryVehiculo {
 
+    void registrarVehiculo(Vehiculo vehiculo);
+    Vehiculo buscarVehiculoPorPatente(String patente);
+
 }

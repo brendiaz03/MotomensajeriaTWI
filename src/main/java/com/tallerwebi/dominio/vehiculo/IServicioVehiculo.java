@@ -6,4 +6,6 @@ import com.tallerwebi.dominio.conductor.Conductor;
 import java.util.List;
 
 public interface IServicioVehiculo {
+
+    Boolean registrarVehiculoSiPatenteNoEstaYaCargada(Vehiculo vehiculo);
 }

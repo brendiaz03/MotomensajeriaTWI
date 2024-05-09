@@ -1,22 +1,15 @@
-package com.tallerwebi.presentacion.vehiculo;
+package com.tallerwebi.presentacion;
 import com.tallerwebi.dominio.conductor.Conductor;
 import com.tallerwebi.dominio.conductor.ConductorDuplicadoException;
-import com.tallerwebi.dominio.enums.TipoVehiculo;
 import com.tallerwebi.dominio.imagen.IImageService;
 import com.tallerwebi.dominio.imagen.Imagen;
 import com.tallerwebi.dominio.vehiculo.IServicioVehiculo;
 import com.tallerwebi.dominio.vehiculo.Vehiculo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-
-import java.util.ArrayList;
-import java.util.List;
-
 
 
 @Controller
@@ -49,6 +42,18 @@ public class ControladorVehiculo{
         model.put("user", user);
 
         return new ModelAndView(viewName, model);
+    }
+
+    @PostMapping("/registro-vehiculo")
+    public ModelAndView registrarVehiculo(@ModelAttribute("vehiculo") Vehiculo nuevoVehiculo) {
+       ModelMap model = new ModelMap();
+               if(iServicioVehiculo.registrarVehiculoSiPatenteNoEstaYaCargada(nuevoVehiculo)){
+                   System.out.println(nuevoVehiculo.getColor());
+                   return new ModelAndView("redirect:/home");
+           }else{
+                   model.put("error", "Patente Repetida");
+                   return new ModelAndView("redirect:/registro-vehiculo", model);
+               }
     }
 
 }
