@@ -30,4 +30,9 @@ public class ServiceConductorImpl implements IServiceConductor {
         }
 }
 
+    @Override
+    public Conductor obtenerConductorPorId(Integer id) {
+        return null;
+    }
+
 }
