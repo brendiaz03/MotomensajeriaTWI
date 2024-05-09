@@ -51,46 +51,4 @@ public class ControladorVehiculo{
         return new ModelAndView(viewName, model);
     }
 
-    @PostMapping("/vehiculo")
-    public ModelAndView registrarVehiculo(@ModelAttribute("vehiculo") Vehiculo nuevoVehiculo, Conductor conductor) {
-        Vehiculo vehiculoExistente = iServicioVehiculo.obtenerVehiculoPorIdDelConductor(conductor.getId());
-
-        if (vehiculoExistente == null || !vehiculoExistente.getIdConductor().equals(nuevoVehiculo.getIdConductor())) {
-            return new ModelAndView("redirect:/home");
-        }
-
-        return this.mostrarRegistroDelVehiculo();
-    }
-
-    /*@RequestMapping(path = "/buscar-vehiculo", method = RequestMethod.GET)
-    public ModelAndView filtrarVehiculosPorTipo(TipoVehiculo tipoVehiculo){
-
-        String viewName = "buscar-vehiculos";
-
-        ModelMap model = new ModelMap();
-
-        model.put("message", "Bienvenido a su vehiculo");
-
-        List<Vehiculo> vehiculosAuto = new ArrayList<>();
-
-        for (Vehiculo vehiculo : this.servicioVehiculo.getByTipoDeVehiculo(tipoVehiculo)){
-
-            if(vehiculo.getTipoDeVehiculo().equals(TipoVehiculo.AUTO)) {
-            vehiculosAuto.add(vehiculo);
-            }
-        }
-
-        model.put("vehiculos",this.servicioVehiculo.getByTipoDeVehiculo(tipoVehiculo));
-
-        return new ModelAndView(viewName, model);
-
-    }
-/*
-    public List<Vehiculo> obtenerTodosLosVehiculos() {
-
-        List<Vehiculo>vehiculos = this.servicioVehiculo.obtenerTodosLosVehiculos();
-
-        return vehiculos;
-    }*/
-
 }

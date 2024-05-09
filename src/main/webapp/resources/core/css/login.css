@@ -1,7 +1,64 @@
-.custom-form {
-    background-color: white; /* Establecer el fondo del formulario como blanco */
-    padding: 20px; /* Añadir un poco de espacio alrededor del formulario */
-    border-radius: 10px; /* Añadir bordes redondeados al formulario */
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Añadir una ligera sombra al formulario */
-    margin-top: 5%;
+@font-face {
+    font-family: 'Codec Pro';
+    src: url('CodecPro-Bold.ttf') format('truetype');
+}
+
+.main_login {
+    display: flex;
+    align-items: center; /* Alinea verticalmente el contenido */
+    justify-content: center; /* Alinea horizontalmente el contenido */
+    font-family: "Codec Pro",sans-serif;
+}
+/*.custom-form {*/
+/*    background-color: white; !* Establecer el fondo del formulario como blanco *!*/
+/*    padding: 20px; !* Añadir un poco de espacio alrededor del formulario *!*/
+/*    border-radius: 10px; !* Añadir bordes redondeados al formulario *!*/
+/*    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); !* Añadir una ligera sombra al formulario *!*/
+/*    margin-top: 5%;*/
+/*}*/
+
+.titulo_loginConductor {
+    font-family: "Codec Pro", serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 48px;
+    line-height: 41px;
+    text-align: center;
+    color: #000000;
+}
+
+.formulario_fondo_login{
+    align-self: center;
+    width: 35%;
+    background-color: #D9D9D9;
+    border-radius: 50px;
+    align-items: center;
+    padding:2%;
+}
+
+.boton_Redireccion{
+    width: 262px;
+    height: 68px;
+    background: #FFFFFF;
+    border: 3px solid #36054E;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 50px;
+}
+
+.boton_Redireccion:hover {
+    background: lightgray;
+    color:#FFFFFF;
+}
+
+.sub_columna{
+    display:flex;
+    flex-direction: column;
+    width: 100%;
+    align-content: center;
+    align-items: center;
+    justify-content: center;
+}
+
+.sub_columna div{
+    padding:2%;
 }
