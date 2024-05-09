@@ -10,7 +10,7 @@
     <!-- custom style -->
     <!--<link rel="stylesheet" th:href="@{/css/home.css}"/></head>-->
     <link rel="stylesheet" th:href="@{/css/registro-conductor.css}"/>
-
+    <link rel="stylesheet" th:href="@{/css/main.css}"/>
 </head>
 
 <body>
@@ -92,7 +92,8 @@
                 <p th:text="${mensajeError}">Mensaje de error predeterminado</p>
         </section>
         <section class="botones">
-            <button type="" class="boton_cancelar">Cancelar</button>
+            <a href="home.html"><button type="" class="boton_cancelar">Cancelar</button></a>
+
             <button type="submit" class="boton_submit">Ingresar</button>
         </section>
     </form>

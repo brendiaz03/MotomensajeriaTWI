@@ -23,20 +23,20 @@ public class ControllerConductor {
         this.iimageService=imageService;
     }
 
-    @RequestMapping("/home")
-    public ModelAndView mostrarHome(){
-        String viewName= "home";
-        ModelMap model = new ModelMap();
-        Imagen logo = iimageService.getImagenByName("logo");
-        model.put("logo", logo);
-        Imagen auto = iimageService.getImagenByName("auto");
-        model.put("auto", auto);
-        Imagen fondo = iimageService.getImagenByName("fondo");
-        model.put("fondo", fondo);
-        Imagen botonPS = iimageService.getImagenByName("botonPS");
-        model.put("botonPS", botonPS);
-        return new ModelAndView(viewName,model);
-    }
+//    @RequestMapping("/home")
+//    public ModelAndView mostrarHome(){
+//        String viewName= "home";
+//        ModelMap model = new ModelMap();
+//        Imagen logo = iimageService.getImagenByName("logo");
+//        model.put("logo", logo);
+//        Imagen auto = iimageService.getImagenByName("auto");
+//        model.put("auto", auto);
+//        Imagen fondo = iimageService.getImagenByName("fondo");
+//        model.put("fondo", fondo);
+//        Imagen botonPS = iimageService.getImagenByName("botonPS");
+//        model.put("botonPS", botonPS);
+//        return new ModelAndView(viewName,model);
+//    }
         @RequestMapping(value = "/registro-conductor")
         public ModelAndView mostrarRegistroConductor(String mensajeError){
         String viewName= "registro-conductor";
@@ -60,7 +60,7 @@ public class ControllerConductor {
     public ModelAndView registrarConductor(@ModelAttribute("conductor") Conductor nuevoConductor) throws Exception {
        try {
             if(iServiceConductor.verificarDatosDeRegistro(nuevoConductor)){
-                return this.mostrarHome();
+                return new ModelAndView("redirect:/home");
             }
        } catch (ConductorDuplicadoException e) {
            return this.mostrarRegistroConductor(e.getMessage());

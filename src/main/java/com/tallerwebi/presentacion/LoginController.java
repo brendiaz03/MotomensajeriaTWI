@@ -39,7 +39,7 @@ public class LoginController {
         model.put("isUsuarioLogueado", isUsuarioLogueado);
         Imagen logo = iImageService.getImagenByName("logo");
         model.put("logo", logo);
-        Imagen user = iImageService.getImagenByName("userIcon");
+        Imagen user = iImageService.getImagenByName("user");
         model.put("user", user);
         Imagen auto = iImageService.getImagenByName("auto");
         model.put("auto", auto);
