@@ -43,7 +43,7 @@ public class ControllerConductorTest {
 
         ModelAndView modelAndView = this.controllerConductor.registrarConductor(nuevoConductor);
 
-        assertThat(modelAndView.getViewName(),equalToIgnoringCase("home"));
+        assertThat(modelAndView.getViewName(),equalToIgnoringCase("redirect:/home"));
 
 
         verify(iServiceConductor, times(1)).verificarDatosDeRegistro(nuevoConductor);

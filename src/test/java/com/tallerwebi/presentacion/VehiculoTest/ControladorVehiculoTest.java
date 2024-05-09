@@ -37,7 +37,7 @@ class ControladorVehiculoTest {
 
     private List<Vehiculo> vehiculos = new ArrayList<>();
 
-    @BeforeEach
+   /* @BeforeEach
     public void init() {
         //this.irepositoryVehiculo = new RepositoryVehiculoImpl();
         //this.iservicioVehiculo = new ServicioVehiculoImpl(this.irepositoryVehiculo);
@@ -45,7 +45,7 @@ class ControladorVehiculoTest {
         this.iservicioVehiculo = mock(IServicioVehiculo.class);
 
         this.controladorVehiculo = new ControladorVehiculo(this.iservicioVehiculo);
-    }
+    }*/
 
     //FUNCIONA OK
     @Test
