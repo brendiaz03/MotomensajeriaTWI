@@ -31,8 +31,23 @@ public class ServiceConductorImpl implements IServiceConductor {
 }
 
     @Override
-    public Conductor obtenerConductorPorId(Integer id) {
-        return null;
+    public Conductor obtenerConductorPorId(Integer id) throws ConductorNoEncontradoException {
+        try{
+            return this.iRepositoryConductor.buscarConductor(id);
+        }catch(NoResultException e){
+            throw new ConductorNoEncontradoException("Usuario no Encontrado");
+        }
+    }
+
+    @Override
+    public void editarConductor(Conductor conductorEditado) {
+            this.iRepositoryConductor.editarConductor(conductorEditado);
+    }
+
+    @Override
+    public void borrarConductor(Integer idusuario) {
+        Conductor conductorABorrar= this.iRepositoryConductor.buscarConductor(idusuario);
+        this.iRepositoryConductor.borrarConductor(conductorABorrar);
     }
 
 }

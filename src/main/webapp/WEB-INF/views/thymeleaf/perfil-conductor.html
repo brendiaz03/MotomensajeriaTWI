@@ -37,8 +37,11 @@
         </div>
     </nav>
 </header>
+
 <main>
     <div class="container d-flex justify-content-center">
+    <!-- TARJETA IZQUIERDA -->
+
         <div class="card mx-3 p-3" style="width: 18rem;height: 35rem; background-color: white;">
             <div class="container d-flex justify-content-center align-items-center">
                 <div class="rounded-circle bg-secondary d-flex justify-content-center align-items-center" style="width: 100px; height: 100px;">
@@ -46,37 +49,134 @@
                 </div>
             </div>
             <div class="card-body">
-                <h5 class="card-title text-center">Brenda diaz</h5>
-                <p class="card-text text-center">brendiaaz03@gmail.com</p>
+                <h5 class="card-title text-center"><span th:text="${conductor.getNombreUsuario()}"></span></h5>
+                <p class="card-title text-center"><span th:text="${conductor.getEmail()}"></span></p>
+
             </div>
             <div class="card-body">
-                <p class="card-text "><strong>Perfil</strong></p>
-                <p class="card-text "><strong>Vehiculo</strong></p>
-                <p class="card-text "><strong>Historial de Viajes</strong></p>
-                <p class="card-text "><strong>Cuenta</strong></p>
-                <p class="card-text "><strong>Soporte en linea</strong></p>
+                <p class="card-text option active" data-target="perfil">Perfil</p>
+                <p class="card-text option" data-target="vehiculo">Vehiculo</p>
+                <p class="card-text option" data-target="historial_viajes">Historial de Viajes</p>
+                <p class="card-text option" data-target="seguridad">Seguridad</p>
             </div>
         </div>
 
-        <div class="card mx-3 p-3" style="width: 30rem;height: 35rem; background-color: white;">
+
+        <!-- TARJETA DERECHA 1 DE 4 (PERFIL) -->
+        <div id="perfil" class="card mx-3 p-3" style="width: 30rem;height: 35rem; background-color: white;">
             <div class="card-body">
                 <h5 class="card-title text-center p-2"><strong>Perfil</strong></h5>
                 <div class="d-flex justify-content-between pt-3">
                     <p class="card-text"><strong>Mis datos personales</strong></p>
+                    <a  th:href="@{editar}">Editar </a><!-- redirect al controller de registro conductor-->
+
+                </div>
+            </div>
+            <div class="card-body">
+                <p><span th:text="${conductor.getNombre() + ' ' + conductor.getApellido()}"></span></p>
+                <p>Dirección: <span th:text="${conductor.getDomicilio()}"></span></p>
+                <p>Teléfono: <span th:text="${conductor.getNroTelefono()}"></span></p>
+                <p>E-mail: <span th:text="${conductor.getEmail()}"></span></p>
+            </div>
+        </div>
+
+    <!-- TARJETA DERECHA 2 DE 4 (VEHICULO) -->
+        <div id="vehiculo" class="card mx-3 p-3" style="width: 30rem;height: 35rem; background-color: white;">
+            <div class="card-body">
+                <h5 class="card-title text-center p-2"><strong>Vehículo</strong></h5>
+                <div class="d-flex justify-content-between pt-3">
+                    <p class="card-text"><strong>Información del Vehículo</strong></p>
                     <a href="#">Editar
                     </a>
                 </div>
             </div>
             <div class="card-body">
-                <p><strong>Número de Telefono</strong></p>
-                <p>qweqeqrqwrq</p>
+                <p><strong>Patente</strong></p>
+                <p>ABC 123</p>
+            </div>
+        </div>
+
+    <!-- TARJETA DERECHA 3 DE 4 (HISTORIAL DE VIAJES) -->
+        <div id="historial_viajes" class="card mx-3 p-3" style="width: 30rem;height: 35rem; background-color: white;">
+            <div class="card-body">
+                <h5 class="card-title text-center p-2"><strong>Historial de Viajes</strong></h5>
             </div>
             <div class="card-body">
-                <p><strong>Email</strong></p>
-                <p>brendiaaz03@gmail.com</p>
+                <p><strong>Viaje_Foto</strong></p>
+                <p><strong>Viaje_Direccion</strong></p>
+                <p><strong>Viaje_Fecha</strong></p>
+                <p><strong>Viaje_Ganancia</strong></p>
+                <p><strong>Viaje_Estado</strong></p>
+            </div>
+        </div>
+
+    <!-- TARJETA DERECHA 4 DE 4 (SOPORTE EN LÍNEA) -->
+        <div id="seguridad" class="card mx-3 p-3" style="width: 30rem;height: 35rem; background-color: white;">
+            <div class="card-body">
+                <h5 class="card-title text-center p-2"><strong>Seguridad</strong></h5>
+            </div>
+            <div class="card-body">
+                <p>Cambiar contraseña</p>
+                <form id="form-cerrar-cuenta" th:action="@{/borrar-cuenta}" method="GET">
+                    <button type="submit">Cerrar cuenta</button>
+                </form>
+                <h4>Ayuda</h4>
+                <a href="#"><p>Chatea con nuestro soporte online aquí.</p></a> <!--Redirect a la pag de soporte-->
+                <p>imagen_soporte</p>
             </div>
         </div>
     </div>
 </main>
 </body>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Obtenemos todas las opciones
+        const options = document.querySelectorAll('.option');
+        // Obtenemos todas las tarjetas de la derecha
+        const cards = document.querySelectorAll('.card[id]');
+
+        // Función para mostrar la tarjeta seleccionada y ocultar las demás
+        function showCard(targetId) {
+            cards.forEach(card => {
+                if (card.id === targetId) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        // Añadimos el evento click a cada opción
+        options.forEach(option => {
+            option.addEventListener('click', function () {
+                // Quitamos la clase 'active' de todas las opciones
+                options.forEach(opt => opt.classList.remove('active'));
+                // Añadimos la clase 'active' solo a la opción seleccionada
+                this.classList.add('active');
+                // Obtenemos el valor del atributo data-target de la opción seleccionada
+                const targetId = this.dataset.target;
+                // Mostramos la tarjeta correspondiente
+                showCard(targetId);
+            });
+        });
+
+        // Mostramos la primera tarjeta por defecto
+        const defaultOption = document.querySelector('.option');
+        if (defaultOption) {
+            const defaultTarget = defaultOption.dataset.target;
+            showCard(defaultTarget);
+        }
+
+        document.getElementById("form-cerrar-cuenta").addEventListener("submit", function(event) {
+            event.preventDefault(); // Evita que el formulario se envíe automáticamente
+
+            if (confirm("¿Estás seguro de que deseas cerrar tu cuenta?")) {
+                // Si el usuario confirma, redirige utilizando la URL generada por Thymeleaf
+                window.location.href = this.getAttribute("action");
+            }
+        });
+
+    });
+</script>
+
 </html>

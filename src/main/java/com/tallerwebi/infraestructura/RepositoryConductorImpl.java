@@ -33,13 +33,9 @@ public class RepositoryConductorImpl implements IRepositoryConductor {
 
     @Override
     @Transactional
-    public void actualizarConductor(Conductor nuevoConductor) {
-        // this.sessionFactory.getCurrentSession().saveOrUpdate(nuevoConductor);
-        String hql = "UPDATE Conductor SET domicilio=: domicilio WHERE numeroDeDni=:dni";
-        Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
-        query.setParameter("dni", nuevoConductor.getNumeroDeDni());
-        query.setParameter("domicilio", nuevoConductor.getDomicilio());
-        query.executeUpdate(); //Sirve tambien para DELETE
+    public Boolean editarConductor(Conductor conductorEditado) {
+        sessionFactory.getCurrentSession().update(conductorEditado);
+        return true;
     }
 
     @Override
@@ -51,6 +47,13 @@ public class RepositoryConductorImpl implements IRepositoryConductor {
         query.setParameter("nombreUsuario", nombreUsuario);
 
         return (Conductor) query.getSingleResult();
+    }
+
+    @Override
+    @Transactional
+    public void borrarConductor(Conductor conductorABorrar) {
+
+           this.sessionFactory.getCurrentSession().delete(conductorABorrar);
     }
 
 

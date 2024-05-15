@@ -62,3 +62,15 @@
 .sub_columna div{
     padding:2%;
 }
+
+.card-text.option {
+    cursor: pointer; /* Cambia el cursor a una mano */
+    padding: 10px; /* Espaciado interno para una mejor apariencia */
+    transition: background-color 0.3s; /* Transición suave para el cambio de color */
+}
+
+/* Estilos para cuando el mouse pasa sobre las opciones */
+.card-text.option:hover {
+    background-color: gray; /* Cambia el color de fondo al pasar el mouse */
+}
+
