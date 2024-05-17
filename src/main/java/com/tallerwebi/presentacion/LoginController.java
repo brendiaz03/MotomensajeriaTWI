@@ -64,13 +64,13 @@ public class LoginController {
     public ModelAndView validarLogin(@ModelAttribute("datosLogin") DatosLoginConductor datosLoginnConductor, HttpServletRequest request) {
 
         ModelMap model = new ModelMap();
-
             Conductor conductorBuscado = iLoginService.consultarUsuario(datosLoginnConductor.getUsuario(), datosLoginnConductor.getPassword());
             if (conductorBuscado != null) {
                 request.getSession().setAttribute("NOMBRE", conductorBuscado.getNombre());
                 request.getSession().setAttribute("IDUSUARIO", conductorBuscado.getId());
                 request.getSession().setAttribute("APELLIDO", conductorBuscado.getApellido());
                 request.getSession().setAttribute("isUsuarioLogueado", true);
+                request.getSession().setAttribute("isEditForm", false);
                 model.put("error", "Usuario o clave correcta");
                 return new ModelAndView("redirect:/home", model);
 

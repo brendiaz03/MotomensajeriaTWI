@@ -5,6 +5,8 @@ public interface IRepositoryConductor {
     void registrar(Conductor nuevoConductor);
 
     Conductor buscarConductor(Integer id);
-    void actualizarConductor(Conductor nuevoConductor);
+    Boolean editarConductor(Conductor nuevoConductor);
     Conductor buscarDuplicados(String email, String nombreUsuario);
+
+    void borrarConductor(Conductor conductor);
 }
