@@ -74,3 +74,20 @@
     background-color: gray; /* Cambia el color de fondo al pasar el mouse */
 }
 
+.boton_borrar_cuenta{
+    width: 10em;
+    height: 3em;
+    background: #36054E;
+    border-radius: 50px;
+    color:white;
+}
+
+.boton_borrar_cuenta:hover {
+    background: darkviolet;
+    border-color:#36054E;
+}
+
+.rounded-circle:hover {
+    background-color: #b0b0b0; /* Cambia el color de fondo a un tono más claro */
+}
+

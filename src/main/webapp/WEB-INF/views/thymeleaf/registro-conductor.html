@@ -45,16 +45,7 @@
 
     <form id="conductorForm" th:action="${isEditForm ? 'editar-conductor' : 'registro-conductor'}" method="POST" th:object="${conductor}"> <!--th:method="${isEditForm ? 'PUT' : 'POST'}"-->
       <section class="formulario">
-          <div class="columna primera-columna">
-                  <div class="imagen_contenedor">
-                      <img id="imagenPerfil" th:src="${user.getImagenBase64()}" class="user_default">
-                      <img id="imagenNueva" class="user_new" style="display: none;">
-                  </div>
-                 <div>
-                     <input type="file" id="imagenInput" accept="image/*" onchange="previewImage(event)">
-                 </div>
-          </div>
-        <div class="columna segunda-columna">
+        <div class="columna">
             <div>
                 <label for="nombre" class="nombre fuente_formulario_registro">Nombre</label>
                 <input type="text" class="form-control" id="nombre" name="nombre" th:field="*{nombre}" th:value="${isEditForm ? conductor.nombre : ''}" required>
@@ -76,7 +67,7 @@
                 <input type="number" class="form-control" id="numeroDeDni" name="numeroDeDni" th:field="*{numeroDeDni}" th:value="${isEditForm ? conductor.numeroDeDni : ''}" required>
             </div>
         </div>
-        <div class="columna tercera-columna">
+        <div class="columna">
             <div>
                 <label for="nombreUsuario" class="nombreUsuario fuente_formulario_registro">Nombre de Usuario</label>
                 <input type="text" class="form-control" id="nombreUsuario" name="nombreUsuario" th:field="*{nombreUsuario}" th:value="${isEditForm ? conductor.nombreUsuario : ''}" th:readonly="${isEditForm}" required>
@@ -116,8 +107,6 @@
     </form>
 </div>
 
-</div>
-
 </main>
 <footer>
 
@@ -136,16 +125,17 @@
                 alert('La contraseña y la confirmación de la contraseña no coinciden.');
                 return;
             }
-        });
+
             var dniInput = document.getElementById('numeroDeDni');
+            var dni = parseInt(dniInput.value);
 
             // Validar DNI
-            var dni = parseInt(dniInput.value);
             if (dni < 1000000 || dni > 99999999 || isNaN(dni)) {
                 event.preventDefault();
                 alert('Ingrese un número de DNI válido.');
                 return;
             }
+        });
 
         var botonCancelarEdit = document.getElementById('boton_cancelar_edit');
         if (botonCancelarEdit) {
@@ -163,26 +153,9 @@
         }
 
     });
-    function previewImage(event) {
-        const imagenInput = event.target;
-
-        if (imagenInput.files && imagenInput.files[0]) {
-            const reader = new FileReader();
-
-            reader.onload = function (e) {
-                const imagenPerfil = document.getElementById('imagenPerfil');
-                const imagenNueva = document.getElementById('imagenNueva');
-
-                imagenPerfil.style.display = 'none';
-                imagenNueva.style.display = 'block';
-                imagenNueva.src = e.target.result;
-            };
-
-            reader.readAsDataURL(imagenInput.files[0]);
-        }
-    }
     /*]]>*/
 </script>
+
 
 
 </html>

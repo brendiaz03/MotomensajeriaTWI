@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Title</title>
+  <script src="https://kit.fontawesome.com/ca80211b53.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.0/css/bootstrap.min.css}"/>
+  <link rel="stylesheet" th:href="@{css/login.css}"/>
+  <link rel="stylesheet" th:href="@{/css/foto_perfil.css}"/>
+  <link rel="stylesheet" th:href="@{css/main.css}"/>
+</head>
+<body>
+<header>
+  <nav class="navbar navbar-expand-lg mx-4">
+    <div class="d-flex align-items-center bg-violet"> <!-- Div pegado a la izquierda -->
+      <a th:href="home" class="btn mx-2">
+        <img th:src="${logo.getImagenBase64()}" class="d-block w-100 bg-violet" alt=",,," style="height: 50px;width: 50px">
+      </a>
+    </div>
+    <div class="collapse navbar-collapse justify-content-end"> <!-- Div pegado a la derecha -->
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active  p-2">
+          <a th:href="home" class="nav-link p-2 text-white" href="#">Inicio</a>
+        </li>
+        <li class="nav-item p-2">
+          <a class="nav-link p-2 text-white" href="#">Compañía</a>
+        </li>
+        <li class="nav-item p-2">
+          <a class="nav-link p-2 text-white" href="#">Ayuda</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</header>
+<main class="main_registro">
+  <div class="formulario_fondo">
+    <h1 class="titulo_registroConductor">Editar Foto de Perfil</h1>
+    <form id="conductorForm" th:action="@{/subir-foto}" method="POST" enctype="multipart/form-data">
+      <section class="formulario">
+        <div class="columna">
+          <div class="imagen_contenedor">
+            <img id="imagenPerfil" th:src="${imagenPerfil != null ? imagenPerfil : user.getImagenBase64()}" class="user_default">
+            <img id="imagenNueva" class="user_new" style="display: none; border-radius: 30px">
+          </div>
+          <div class="contenedor_botones">
+            <div>
+              <button th:href="@{/perfil}" class="boton_subir_imagen">
+                <i class="fa-solid fa-xmark"></i>
+              </button>
+            </div>
+            <div class="boton_contenedor">
+              <input type="file" name="imagenInput" id="imagenInput" accept="image/*" onchange="previewImage(event)">
+            </div>
+            <div>
+              <button type="submit" class="boton_subir_imagen">
+                <i class="fa-solid fa-upload"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </form>
+  </div>
+</main>
+</body>
+<script>
+  function previewImage(event) {
+    const imagenInput = event.target;
+    if (imagenInput.files && imagenInput.files[0]) {
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        const imagenPerfil = document.getElementById('imagenPerfil');
+        const imagenNueva = document.getElementById('imagenNueva');
+        imagenPerfil.style.display = 'none';
+        imagenNueva.style.display = 'block';
+        imagenNueva.src = e.target.result;
+      };
+      reader.readAsDataURL(imagenInput.files[0]);
+    }
+  }
+</script>
+</html>

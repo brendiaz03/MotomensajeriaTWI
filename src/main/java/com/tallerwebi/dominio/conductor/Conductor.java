@@ -16,7 +16,7 @@ public class Conductor {
     private String cvu;
 
     @Lob
-    private String imagenPerfil;
+    private byte[] imagenPerfil;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,7 +24,7 @@ public class Conductor {
 
 
 
-    public Conductor(String nombre, String apellido, Integer numeroDeDni, String email, String password, String nombreUsuario, String domicilio, String nroTelefono, String cvu, String imagenPerfil) {
+    public Conductor(String nombre, String apellido, Integer numeroDeDni, String email, String password, String nombreUsuario, String domicilio, String nroTelefono, String cvu) {
         this.nombre=nombre;
         this.apellido=apellido;
         this.numeroDeDni=numeroDeDni;
@@ -34,7 +34,6 @@ public class Conductor {
         this.domicilio=domicilio;
         this.nroTelefono=nroTelefono;
         this.cvu=cvu;
-        this.imagenPerfil=imagenPerfil;
     }
 
     public Conductor() {
@@ -129,11 +128,11 @@ public class Conductor {
         return id;
     }
 
-    public String getImagenPerfil() {
+    public byte[] getImagenPerfil() {
         return imagenPerfil;
     }
 
-    public void setImagenPerfil(String imagenPerfil) {
+    public void setImagenPerfil(byte[] imagenPerfil) {
         this.imagenPerfil = imagenPerfil;
     }
 }

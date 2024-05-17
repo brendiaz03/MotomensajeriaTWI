@@ -30,7 +30,7 @@ public class ServiceConductorTest {
     @Test
     public void siYoIngresoLosDatosCorrectosSeRegistraElConductorEnLaBD() throws Exception {
         // Arrange
-        Conductor nuevoConductor = new Conductor("Jose", "Perez", 42952902, "juan@example.com", "password", "juanito", "Calle Falsa 123", "1234567890", "0001002900001234567891",null);
+        Conductor nuevoConductor = new Conductor("Jose", "Perez", 42952902, "juan@example.com", "password", "juanito", "Calle Falsa 123", "1234567890", "0001002900001234567891");
         when(iRepositoryConductor.buscarDuplicados(anyString(), anyString())).thenThrow(new NoResultException());
 
         // Act

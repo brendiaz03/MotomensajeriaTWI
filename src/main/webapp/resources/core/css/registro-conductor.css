@@ -64,22 +64,17 @@
     display: block; /* Asegura que las imágenes se comporten como bloques */
     margin: auto; /* Centra verticalmente */
 }
-.primera-columna {
-    width: 20%;
-    flex-basis: 20%;
-}
-.user_default,
-.user_new {
-    align-self: center;
-    max-width: 100%; /* La imagen nunca superará el ancho de su contenedor */
-    max-height: 80%; /* La altura se ajustará automáticamente para mantener la proporción */
-}
+/*.primera-columna {*/
+/*    width: 20%;*/
+/*    flex-basis: 20%;*/
+/*}*/
 
-.segunda-columna,
-.tercera-columna {
-    width:40%;
-    flex-basis: 40%;
-}
+
+/*.segunda-columna,*/
+/*.tercera-columna {*/
+/*    width:40%;*/
+/*    flex-basis: 40%;*/
+/*}*/
 
 .user_default{
     width:100%;
@@ -121,6 +116,7 @@
     gap: 6rem;
     justify-content:center;
 }
+
 .boton_submit {
     width: 262px;
     height: 67px;
@@ -144,41 +140,9 @@
     background: lightgray;
     color:#FFFFFF;
 }
-input[type="file"] {
-    /* Oculta el texto del archivo seleccionado */
-    color: transparent !important;
-    background: #36054E;
-    width:100%;
-    text-align: right;
-}
-input[type="file"]::-webkit-file-upload-button {
-    /* Oculta el texto predeterminado del botón */
-    font-size: 0;
-    text-align: right;
-}
 
-input[type="file"]::before {
-    text-align: right;
-    content: 'Subir Foto';
-    font-size: 16px;
-    color: white;
-}
 
-input[type="file"] {
-    text-align: right;
-    height: auto;
-    background: #36054E;
-    border-radius: 50px;
-    border: none; /* Elimina el borde */
-    padding: 10%; /* Elimina el relleno */
-    cursor: pointer; /* Cambia el cursor al pasar por encima */
-    outline: none; /* Elimina el resplandor predeterminado al enfocar */
-}
 
-input[type="file"]:hover {
-    text-align: right;
-    background: darkviolet;
-}
 
 
 

@@ -4,11 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Perfil</title>
+    <script src="https://kit.fontawesome.com/ca80211b53.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.0/css/bootstrap.min.css}"/>
 
     <!-- custom style -->
     <link rel="stylesheet" th:href="@{css/login.css}"/>
     <link rel="stylesheet" th:href="@{css/main.css}"/>
+
 </head>
 <body>
 <header>
@@ -45,7 +47,10 @@
         <div class="card mx-3 p-3" style="width: 18rem;height: 35rem; background-color: white;">
             <div class="container d-flex justify-content-center align-items-center">
                 <div class="rounded-circle bg-secondary d-flex justify-content-center align-items-center" style="width: 100px; height: 100px;">
-                    <img th:src="${user.getImagenBase64()}" class="d-block" alt=",,," style="width: 40%; height: 40%;">
+                    <a th:href="foto-perfil" style="display: flex; justify-content: center; align-items: center;">
+                    <img th:src="${user.getImagenBase64()}" class="d-block" alt=",,,"
+                         style="width: 40%; height: 40%;">
+                    </a>
                 </div>
             </div>
             <div class="card-body">
@@ -68,8 +73,7 @@
                 <h5 class="card-title text-center p-2"><strong>Perfil</strong></h5>
                 <div class="d-flex justify-content-between pt-3">
                     <p class="card-text"><strong>Mis datos personales</strong></p>
-                    <a  th:href="@{editar}">Editar </a><!-- redirect al controller de registro conductor-->
-
+                    <a  th:href="@{editar}"><i class="fa-solid fa-pen-to-square"  style="color: #36054E; transition: color 0.3s;" onmouseover="this.style.color='purple'" onmouseout="this.style.color='#36054E'"></i></a><!-- redirect al controller de registro conductor-->
                 </div>
             </div>
             <div class="card-body">
@@ -86,8 +90,7 @@
                 <h5 class="card-title text-center p-2"><strong>Vehículo</strong></h5>
                 <div class="d-flex justify-content-between pt-3">
                     <p class="card-text"><strong>Información del Vehículo</strong></p>
-                    <a href="#">Editar
-                    </a>
+                    <a href="#"><i class="fa-solid fa-pen-to-square" style="color: #36054E; transition: color 0.3s;" onmouseover="this.style.color='purple'" onmouseout="this.style.color='#36054E'"></i></a>
                 </div>
             </div>
             <div class="card-body">
@@ -116,12 +119,13 @@
                 <h5 class="card-title text-center p-2"><strong>Seguridad</strong></h5>
             </div>
             <div class="card-body">
-                <p>Cambiar contraseña</p>
-                <form id="form-cerrar-cuenta" th:action="@{/borrar-cuenta}" method="GET">
-                    <button type="submit">Cerrar cuenta</button>
+                <form  id="form-cerrar-cuenta" th:action="@{/borrar-cuenta}" method="GET">
+                    <button class="boton_borrar_cuenta" type="submit">Cerrar cuenta</button>
                 </form>
+                <br><br>
                 <h4>Ayuda</h4>
-                <a href="#"><p>Chatea con nuestro soporte online aquí.</p></a> <!--Redirect a la pag de soporte-->
+                <a href="#" style="text-decoration: none; color: black; transition: color 0.3s;" onmouseover="this.style.color='purple'" onmouseout="this.style.color='black'">
+                    <p>Chatea con nuestro soporte online aquí.</p></a> <!--Redirect a la pag de soporte-->
                 <p>imagen_soporte</p>
             </div>
         </div>

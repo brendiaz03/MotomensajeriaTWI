@@ -3,8 +3,11 @@ package com.tallerwebi.dominio.conductor;
 import com.tallerwebi.infraestructura.RepositoryConductorImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.NoResultException;
+import java.io.IOException;
+import java.util.Base64;
 import java.util.regex.Pattern;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,8 +43,17 @@ public class ServiceConductorImpl implements IServiceConductor {
     }
 
     @Override
-    public void editarConductor(Conductor conductorEditado) {
-            this.iRepositoryConductor.editarConductor(conductorEditado);
+    public void editarConductor(Conductor conductorEditado) throws ConductorNoEncontradoException {
+        Conductor conductorEnBD=this.obtenerConductorPorId(conductorEditado.getId());
+
+         if(conductorEditado.getImagenPerfil()==null && (conductorEnBD.getImagenPerfil())==null){
+             this.iRepositoryConductor.editarConductor(conductorEditado);
+         }else if(conductorEditado.getImagenPerfil()==null && conductorEnBD.getImagenPerfil()!=null){
+             conductorEditado.setImagenPerfil(conductorEnBD.getImagenPerfil());
+             this.iRepositoryConductor.editarConductor(conductorEditado);
+         }else{
+             this.iRepositoryConductor.editarConductor(conductorEditado);
+         };
     }
 
     @Override
@@ -49,5 +61,18 @@ public class ServiceConductorImpl implements IServiceConductor {
         Conductor conductorABorrar= this.iRepositoryConductor.buscarConductor(idusuario);
         this.iRepositoryConductor.borrarConductor(conductorABorrar);
     }
+
+//    @Override
+//    public void ingresarImagen(MultipartFile imagen, Integer idUsuario) throws IOException, ConductorNoEncontradoException {
+//
+//        Conductor conductor = this.iRepositoryConductor.buscarConductor(idUsuario);
+//        if (conductor!=null){
+//            conductor.setImagenPerfil(Base64.getEncoder().encode(imagen.getBytes()));
+//            this.editarConductor(conductor);
+//
+//        }else{
+//            System.out.println("Error");
+//        }
+//    }
 
 }

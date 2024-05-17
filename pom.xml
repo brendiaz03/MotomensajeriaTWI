@@ -124,6 +124,12 @@
             <scope>compile</scope>
         </dependency>
 
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+            <version>1.15</version> <!-- Puedes verificar la última versión disponible -->
+        </dependency>
+
         <!-- compile only, deployed container will provide this -->
 <!--        <dependency>-->
 <!--            <groupId>javax.servlet</groupId>-->
