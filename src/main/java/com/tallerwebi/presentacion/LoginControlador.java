@@ -1,6 +1,9 @@
 package com.tallerwebi.presentacion;
 
 import com.tallerwebi.dominio.conductor.Conductor;
+import com.tallerwebi.dominio.conductor.ConductorNoEncontradoException;
+import com.tallerwebi.dominio.conductor.ConductorServicio;
+import com.tallerwebi.dominio.conductor.ConductorServicioServicioImpl;
 import com.tallerwebi.dominio.imagen.ImagenServicio;
 import com.tallerwebi.dominio.imagen.Imagen;
 import com.tallerwebi.dominio.login.DatosLoginConductor;
@@ -23,21 +26,31 @@ public class LoginControlador {
 
     private static LoginServicio loginServicio;
     private static ImagenServicio imagenServicio;
+    private final ConductorServicio conductorServicio;
 
     @Autowired
-    public LoginControlador(LoginServicio _LoginServicio, ImagenServicio _imagenServicio){
+    public LoginControlador(LoginServicio _LoginServicio, ImagenServicio _imagenServicio, ConductorServicio _conductorServicio){
         this.loginServicio = _LoginServicio;
         this.imagenServicio = _imagenServicio;
+        this.conductorServicio = _conductorServicio;
     }
 
     @RequestMapping("/home")
-    public ModelAndView mostrarHome(HttpServletRequest request){
-        String viewName= "home";
+    public ModelAndView mostrarHome(HttpServletRequest request) throws ConductorNoEncontradoException {
         ModelMap model = new ModelMap();
+
+        String viewName= "home";
+
         Boolean isUsuarioLogueado = (Boolean) request.getSession().getAttribute("isUsuarioLogueado");
 
+        Conductor conductor = new Conductor();
         model.put("isUsuarioLogueado",isUsuarioLogueado);
-
+        if(request.getSession().getAttribute("IDUSUARIO") != null){
+            conductor = conductorServicio.obtenerConductorPorId((Integer) request.getSession().getAttribute("IDUSUARIO"));
+        }else{
+            conductor = null;
+        }
+        model.put("conductor", conductor);
         Imagen logo = imagenServicio.getImagenByName("logo");
         model.put("logo", logo);
         Imagen user = imagenServicio.getImagenByName("user");
@@ -85,7 +98,7 @@ public class LoginControlador {
     }
 
     @RequestMapping(path = "/cerrar-sesion", method = RequestMethod.GET)
-    public ModelAndView cerrarSesion(HttpServletRequest request) {
+    public ModelAndView cerrarSesion(HttpServletRequest request) throws ConductorNoEncontradoException {
         request.getSession().invalidate(); // Invalida la sesión, lo que equivale a cerrar sesión
         return mostrarHome(request);
     }
