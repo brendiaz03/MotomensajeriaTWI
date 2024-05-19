@@ -48,9 +48,9 @@
     </div>
   </nav>
 </header>
-<main role="main" class="container ">
+<main role="main" class="container">
 
-  <div class="container">
+  <div class="container" th:unless="${isUsuarioLogueado}">
     <div class="row">
       <div class="col-md-6">
         <div class="contenido d-flex justify-content-center align-items-center mt-lg-3">
@@ -70,6 +70,27 @@
       </div>
     </div>
   </div>
+
+  <div class="card mt-3" th:if="${isUsuarioLogueado}">
+    <div class="card-body" th:each="viaje : ${viajes}">
+      <div class="card mt-3 ml-3">
+        <div class="card-body viaje">
+          <p class="card-text"><b>Direccion de Salida:</b> <span th:text="${viaje.domicilioDeSalida}"></span></p>
+          <p class="card-text"><b>Direccion de Llegada:</b> <span th:text="${viaje.domicilioDeLlegada}"></span></p>
+          <p class="card-text"><b>Paquete de:</b> <span th:text="${viaje.cliente.nombre}"></span></p>
+          <p class="card-text"><b>Precio:</b> <span th:text="${viaje.precio}"></span></p>
+          <p class="card-text"><b>Codigo postal:</b> <span th:text="${viaje.codigoPostal}"></span></p>
+          <form th:action="@{/viaje/accion}" method="post">
+            <input type="hidden" th:name="${'idViaje'}" th:value="${viaje.id}">
+            <button type="submit" th:name="${'accion'}" th:value="'aceptar'" class="btn btn-primary">Aceptar</button>
+            <button type="submit" th:name="${'accion'}" th:value="'rechazar'" class="btn btn-secondary">Rechazar</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
   <h1>Comparar Ubicación del Conductor y Paquete</h1>
   <p id="driverLocation">Ubicación del conductor: </p>
   <p id="packageLocation">Ubicación del paquete: </p>

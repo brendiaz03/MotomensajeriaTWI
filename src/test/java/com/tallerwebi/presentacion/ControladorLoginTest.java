@@ -5,6 +5,7 @@ import com.tallerwebi.dominio.conductor.ConductorServicio;
 import com.tallerwebi.dominio.imagen.ImagenServicio;
 import com.tallerwebi.dominio.login.DatosLoginConductor;
 import com.tallerwebi.dominio.login.LoginServicio;
+import com.tallerwebi.dominio.viaje.ViajeService;
 import org.junit.jupiter.api.BeforeEach;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -25,6 +26,7 @@ public class ControladorLoginTest {
 	private ConductorServicio servicioConductorMock;
 	private Conductor usuarioMock;
 	private DatosLoginConductor datosLoginMock;
+	private ViajeService viajeService;
 
 
 	@BeforeEach
@@ -34,8 +36,9 @@ public class ControladorLoginTest {
 		servicioLoginMock = mock(LoginServicio.class);
 		servicioImagenMock = mock(ImagenServicio.class);
 		servicioConductorMock = mock(ConductorServicio.class);
+		viajeService = mock(ViajeService.class);
 		when(requestMock.getSession()).thenReturn(sessionMock);
-		controladorLogin = new LoginControlador(servicioLoginMock, servicioImagenMock, servicioConductorMock);
+		controladorLogin = new LoginControlador(servicioLoginMock, servicioImagenMock, servicioConductorMock, viajeService);
 		usuarioMock = mock(Conductor.class);
 		when(usuarioMock.getNombreUsuario()).thenReturn("b");
 		when(usuarioMock.getPassword()).thenReturn("b");  // Establecer una contraseña válida

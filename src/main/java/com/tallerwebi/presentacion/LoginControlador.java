@@ -8,16 +8,18 @@ import com.tallerwebi.dominio.imagen.ImagenServicio;
 import com.tallerwebi.dominio.imagen.Imagen;
 import com.tallerwebi.dominio.login.DatosLoginConductor;
 import com.tallerwebi.dominio.login.LoginServicio;
+import com.tallerwebi.dominio.viaje.Viaje;
+import com.tallerwebi.dominio.viaje.ViajeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Controller
@@ -27,12 +29,14 @@ public class LoginControlador {
     private static LoginServicio loginServicio;
     private static ImagenServicio imagenServicio;
     private final ConductorServicio conductorServicio;
+    private ViajeService viajeService;
 
     @Autowired
-    public LoginControlador(LoginServicio _LoginServicio, ImagenServicio _imagenServicio, ConductorServicio _conductorServicio){
+    public LoginControlador(LoginServicio _LoginServicio, ImagenServicio _imagenServicio, ConductorServicio _conductorServicio, ViajeService viajeService){
         this.loginServicio = _LoginServicio;
         this.imagenServicio = _imagenServicio;
         this.conductorServicio = _conductorServicio;
+        this.viajeService = viajeService;
     }
 
     @RequestMapping("/home")
@@ -42,6 +46,8 @@ public class LoginControlador {
         String viewName= "home";
 
         Boolean isUsuarioLogueado = (Boolean) request.getSession().getAttribute("isUsuarioLogueado");
+        List<Viaje> viajes = viajeService.obtenerLasSolicitudesDeViajesPendientes();
+        model.put("viajes", viajes);
 
         Conductor conductor = new Conductor();
         model.put("isUsuarioLogueado",isUsuarioLogueado);
@@ -103,5 +109,25 @@ public class LoginControlador {
         return mostrarHome(request);
     }
 
+    @PostMapping("/viaje/accion")
+    public ModelAndView procesarAccionViaje(@RequestParam("idViaje") Integer idViaje, @RequestParam("accion") String accion, HttpSession session) {
+        Integer idConductor = (Integer) session.getAttribute("IDUSUARIO");
+        ModelMap modelo = new ModelMap();
+        List<Viaje> viajes = new ArrayList<>();
+        String mensaje = "";
+
+        if ("aceptar".equals(accion)) {
+            viajeService.actualizarViajeConElIdDelConductorQueAceptoElViaje(idViaje, idConductor);
+            viajes = viajeService.obtenerLosViajesAceptadosPorElConductor(idConductor);
+            mensaje = "VIAJE ACEPTADO!";
+        } else {
+            mensaje = "Acción no válida";
+        }
+
+        modelo.put("viajesAceptados", viajes);
+        modelo.put("mensaje", mensaje);
+
+        return new ModelAndView("viajes", modelo);
+    }
 
 }
