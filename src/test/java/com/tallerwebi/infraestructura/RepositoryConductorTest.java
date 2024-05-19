@@ -53,13 +53,14 @@ public class RepositoryConductorTest {
     @Test
     @Transactional
     public void queAlBuscarDuplicadosEncuentreResultados() {
-        // Arrange
         String email = "facundo.varela00@gmail.com";
         String nombreUsuario = "test@unlam.edu.ar";
 
         Conductor nuevoConductor = new Conductor("Facundo", "Varela", 42952902,
                 "facundo.varela00@gmail.com", "test1234", "test@unlam.edu.ar",
                 "Pueyrredon 3339", "1561639242", "1234567891234567891234");
+
+        iRepositoryConductor.registrar(nuevoConductor);
 
         Conductor conductorDuplicado = iRepositoryConductor.buscarDuplicados(email, nombreUsuario);
 
@@ -70,8 +71,6 @@ public class RepositoryConductorTest {
     @Test
     @Transactional
     public void queAlBuscarUnConductorPorIDDevuelvaUnConductor() {
-        // Arrange
-
         Integer id=1;
 
         Conductor nuevoConductor = new Conductor("Facundo", "Varela", 42952902,
