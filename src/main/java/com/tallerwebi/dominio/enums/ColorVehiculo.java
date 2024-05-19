@@ -1,4 +1,4 @@
-package com.tallerwebi.dominio.vehiculo;
+package com.tallerwebi.dominio.enums;
 
 public enum ColorVehiculo{
     NEGRO,

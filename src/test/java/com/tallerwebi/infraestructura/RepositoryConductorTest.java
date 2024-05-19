@@ -1,8 +1,6 @@
 package com.tallerwebi.infraestructura;
 
-import com.tallerwebi.dominio.conductor.Conductor;
-import com.tallerwebi.dominio.conductor.ConductorDuplicadoException;
-import com.tallerwebi.dominio.conductor.IRepositoryConductor;
+import com.tallerwebi.dominio.conductor.ConductorRepositorio;
 import com.tallerwebi.infraestructura.config.HibernateInfraestructuraTestConfig;
 import org.hibernate.HibernateException;
 import org.hibernate.SessionFactory;
@@ -15,13 +13,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
-import javax.persistence.PersistenceContext;
-import javax.transaction.Transactional;
-
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -34,11 +26,11 @@ public class RepositoryConductorTest {
 
     @Autowired
     private SessionFactory sessionFactory;
-   private IRepositoryConductor iRepositoryConductor;
+   private ConductorRepositorio conductorRepositorio;
 
     @BeforeEach
     public void init(){
-        this.iRepositoryConductor= new RepositoryConductorImpl(sessionFactory);
+        this.conductorRepositorio = new ConductorRepositorioImpl(sessionFactory);
     }
     @Test
     public void queAlBuscarDuplicadosNoEncuentreResultados() {
@@ -47,7 +39,7 @@ public class RepositoryConductorTest {
         String nombreUsuario = "usuario";
 
         assertThrows(HibernateException.class, () -> {
-            iRepositoryConductor.buscarDuplicados(email, nombreUsuario);
+            conductorRepositorio.buscarDuplicados(email, nombreUsuario);
         });
     }
 //    @Test
@@ -61,7 +53,7 @@ public class RepositoryConductorTest {
 //                "facundo.varela00@gmail.com", "test1234", "test@unlam.edu.ar",
 //                "Pueyrredon 3339", "1561639242", "1234567891234567891234",null);
 //
-//        Conductor conductorDuplicado = iRepositoryConductor.buscarDuplicados(email, nombreUsuario);
+//        Conductor conductorDuplicado = conductorRepositorio.buscarDuplicados(email, nombreUsuario);
 //
 //        // Assert
 //        assertThat(nuevoConductor.getNombre(), equalTo(conductorDuplicado.getNombre()));
@@ -78,7 +70,7 @@ public class RepositoryConductorTest {
 //                "facundo.varela00@gmail.com", "test1234", "test@unlam.edu.ar",
 //                "Pueyrredon 3339", "1561639242", "1234567891234567891234",null);
 //
-//        Conductor conductorDuplicado = iRepositoryConductor.buscarConductor(id);
+//        Conductor conductorDuplicado = conductorRepositorio.buscarConductor(id);
 //
 //        // Assert
 //        assertThat(nuevoConductor.getNombre(), equalTo(conductorDuplicado.getNombre()));
@@ -91,7 +83,7 @@ public class RepositoryConductorTest {
 //        Integer id=4;
 //        // Assert
 //            assertThrows(NoResultException.class, () -> {
-//            iRepositoryConductor.buscarConductor(id);
+//            conductorRepositorio.buscarConductor(id);
 //        });
 //    }
 //

@@ -6,26 +6,26 @@ import static org.hamcrest.MatcherAssert.assertThat;
 //class ControladorVehiculoTest {
 //
 ///*
-//    private ControladorVehiculo controladorVehiculo;
+//    private VehiculoContolador controladorVehiculo;
 //
-//    private IServicioVehiculo iservicioVehiculo;
+//    private VehiculoServicio iservicioVehiculo;
 //
-//    private IImageService iimageService;
+//    private ImagenServicio iimageService;
 //
-//    //private IRepositoryVehiculo irepositoryVehiculo;
+//    //private VehiculoRepositorio irepositoryVehiculo;
 //
 //    private List<Vehiculo> vehiculos = new ArrayList<>();
 //
 //    @BeforeEach
 //    public void init() {
-//        //this.irepositoryVehiculo = new RepositoryVehiculoImpl();
-//        //this.iservicioVehiculo = new ServicioVehiculoImpl(this.irepositoryVehiculo);
+//        //this.irepositoryVehiculo = new VehiculoRepositorioImpl();
+//        //this.iservicioVehiculo = new VehiculoServicioImpl(this.irepositoryVehiculo);
 //
-//        this.iservicioVehiculo = mock(IServicioVehiculo.class);
+//        this.iservicioVehiculo = mock(VehiculoServicio.class);
 //
-//        this.iimageService = mock(IImageService.class);
+//        this.iimageService = mock(ImagenServicio.class);
 //
-//        this.controladorVehiculo = new ControladorVehiculo(this.iservicioVehiculo, this.iimageService);
+//        this.controladorVehiculo = new VehiculoContolador(this.iservicioVehiculo, this.iimageService);
 //    }
 //
 //    //FUNCIONA OK
