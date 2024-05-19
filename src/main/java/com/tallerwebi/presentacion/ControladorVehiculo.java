@@ -48,7 +48,6 @@ public class ControladorVehiculo{
     public ModelAndView registrarVehiculo(@ModelAttribute("vehiculo") Vehiculo nuevoVehiculo) {
        ModelMap model = new ModelMap();
                if(iServicioVehiculo.registrarVehiculoSiPatenteNoEstaYaCargada(nuevoVehiculo)){
-                   System.out.println(nuevoVehiculo.getColor());
                    return new ModelAndView("redirect:/home");
            }else{
                    model.put("error", "Patente Repetida");

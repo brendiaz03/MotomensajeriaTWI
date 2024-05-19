@@ -30,6 +30,10 @@
           <a class="nav-link p-2 text-white" href="#">Ayuda</a>
         </li>
       </ul>
+      <a th:href="perfil" class="btn mx-2">
+        <img th:src="${user.getImagenBase64()}" alt=",,," style="height: 20px;width: 20px">
+      </a>
+      <a th:href="@{cerrar-sesion}" class="btn-custom">Cerrar Sesión</a>
     </div>
   </nav>
 </header>
