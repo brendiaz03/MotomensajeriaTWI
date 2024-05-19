@@ -6,7 +6,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 //class ControladorVehiculoTest {
 //
 ///*
-//    private VehiculoContolador controladorVehiculo;
+//    private VehiculoControlador controladorVehiculo;
 //
 //    private VehiculoServicio iservicioVehiculo;
 //
@@ -25,7 +25,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 //
 //        this.iimageService = mock(ImagenServicio.class);
 //
-//        this.controladorVehiculo = new VehiculoContolador(this.iservicioVehiculo, this.iimageService);
+//        this.controladorVehiculo = new VehiculoControlador(this.iservicioVehiculo, this.iimageService);
 //    }
 //
 //    //FUNCIONA OK
