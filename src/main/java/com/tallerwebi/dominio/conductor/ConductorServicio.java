@@ -4,7 +4,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 
-public interface IServiceConductor {
+public interface ConductorServicio {
     Boolean verificarDatosDeRegistro(Conductor nuevoConductor) throws Exception;
 
     Conductor obtenerConductorPorId(Integer id) throws ConductorNoEncontradoException;

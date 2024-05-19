@@ -1,7 +1,7 @@
 package com.tallerwebi.dominio.conductor;
 
 
-public interface IRepositoryConductor {
+public interface ConductorRepositorio {
     void registrar(Conductor nuevoConductor);
 
     Conductor buscarConductor(Integer id);

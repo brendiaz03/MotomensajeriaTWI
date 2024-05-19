@@ -1,18 +1,17 @@
 package com.tallerwebi.infraestructura;
 
 import com.tallerwebi.dominio.conductor.Conductor;
-import com.tallerwebi.dominio.login.ILoginRepository;
+import com.tallerwebi.dominio.login.LoginRepositorio;
 import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
 @Repository
-public class LoginRepository implements ILoginRepository {
+public class LoginRepositorioImpl implements LoginRepositorio {
     private SessionFactory sessionFactory;
-    public LoginRepository(SessionFactory sessionFactory) {
+    public LoginRepositorioImpl(SessionFactory sessionFactory) {
         this.sessionFactory=sessionFactory;
     }
 

@@ -1,10 +1,10 @@
 package com.tallerwebi.presentacion;
 
 import com.tallerwebi.dominio.conductor.Conductor;
-import com.tallerwebi.dominio.imagen.IImageService;
+import com.tallerwebi.dominio.imagen.ImagenServicio;
 import com.tallerwebi.dominio.imagen.Imagen;
 import com.tallerwebi.dominio.login.DatosLoginConductor;
-import com.tallerwebi.dominio.login.ILoginService;
+import com.tallerwebi.dominio.login.LoginServicio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -19,15 +19,15 @@ import javax.servlet.http.HttpServletRequest;
 
 @Controller
 @SessionAttributes("isUsuarioLogueado")
-public class LoginController {
+public class LoginControlador {
 
-    private static ILoginService iLoginService;
-    private static IImageService iImageService;
+    private static LoginServicio loginServicio;
+    private static ImagenServicio imagenServicio;
 
     @Autowired
-    public LoginController(ILoginService _iLoginService, IImageService _iImageService){
-        this.iLoginService = _iLoginService;
-        this.iImageService = _iImageService;
+    public LoginControlador(LoginServicio _LoginServicio, ImagenServicio _imagenServicio){
+        this.loginServicio = _LoginServicio;
+        this.imagenServicio = _imagenServicio;
     }
 
     @RequestMapping("/home")
@@ -38,15 +38,15 @@ public class LoginController {
 
             model.put("isUsuarioLogueado",isUsuarioLogueado);
 
-        Imagen logo = iImageService.getImagenByName("logo");
+        Imagen logo = imagenServicio.getImagenByName("logo");
         model.put("logo", logo);
-        Imagen user = iImageService.getImagenByName("user");
+        Imagen user = imagenServicio.getImagenByName("user");
         model.put("user", user);
-        Imagen auto = iImageService.getImagenByName("auto");
+        Imagen auto = imagenServicio.getImagenByName("auto");
         model.put("auto", auto);
-        Imagen fondo = iImageService.getImagenByName("fondo");
+        Imagen fondo = imagenServicio.getImagenByName("fondo");
         model.put("fondo", fondo);
-        Imagen botonPS = iImageService.getImagenByName("botonPS");
+        Imagen botonPS = imagenServicio.getImagenByName("botonPS");
         model.put("botonPS", botonPS);
         return new ModelAndView(viewName,model);
     }
@@ -56,7 +56,7 @@ public class LoginController {
         String viewName= "login-conductor";
         ModelMap model = new ModelMap();
         model.put("datosLogin",new DatosLoginConductor());
-        Imagen logo = iImageService.getImagenByName("logo");
+        Imagen logo = imagenServicio.getImagenByName("logo");
         model.put("logo", logo);
         return new ModelAndView(viewName,model);
     }
@@ -65,7 +65,7 @@ public class LoginController {
     public ModelAndView validarLogin(@ModelAttribute("datosLogin") DatosLoginConductor datosLoginnConductor, HttpServletRequest request) {
 
         ModelMap model = new ModelMap();
-            Conductor conductorBuscado = iLoginService.consultarUsuario(datosLoginnConductor.getUsuario(), datosLoginnConductor.getPassword());
+            Conductor conductorBuscado = loginServicio.consultarUsuario(datosLoginnConductor.getUsuario(), datosLoginnConductor.getPassword());
             if (conductorBuscado != null) {
                 request.getSession().setAttribute("NOMBRE", conductorBuscado.getNombre());
                 request.getSession().setAttribute("IDUSUARIO", conductorBuscado.getId());

@@ -1,6 +1,5 @@
 package com.tallerwebi.dominio.conductor;
 
-import com.tallerwebi.infraestructura.RepositoryConductorImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -8,27 +7,24 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.persistence.NoResultException;
 import java.io.IOException;
 import java.util.Base64;
-import java.util.regex.Pattern;
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
-public class ServiceConductorImpl implements IServiceConductor {
+public class ConductorServicioServicioImpl implements ConductorServicio {
 
-    private final IRepositoryConductor iRepositoryConductor;
+    private final ConductorRepositorio conductorRepositorio;
 
     @Autowired
-    public ServiceConductorImpl(IRepositoryConductor iRepositoryConductor) {
-        this.iRepositoryConductor = iRepositoryConductor;
+    public ConductorServicioServicioImpl(ConductorRepositorio conductorRepositorio) {
+        this.conductorRepositorio = conductorRepositorio;
     }
 
     @Override
     public Boolean verificarDatosDeRegistro(Conductor nuevoConductor) throws  ConductorDuplicadoException {
         try{
-            this.iRepositoryConductor.buscarDuplicados(nuevoConductor.getEmail(),nuevoConductor.getNombreUsuario());
+            this.conductorRepositorio.buscarDuplicados(nuevoConductor.getEmail(),nuevoConductor.getNombreUsuario());
             throw new ConductorDuplicadoException("E-mail o Usuario Duplicado");
         }catch(NoResultException e){
-            this.iRepositoryConductor.registrar(nuevoConductor);
+            this.conductorRepositorio.registrar(nuevoConductor);
             return true;
         }
 }
@@ -36,7 +32,7 @@ public class ServiceConductorImpl implements IServiceConductor {
     @Override
     public Conductor obtenerConductorPorId(Integer id) throws ConductorNoEncontradoException {
         try{
-            return this.iRepositoryConductor.buscarConductor(id);
+            return this.conductorRepositorio.buscarConductor(id);
         }catch(NoResultException e){
             throw new ConductorNoEncontradoException("Usuario no Encontrado");
         }
@@ -47,25 +43,25 @@ public class ServiceConductorImpl implements IServiceConductor {
         Conductor conductorEnBD=this.obtenerConductorPorId(conductorEditado.getId());
 
          if(conductorEditado.getImagenPerfil()==null && (conductorEnBD.getImagenPerfil())==null){
-             this.iRepositoryConductor.editarConductor(conductorEditado);
+             this.conductorRepositorio.editarConductor(conductorEditado);
          }else if(conductorEditado.getImagenPerfil()==null && conductorEnBD.getImagenPerfil()!=null){
              conductorEditado.setImagenPerfil(conductorEnBD.getImagenPerfil());
-             this.iRepositoryConductor.editarConductor(conductorEditado);
+             this.conductorRepositorio.editarConductor(conductorEditado);
          }else{
-             this.iRepositoryConductor.editarConductor(conductorEditado);
+             this.conductorRepositorio.editarConductor(conductorEditado);
          };
     }
 
     @Override
     public void borrarConductor(Integer idusuario) {
-        Conductor conductorABorrar= this.iRepositoryConductor.buscarConductor(idusuario);
-        this.iRepositoryConductor.borrarConductor(conductorABorrar);
+        Conductor conductorABorrar= this.conductorRepositorio.buscarConductor(idusuario);
+        this.conductorRepositorio.borrarConductor(conductorABorrar);
     }
 
     @Override
     public void ingresarImagen(MultipartFile imagen, Integer idUsuario) throws IOException, ConductorNoEncontradoException {
 
-        Conductor conductor = this.iRepositoryConductor.buscarConductor(idUsuario);
+        Conductor conductor = this.conductorRepositorio.buscarConductor(idUsuario);
         if (conductor!=null){
             conductor.setImagenPerfil(Base64.getEncoder().encode(imagen.getBytes()));
             this.editarConductor(conductor);

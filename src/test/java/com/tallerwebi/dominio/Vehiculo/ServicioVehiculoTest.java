@@ -1,9 +1,9 @@
 //package com.tallerwebi.dominio.Vehiculo;
 //
 ////import com.tallerwebi.dominio.vehiculo;
-//import com.tallerwebi.dominio.vehiculo.IRepositoryVehiculo;
-//import com.tallerwebi.dominio.vehiculo.IServicioVehiculo;
-//import com.tallerwebi.dominio.vehiculo.ServicioVehiculoImpl;
+//import com.tallerwebi.dominio.vehiculo.VehiculoRepositorio;
+//import com.tallerwebi.dominio.vehiculo.VehiculoServicio;
+//import com.tallerwebi.dominio.vehiculo.VehiculoServicioImpl;
 //        import org.junit.jupiter.api.BeforeEach;
 //
 //        import static org.hamcrest.MatcherAssert.assertThat;
@@ -11,16 +11,16 @@
 //
 //public class ServicioVehiculoTest {
 //
-//    private IServicioVehiculo iservicioVehiculo;
+//    private VehiculoServicio iservicioVehiculo;
 //
-//    private IRepositoryVehiculo irepositoryVehiculo;
+//    private VehiculoRepositorio irepositoryVehiculo;
 //
-//    private ServicioVehiculoImpl servicioVehiculoImpl;
+//    private VehiculoServicioImpl servicioVehiculoImpl;
 //
 //    @BeforeEach
 //    public void init(){
-//        this.irepositoryVehiculo = mock(IRepositoryVehiculo.class);
-//        this.iservicioVehiculo = new ServicioVehiculoImpl(irepositoryVehiculo);
+//        this.irepositoryVehiculo = mock(VehiculoRepositorio.class);
+//        this.iservicioVehiculo = new VehiculoServicioImpl(irepositoryVehiculo);
 //    }
 //
 //    //FUNCIONA OK
@@ -104,7 +104,7 @@
 //
 //        //preparación
 //
-//        IServicioVehiculo servicioVehiculoMock = mock(IServicioVehiculo.class);
+//        VehiculoServicio servicioVehiculoMock = mock(VehiculoServicio.class);
 //
 //       List<Conductor>conductores = new ArrayList<>();
 //
@@ -144,7 +144,7 @@
 //    @Test
 //    public void queSePuedaModificarUnVehiculoDeLaListaDelConductor(){
 //
-//        IServicioVehiculo servicioVehiculoMock = mock(IServicioVehiculo.class);
+//        VehiculoServicio servicioVehiculoMock = mock(VehiculoServicio.class);
 //
 //        List<Conductor>conductores = new ArrayList<>();
 //

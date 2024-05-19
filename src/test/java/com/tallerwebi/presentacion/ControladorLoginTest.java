@@ -1,9 +1,9 @@
 package com.tallerwebi.presentacion;
 
 import com.tallerwebi.dominio.conductor.Conductor;
-import com.tallerwebi.dominio.imagen.IImageService;
+import com.tallerwebi.dominio.imagen.ImagenServicio;
 import com.tallerwebi.dominio.login.DatosLoginConductor;
-import com.tallerwebi.dominio.login.ILoginService;
+import com.tallerwebi.dominio.login.LoginServicio;
 import org.junit.jupiter.api.BeforeEach;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -18,9 +18,9 @@ public class ControladorLoginTest {
 
 	private HttpServletRequest requestMock;
 	private HttpSession sessionMock;
-	private LoginController controladorLogin;
-	private ILoginService servicioLoginMock;
-	private IImageService servicioImagenMock;
+	private LoginControlador controladorLogin;
+	private LoginServicio servicioLoginMock;
+	private ImagenServicio servicioImagenMock;
 	private Conductor usuarioMock;
 	private DatosLoginConductor datosLoginMock;
 
@@ -29,10 +29,10 @@ public class ControladorLoginTest {
 	public void init() {
 		requestMock = mock(HttpServletRequest.class);
 		sessionMock = mock(HttpSession.class);
-		servicioLoginMock = mock(ILoginService.class);
-		servicioImagenMock = mock(IImageService.class);
+		servicioLoginMock = mock(LoginServicio.class);
+		servicioImagenMock = mock(ImagenServicio.class);
 		when(requestMock.getSession()).thenReturn(sessionMock);
-		controladorLogin = new LoginController(servicioLoginMock, servicioImagenMock);
+		controladorLogin = new LoginControlador(servicioLoginMock, servicioImagenMock);
 		usuarioMock = mock(Conductor.class);
 		when(usuarioMock.getNombreUsuario()).thenReturn("b");
 		when(usuarioMock.getPassword()).thenReturn("b");  // Establecer una contraseña válida

@@ -1,7 +1,7 @@
 package com.tallerwebi.presentacion;
 
 import com.tallerwebi.dominio.conductor.*;
-import com.tallerwebi.dominio.imagen.IImageService;
+import com.tallerwebi.dominio.imagen.ImagenServicio;
 import com.tallerwebi.dominio.imagen.Imagen;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,18 +12,17 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.Base64;
 
 @Controller
 @SessionAttributes("isUsuarioLogueado")
 @MultipartConfig
-public class ControllerConductor {
-    private IServiceConductor iServiceConductor;
-    private IImageService iimageService;
+public class ConductorControlador {
+    private ConductorServicio conductorServicio;
+    private ImagenServicio iimageService;
 
     @Autowired
-    public ControllerConductor(IServiceConductor iServiceConductor, IImageService imageService) {
-        this.iServiceConductor=iServiceConductor;
+    public ConductorControlador(ConductorServicio conductorServicio, ImagenServicio imageService) {
+        this.conductorServicio = conductorServicio;
         this.iimageService=imageService;
     }
     @RequestMapping(value = "/registro-conductor", method = RequestMethod.GET)
@@ -53,7 +52,7 @@ public class ControllerConductor {
             }
         } else {
             Integer idUsuario = (Integer) session.getAttribute("IDUSUARIO");
-            Conductor conductor = iServiceConductor.obtenerConductorPorId(idUsuario);
+            Conductor conductor = conductorServicio.obtenerConductorPorId(idUsuario);
             model.put("conductor", conductor );
         }
         return new ModelAndView(viewName, model);
@@ -68,7 +67,7 @@ public class ControllerConductor {
         Integer idUsuario = (Integer) session.getAttribute("IDUSUARIO");
         Imagen logo = iimageService.getImagenByName("logo");
         Imagen user = iimageService.getImagenByName("user");
-        Conductor conductor = iServiceConductor.obtenerConductorPorId(idUsuario);
+        Conductor conductor = conductorServicio.obtenerConductorPorId(idUsuario);
 
         model.put("logo", logo);
         model.put("user", user);
@@ -92,7 +91,7 @@ public class ControllerConductor {
         Integer idUsuario = (Integer) session.getAttribute("IDUSUARIO");
         Imagen logo = iimageService.getImagenByName("logo");
         Imagen user = iimageService.getImagenByName("user");
-        Conductor conductor = iServiceConductor.obtenerConductorPorId(idUsuario);
+        Conductor conductor = conductorServicio.obtenerConductorPorId(idUsuario);
 
         model.put("logo", logo);
         model.put("user", user);
@@ -105,7 +104,7 @@ public class ControllerConductor {
     @PostMapping("/registro-conductor")
     public ModelAndView registrarConductor(@ModelAttribute("conductor") Conductor nuevoConductor, HttpSession session) throws Exception {
         try {
-            if(iServiceConductor.verificarDatosDeRegistro(nuevoConductor)){
+            if(conductorServicio.verificarDatosDeRegistro(nuevoConductor)){
                 return new ModelAndView("redirect:/vehiculo");
             }
         } catch (ConductorDuplicadoException e) {
@@ -118,7 +117,7 @@ public class ControllerConductor {
     public ModelAndView editarConductor(HttpSession session, @ModelAttribute("conductor") Conductor conductorEditado) throws ConductorNoEncontradoException {
         Integer idUsuario = (Integer) session.getAttribute("IDUSUARIO");
         conductorEditado.setId(idUsuario);
-        iServiceConductor.editarConductor(conductorEditado);
+        conductorServicio.editarConductor(conductorEditado);
         session.setAttribute("isEditForm", false);
         return new ModelAndView("redirect:/perfil");
     }
@@ -128,9 +127,9 @@ public class ControllerConductor {
 //        try {
 //            Integer idUsuario = (Integer) session.getAttribute("IDUSUARIO");
 //            if (fotoCargada != null && !fotoCargada.isEmpty()) {
-//                Conductor conductor = iServiceConductor.obtenerConductorPorId(idUsuario);
+//                Conductor conductor = conductorServicio.obtenerConductorPorId(idUsuario);
 //                conductor.setImagenPerfil(Base64.getEncoder().encode(fotoCargada.getBytes()));
-//                iServiceConductor.editarConductor(conductor);
+//                conductorServicio.editarConductor(conductor);
 //            }
 //            return new ModelAndView("redirect:/perfil");
 //        } catch (Exception e) {
@@ -142,14 +141,14 @@ public class ControllerConductor {
     public ModelAndView subirFoto(@RequestParam("imagenPerfil") MultipartFile imagen, HttpSession session) throws ConductorNoEncontradoException, IOException {
 
         Integer idUsuario = (Integer) session.getAttribute("IDUSUARIO");
-        this.iServiceConductor.ingresarImagen(imagen,idUsuario);
+        this.conductorServicio.ingresarImagen(imagen,idUsuario);
         return new ModelAndView("redirect:/perfil");
     }
 
     @RequestMapping(value="/borrar-cuenta", method = RequestMethod.GET)
     public ModelAndView borrarCuenta (HttpSession session){
 
-        iServiceConductor.borrarConductor((Integer) session.getAttribute("IDUSUARIO"));
+        conductorServicio.borrarConductor((Integer) session.getAttribute("IDUSUARIO"));
         //cerrar-sesion
 
         return new ModelAndView("redirect:/home");
