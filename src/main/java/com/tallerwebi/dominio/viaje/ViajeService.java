@@ -1,4 +1,4 @@
-package com.tallerwebi.dominio;
+package com.tallerwebi.dominio.viaje;
 
 import com.tallerwebi.dominio.Datos.DatosViaje;
 
@@ -6,8 +6,6 @@ import java.util.List;
 
 public interface ViajeService {
     List<Viaje> obtenerTodosLosViajesDeLaBaseDeDatos();
-
-    List<DatosViaje> obtenerLosViajesAceptadosPorElConductor(Integer idCliente);
 
     List<Viaje> obtenerLasSolicitudesDeViajesPendientes();
 

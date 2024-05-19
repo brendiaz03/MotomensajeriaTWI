@@ -1,4 +1,4 @@
-package com.tallerwebi.dominio;
+package com.tallerwebi.dominio.viaje;
 
 import com.tallerwebi.dominio.cliente.Cliente;
 
@@ -12,8 +12,6 @@ public class Viaje {
     private Integer id;
     private String domicilioDeSalida;
     private String domicilioDeLlegada;
-    private Integer idConductor;
-    private Integer idPaquete;
     private String latitudDeSalida;
     private String longitudDeSalida;
     private String latitudDeLlegada;
@@ -30,11 +28,9 @@ public class Viaje {
 
     }
 
-    public Viaje(String domicilioDeSalida, String domicilioDeLlegada, Integer idConductor, Integer idPaquete, String latitudDeSalida, String longitudDeSalida, String latitudDeLlegada, String longitudDeLlegada, String codigoPostal, String precio, String medioDePago) {
+    public Viaje(String domicilioDeSalida, String domicilioDeLlegada, String latitudDeSalida, String longitudDeSalida, String latitudDeLlegada, String longitudDeLlegada, String codigoPostal, String precio, String medioDePago, Cliente cliente) {
         this.domicilioDeSalida = domicilioDeSalida;
         this.domicilioDeLlegada = domicilioDeLlegada;
-        this.idConductor = idConductor;
-        this.idPaquete = idPaquete;
         this.latitudDeSalida = latitudDeSalida;
         this.longitudDeSalida = longitudDeSalida;
         this.latitudDeLlegada = latitudDeLlegada;
@@ -42,38 +38,7 @@ public class Viaje {
         this.codigoPostal = codigoPostal;
         this.precio = precio;
         this.medioDePago = medioDePago;
-    }
-
-    public Integer getIdConductor() {
-        return idConductor;
-    }
-
-    public void setIdConductor(Integer idConductor) {
-        this.idConductor = idConductor;
-    }
-
-    public Integer getIdPaquete() {
-        return idPaquete;
-    }
-
-    public void setIdPaquete(Integer idPaquete) {
-        this.idPaquete = idPaquete;
-    }
-
-    public String getDomicilioDeSalida() {
-        return domicilioDeSalida;
-    }
-
-    public void setDomicilioDeSalida(String lugarDeSalida) {
-        this.domicilioDeSalida = lugarDeSalida;
-    }
-
-    public String getDomicilioDeLlegada() {
-        return domicilioDeLlegada;
-    }
-
-    public void setDomicilioDeLlegada(String lugarDeLlegada) {
-        this.domicilioDeLlegada = lugarDeLlegada;
+        this.cliente = cliente;
     }
 
     public Integer getId() {
@@ -82,6 +47,22 @@ public class Viaje {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getDomicilioDeLlegada() {
+        return domicilioDeLlegada;
+    }
+
+    public void setDomicilioDeLlegada(String domicilioDeLlegada) {
+        this.domicilioDeLlegada = domicilioDeLlegada;
+    }
+
+    public String getDomicilioDeSalida() {
+        return domicilioDeSalida;
+    }
+
+    public void setDomicilioDeSalida(String domicilioDeSalida) {
+        this.domicilioDeSalida = domicilioDeSalida;
     }
 
     public String getLatitudDeSalida() {
