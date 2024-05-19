@@ -1,6 +1,7 @@
 package com.tallerwebi.presentacion;
 
 import com.tallerwebi.dominio.conductor.Conductor;
+import com.tallerwebi.dominio.conductor.ConductorServicio;
 import com.tallerwebi.dominio.imagen.ImagenServicio;
 import com.tallerwebi.dominio.login.DatosLoginConductor;
 import com.tallerwebi.dominio.login.LoginServicio;
@@ -21,6 +22,7 @@ public class ControladorLoginTest {
 	private LoginControlador controladorLogin;
 	private LoginServicio servicioLoginMock;
 	private ImagenServicio servicioImagenMock;
+	private ConductorServicio servicioConductorMock;
 	private Conductor usuarioMock;
 	private DatosLoginConductor datosLoginMock;
 
@@ -31,8 +33,9 @@ public class ControladorLoginTest {
 		sessionMock = mock(HttpSession.class);
 		servicioLoginMock = mock(LoginServicio.class);
 		servicioImagenMock = mock(ImagenServicio.class);
+		servicioConductorMock = mock(ConductorServicio.class);
 		when(requestMock.getSession()).thenReturn(sessionMock);
-		controladorLogin = new LoginControlador(servicioLoginMock, servicioImagenMock);
+		controladorLogin = new LoginControlador(servicioLoginMock, servicioImagenMock, servicioConductorMock);
 		usuarioMock = mock(Conductor.class);
 		when(usuarioMock.getNombreUsuario()).thenReturn("b");
 		when(usuarioMock.getPassword()).thenReturn("b");  // Establecer una contraseña válida

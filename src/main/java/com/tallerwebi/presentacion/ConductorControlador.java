@@ -124,21 +124,6 @@ public class ConductorControlador {
         return new ModelAndView("redirect:/perfil");
     }
 
-//    @PostMapping("/subir-foto")
-//    public ModelAndView subirFoto(@RequestParam("imagenInput") MultipartFile fotoCargada, HttpSession session) {
-//        try {
-//            Integer idUsuario = (Integer) session.getAttribute("IDUSUARIO");
-//            if (fotoCargada != null && !fotoCargada.isEmpty()) {
-//                Conductor conductor = conductorServicio.obtenerConductorPorId(idUsuario);
-//                conductor.setImagenPerfil(Base64.getEncoder().encode(fotoCargada.getBytes()));
-//                conductorServicio.editarConductor(conductor);
-//            }
-//            return new ModelAndView("redirect:/perfil");
-//        } catch (Exception e) {
-//            return new ModelAndView("redirect:/foto-perfil");
-//        }
-//    }
-
     @PostMapping("/subir-foto")
     public ModelAndView subirFoto(@RequestParam("imagenPerfil") MultipartFile imagen, HttpSession session) throws ConductorNoEncontradoException, IOException {
 
