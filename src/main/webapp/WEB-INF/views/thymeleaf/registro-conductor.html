@@ -40,51 +40,53 @@
 <main class="main_registro">
 
 <div class="formulario_fondo">
-    <h1 class="titulo_registroConductor">Registrarme</h1>
-    <form  th:action="@{/registro-conductor}" method="post" th:object="${conductor}">
+    <h1 th:if="${isEditForm}" class="titulo_registroConductor">Editar Datos Personales</h1>
+    <h1 th:unless="${isEditForm}" class="titulo_registroConductor">Registrarme</h1>
+
+    <form id="conductorForm" th:action="${isEditForm ? 'editar-conductor' : 'registro-conductor'}" method="POST" th:object="${conductor}"> <!--th:method="${isEditForm ? 'PUT' : 'POST'}"-->
       <section class="formulario">
         <div class="columna">
             <div>
                 <label for="nombre" class="nombre fuente_formulario_registro">Nombre</label>
-                <input type="text" class="form-control" id="nombre" name="nombre" th:field="*{nombre}" required>
+                <input type="text" class="form-control" id="nombre" name="nombre" th:field="*{nombre}" th:value="${isEditForm ? conductor.nombre : ''}" required>
             </div>
             <div>
                 <label for="apellido" class="apellido fuente_formulario_registro">Apellido</label>
-                <input type="text" class="form-control" id="apellido" name="apellido" th:field="*{apellido}" required>
+                <input type="text" class="form-control" id="apellido" name="apellido" th:field="*{apellido}" th:value="${isEditForm ? conductor.apellido : ''}"required>
             </div>
             <div >
                 <label for="domicilio" class="domicilio fuente_formulario_registro">Domicilio</label>
-                <input type="text" class="form-control" id="domicilio" name="domicilio" th:field="*{domicilio}" required>
+                <input type="text" class="form-control" id="domicilio" name="domicilio" th:field="*{domicilio}" th:value="${isEditForm ? conductor.domicilio : ''}" required>
             </div>
             <div>
                 <label for="nroTelefono" class="telefono fuente_formulario_registro">Número de Teléfono</label>
-                <input type="text" class="form-control" id="nroTelefono" name="nroTelefono" th:field="*{nroTelefono}" required>
+                <input type="text" class="form-control" id="nroTelefono" name="nroTelefono" th:field="*{nroTelefono}" th:value="${isEditForm ? conductor.nroTelefono : ''}" required>
             </div>
             <div>
                 <label for="numeroDeDni" class="dni fuente_formulario_registro">Número de DNI</label>
-                <input type="number" class="form-control" id="numeroDeDni" name="numeroDeDni" th:field="*{numeroDeDni}" required>
+                <input type="number" class="form-control" id="numeroDeDni" name="numeroDeDni" th:field="*{numeroDeDni}" th:value="${isEditForm ? conductor.numeroDeDni : ''}" required>
             </div>
         </div>
         <div class="columna">
             <div>
                 <label for="nombreUsuario" class="nombreUsuario fuente_formulario_registro">Nombre de Usuario</label>
-                <input type="text" class="form-control" id="nombreUsuario" name="nombreUsuario" th:field="*{nombreUsuario}" required>
+                <input type="text" class="form-control" id="nombreUsuario" name="nombreUsuario" th:field="*{nombreUsuario}" th:value="${isEditForm ? conductor.nombreUsuario : ''}" th:readonly="${isEditForm}" required>
             </div>
             <div>
                 <label for="email" class="email fuente_formulario_registro">Email</label>
-                <input type="email" class="form-control" id="email" name="email" th:field="*{email}" required>
+                <input type="email" class="form-control" id="email" name="email" th:field="*{email}" th:value="${isEditForm ? conductor.email : ''}" th:readonly="${isEditForm}" required>
             </div>
             <div>
                 <label for="password" class="password fuente_formulario_registro">Contraseña</label>
-                <input type="password" class="form-control" id="password" name="password" th:field="*{password}" required>
+                <input type="password" class="form-control" id="password" name="password" th:field="*{password}" th:value="${isEditForm ? conductor.password : ''}" required>
             </div>
             <div >
                 <label for="confirmarPassword" class="confirmarPassword fuente_formulario_registro">Confirmar Contraseña</label>
-                <input type="password" class="form-control" id="confirmarPassword" name="confirmarPassword" required>
+                <input type="password" class="form-control" id="confirmarPassword" name="confirmarPassword"  th:value="${isEditForm ? conductor.password : ''}" th:readonly="${isEditForm}" required>
             </div>
             <div>
                 <label for="cvu" class="cvu fuente_formulario_registro">CVU</label>
-                <input type="number" class="form-control" id="cvu" name="cvu" th:field="*{cvu}" required>
+                <input type="number" class="form-control" id="cvu" name="cvu" th:field="*{cvu}" th:value="${isEditForm ? conductor.cvu : ''}" required>
             </div>
         </div>
 
@@ -93,13 +95,16 @@
                 <p th:text="${mensajeError}">Mensaje de error predeterminado</p>
         </section>
         <section class="botones">
-            <a href="home.html" id="boton_cancelar"><button type="button" class="boton_cancelar">Cancelar</button></a>
+            <a th:if="${isEditForm}" th:href="@{/perfil}"><button id="boton_cancelar_edit" type="button" class="boton_cancelar">Cancelar</button></a>
 
-            <button type="submit" class="boton_submit">Ingresar</button>
+            <!-- Botón Cancelar para el modo de ingreso -->
+            <a th:unless="${isEditForm}" href="home.html"><button id="boton_cancelar_ingresar" type="button" class="boton_cancelar">Cancelar</button></a>
+
+            <!-- Botón Ingresar / Editar -->
+            <button th:if="${isEditForm}" type="submit" class="boton_submit">Editar</button>
+            <button th:unless="${isEditForm}" type="submit" class="boton_submit">Ingresar</button>
         </section>
     </form>
-</div>
-
 </div>
 
 </main>
@@ -122,9 +127,9 @@
             }
 
             var dniInput = document.getElementById('numeroDeDni');
+            var dni = parseInt(dniInput.value);
 
             // Validar DNI
-            var dni = parseInt(dniInput.value);
             if (dni < 1000000 || dni > 99999999 || isNaN(dni)) {
                 event.preventDefault();
                 alert('Ingrese un número de DNI válido.');
@@ -132,14 +137,25 @@
             }
         });
 
-        var boton_cancelar = document.getElementById('boton_cancelar');
-        boton_cancelar.addEventListener('click', function(event) {
-            event.preventDefault();
-            window.location.href = boton_cancelar.href;
-        });
+        var botonCancelarEdit = document.getElementById('boton_cancelar_edit');
+        if (botonCancelarEdit) {
+            botonCancelarEdit.addEventListener('click', function(event) {
+                event.preventDefault();
+                window.location.href = botonCancelarEdit.getAttribute('href');
+            });
+        }
+        var botonCancelarIngresar = document.getElementById('boton_cancelar_ingresar');
+        if (botonCancelarIngresar) {
+            botonCancelarIngresar.addEventListener('click', function(event) {
+                event.preventDefault();
+                window.location.href = botonCancelarIngresar.getAttribute('href');
+            });
+        }
+
     });
     /*]]>*/
 </script>
+
 
 
 </html>
