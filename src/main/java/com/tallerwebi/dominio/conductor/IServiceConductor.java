@@ -13,5 +13,5 @@ public interface IServiceConductor {
 
     void borrarConductor(Integer idusuario);
 
-//    void ingresarImagen (MultipartFile imagen, Integer id) throws IOException, ConductorNoEncontradoException;
+    void ingresarImagen (MultipartFile imagen, Integer id) throws IOException, ConductorNoEncontradoException;
 }

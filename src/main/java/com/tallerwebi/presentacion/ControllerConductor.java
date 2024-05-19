@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.util.Base64;
 
 @Controller
@@ -93,12 +94,6 @@ public class ControllerConductor {
         Imagen user = iimageService.getImagenByName("user");
         Conductor conductor = iServiceConductor.obtenerConductorPorId(idUsuario);
 
-        String imagenPerfilBase64 = null;
-        if (conductor.getImagenPerfil() != null) {
-            imagenPerfilBase64 = Base64.getEncoder().encodeToString(conductor.getImagenPerfil());
-        }
-
-        model.put("imagenPerfil", imagenPerfilBase64);
         model.put("logo", logo);
         model.put("user", user);
         model.put("isUsuarioLogueado", isUsuarioLogueado);
@@ -128,19 +123,27 @@ public class ControllerConductor {
         return new ModelAndView("redirect:/perfil");
     }
 
+//    @PostMapping("/subir-foto")
+//    public ModelAndView subirFoto(@RequestParam("imagenInput") MultipartFile fotoCargada, HttpSession session) {
+//        try {
+//            Integer idUsuario = (Integer) session.getAttribute("IDUSUARIO");
+//            if (fotoCargada != null && !fotoCargada.isEmpty()) {
+//                Conductor conductor = iServiceConductor.obtenerConductorPorId(idUsuario);
+//                conductor.setImagenPerfil(Base64.getEncoder().encode(fotoCargada.getBytes()));
+//                iServiceConductor.editarConductor(conductor);
+//            }
+//            return new ModelAndView("redirect:/perfil");
+//        } catch (Exception e) {
+//            return new ModelAndView("redirect:/foto-perfil");
+//        }
+//    }
+
     @PostMapping("/subir-foto")
-    public ModelAndView subirFoto(@RequestParam("imagenInput") MultipartFile fotoCargada, HttpSession session) {
-        try {
-            Integer idUsuario = (Integer) session.getAttribute("IDUSUARIO");
-            if (fotoCargada != null && !fotoCargada.isEmpty()) {
-                Conductor conductor = iServiceConductor.obtenerConductorPorId(idUsuario);
-                conductor.setImagenPerfil(Base64.getEncoder().encode(fotoCargada.getBytes()));
-                iServiceConductor.editarConductor(conductor);
-            }
-            return new ModelAndView("redirect:/perfil");
-        } catch (Exception e) {
-            return new ModelAndView("redirect:/foto-perfil");
-        }
+    public ModelAndView subirFoto(@RequestParam("imagenPerfil") MultipartFile imagen, HttpSession session) throws ConductorNoEncontradoException, IOException {
+
+        Integer idUsuario = (Integer) session.getAttribute("IDUSUARIO");
+        this.iServiceConductor.ingresarImagen(imagen,idUsuario);
+        return new ModelAndView("redirect:/perfil");
     }
 
     @RequestMapping(value="/borrar-cuenta", method = RequestMethod.GET)

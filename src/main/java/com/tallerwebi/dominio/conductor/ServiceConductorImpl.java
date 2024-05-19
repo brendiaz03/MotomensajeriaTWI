@@ -62,17 +62,16 @@ public class ServiceConductorImpl implements IServiceConductor {
         this.iRepositoryConductor.borrarConductor(conductorABorrar);
     }
 
-//    @Override
-//    public void ingresarImagen(MultipartFile imagen, Integer idUsuario) throws IOException, ConductorNoEncontradoException {
-//
-//        Conductor conductor = this.iRepositoryConductor.buscarConductor(idUsuario);
-//        if (conductor!=null){
-//            conductor.setImagenPerfil(Base64.getEncoder().encode(imagen.getBytes()));
-//            this.editarConductor(conductor);
-//
-//        }else{
-//            System.out.println("Error");
-//        }
-//    }
+    @Override
+    public void ingresarImagen(MultipartFile imagen, Integer idUsuario) throws IOException, ConductorNoEncontradoException {
+
+        Conductor conductor = this.iRepositoryConductor.buscarConductor(idUsuario);
+        if (conductor!=null){
+            conductor.setImagenPerfil(Base64.getEncoder().encode(imagen.getBytes()));
+            this.editarConductor(conductor);
+        }else{
+            System.out.println("Error");
+        }
+    }
 
 }
