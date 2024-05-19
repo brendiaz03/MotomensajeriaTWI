@@ -1,0 +1,50 @@
+<!DOCTYPE HTML>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>Motomensajeria</title>
+
+    <!-- Boostrap core css -->
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.0/css/bootstrap.min.css}"/>
+
+    <!-- custom style -->
+
+</head>
+
+<body>
+
+<main role="main" class="container">
+    <div class="container">
+        <div class="card-header">
+            <h1 class="text-center" id="titulo">Tus Viajes</h1>
+        </div>
+        <h2 th:text="${mensaje}"></h2>
+
+
+
+
+        <div class="card mt-3">
+            <div class="card-body" th:each="viaje : ${viajesAceptados}">
+                <div class="card mt-3 ml-3">
+                    <div class="card-body viaje">
+                        <p class="card-text"><b>Salida:</b> <span th:text="${viaje.getDomicilioDeSalida()}"></span></p>
+                        <p class="card-text"><b>Llegada:</b> <span th:text="${viaje.getDomicilioDeLlegada()}"></span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+    </div>
+</main>
+<!-- /.container -->
+
+<!-- Boostrap core js -->
+<script type="text/javascript" th:src="@{webjars/bootstrap/5.2.0/js/bootstrap.min.js}"></script>
+</body>
+</html>

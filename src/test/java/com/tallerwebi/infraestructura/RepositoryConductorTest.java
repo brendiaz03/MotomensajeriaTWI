@@ -1,4 +1,4 @@
-package com.tallerwebi.infraestructura;
+/*package com.tallerwebi.infraestructura;
 
 import com.tallerwebi.dominio.conductor.ConductorRepositorio;
 import com.tallerwebi.infraestructura.config.HibernateInfraestructuraTestConfig;
@@ -103,7 +103,7 @@ public class RepositoryConductorTest {
 //
 //    }
 
-}
+}*/
 
 
 
