@@ -43,17 +43,42 @@
 .formulario{
     display: flex;
     flex-direction: row;
-    gap: 8rem;
+    gap: 3rem;
     align-content: center;
     padding:3%;
     padding-bottom:4%;
+    flex-grow: 1;
 }
 
 .columna{
     display: flex;
-    flex-direction:column;
+    flex-direction: column;
     gap: 3rem; /* Espacio entre las columnas */
-    width: 100%;
+    width: 100%; /* Ocupa a el ancho de la columna */
+    padding: 0 1rem; /* Agrega un relleno horizontal */
+    box-sizing: border-box;
+}
+.imagen_contenedor{
+    max-width: 100%; /* Establece un tamaño máximo */
+    max-height: 100%; /* Establece un tamaño máximo */
+    display: block; /* Asegura que las imágenes se comporten como bloques */
+    margin: auto; /* Centra verticalmente */
+}
+/*.primera-columna {*/
+/*    width: 20%;*/
+/*    flex-basis: 20%;*/
+/*}*/
+
+
+/*.segunda-columna,*/
+/*.tercera-columna {*/
+/*    width:40%;*/
+/*    flex-basis: 40%;*/
+/*}*/
+
+.user_default{
+    width:100%;
+    height:100%;
 }
 
 .titulo_registroConductor {
@@ -91,6 +116,7 @@
     gap: 6rem;
     justify-content:center;
 }
+
 .boton_submit {
     width: 262px;
     height: 67px;
@@ -114,4 +140,9 @@
     background: lightgray;
     color:#FFFFFF;
 }
+
+
+
+
+
 

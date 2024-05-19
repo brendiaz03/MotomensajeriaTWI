@@ -1,13 +1,12 @@
 package com.tallerwebi.dominio.vehiculo;
 
-public class VehiculoExistenteException extends Exception{
 
+public class VehiculoDuplicadoException extends Exception{
     private final String mensajeError;
-
-    public VehiculoExistenteException(String message) {
+    public VehiculoDuplicadoException(String message) {
         this.mensajeError=message;
-    }
 
+    }
     @Override
     public String getMessage() {
         return mensajeError;

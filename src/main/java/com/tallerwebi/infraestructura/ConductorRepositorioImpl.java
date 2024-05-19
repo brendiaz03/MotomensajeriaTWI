@@ -2,7 +2,7 @@ package com.tallerwebi.infraestructura;
 
 import com.tallerwebi.dominio.conductor.Conductor;
 
-import com.tallerwebi.dominio.conductor.IRepositoryConductor;
+import com.tallerwebi.dominio.conductor.ConductorRepositorio;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
 
@@ -10,10 +10,11 @@ import javax.persistence.Query;
 import javax.transaction.Transactional;
 
 @Repository
-public class RepositoryConductorImpl implements IRepositoryConductor {
+public class ConductorRepositorioImpl implements ConductorRepositorio {
 
     private SessionFactory sessionFactory;
-    public RepositoryConductorImpl(SessionFactory sessionFactory) {
+    public ConductorRepositorioImpl(SessionFactory sessionFactory) {
+
         this.sessionFactory=sessionFactory;
     }
     @Override
@@ -33,13 +34,9 @@ public class RepositoryConductorImpl implements IRepositoryConductor {
 
     @Override
     @Transactional
-    public void actualizarConductor(Conductor nuevoConductor) {
-        // this.sessionFactory.getCurrentSession().saveOrUpdate(nuevoConductor);
-        String hql = "UPDATE Conductor SET domicilio=: domicilio WHERE numeroDeDni=:dni";
-        Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
-        query.setParameter("dni", nuevoConductor.getNumeroDeDni());
-        query.setParameter("domicilio", nuevoConductor.getDomicilio());
-        query.executeUpdate(); //Sirve tambien para DELETE
+    public Boolean editarConductor(Conductor conductorEditado) {
+        sessionFactory.getCurrentSession().update(conductorEditado);
+        return true;
     }
 
     @Override
@@ -49,6 +46,15 @@ public class RepositoryConductorImpl implements IRepositoryConductor {
         Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
         query.setParameter("email", email);
         query.setParameter("nombreUsuario", nombreUsuario);
+
         return (Conductor) query.getSingleResult();
     }
+
+    @Override
+    @Transactional
+    public void borrarConductor(Conductor conductorABorrar) {
+           this.sessionFactory.getCurrentSession().delete(conductorABorrar);
+    }
+
+
 }

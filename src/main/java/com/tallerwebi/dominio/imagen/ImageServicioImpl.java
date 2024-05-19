@@ -1,7 +1,5 @@
 package com.tallerwebi.dominio.imagen;
 
-import com.tallerwebi.dominio.conductor.IRepositoryConductor;
-import com.tallerwebi.infraestructura.ImagenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,23 +8,23 @@ import java.util.List;
 
 @Service("servicioImagen")
 @Transactional
-public class ImageService implements IImageService {
+public class ImageServicioImpl implements ImagenServicio {
 
-    private final IImagenRepository iImagenRepository;
+    private final ImagenRepositorio imagenRepositorio;
 
     @Autowired
-    public ImageService(IImagenRepository _IImagenRepository) {
-        this.iImagenRepository = _IImagenRepository;
+    public ImageServicioImpl(ImagenRepositorio _ImagenRepositorio) {
+        this.imagenRepositorio = _ImagenRepositorio;
     }
 
     @Override
     public List<Imagen> obtenerImagenes() {
-        return iImagenRepository.getAllImagenes();
+        return imagenRepositorio.getAllImagenes();
     }
 
     @Override
     public Imagen getImagenByName(String nombre) {
-        List<Imagen> imagenes = iImagenRepository.getAllImagenes();
+        List<Imagen> imagenes = imagenRepositorio.getAllImagenes();
         for (Imagen imagen : imagenes) {
             if (imagen.getNombre().equals(nombre)) {
                 return imagen;

@@ -1,9 +1,7 @@
 package com.tallerwebi.dominio.conductor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.Base64;
 
 @Entity
 public class Conductor {
@@ -17,9 +15,15 @@ public class Conductor {
     private String domicilio;
     private String nroTelefono;
     private String cvu;
+
+    @Lob
+    private byte[] imagenPerfil;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+
 
     public Conductor(String nombre, String apellido, Integer numeroDeDni, String email, String password, String nombreUsuario, String domicilio, String nroTelefono, String cvu) {
         this.nombre=nombre;
@@ -123,5 +127,17 @@ public class Conductor {
 
     public Integer getId() {
         return id;
+    }
+
+    public byte[] getImagenPerfil() {
+        return imagenPerfil;
+    }
+
+    public void setImagenPerfil(byte[] imagenPerfil) {
+        this.imagenPerfil = imagenPerfil;
+    }
+
+    public String getImageDataBase64(){
+        return Base64.getEncoder().encodeToString(Base64.getDecoder().decode(this.imagenPerfil));
     }
 }
