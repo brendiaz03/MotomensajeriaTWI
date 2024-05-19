@@ -76,6 +76,7 @@ public class ConductorControlador {
         model.put("apellidoUsuario", apellido);
         model.put("idUsuario", idUsuario);
         model.put("conductor", conductor );
+
         return new ModelAndView("perfil-conductor",model);
     }
 
@@ -84,6 +85,7 @@ public class ConductorControlador {
         session.setAttribute("isEditForm", true);
         return "redirect:/registro-conductor";
     }
+
     @RequestMapping(path = "/foto-perfil", method = RequestMethod.GET)
     public ModelAndView irAEditarFotoPerfil(HttpSession session) throws ConductorNoEncontradoException {
         ModelMap model = new ModelMap();

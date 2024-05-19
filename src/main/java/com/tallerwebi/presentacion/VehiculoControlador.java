@@ -11,14 +11,14 @@ import org.springframework.web.servlet.ModelAndView;
 
 
 @Controller
-public class VehiculoContolador {
+public class VehiculoControlador {
 
     private ImagenServicio imagenServicio;
 
     private VehiculoServicio vehiculoServicio;
 
     @Autowired
-    public VehiculoContolador(VehiculoServicio vehiculoServicio, ImagenServicio _imagenServicio) {
+    public VehiculoControlador(VehiculoServicio vehiculoServicio, ImagenServicio _imagenServicio) {
 
         this.vehiculoServicio = vehiculoServicio;
 

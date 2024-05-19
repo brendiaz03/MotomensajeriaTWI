@@ -36,7 +36,7 @@ public class LoginControlador {
         ModelMap model = new ModelMap();
         Boolean isUsuarioLogueado = (Boolean) request.getSession().getAttribute("isUsuarioLogueado");
 
-            model.put("isUsuarioLogueado",isUsuarioLogueado);
+        model.put("isUsuarioLogueado",isUsuarioLogueado);
 
         Imagen logo = imagenServicio.getImagenByName("logo");
         model.put("logo", logo);
