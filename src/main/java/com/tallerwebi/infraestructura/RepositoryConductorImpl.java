@@ -14,6 +14,7 @@ public class RepositoryConductorImpl implements IRepositoryConductor {
 
     private SessionFactory sessionFactory;
     public RepositoryConductorImpl(SessionFactory sessionFactory) {
+
         this.sessionFactory=sessionFactory;
     }
     @Override
@@ -52,7 +53,6 @@ public class RepositoryConductorImpl implements IRepositoryConductor {
     @Override
     @Transactional
     public void borrarConductor(Conductor conductorABorrar) {
-
            this.sessionFactory.getCurrentSession().delete(conductorABorrar);
     }
 

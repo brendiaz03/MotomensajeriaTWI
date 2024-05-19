@@ -36,11 +36,13 @@
 <main class="main_registro">
   <div class="formulario_fondo">
     <h1 class="titulo_registroConductor">Editar Foto de Perfil</h1>
-    <form id="conductorForm" th:action="@{/subir-foto}" method="POST" enctype="multipart/form-data">
+    <form id="conductorForm" th:action="@{/subir-foto}" th:object="${conductor}" method="POST" enctype="multipart/form-data">
       <section class="formulario">
         <div class="columna">
           <div class="imagen_contenedor">
-            <img id="imagenPerfil" th:src="${imagenPerfil != null ? imagenPerfil : user.getImagenBase64()}" class="user_default">
+            <img alt="img" th:src="'data:image/jpg;charset=utf-8;base64,' + ${conductor.getImageDataBase64()}"/>
+<!--            <img alt="img" th:src="'data:image/jpg;base64,' + ${conductor.getImagenPerfil()}"/>-->
+<!--            <img id="imagenPerfil" th:src="${conductor.getImagenPerfil() != null ? 'data:image/jpg;base64,' + imagenPerfil : user.getImagenBase64()}" class="user_default">-->
             <img id="imagenNueva" class="user_new" style="display: none; border-radius: 30px">
           </div>
           <div class="contenedor_botones">
@@ -50,7 +52,8 @@
               </button>
             </div>
             <div class="boton_contenedor">
-              <input type="file" name="imagenInput" id="imagenInput" accept="image/*" onchange="previewImage(event)">
+              <input th:field="*{imagenPerfil}" type="file" name="image" accept="image/*" class="form-control-file">
+<!--              <input type="file" name="imagenInput" id="imagenInput" accept="image/*" onchange="previewImage(event)">-->
             </div>
             <div>
               <button type="submit" class="boton_subir_imagen">

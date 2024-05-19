@@ -1,6 +1,7 @@
 package com.tallerwebi.dominio.conductor;
 
 import javax.persistence.*;
+import java.util.Base64;
 
 @Entity
 public class Conductor {
@@ -134,5 +135,9 @@ public class Conductor {
 
     public void setImagenPerfil(byte[] imagenPerfil) {
         this.imagenPerfil = imagenPerfil;
+    }
+
+    public String getImageDataBase64(){
+        return Base64.getEncoder().encodeToString(Base64.getDecoder().decode(this.imagenPerfil));
     }
 }
