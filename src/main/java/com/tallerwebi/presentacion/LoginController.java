@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 
 @Controller
@@ -32,11 +31,13 @@ public class LoginController {
     }
 
     @RequestMapping("/home")
-    public ModelAndView mostrarHome(HttpSession session){
+    public ModelAndView mostrarHome(HttpServletRequest request){
         String viewName= "home";
         ModelMap model = new ModelMap();
-        Boolean isUsuarioLogueado = (Boolean) session.getAttribute("isUsuarioLogueado");
-        model.put("isUsuarioLogueado", isUsuarioLogueado);
+        Boolean isUsuarioLogueado = (Boolean) request.getSession().getAttribute("isUsuarioLogueado");
+
+            model.put("isUsuarioLogueado",isUsuarioLogueado);
+
         Imagen logo = iImageService.getImagenByName("logo");
         model.put("logo", logo);
         Imagen user = iImageService.getImagenByName("user");
@@ -81,6 +82,12 @@ public class LoginController {
 
             }
 
+    }
+
+    @RequestMapping(path = "/cerrar-sesion", method = RequestMethod.GET)
+    public ModelAndView cerrarSesion(HttpServletRequest request) {
+        request.getSession().invalidate(); // Invalida la sesión, lo que equivale a cerrar sesión
+        return mostrarHome(request);
     }
 
 

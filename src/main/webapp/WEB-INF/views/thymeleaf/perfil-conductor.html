@@ -36,6 +36,7 @@
             <a th:href="perfil-conductor" class="btn mx-2">
                 <img th:src="${user.getImagenBase64()}" alt=",,," style="height: 20px;width: 20px">
             </a>
+            <a th:href="@{cerrar-sesion}" class="btn-custom">Cerrar Sesión</a>
         </div>
     </nav>
 </header>
@@ -54,7 +55,7 @@
                 </div>
             </div>
             <div class="card-body">
-                <h5 class="card-title text-center"><span th:text="${conductor.getNombreUsuario()}"></span></h5>
+                <h5 class="card-title text-center"><span th:text="${conductor.getNombre()} + ' ' + ${conductor.getApellido()}"></span></h5>
                 <p class="card-title text-center"><span th:text="${conductor.getEmail()}"></span></p>
 
             </div>
