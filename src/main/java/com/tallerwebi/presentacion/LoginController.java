@@ -15,6 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -86,13 +87,22 @@ public class LoginController {
             }
     }
 
-    @RequestMapping(path = "/aceptar-viaje", method = RequestMethod.POST)
-    public ModelAndView aceptarViaje(@RequestBody Integer idViaje, HttpSession session){
-        ModelMap modelo = new ModelMap();
+    @PostMapping("/viaje/accion")
+    public ModelAndView procesarAccionViaje(@RequestParam("idViaje") Integer idViaje, @RequestParam("accion") String accion, HttpSession session) {
         Integer idConductor = (Integer) session.getAttribute("IDUSUARIO");
+        ModelMap modelo = new ModelMap();
+        List<Viaje> viajes = new ArrayList<>();
+        String mensaje = "";
 
-        String mensaje = this.viajeService.actualizarViajeConElIdDelConductorQueAceptoElViaje(idViaje, idConductor);
+        if ("aceptar".equals(accion)) {
+            viajeService.actualizarViajeConElIdDelConductorQueAceptoElViaje(idViaje, idConductor);
+            viajes = viajeService.obtenerLosViajesAceptadosPorElConductor(idConductor);
+            mensaje = "VIAJE ACEPTADO!";
+        } else {
+            mensaje = "Acción no válida";
+        }
 
+        modelo.put("viajesAceptados", viajes);
         modelo.put("mensaje", mensaje);
 
         return new ModelAndView("viajes", modelo);

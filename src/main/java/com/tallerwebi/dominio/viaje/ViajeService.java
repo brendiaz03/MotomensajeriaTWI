@@ -9,5 +9,7 @@ public interface ViajeService {
 
     List<Viaje> obtenerLasSolicitudesDeViajesPendientes();
 
-    String actualizarViajeConElIdDelConductorQueAceptoElViaje(Integer idViaje, Integer idConductor);
+    Viaje actualizarViajeConElIdDelConductorQueAceptoElViaje(Integer idViaje, Integer idConductor);
+
+    List<Viaje> obtenerLosViajesAceptadosPorElConductor(Integer idConductor);
 }

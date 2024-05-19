@@ -20,13 +20,13 @@
         <div class="card-header">
             <h1 class="text-center" id="titulo">Tus Viajes</h1>
         </div>
-
+        <h2 th:text="${mensaje}"></h2>
 
 
 
 
         <div class="card mt-3">
-            <div class="card-body" th:each="viaje : ${viajesObtenidos}">
+            <div class="card-body" th:each="viaje : ${viajesAceptados}">
                 <div class="card mt-3 ml-3">
                     <div class="card-body viaje">
                         <p class="card-text"><b>Salida:</b> <span th:text="${viaje.getDomicilioDeSalida()}"></span></p>

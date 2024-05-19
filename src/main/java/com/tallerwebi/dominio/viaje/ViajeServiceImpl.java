@@ -22,17 +22,15 @@ public class ViajeServiceImpl implements ViajeService {
     }
 
     public List<Viaje> obtenerLasSolicitudesDeViajesPendientes() {
-        List<Viaje> viajesObtenidos = this.viajeRepository.obtenerLasSolicitudesDeViajesPendientes();
-        return viajesObtenidos;
+        return this.viajeRepository.obtenerLasSolicitudesDeViajesPendientes();
     }
 
-    public String actualizarViajeConElIdDelConductorQueAceptoElViaje(Integer idViaje, Integer idConductor) {
-        Boolean resultado = this.viajeRepository.actualizarViajeAceptadoPorElConductor(idViaje, idConductor);
-        String mensaje = "No se pudo aceptar el viaje";
-        if(resultado){
-            mensaje = "VIAJE ACEPTADO!";
-        }
+    public Viaje actualizarViajeConElIdDelConductorQueAceptoElViaje(Integer idViaje, Integer idConductor) {
+        return this.viajeRepository.actualizarViajeAceptadoPorElConductor(idViaje, idConductor);
+    }
 
-        return mensaje;
+    @Override
+    public List<Viaje> obtenerLosViajesAceptadosPorElConductor(Integer idConductor) {
+        return this.viajeRepository.obtenerLosViajesAceptadosPorElConductor(idConductor);
     }
 }

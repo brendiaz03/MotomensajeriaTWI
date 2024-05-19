@@ -10,5 +10,7 @@ public interface ViajeRepository {
 
     List<Viaje> obtenerLasSolicitudesDeViajesPendientes();
 
-    Boolean actualizarViajeAceptadoPorElConductor(Integer idViaje, Integer idConductor);
+    Viaje actualizarViajeAceptadoPorElConductor(Integer idViaje, Integer idConductor);
+
+    List<Viaje> obtenerLosViajesAceptadosPorElConductor(Integer idConductor);
 }
