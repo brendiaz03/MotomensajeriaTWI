@@ -5,17 +5,17 @@ import com.tallerwebi.dominio.imagen.IImageService;
 import com.tallerwebi.dominio.imagen.Imagen;
 import com.tallerwebi.dominio.login.DatosLoginConductor;
 import com.tallerwebi.dominio.login.ILoginService;
+import com.tallerwebi.dominio.Viaje;
+import com.tallerwebi.dominio.ViajeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 
 @Controller
@@ -24,19 +24,23 @@ public class LoginController {
 
     private static ILoginService iLoginService;
     private static IImageService iImageService;
+    private ViajeService viajeService;
 
     @Autowired
-    public LoginController(ILoginService _iLoginService, IImageService _iImageService){
+    public LoginController(ILoginService _iLoginService, IImageService _iImageService, ViajeService viajeService){
         this.iLoginService = _iLoginService;
         this.iImageService = _iImageService;
+        this.viajeService = viajeService;
     }
 
-    @RequestMapping("/home")
+    @RequestMapping(value = "/home", method = RequestMethod.GET)
     public ModelAndView mostrarHome(HttpSession session){
         String viewName= "home";
         ModelMap model = new ModelMap();
         Boolean isUsuarioLogueado = (Boolean) session.getAttribute("isUsuarioLogueado");
         model.put("isUsuarioLogueado", isUsuarioLogueado);
+        List<Viaje> viajes = viajeService.obtenerLasSolicitudesDeViajesPendientes();
+        model.put("viajes", viajes);
         Imagen logo = iImageService.getImagenByName("logo");
         model.put("logo", logo);
         Imagen user = iImageService.getImagenByName("user");
@@ -80,8 +84,17 @@ public class LoginController {
                 return new ModelAndView("redirect:/login", model);
 
             }
-
     }
 
+    @RequestMapping(path = "/aceptar-viaje", method = RequestMethod.POST)
+    public ModelAndView aceptarViaje(@RequestBody Integer idViaje, HttpSession session){
+        ModelMap modelo = new ModelMap();
+        Integer idConductor = (Integer) session.getAttribute("IDUSUARIO");
 
+        String mensaje = this.viajeService.actualizarViajeConElIdDelConductorQueAceptoElViaje(idViaje, idConductor);
+
+        modelo.put("mensaje", mensaje);
+
+        return new ModelAndView("viajes", modelo);
+    }
 }

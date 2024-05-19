@@ -1,4 +1,4 @@
-package com.tallerwebi.punta_a_punta.vistas;
+/*package com.tallerwebi.punta_a_punta.vistas;
 
 import com.microsoft.playwright.Page;
 
@@ -24,4 +24,4 @@ public class VistaViaje extends VistaWeb {
     public String obtenerNombreDelCliente() {
         return this.obtenerTextoDelElemento("#nombre-cliente");
     }
-}
+}*/

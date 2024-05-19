@@ -43,7 +43,7 @@
 </header>
 <main role="main" class="container ">
 
-  <div class="container">
+  <div class="container" th:unless="${isUsuarioLogueado}">
     <div class="row">
       <div class="col-md-6">
         <div class="contenido d-flex justify-content-center align-items-center mt-lg-3">
@@ -64,10 +64,53 @@
     </div>
   </div>
 
+  <div class="card mt-3" th:if="${isUsuarioLogueado}">
+    <div class="card-body" th:each="viaje : ${viajes}">
+      <div class="card mt-3 ml-3">
+        <div class="card-body viaje">
+          <p class="card-text"><b>Id:</b> <span th:text="${viaje.id}"></span></p>
+          <p class="card-text"><b>Direccion de Salida:</b> <span th:text="${viaje.domicilioDeSalida}"></span></p>
+          <p class="card-text"><b>Direccion de Llegada:</b> <span th:text="${viaje.domicilioDeLlegada}"></span></p>
+          <p class="card-text"><b>Paquete de:</b> <span th:text="${viaje.cliente.nombre}"></span></p>
+          <p class="card-text"><b>Precio:</b> <span th:text="${viaje.precio}"></span></p>
+          <p class="card-text"><b>Codigo postal:</b> <span th:text="${viaje.codigoPostal}"></span></p>
+          <a href="#" id="aceptar-viaje-${viaje.id}" class="btn btn-primary">Aceptar</a>
+          <a href="#" class="btn btn-secondary">Rechazar</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
 </main>
 <!-- /.container -->
 
 <!-- Boostrap core js -->
 <script type="text/javascript" th:src="@{webjars/bootstrap/5.2.0/js/bootstrap.min.js}"></script>
+<script>
+  const botonesAceptar = document.querySelectorAll('.viaje a#aceptar-viaje');
+
+  botonesAceptar.forEach(boton => {
+    boton.addEventListener('click', (event) => {
+      const viajeId = event.target.id.split('-')[2]; // Extrae el ID del viaje del atributo 'id' del botón
+      // Enviar el 'viajeId' al controlador utilizando una solicitud AJAX o una redirección
+      // Ejemplo de solicitud AJAX:
+      fetch('/aceptar-viaje', {
+        method: 'POST',
+        body: JSON.stringify({ viajeId: viajeId }),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+              .then(response => response.json())
+              .then(data => {
+                // Procesar la respuesta del servidor
+                console.log('ID del viaje recibido:', data.viajeId);
+              })
+              .catch(error => console.error('Error al enviar el ID del viaje:', error));
+    });
+  });
+</script>
 </body>
 </html>

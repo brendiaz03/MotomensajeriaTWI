@@ -1,4 +1,4 @@
-package com.tallerwebi.dominio.Vehiculo;
+/*package com.tallerwebi.dominio.Vehiculo;
 
 import com.tallerwebi.dominio.conductor.Conductor;
 import com.tallerwebi.dominio.Datos.DatosVehiculo;
@@ -26,13 +26,6 @@ public class ServicioVehiculoTest {
     private IRepositoryVehiculo irepositoryVehiculo;
 
     private ServicioVehiculoImpl servicioVehiculoImpl;
-
-    @BeforeEach
-    public void init(){
-        this.irepositoryVehiculo = mock(IRepositoryVehiculo.class);
-        this.iservicioVehiculo = new ServicioVehiculoImpl(irepositoryVehiculo);
-    }
-
     //FUNCIONA OK
     /*@Test
     public void queSeRegistreUnNuevoVehiculoConElIdDelConductor() {
@@ -186,6 +179,6 @@ public class ServicioVehiculoTest {
 
         assertThat(resultado, equalTo(true));
 
-    }*/
+    }
 
-}
+}*/

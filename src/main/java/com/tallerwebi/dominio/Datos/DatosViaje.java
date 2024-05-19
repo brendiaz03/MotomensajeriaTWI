@@ -2,9 +2,12 @@ package com.tallerwebi.dominio.Datos;
 
 public class DatosViaje {
 
-    private String nombre;
+    private Integer idViaje;
     private String lugarDeSalida;
     private String lugarDeLlegada;
+    private String nombre;
+    private String precio;
+    private String codigoPostal;
 
     public DatosViaje(String nombre, String lugarDeSalida, String lugarDeLlegada) {
         this.nombre = nombre;
@@ -34,5 +37,29 @@ public class DatosViaje {
 
     public void setLugarDeLlegada(String lugarDeLlegada) {
         this.lugarDeLlegada = lugarDeLlegada;
+    }
+
+    public Integer getIdViaje() {
+        return idViaje;
+    }
+
+    public void setIdViaje(Integer idViaje) {
+        this.idViaje = idViaje;
+    }
+
+    public String getPrecio() {
+        return precio;
+    }
+
+    public void setPrecio(String precio) {
+        this.precio = precio;
+    }
+
+    public String getCodigoPostal() {
+        return codigoPostal;
+    }
+
+    public void setCodigoPostal(String codigoPostal) {
+        this.codigoPostal = codigoPostal;
     }
 }

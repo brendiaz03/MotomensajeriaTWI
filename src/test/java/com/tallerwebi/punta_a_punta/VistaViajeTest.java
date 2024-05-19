@@ -1,4 +1,4 @@
-package com.tallerwebi.punta_a_punta;
+/*package com.tallerwebi.punta_a_punta;
 
 import com.microsoft.playwright.*;
 import com.tallerwebi.dominio.Viaje;
@@ -84,5 +84,5 @@ public class VistaViajeTest {
         String nombreEsperado = this.vistaViaje.obtenerNombreDelCliente();
         assertThat(nombreEsperado, equalToIgnoringCase("Joaquin"));
     }
-*/
-}
+
+}*/

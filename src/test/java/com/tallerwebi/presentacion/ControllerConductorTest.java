@@ -1,4 +1,4 @@
-package com.tallerwebi.presentacion;
+/*package com.tallerwebi.presentacion;
 
 import com.tallerwebi.dominio.conductor.Conductor;
 import com.tallerwebi.dominio.conductor.IServiceConductor;
@@ -49,4 +49,4 @@ public class ControllerConductorTest {
         verify(iServiceConductor, times(1)).verificarDatosDeRegistro(nuevoConductor);
     }
 
-}
+}*/

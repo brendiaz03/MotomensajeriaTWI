@@ -49,9 +49,6 @@ public class RepositoryConductorImpl implements IRepositoryConductor {
         Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
         query.setParameter("email", email);
         query.setParameter("nombreUsuario", nombreUsuario);
-
         return (Conductor) query.getSingleResult();
     }
-
-
 }

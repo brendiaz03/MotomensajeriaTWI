@@ -1,48 +1,47 @@
 package com.tallerwebi.dominio;
 
+import com.tallerwebi.dominio.cliente.Cliente;
+
 import javax.persistence.*;
 
 @Entity
 public class Viaje {
 
     @Id
-    @GeneratedValue (strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private String lugarDeSalida;
-    private String lugarDeLlegada;
+    private String domicilioDeSalida;
+    private String domicilioDeLlegada;
     private Integer idConductor;
     private Integer idPaquete;
-    private Integer idCliente;
+    private String latitudDeSalida;
+    private String longitudDeSalida;
+    private String latitudDeLlegada;
+    private String longitudDeLlegada;
+    private String codigoPostal;
+    private String precio;
+    private String medioDePago;
 
-    public Viaje(Integer idCliente, Integer idConductor, Integer idPaquete) {
-        this.idCliente = idCliente;
-        this.idConductor = idConductor;
-        this.idPaquete = idPaquete;
-    }
+    @ManyToOne()
+    @JoinColumn(name = "idCliente", referencedColumnName = "id")
+    private Cliente cliente;
 
     public Viaje() {
 
     }
 
-    public Viaje(String direccionDeSalida, String direccionDeLlegada) {
-        this.lugarDeSalida = direccionDeSalida;
-        this.lugarDeLlegada = direccionDeLlegada;
-    }
-
-    public Viaje(Integer idConductor, Integer idPaquete, Integer idCliente, String lugarDeSalida, String lugarDeLlegada) {
+    public Viaje(String domicilioDeSalida, String domicilioDeLlegada, Integer idConductor, Integer idPaquete, String latitudDeSalida, String longitudDeSalida, String latitudDeLlegada, String longitudDeLlegada, String codigoPostal, String precio, String medioDePago) {
+        this.domicilioDeSalida = domicilioDeSalida;
+        this.domicilioDeLlegada = domicilioDeLlegada;
         this.idConductor = idConductor;
         this.idPaquete = idPaquete;
-        this.idCliente = idCliente;
-        this.lugarDeSalida = lugarDeSalida;
-        this.lugarDeLlegada = lugarDeLlegada;
-    }
-
-    public Integer getIdCliente() {
-        return idCliente;
-    }
-
-    public void setIdCliente(Integer idCliente) {
-        this.idCliente = idCliente;
+        this.latitudDeSalida = latitudDeSalida;
+        this.longitudDeSalida = longitudDeSalida;
+        this.latitudDeLlegada = latitudDeLlegada;
+        this.longitudDeLlegada = longitudDeLlegada;
+        this.codigoPostal = codigoPostal;
+        this.precio = precio;
+        this.medioDePago = medioDePago;
     }
 
     public Integer getIdConductor() {
@@ -61,20 +60,20 @@ public class Viaje {
         this.idPaquete = idPaquete;
     }
 
-    public String getLugarDeSalida() {
-        return lugarDeSalida;
+    public String getDomicilioDeSalida() {
+        return domicilioDeSalida;
     }
 
-    public void setLugarDeSalida(String lugarDeSalida) {
-        this.lugarDeSalida = lugarDeSalida;
+    public void setDomicilioDeSalida(String lugarDeSalida) {
+        this.domicilioDeSalida = lugarDeSalida;
     }
 
-    public String getLugarDeLlegada() {
-        return lugarDeLlegada;
+    public String getDomicilioDeLlegada() {
+        return domicilioDeLlegada;
     }
 
-    public void setLugarDeLlegada(String lugarDeLlegada) {
-        this.lugarDeLlegada = lugarDeLlegada;
+    public void setDomicilioDeLlegada(String lugarDeLlegada) {
+        this.domicilioDeLlegada = lugarDeLlegada;
     }
 
     public Integer getId() {
@@ -83,5 +82,69 @@ public class Viaje {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getLatitudDeSalida() {
+        return latitudDeSalida;
+    }
+
+    public void setLatitudDeSalida(String latitudDeSalida) {
+        this.latitudDeSalida = latitudDeSalida;
+    }
+
+    public String getLongitudDeSalida() {
+        return longitudDeSalida;
+    }
+
+    public void setLongitudDeSalida(String longitudDeSalida) {
+        this.longitudDeSalida = longitudDeSalida;
+    }
+
+    public String getLatitudDeLlegada() {
+        return latitudDeLlegada;
+    }
+
+    public void setLatitudDeLlegada(String latitudDeLlegada) {
+        this.latitudDeLlegada = latitudDeLlegada;
+    }
+
+    public String getLongitudDeLlegada() {
+        return longitudDeLlegada;
+    }
+
+    public void setLongitudDeLlegada(String longitudDeLlegada) {
+        this.longitudDeLlegada = longitudDeLlegada;
+    }
+
+    public String getCodigoPostal() {
+        return codigoPostal;
+    }
+
+    public void setCodigoPostal(String codigoPostal) {
+        this.codigoPostal = codigoPostal;
+    }
+
+    public String getPrecio() {
+        return precio;
+    }
+
+    public void setPrecio(String precio) {
+        this.precio = precio;
+    }
+
+    public String getMedioDePago() {
+        return medioDePago;
+    }
+
+    public void setMedioDePago(String medioDePago) {
+        this.medioDePago = medioDePago;
+    }
+
+    public Cliente getCliente() {
+        return cliente;
+    }
+
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
     }
 }

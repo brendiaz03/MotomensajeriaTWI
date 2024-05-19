@@ -6,7 +6,6 @@ import com.tallerwebi.dominio.ViajeRepository;
 import com.tallerwebi.dominio.ViajeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -21,30 +20,29 @@ public class ViajeServiceImpl implements ViajeService {
     }
 
     @Override
-    @Transactional
-    public List<Viaje> obtenerViajes() {
+    public List<Viaje> obtenerTodosLosViajesDeLaBaseDeDatos() {
         return this.viajeRepository.obtenerTodosLosViajesDeLaBaseDeDatos();
     }
 
     @Override
-    public Viaje obtenerViajePorIdPaquete(Integer idPaquete) {
-        return this.viajeRepository.ObtenerViajePorIdPaquete(idPaquete);
-    }
-
-    @Override
-    public Viaje obtenerViajePorId(Integer id) {
-        return this.viajeRepository.obtenerViajePorId(id);
-    }
-
-    @Override
-    @Transactional
-    public List<Viaje> obtenerViajesPorIdCliente(Integer idCliente) {
-        return this.viajeRepository.obtenerLosViajesDeUnCliente(idCliente);
-    }
-
-    @Override
-    @Transactional
     public List<DatosViaje> obtenerLosViajesAceptadosPorElConductor(Integer idCliente) {
         return this.viajeRepository.obtenerLosViajesAceptadosPorElConductor(idCliente);
+    }
+
+    @Override
+    public List<Viaje> obtenerLasSolicitudesDeViajesPendientes() {
+        List<Viaje> viajesObtenidos = this.viajeRepository.obtenerLasSolicitudesDeViajesPendientes();
+        return viajesObtenidos;
+    }
+
+    @Override
+    public String actualizarViajeConElIdDelConductorQueAceptoElViaje(Integer idViaje, Integer idConductor) {
+        Boolean resultado = this.viajeRepository.actualizarViajeAceptadoPorElConductor(idViaje, idConductor);
+        String mensaje = "No se pudo aceptar el viaje";
+        if(resultado){
+            mensaje = "VIAJE ACEPTADO!";
+        }
+
+        return mensaje;
     }
 }

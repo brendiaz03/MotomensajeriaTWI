@@ -5,15 +5,12 @@ import com.tallerwebi.dominio.Datos.DatosViaje;
 import java.util.List;
 
 public interface ViajeRepository {
-    void guardarViaje(Viaje viaje);
 
     List<Viaje> obtenerTodosLosViajesDeLaBaseDeDatos();
 
-    Viaje ObtenerViajePorIdPaquete(Integer idPaquete);
-
-    Viaje obtenerViajePorId(Integer id);
-
-    List<Viaje> obtenerLosViajesDeUnCliente(Integer idCliente);
-
     List<DatosViaje> obtenerLosViajesAceptadosPorElConductor(Integer idCliente);
+
+    List<Viaje> obtenerLasSolicitudesDeViajesPendientes();
+
+    Boolean actualizarViajeAceptadoPorElConductor(Integer idViaje, Integer idConductor);
 }
