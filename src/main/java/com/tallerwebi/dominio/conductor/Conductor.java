@@ -1,19 +1,30 @@
 package com.tallerwebi.dominio.conductor;
 
+import com.tallerwebi.dominio.vehiculo.Vehiculo;
+
 import javax.persistence.*;
 import java.util.Base64;
 
 @Entity
 public class Conductor {
 
+    @Column(name = "nombre")
     private String nombre;
+    @Column(name = "apellido")
     private String apellido;
+    @Column(name = "numeroDeDni")
     private Integer numeroDeDni;
+    @Column(name = "email")
     private String email;
+    @Column(name = "password")
     private String password;
+    @Column(name = "nombreUsuario")
     private String nombreUsuario;
+    @Column(name = "domicilio")
     private String domicilio;
+    @Column(name = "nroTelefono")
     private String nroTelefono;
+    @Column(name = "cvu")
     private String cvu;
 
     @Lob
@@ -23,7 +34,8 @@ public class Conductor {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-
+    @OneToOne(mappedBy = "conductor", cascade = CascadeType.ALL)
+    private Vehiculo vehiculo;
 
     public Conductor(String nombre, String apellido, Integer numeroDeDni, String email, String password, String nombreUsuario, String domicilio, String nroTelefono, String cvu) {
         this.nombre=nombre;
@@ -121,12 +133,12 @@ public class Conductor {
         this.cvu = cvu;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
     public Integer getId() {
         return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public byte[] getImagenPerfil() {
@@ -139,5 +151,13 @@ public class Conductor {
 
     public String getImageDataBase64(){
         return Base64.getEncoder().encodeToString(Base64.getDecoder().decode(this.imagenPerfil));
+    }
+
+    public Vehiculo getVehiculo() {
+        return vehiculo;
+    }
+
+    public void setVehiculo(Vehiculo vehiculo) {
+        this.vehiculo = vehiculo;
     }
 }

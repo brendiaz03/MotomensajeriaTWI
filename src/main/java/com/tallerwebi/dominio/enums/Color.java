@@ -1,6 +1,6 @@
 package com.tallerwebi.dominio.enums;
 
-public enum ColorVehiculo{
+public enum Color {
     NEGRO,
     BLANCO,
     GRIS,

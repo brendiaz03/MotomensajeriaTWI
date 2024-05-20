@@ -1,4 +1,7 @@
 package com.tallerwebi.presentacion;
+import com.tallerwebi.dominio.conductor.Conductor;
+import com.tallerwebi.dominio.conductor.ConductorNoEncontradoException;
+import com.tallerwebi.dominio.conductor.ConductorServicio;
 import com.tallerwebi.dominio.imagen.ImagenServicio;
 import com.tallerwebi.dominio.imagen.Imagen;
 import com.tallerwebi.dominio.vehiculo.VehiculoServicio;
@@ -9,6 +12,8 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpSession;
+
 
 @Controller
 public class VehiculoControlador {
@@ -17,40 +22,72 @@ public class VehiculoControlador {
 
     private VehiculoServicio vehiculoServicio;
 
+    private ConductorServicio conductorServicio;
+
     @Autowired
-    public VehiculoControlador(VehiculoServicio vehiculoServicio, ImagenServicio _imagenServicio) {
+    public VehiculoControlador(VehiculoServicio vehiculoServicio, ImagenServicio _imagenServicio, ConductorServicio _conductorServicio) {
 
         this.vehiculoServicio = vehiculoServicio;
 
         this.imagenServicio = _imagenServicio;
 
+        this.conductorServicio = _conductorServicio;
+
     }
 
     @RequestMapping(path = "/vehiculo", method = RequestMethod.GET)
-    public ModelAndView mostrarRegistroDelVehiculo() {
-
-        String viewName = "registro-vehiculo";
+    public ModelAndView mostrarRegistroDelVehiculo(HttpSession session) throws ConductorNoEncontradoException {
 
         ModelMap model = new ModelMap();
-        model.put("message", "Bienvenido a su vehiculo");
-        model.put("vehiculo", new Vehiculo());
         Imagen logo = imagenServicio.getImagenByName("logo");
         model.put("logo", logo);
         Imagen user = imagenServicio.getImagenByName("user");
         model.put("user", user);
 
-        return new ModelAndView(viewName, model);
+        String viewName = "registro-vehiculo";
+
+        Boolean editar = (Boolean) session.getAttribute("isEditForm");
+        model.put("editar", editar);
+        Conductor conductor = conductorServicio.obtenerConductorPorId( (Integer) session.getAttribute("IDUSUARIO"));
+
+        if (editar) {
+            model.put("vehiculo", vehiculoServicio.getVehiculoByIdConductor(conductor));
+
+            return new ModelAndView(viewName, model);
+        }else {
+
+            model.put("vehiculo", new Vehiculo());
+
+            return new ModelAndView(viewName, model);
+        }
     }
 
     @PostMapping("/registro-vehiculo")
-    public ModelAndView registrarVehiculo(@ModelAttribute("vehiculo") Vehiculo nuevoVehiculo) {
+    public ModelAndView registrarVehiculo(@ModelAttribute("vehiculo") Vehiculo nuevoVehiculo, HttpSession session) throws ConductorNoEncontradoException {
        ModelMap model = new ModelMap();
-               if(vehiculoServicio.registrarVehiculoSiPatenteNoEstaYaCargada(nuevoVehiculo)){
-                   return new ModelAndView("redirect:/home");
+
+       nuevoVehiculo.setConductor(conductorServicio.obtenerConductorPorId((Integer)session.getAttribute("IDUSUARIO")));
+
+       Boolean editar = (Boolean) session.getAttribute("isEditForm");
+
+       if(editar){
+           nuevoVehiculo.setId((Long)session.getAttribute("idVehiculo"));
+           vehiculoServicio.EditarVehiculo(nuevoVehiculo);
+           return new ModelAndView("redirect:/perfil");
+       }else{
+           if(vehiculoServicio.registrarVehiculoSiPatenteNoEstaYaCargada(nuevoVehiculo)){
+               return new ModelAndView("redirect:/home");
            }else{
-                   model.put("error", "Patente Repetida");
-                   return new ModelAndView("redirect:/registro-vehiculo", model);
-               }
+               model.put("error", "Patente Repetida");
+               return new ModelAndView("redirect:/registro-vehiculo", model);
+           }
+       }
+    }
+
+    @RequestMapping(value = "/editar-vehiculo", method = RequestMethod.GET)
+    public String mostrarEditarVehiculo(HttpSession session) {
+        session.setAttribute("isEditForm", true);
+        return "redirect:/vehiculo";
     }
 
 }

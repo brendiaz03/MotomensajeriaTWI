@@ -1,4 +1,5 @@
 package com.tallerwebi.dominio.vehiculo;
+import com.tallerwebi.dominio.conductor.Conductor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,8 +14,6 @@ public class VehiculoServicioImpl implements VehiculoServicio {
     }
     @Override
     public Boolean registrarVehiculoSiPatenteNoEstaYaCargada(Vehiculo vehiculo) {
-        System.out.println(vehiculo.getPatente());
-
         Vehiculo buscado = vehiculoRepositorio.buscarVehiculoPorPatente(vehiculo.getPatente());
         if (buscado != null) {
             return false;
@@ -22,6 +21,16 @@ public class VehiculoServicioImpl implements VehiculoServicio {
             vehiculoRepositorio.registrarVehiculo(vehiculo);
             return true;
         }
+    }
+
+    @Override
+    public Vehiculo getVehiculoByIdConductor(Conductor conductor) {
+        return vehiculoRepositorio.buscarVehiculoPorIdConductor(conductor);
+    }
+
+    @Override
+    public void EditarVehiculo(Vehiculo vehiculo) {
+        vehiculoRepositorio.actualizarVehiculo(vehiculo);
     }
 }
 

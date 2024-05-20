@@ -6,7 +6,7 @@ import com.tallerwebi.dominio.conductor.ConductorServicio;
 import com.tallerwebi.dominio.conductor.ConductorServicioServicioImpl;
 import com.tallerwebi.dominio.imagen.ImagenServicio;
 import com.tallerwebi.dominio.imagen.Imagen;
-import com.tallerwebi.dominio.login.DatosLoginConductor;
+import com.tallerwebi.presentacion.Datos.DatosLoginConductor;
 import com.tallerwebi.dominio.login.LoginServicio;
 import com.tallerwebi.dominio.viaje.Viaje;
 import com.tallerwebi.dominio.viaje.ViajeService;
