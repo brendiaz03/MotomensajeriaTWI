@@ -1,4 +1,4 @@
-package com.tallerwebi.dominio.login;
+package com.tallerwebi.presentacion.Datos;
 
 public class DatosLoginConductor {
     private String usuario;

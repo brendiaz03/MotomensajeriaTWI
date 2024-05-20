@@ -3,7 +3,7 @@ package com.tallerwebi.presentacion;
 import com.tallerwebi.dominio.conductor.Conductor;
 import com.tallerwebi.dominio.conductor.ConductorServicio;
 import com.tallerwebi.dominio.imagen.ImagenServicio;
-import com.tallerwebi.dominio.login.DatosLoginConductor;
+import com.tallerwebi.presentacion.Datos.DatosLoginConductor;
 import com.tallerwebi.dominio.login.LoginServicio;
 import com.tallerwebi.dominio.viaje.ViajeService;
 import org.junit.jupiter.api.BeforeEach;

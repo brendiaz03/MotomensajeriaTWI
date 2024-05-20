@@ -44,22 +44,6 @@
             <section class="formulario">
                 <div class="columna">
                     <div>
-                        <label for="patente" class="apellido fuente_formulario_registro">Patente</label>
-                        <input type="text" class="form-control" id="patente" name="patente" th:field="*{patente}" required>
-                    </div>
-
-                    <div> <label for="color" class="nombre fuente_formulario_registro">Color</label><br>
-                        <input type="text" class="form-control" id="color" name="color" th:field="*{color}" required>
-
-                    </div>
-
-                    <div>
-                        <label for="modelo" class="nombre fuente_formulario_registro">Modelo</label><br>
-                        <input type="text" class="form-control" id="modelo" name="modelo" th:field="*{modelo}" required>
-
-                    </div>
-
-                    <div>
                         <label for="tipoDeVehiculo" class="nombre fuente_formulario_registro">Tipo de Vehículo</label><br>
                         <br>
                         <select id="tipoDeVehiculo" class="form-control" th:field="*{tipoDeVehiculo}">
@@ -68,14 +52,35 @@
                             </option>
                         </select>
                     </div>
+
+                    <div>
+                        <label for="modelo" class="nombre fuente_formulario_registro">Modelo</label><br>
+                        <select class="form-control" id="modelo" th:field="*{modelo}">
+                        <option th:each="tipo : ${T(com.tallerwebi.dominio.enums.ModeloVehiculo).values()}"
+                                th:value="${tipo}" th:text="${tipo}">
+                        </option>
+                        </select>
+                    </div>
+                    <div> <label for="color" class="nombre fuente_formulario_registro">Color</label><br>
+<!--                        <input type="text" class="form-control" id="color" name="color" th:field="*{color}" required>-->
+                        <select class="form-control" id="color" th:field="*{color}">
+                            <option th:each="tipo : ${T(com.tallerwebi.dominio.enums.Color).values()}"
+                                    th:value="${tipo}" th:text="${tipo}">
+                            </option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="patente" class="apellido fuente_formulario_registro">Patente</label>
+                        <input type="text" class="form-control" id="patente" name="patente" th:field="*{patente}" th:readonly="${editar}" required>
+                    </div>
                     <div class="columna">
                         <div>
-                            <label for="pesoSoportado" class="nombreUsuario fuente_formulario_registro">Peso Soportado por el Vehículo</label>
-                            <input type="text" class="form-control" id="pesoSoportado" name="pesoSoportado" th:field="*{pesoSoportado}" required>
+                            <label for="pesoSoportado" class="nombreUsuario fuente_formulario_registro">Peso Soportado</label>
+                            <input type="text" class="form-control" id="pesoSoportado" name="pesoSoportado" th:field="*{pesoSoportado}">
                         </div>
                         <div>
-                            <label for="dimensionDisponible" class="email fuente_formulario_registro">Dimension Disponible del Vehículo</label>
-                            <input type="text" class="form-control" id="dimensionDisponible" name="dimensionDisponible" th:field="*{dimensionDisponible}" required>
+                            <label for="dimensionDisponible" class="email fuente_formulario_registro">Dimension Disponible</label>
+                            <input type="text" class="form-control" id="dimensionDisponible" name="dimensionDisponible" th:field="*{dimensionDisponible}">
                         </div>
 
                     </div>

@@ -2,6 +2,7 @@ package com.tallerwebi.presentacion;
 
 import com.tallerwebi.dominio.conductor.ConductorServicio;
 import com.tallerwebi.dominio.imagen.ImagenServicio;
+import com.tallerwebi.dominio.vehiculo.VehiculoServicio;
 import org.junit.jupiter.api.BeforeEach;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -13,12 +14,15 @@ public class ConductorControladorTest {
    private ConductorControlador conductorControlador;
    private ConductorServicio conductorServicio;
    private ImagenServicio iimageService;
- 
-   @BeforeEach //antes que ejecuten los test, se ejecute este método (como un constructor de test)
+    private VehiculoServicio vehiculoServicio;
+
+
+    @BeforeEach //antes que ejecuten los test, se ejecute este método (como un constructor de test)
    public void init() throws Exception {
        this.conductorServicio = mock(ConductorServicio.class);
-       this.iimageService= mock(ImagenServicio.class);//con el mock solamente probaria los métodos de controlador y nada más (obvio que depende de en que instancia lo pruebe xd
-       this.conductorControlador = new ConductorControlador(this.conductorServicio, this.iimageService);
+        this.vehiculoServicio = mock(VehiculoServicio.class);
+        this.iimageService= mock(ImagenServicio.class);//con el mock solamente probaria los métodos de controlador y nada más (obvio que depende de en que instancia lo pruebe xd
+       this.conductorControlador = new ConductorControlador(this.conductorServicio, this.iimageService, this.vehiculoServicio);
 
    }
 
