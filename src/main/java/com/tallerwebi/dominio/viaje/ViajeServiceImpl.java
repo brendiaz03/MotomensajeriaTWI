@@ -1,6 +1,5 @@
 package com.tallerwebi.dominio.viaje;
 
-import com.tallerwebi.dominio.Datos.DatosViaje;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -3,6 +3,8 @@ package com.tallerwebi.presentacion;
 import com.tallerwebi.dominio.conductor.*;
 import com.tallerwebi.dominio.imagen.ImagenServicio;
 import com.tallerwebi.dominio.imagen.Imagen;
+import com.tallerwebi.dominio.vehiculo.Vehiculo;
+import com.tallerwebi.dominio.vehiculo.VehiculoServicio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -19,14 +21,17 @@ import java.io.IOException;
 public class ConductorControlador {
     private ConductorServicio conductorServicio;
     private ImagenServicio iimageService;
+    private VehiculoServicio vehiculoService;
+
 
     @Autowired
-    public ConductorControlador(ConductorServicio conductorServicio, ImagenServicio imageService) {
+    public ConductorControlador(ConductorServicio conductorServicio, ImagenServicio imageService, VehiculoServicio _vehiculoService) {
         this.conductorServicio = conductorServicio;
         this.iimageService=imageService;
+        this.vehiculoService=_vehiculoService;
     }
     @RequestMapping(value = "/registro-conductor", method = RequestMethod.GET)
-    public ModelAndView mostrarRegistroConductor(String mensajeError, HttpSession session) throws ConductorNoEncontradoException {
+    public ModelAndView mostrarFormConductor(String mensajeError, HttpSession session) throws ConductorNoEncontradoException {
 
         String viewName= "registro-conductor";
         ModelMap model = new ModelMap();
@@ -68,6 +73,7 @@ public class ConductorControlador {
         Imagen logo = iimageService.getImagenByName("logo");
         Imagen user = iimageService.getImagenByName("user");
         Conductor conductor = conductorServicio.obtenerConductorPorId(idUsuario);
+        Vehiculo vehiculo = vehiculoService.getVehiculoByIdConductor(conductor);
 
         model.put("logo", logo);
         model.put("user", user);
@@ -75,7 +81,10 @@ public class ConductorControlador {
         model.put("nombreUsuario", nombre);
         model.put("apellidoUsuario", apellido);
         model.put("idUsuario", idUsuario);
+        session.setAttribute("idVehiculo", vehiculo.getId());
         model.put("conductor", conductor );
+        model.put("vehiculo", vehiculo );
+
 
         return new ModelAndView("perfil-conductor",model);
     }
@@ -106,13 +115,15 @@ public class ConductorControlador {
     @PostMapping("/registro-conductor")
     public ModelAndView registrarConductor(@ModelAttribute("conductor") Conductor nuevoConductor, HttpSession session) throws Exception {
         try {
-            if(conductorServicio.verificarDatosDeRegistro(nuevoConductor)){
+            Conductor registrado = conductorServicio.verificarDatosDeRegistro(nuevoConductor);
+            if(registrado != null){
+                session.setAttribute("IDUSUARIO", registrado.getId());
                 return new ModelAndView("redirect:/vehiculo");
             }
         } catch (ConductorDuplicadoException e) {
-            return this.mostrarRegistroConductor(e.getMessage(),session);
+            return this.mostrarFormConductor(e.getMessage(),session);
         }
-        return this.mostrarRegistroConductor("Se ha producido un error en el servidor.",session);
+        return this.mostrarFormConductor("Se ha producido un error en el servidor.",session);
     }
 
     @PostMapping("/editar-conductor")

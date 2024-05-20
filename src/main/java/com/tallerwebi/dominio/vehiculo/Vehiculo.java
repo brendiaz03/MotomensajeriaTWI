@@ -1,5 +1,6 @@
 package com.tallerwebi.dominio.vehiculo;
 
+import com.tallerwebi.dominio.conductor.Conductor;
 import com.tallerwebi.dominio.enums.TipoVehiculo;
 
 import javax.persistence.*;
@@ -30,21 +31,30 @@ public class Vehiculo {
     @Column(name = "dimensionDisponible")
     private double dimensionDisponible;
 
-    @Column(name = "idConductor")
-    private Integer idConductor;
+    @OneToOne
+    @JoinColumn(name = "idConductor")
+    private Conductor conductor;
 
-    public Vehiculo(String patente, String color, String modelo, TipoVehiculo tipoDeVehiculo, double pesoSoportado, double dimensionDisponible, Integer idConductor) {
+
+    public Vehiculo(String patente, String color, String modelo, TipoVehiculo tipoDeVehiculo, double pesoSoportado, double dimensionDisponible) {
         this.patente = patente;
         this.color = color;
         this.modelo = modelo;
         this.tipoDeVehiculo = tipoDeVehiculo;
         this.pesoSoportado = pesoSoportado;
         this.dimensionDisponible = dimensionDisponible;
-        this.idConductor = idConductor;
     }
 
     public Vehiculo() {
 
+    }
+
+    public Conductor getConductor() {
+        return conductor;
+    }
+
+    public void setConductor(Conductor conductor) {
+        this.conductor = conductor;
     }
 
     public Long getId() {
@@ -103,12 +113,10 @@ public class Vehiculo {
         this.dimensionDisponible = dimensionDisponible;
     }
 
-    public Integer getIdConductor() {
-        return idConductor;
+    public double getDimensionCuadrada() {
+        return Math.pow(this.dimensionDisponible, 2);
     }
 
-    public void setIdConductor(Integer idConductor) {
-        this.idConductor = idConductor;
-    }
+
 }
 
