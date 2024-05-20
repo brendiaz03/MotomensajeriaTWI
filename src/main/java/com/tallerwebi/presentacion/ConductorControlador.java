@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.annotation.MultipartConfig;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
@@ -138,6 +139,8 @@ public class ConductorControlador {
         conductorServicio.borrarConductor((Integer) session.getAttribute("IDUSUARIO"));
         //cerrar-sesion
 
-        return new ModelAndView("redirect:/home");
+        return new ModelAndView("redirect:/cerrar-sesion");
     }
+
+
 }
