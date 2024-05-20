@@ -101,12 +101,13 @@
                 <h5 class="card-title text-center p-2"><strong>Vehículo</strong></h5>
                 <div class="d-flex justify-content-between pt-3">
                     <p class="card-text"><strong>Información del Vehículo</strong></p>
-                    <a href="#"><i class="fa-solid fa-pen-to-square" style="color: #36054E; transition: color 0.3s;" onmouseover="this.style.color='purple'" onmouseout="this.style.color='#36054E'"></i></a>
+                    <a th:href="@{editar-vehiculo}"><i class="fa-solid fa-pen-to-square" style="color: #36054E; transition: color 0.3s;" onmouseover="this.style.color='purple'" onmouseout="this.style.color='#36054E'"></i></a>
                 </div>
             </div>
             <div class="card-body">
-                <p><strong>Patente</strong></p>
-                <p>ABC 123</p>
+                <p>Patente: <strong th:text="${vehiculo.getPatente()}"></strong></p>
+                <p>Modelo: <strong th:text="${vehiculo.getModelo()}"></strong></p>
+                <p>Color: <strong th:text="${vehiculo.getColor()}"></strong></p>
             </div>
         </div>
 

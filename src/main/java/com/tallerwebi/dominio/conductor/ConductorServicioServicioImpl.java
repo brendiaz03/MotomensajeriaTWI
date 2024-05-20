@@ -19,13 +19,12 @@ public class ConductorServicioServicioImpl implements ConductorServicio {
     }
 
     @Override
-    public Boolean verificarDatosDeRegistro(Conductor nuevoConductor) throws  ConductorDuplicadoException {
+    public Conductor verificarDatosDeRegistro(Conductor nuevoConductor) throws  ConductorDuplicadoException {
         try{
             this.conductorRepositorio.buscarDuplicados(nuevoConductor.getEmail(),nuevoConductor.getNombreUsuario());
             throw new ConductorDuplicadoException("E-mail o Usuario Duplicado");
         }catch(NoResultException e){
-            this.conductorRepositorio.registrar(nuevoConductor);
-            return true;
+           return this.conductorRepositorio.registrar(nuevoConductor);
         }
 }
 

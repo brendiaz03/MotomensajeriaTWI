@@ -1,4 +1,4 @@
-package com.tallerwebi.dominio.Datos;
+package com.tallerwebi.presentacion.Datos;
 
 public class DatosViaje {
 

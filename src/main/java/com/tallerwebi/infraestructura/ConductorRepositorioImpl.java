@@ -3,6 +3,7 @@ package com.tallerwebi.infraestructura;
 import com.tallerwebi.dominio.conductor.Conductor;
 
 import com.tallerwebi.dominio.conductor.ConductorRepositorio;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
 
@@ -19,8 +20,13 @@ public class ConductorRepositorioImpl implements ConductorRepositorio {
     }
     @Override
     @Transactional
-    public void registrar(Conductor nuevoConductor) {
-        this.sessionFactory.getCurrentSession().save(nuevoConductor);
+    public Conductor registrar(Conductor nuevoConductor) {
+
+//        this.sessionFactory.getCurrentSession().save(nuevoConductor);
+        Session session = this.sessionFactory.getCurrentSession();
+        session.save(nuevoConductor);
+        Integer idConductorGuardado = (Integer) session.getIdentifier(nuevoConductor);
+        return session.get(Conductor.class, idConductorGuardado);
     }
 
     @Override
