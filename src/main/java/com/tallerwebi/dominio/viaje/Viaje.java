@@ -12,10 +12,10 @@ public class Viaje {
     private Integer id;
     private String domicilioDeSalida;
     private String domicilioDeLlegada;
-    private String latitudDeSalida;
-    private String longitudDeSalida;
-    private String latitudDeLlegada;
-    private String longitudDeLlegada;
+    private Double latitudDeSalida;
+    private Double longitudDeSalida;
+    private Double latitudDeLlegada;
+    private Double longitudDeLlegada;
     private String codigoPostal;
     private String precio;
     private String medioDePago;
@@ -29,7 +29,7 @@ public class Viaje {
 
     }
 
-    public Viaje(String domicilioDeSalida, String domicilioDeLlegada, String latitudDeSalida, String longitudDeSalida, String latitudDeLlegada, String longitudDeLlegada, String codigoPostal, String precio, String medioDePago, Cliente cliente) {
+    public Viaje(String domicilioDeSalida, String domicilioDeLlegada, Double latitudDeSalida, Double longitudDeSalida, Double latitudDeLlegada, Double longitudDeLlegada, String codigoPostal, String precio, String medioDePago, Integer idConductor, Cliente cliente) {
         this.domicilioDeSalida = domicilioDeSalida;
         this.domicilioDeLlegada = domicilioDeLlegada;
         this.latitudDeSalida = latitudDeSalida;
@@ -39,6 +39,7 @@ public class Viaje {
         this.codigoPostal = codigoPostal;
         this.precio = precio;
         this.medioDePago = medioDePago;
+        this.idConductor = idConductor;
         this.cliente = cliente;
     }
 
@@ -66,35 +67,35 @@ public class Viaje {
         this.domicilioDeSalida = domicilioDeSalida;
     }
 
-    public String getLatitudDeSalida() {
+    public Double getLatitudDeSalida() {
         return latitudDeSalida;
     }
 
-    public void setLatitudDeSalida(String latitudDeSalida) {
+    public void setLatitudDeSalida(Double latitudDeSalida) {
         this.latitudDeSalida = latitudDeSalida;
     }
 
-    public String getLongitudDeSalida() {
+    public Double getLongitudDeSalida() {
         return longitudDeSalida;
     }
 
-    public void setLongitudDeSalida(String longitudDeSalida) {
+    public void setLongitudDeSalida(Double longitudDeSalida) {
         this.longitudDeSalida = longitudDeSalida;
     }
 
-    public String getLatitudDeLlegada() {
+    public Double getLatitudDeLlegada() {
         return latitudDeLlegada;
     }
 
-    public void setLatitudDeLlegada(String latitudDeLlegada) {
+    public void setLatitudDeLlegada(Double latitudDeLlegada) {
         this.latitudDeLlegada = latitudDeLlegada;
     }
 
-    public String getLongitudDeLlegada() {
+    public Double getLongitudDeLlegada() {
         return longitudDeLlegada;
     }
 
-    public void setLongitudDeLlegada(String longitudDeLlegada) {
+    public void setLongitudDeLlegada(Double longitudDeLlegada) {
         this.longitudDeLlegada = longitudDeLlegada;
     }
 

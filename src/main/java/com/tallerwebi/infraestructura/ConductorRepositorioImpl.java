@@ -21,8 +21,6 @@ public class ConductorRepositorioImpl implements ConductorRepositorio {
     @Override
     @Transactional
     public Conductor registrar(Conductor nuevoConductor) {
-
-//        this.sessionFactory.getCurrentSession().save(nuevoConductor);
         Session session = this.sessionFactory.getCurrentSession();
         session.save(nuevoConductor);
         Integer idConductorGuardado = (Integer) session.getIdentifier(nuevoConductor);

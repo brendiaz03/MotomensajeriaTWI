@@ -47,15 +47,15 @@ public class VehiculoControlador {
         String viewName = "registro-vehiculo";
 
         Boolean editar = (Boolean) session.getAttribute("isEditForm");
-        model.put("editar", editar);
         Conductor conductor = conductorServicio.obtenerConductorPorId( (Integer) session.getAttribute("IDUSUARIO"));
 
-        if (editar) {
+        if (editar != null && editar) {
+            model.put("editar", editar);
             model.put("vehiculo", vehiculoServicio.getVehiculoByIdConductor(conductor));
 
             return new ModelAndView(viewName, model);
         }else {
-
+            model.put("editar", false);
             model.put("vehiculo", new Vehiculo());
 
             return new ModelAndView(viewName, model);
@@ -70,7 +70,7 @@ public class VehiculoControlador {
 
        Boolean editar = (Boolean) session.getAttribute("isEditForm");
 
-       if(editar){
+       if(editar != null && editar){
            nuevoVehiculo.setId((Long)session.getAttribute("idVehiculo"));
            vehiculoServicio.EditarVehiculo(nuevoVehiculo);
            return new ModelAndView("redirect:/perfil");
