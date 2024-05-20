@@ -11,6 +11,7 @@ import com.tallerwebi.dominio.login.LoginServicio;
 import com.tallerwebi.dominio.viaje.Viaje;
 import com.tallerwebi.dominio.viaje.ViajeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
@@ -37,6 +38,11 @@ public class LoginControlador {
         this.imagenServicio = _imagenServicio;
         this.conductorServicio = _conductorServicio;
         this.viajeService = viajeService;
+    }
+
+    @RequestMapping("/")
+    public ModelAndView Inicio() {
+        return new ModelAndView("redirect:/home");
     }
 
     @RequestMapping("/home")
@@ -108,26 +114,4 @@ public class LoginControlador {
         request.getSession().invalidate(); // Invalida la sesión, lo que equivale a cerrar sesión
         return mostrarHome(request);
     }
-
-    @PostMapping("/viaje/accion")
-    public ModelAndView procesarAccionViaje(@RequestParam("idViaje") Integer idViaje, @RequestParam("accion") String accion, HttpSession session) {
-        Integer idConductor = (Integer) session.getAttribute("IDUSUARIO");
-        ModelMap modelo = new ModelMap();
-        List<Viaje> viajes = new ArrayList<>();
-        String mensaje = "";
-
-        if ("aceptar".equals(accion)) {
-            viajeService.actualizarViajeConElIdDelConductorQueAceptoElViaje(idViaje, idConductor);
-            viajes = viajeService.obtenerLosViajesAceptadosPorElConductor(idConductor);
-            mensaje = "VIAJE ACEPTADO!";
-        } else {
-            mensaje = "Acción no válida";
-        }
-
-        modelo.put("viajesAceptados", viajes);
-        modelo.put("mensaje", mensaje);
-
-        return new ModelAndView("viajes", modelo);
-    }
-
 }

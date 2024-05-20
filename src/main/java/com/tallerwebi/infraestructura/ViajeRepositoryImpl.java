@@ -69,4 +69,21 @@ public class ViajeRepositoryImpl implements ViajeRepository {
 
         return session.createQuery(criteriaQuery).getResultList();
     }
+
+    @Override
+    @Transactional
+    public Viaje actualizarViajeConElIdDelConductorQueAceptoElViajeYDespuesLoRechaza(Integer idViaje, Integer idConductor) {
+        Session session = this.sessionFactory.getCurrentSession();
+        Viaje viaje = session.get(Viaje.class, idViaje);
+
+        if (viaje != null) {
+            viaje.setIdConductor(null);
+            session.saveOrUpdate(viaje);
+            return viaje;
+        } else {
+            return null;
+        }
+    }
+
+
 }

@@ -1,0 +1,123 @@
+.boton-aceptar:hover {
+    background-color: #eee;
+}
+
+.boton-volver:hover {
+    background-color: #eee;
+}
+
+.boton-aceptar {
+    background-color: forestgreen;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    display: inline-block;
+    cursor: pointer;
+    text-decoration: none;
+    margin: 0 30px;
+}
+
+.boton-volver {
+    background-color: #ed9000;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    display: inline-block;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.contenedor-botones {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-bottom: 35px;
+}
+
+.contenedor-solicitudes{
+    border: none;
+    background-color: transparent;
+}
+
+.titulo-solicitud{
+    margin-top: 40px;
+    color: white;
+}
+
+.boton-verde {
+    background-color: #008cba;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    display: inline-block;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.boton-rojo {
+    background-color: #dc3545;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    display: inline-block;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.boton-rojo:hover {
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    transform: translateY(-1px);
+    color: black;
+    background-color: coral;
+}
+
+.boton-verde:hover {
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    transform: translateY(-1px);
+    color: black;
+    background-color: aqua;
+}
+
+.contenedor-datos-viaje.grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 0 300px;
+    padding: 25px 0;
+    margin: auto;
+    font-size: 20px;
+}
+
+.contenedor-viaje{
+    background-color: lightgrey;
+}
+
+.titulo-viajes{
+    color: white;
+}
+
+.contenedor-viajes{
+    border: none;
+    background-color: transparent;
+}
+
+.contenedor-datos-viajes-aceptados{
+    font-size: 18px;
+    background-color: lightgrey;
+}
+
+.contenedor-boton-cancelar{
+    text-align: center;
+}
+
+.imagen-viaje{
+    background-image: url("imagenes/obelisco.jpg");
+    background-size: cover;
+    background-position: center;
+    height: 800px;
+    text-align: center;
+    margin: 40px 0;
+}
