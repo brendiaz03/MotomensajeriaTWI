@@ -11,6 +11,7 @@ import com.tallerwebi.dominio.login.LoginServicio;
 import com.tallerwebi.dominio.viaje.Viaje;
 import com.tallerwebi.dominio.viaje.ViajeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
@@ -120,7 +121,8 @@ public class LoginControlador {
             viajeService.actualizarViajeConElIdDelConductorQueAceptoElViaje(idViaje, idConductor);
             viajes = viajeService.obtenerLosViajesAceptadosPorElConductor(idConductor);
             mensaje = "VIAJE ACEPTADO!";
-        } else {
+        } else if("rechazar".equals(accion)){
+            viajes = viajeService.obtenerLasSolicitudesDeViajesPendientes();
             mensaje = "Acción no válida";
         }
 

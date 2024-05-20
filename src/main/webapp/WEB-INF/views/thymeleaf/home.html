@@ -72,9 +72,9 @@
   </div>
 
   <div class="card mt-3" th:if="${isUsuarioLogueado}">
-    <div class="card-body" th:each="viaje : ${viajes}">
+    <div class="card-body viaje" th:each="viaje : ${viajes}">
       <div class="card mt-3 ml-3">
-        <div class="card-body viaje">
+        <div class="card-body">
           <p class="card-text"><b>Direccion de Salida:</b> <span th:text="${viaje.domicilioDeSalida}"></span></p>
           <p class="card-text"><b>Direccion de Llegada:</b> <span th:text="${viaje.domicilioDeLlegada}"></span></p>
           <p class="card-text"><b>Paquete de:</b> <span th:text="${viaje.cliente.nombre}"></span></p>
@@ -83,7 +83,8 @@
           <form th:action="@{/viaje/accion}" method="post">
             <input type="hidden" th:name="${'idViaje'}" th:value="${viaje.id}">
             <button type="submit" th:name="${'accion'}" th:value="'aceptar'" class="btn btn-primary">Aceptar</button>
-            <button type="submit" th:name="${'accion'}" th:value="'rechazar'" class="btn btn-secondary">Rechazar</button>
+            <button type="submit" th:name="${'accion'}" th:value="'rechazar'" class="btn btn-secondary" onclick="eliminarViaje(this)">Rechazar</button>
+            <button type="submit" th:name="${'accion'}" th:value="'ver'" class="btn btn-secondary">Ver</button>
           </form>
         </div>
       </div>
@@ -97,7 +98,17 @@
   <p id="distance">Distancia entre conductor y paquete: </p>
 </main>
 <!-- /.container -->
-<script>function getDriverLocation() {
+<script>
+  function eliminarViaje(boton) {
+    // Obtener el div del viaje correspondiente al botón
+    const viajeDiv = boton.closest(".viaje");
+
+    // Eliminar el div del DOM
+    viajeDiv.parentNode.removeChild(viajeDiv);
+
+    }
+
+  function getDriverLocation() {
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(showDriverPosition, showError);
   } else {

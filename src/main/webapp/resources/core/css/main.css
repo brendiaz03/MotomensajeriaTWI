@@ -21,3 +21,9 @@ body {
     color: white; /* Cambiar el color del texto a blanco al pasar el ratón */
     background-color: #870c8a; /* Cambiar el fondo a violeta al pasar el ratón */
 }
+
+.imagen-viaje{
+    background-image: url('imagenes/obelisco.jpg');
+    height: 500px;
+    width: 1000px;
+}
