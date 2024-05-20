@@ -6,6 +6,7 @@
   <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.0/css/bootstrap.min.css}"/>
   <link rel="stylesheet" th:href="@{css/main.css}"/>
   <link rel="stylesheet" th:href="@{css/homeStyle.css}"/>
+  <link rel="stylesheet" th:href="@{css/viajes.css}"/>
   <title>Motomensajeria</title>
 
   <!-- Boostrap core css -->
@@ -31,6 +32,9 @@
         </li>
         <li class="nav-item p-2">
           <a class="nav-link p-2 text-white" href="#">Ayuda</a>
+        </li>
+        <li class="nav-item p-2" th:if="${isUsuarioLogueado}">
+          <a th:href="viajes" class="nav-link p-2 text-white" href="#">Mis Viajes</a>
         </li>
       </ul>
       <a th:unless="${isUsuarioLogueado}" th:href="@{login}" class="btn-custom">Ingresar</a>
@@ -71,42 +75,47 @@
     </div>
   </div>
 
-  <div class="card mt-3" th:if="${isUsuarioLogueado}">
+  <div class="card mt-3 contenedor-solicitudes" th:if="${isUsuarioLogueado}">
+
+    <h1 class="text-center titulo-solicitud">Solicitudes de Viajes</h1>
+
+
     <div class="card-body viaje" th:each="viaje : ${viajes}">
-      <div class="card mt-3 ml-3">
-        <div class="card-body">
+      <div class="card mt-3 ml-3 contenedor-viaje">
+        <div class="card-body contenedor-datos-viaje grid">
           <p class="card-text"><b>Direccion de Salida:</b> <span th:text="${viaje.domicilioDeSalida}"></span></p>
-          <p class="card-text"><b>Direccion de Llegada:</b> <span th:text="${viaje.domicilioDeLlegada}"></span></p>
-          <p class="card-text"><b>Paquete de:</b> <span th:text="${viaje.cliente.nombre}"></span></p>
-          <p class="card-text"><b>Precio:</b> <span th:text="${viaje.precio}"></span></p>
           <p class="card-text"><b>Codigo postal:</b> <span th:text="${viaje.codigoPostal}"></span></p>
-          <form th:action="@{/viaje/accion}" method="post">
-            <input type="hidden" th:name="${'idViaje'}" th:value="${viaje.id}">
-            <button type="submit" th:name="${'accion'}" th:value="'aceptar'" class="btn btn-primary">Aceptar</button>
-            <button type="submit" th:name="${'accion'}" th:value="'rechazar'" class="btn btn-secondary" onclick="eliminarViaje(this)">Rechazar</button>
-            <button type="submit" th:name="${'accion'}" th:value="'ver'" class="btn btn-secondary">Ver</button>
-          </form>
+          <p class="card-text"><b>Direccion de Llegada:</b> <span th:text="${viaje.domicilioDeLlegada}"></span></p>
+          <p class="card-text"><b>Precio: </b> $<span th:text="${viaje.precio}"></span> ARS</p>
+          <p class="card-text"><b>Paquete de:</b> <span th:text="${viaje.cliente.nombre}"></span></p>
         </div>
+
+        <div class="contenedor-botones">
+          <div>
+            <a th:href="@{/ver-viaje(idViaje=${viaje.id})}" class="boton-verde">Ver</a>
+          </div>
+          <div>
+            <a href="#" onclick="eliminarViaje(this)" class="boton-rojo">Rechazar</a>
+          </div>
+        </div>
+
       </div>
     </div>
   </div>
 
-
+  <div th:unless="${isUsuarioLogueado}">
   <h1>Comparar Ubicación del Conductor y Paquete</h1>
   <p id="driverLocation">Ubicación del conductor: </p>
   <p id="packageLocation">Ubicación del paquete: </p>
   <p id="distance">Distancia entre conductor y paquete: </p>
+  </div>
 </main>
 <!-- /.container -->
 <script>
   function eliminarViaje(boton) {
-    // Obtener el div del viaje correspondiente al botón
     const viajeDiv = boton.closest(".viaje");
-
-    // Eliminar el div del DOM
     viajeDiv.parentNode.removeChild(viajeDiv);
-
-    }
+  }
 
   function getDriverLocation() {
   if (navigator.geolocation) {

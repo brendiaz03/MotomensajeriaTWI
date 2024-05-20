@@ -6,6 +6,7 @@
     <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.0/css/bootstrap.min.css}"/>
     <link rel="stylesheet" th:href="@{css/main.css}"/>
     <link rel="stylesheet" th:href="@{css/homeStyle.css}"/>
+    <link rel="stylesheet" th:href="@{css/viajes.css}"/>
     <title>Motomensajeria</title>
 
     <!-- Boostrap core css -->
@@ -32,6 +33,9 @@
                 <li class="nav-item p-2">
                     <a class="nav-link p-2 text-white" href="#">Ayuda</a>
                 </li>
+                <li class="nav-item p-2">
+                    <a th:href="viajes" class="nav-link p-2 text-white" href="#">Mis Viajes</a>
+                </li>
             </ul>
             <a th:unless="${isUsuarioLogueado}" th:href="@{login}" class="btn-custom">Ingresar</a>
             <!-- Muestra el botón de usuario solo si el usuario está logueado -->
@@ -49,16 +53,26 @@
     </nav>
 </header>
 <main role="main" class="container">
-
-    <div class="imagen-viaje">
-
+    <section class="imagen-viaje">
 
 
+        <div class="contenedor-imagen-viaje">
+
+
+        </div>
+
+
+    </section>
+    <div class="contenedor-botones">
+        <div>
+            <a th:href="@{aceptar(idViaje=${idViaje})}" class="boton-aceptar">Aceptar</a>
+        </div>
+        <div>
+            <a th:href="@{volver}" class="boton-enlace boton-volver">Volver</a>
+        </div>
     </div>
-
 </main>
 <!-- /.container -->
-
 <!-- Boostrap core js -->
 <script type="text/javascript" th:src="@{webjars/bootstrap/5.2.0/js/bootstrap.min.js}"></script>
 </body>

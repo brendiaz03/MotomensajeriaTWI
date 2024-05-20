@@ -40,6 +40,11 @@ public class LoginControlador {
         this.viajeService = viajeService;
     }
 
+    @RequestMapping("/")
+    public ModelAndView Inicio() {
+        return new ModelAndView("redirect:/home");
+    }
+
     @RequestMapping("/home")
     public ModelAndView mostrarHome(HttpServletRequest request) throws ConductorNoEncontradoException {
         ModelMap model = new ModelMap();
@@ -109,27 +114,4 @@ public class LoginControlador {
         request.getSession().invalidate(); // Invalida la sesión, lo que equivale a cerrar sesión
         return mostrarHome(request);
     }
-
-    @PostMapping("/viaje/accion")
-    public ModelAndView procesarAccionViaje(@RequestParam("idViaje") Integer idViaje, @RequestParam("accion") String accion, HttpSession session) {
-        Integer idConductor = (Integer) session.getAttribute("IDUSUARIO");
-        ModelMap modelo = new ModelMap();
-        List<Viaje> viajes = new ArrayList<>();
-        String mensaje = "";
-
-        if ("aceptar".equals(accion)) {
-            viajeService.actualizarViajeConElIdDelConductorQueAceptoElViaje(idViaje, idConductor);
-            viajes = viajeService.obtenerLosViajesAceptadosPorElConductor(idConductor);
-            mensaje = "VIAJE ACEPTADO!";
-        } else if("rechazar".equals(accion)){
-            viajes = viajeService.obtenerLasSolicitudesDeViajesPendientes();
-            mensaje = "Acción no válida";
-        }
-
-        modelo.put("viajesAceptados", viajes);
-        modelo.put("mensaje", mensaje);
-
-        return new ModelAndView("viajes", modelo);
-    }
-
 }
