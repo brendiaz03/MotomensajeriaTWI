@@ -1,5 +1,6 @@
 package com.tallerwebi.dominio.conductor;
 
+import com.tallerwebi.dominio.vehiculo.Vehiculo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -69,6 +70,14 @@ public class ConductorServicioServicioImpl implements ConductorServicio {
         }
     }
 
-
+    @Override
+    public Boolean RelacionarVehiculoAConductor(Integer idConductor, Vehiculo vehiculo) throws ConductorNoEncontradoException {
+        try{
+            conductorRepositorio.agregarVehiculoAConductor(idConductor,vehiculo);
+            return true;
+        }catch(NoResultException e){
+            return false;
+        }
+    }
 
 }

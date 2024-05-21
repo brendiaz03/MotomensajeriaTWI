@@ -74,7 +74,7 @@ public class ConductorControlador {
         Imagen logo = iimageService.getImagenByName("logo");
         Imagen user = iimageService.getImagenByName("user");
         Conductor conductor = conductorServicio.obtenerConductorPorId(idUsuario);
-        Vehiculo vehiculo = vehiculoService.getVehiculoByIdConductor(conductor);
+        Vehiculo vehiculo = conductor.getVehiculo();
 
         model.put("logo", logo);
         model.put("user", user);

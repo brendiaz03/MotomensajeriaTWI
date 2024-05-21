@@ -31,10 +31,8 @@ public class Vehiculo {
     @Column(name = "dimensionDisponible")
     private double dimensionDisponible;
 
-    @OneToOne
-    @JoinColumn(name = "idConductor")
-    private Conductor conductor;
-
+    @OneToOne(mappedBy = "vehiculo", cascade = CascadeType.ALL)
+    private Conductor Conductor;
 
     public Vehiculo(String patente, String color, String modelo, TipoVehiculo tipoDeVehiculo, double pesoSoportado, double dimensionDisponible) {
         this.patente = patente;
@@ -47,14 +45,6 @@ public class Vehiculo {
 
     public Vehiculo() {
 
-    }
-
-    public Conductor getConductor() {
-        return conductor;
-    }
-
-    public void setConductor(Conductor conductor) {
-        this.conductor = conductor;
     }
 
     public Long getId() {
@@ -117,6 +107,12 @@ public class Vehiculo {
         return Math.pow(this.dimensionDisponible, 2);
     }
 
+    public com.tallerwebi.dominio.conductor.Conductor getConductor() {
+        return Conductor;
+    }
 
+    public void setConductor(com.tallerwebi.dominio.conductor.Conductor conductor) {
+        Conductor = conductor;
+    }
 }
 

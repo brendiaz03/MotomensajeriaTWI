@@ -3,6 +3,7 @@ package com.tallerwebi.infraestructura;
 import com.tallerwebi.dominio.conductor.Conductor;
 
 import com.tallerwebi.dominio.conductor.ConductorRepositorio;
+import com.tallerwebi.dominio.vehiculo.Vehiculo;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
@@ -60,5 +61,14 @@ public class ConductorRepositorioImpl implements ConductorRepositorio {
            this.sessionFactory.getCurrentSession().delete(conductorABorrar);
     }
 
-
+    @Transactional
+    public void agregarVehiculoAConductor(Integer conductorId, Vehiculo vehiculo) {
+        Conductor conductor = sessionFactory.getCurrentSession().get(Conductor.class, conductorId);
+        if (conductor != null) {
+            conductor.setVehiculo(vehiculo);
+            sessionFactory.getCurrentSession().saveOrUpdate(conductor);
+        } else {
+            throw new IllegalArgumentException("Conductor no encontrado con el ID: " + conductorId);
+        }
+    }
 }
