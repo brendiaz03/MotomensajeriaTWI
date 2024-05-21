@@ -10,4 +10,6 @@ public interface ViajeService {
     Viaje actualizarViajeConElIdDelConductorQueAceptoElViaje(Integer idViaje, Integer idConductor);
 
     List<Viaje> obtenerLosViajesAceptadosPorElConductor(Integer idConductor);
+
+    Viaje actualizarViajeConElIdDelConductorQueAceptoElViajeYDespuesLoRechaza(Integer idViaje, Integer idConductor);
 }

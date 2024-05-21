@@ -32,4 +32,9 @@ public class ViajeServiceImpl implements ViajeService {
     public List<Viaje> obtenerLosViajesAceptadosPorElConductor(Integer idConductor) {
         return this.viajeRepository.obtenerLosViajesAceptadosPorElConductor(idConductor);
     }
+
+    @Override
+    public Viaje actualizarViajeConElIdDelConductorQueAceptoElViajeYDespuesLoRechaza(Integer idViaje, Integer idConductor) {
+        return this.viajeRepository.actualizarViajeConElIdDelConductorQueAceptoElViajeYDespuesLoRechaza(idViaje, idConductor);
+    }
 }
