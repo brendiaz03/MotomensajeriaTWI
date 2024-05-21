@@ -27,21 +27,27 @@
                     <a th:href="home" class="nav-link p-2 text-white" href="#">Inicio</a>
                 </li>
                 <li class="nav-item p-2">
-                    <a class="nav-link p-2 text-white" href="#">Compañía</a>
+                    <a th:href="compania" class="nav-link p-2 text-white" href="#">Compañía</a>
                 </li>
                 <li class="nav-item p-2">
-                    <a class="nav-link p-2 text-white" href="#">Ayuda</a>
+                    <a th:href="ayuda" class="nav-link p-2 text-white" href="#">Ayuda</a>
+                </li>
+                <li class="nav-item p-2" th:if="${isUsuarioLogueado}">
+                    <a th:href="viajes" class="nav-link p-2 text-white" href="#">Mis Viajes</a>
                 </li>
             </ul>
-            <a th:href="perfil" class="btn mx-2">
-                <div class="container d-flex justify-content-center align-items-center"  th:if="${conductor.getImagenPerfil() != null}">
-                    <img alt="img" class="d-block rounded-circle" th:src="'data:image/jpg;charset=utf-8;base64,' + ${conductor.getImageDataBase64()}" style="width: 40px; height: 40px;"/>
+            <a th:unless="${isUsuarioLogueado}" th:href="@{login}" class="btn-custom" style="text-decoration: none">Ingresar</a>
+            <!-- Muestra el botón de usuario solo si el usuario está logueado -->
+            <a th:if="${isUsuarioLogueado}" th:href="perfil" class="btn mx-2" style="border:none;">
+                <div class="container d-flex justify-content-center align-items-center"  th:if="${conductor.getImagenPerfil() != null}" style="border: none">
+                    <img alt="img" class="d-block rounded-circle" th:src="'data:image/jpg;charset=utf-8;base64,' + ${conductor.getImageDataBase64()}" style=" width: 40px; height: 40px;"/>
                 </div>
                 <div th:if="${conductor.getImagenPerfil() == null}">
                     <img th:src="${user.getImagenBase64()}" alt=",,," style="height: 20px;width: 20px">
                 </div>
             </a>
-            <a th:href="@{cerrar-sesion}" class="btn-custom">Cerrar Sesión</a>
+            <a th:if="${isUsuarioLogueado}" th:href="@{cerrar-sesion}"><i class="fa-solid fa-arrow-right-from-bracket" style=" border-radius:25px; padding:11px; background-color: white; color: #36054E; transition: color 0.3s;" onmouseover="this.style.color='white';this.style.backgroundColor='lightgray'" onmouseout="this.style.color='purple'; this.style.backgroundColor='white'" ></i></a>
+
         </div>
     </nav>
 </header>
@@ -50,7 +56,7 @@
     <div class="container d-flex justify-content-center">
     <!-- TARJETA IZQUIERDA -->
 
-        <div class="card mx-3 p-3" style="width: 18rem;height: 35rem; background-color: white;">
+        <div class="card mx-3 p-3" style="width: 18rem;height: 35rem; background-color: #D9D9D9;  border-radius: 50px;">
             <div class="container d-flex justify-content-center align-items-center">
                 <div class="rounded-circle bg-secondary d-flex justify-content-center align-items-center" style="width: 100px; height: 100px;">
                     <a th:href="foto-perfil" style="display: flex; justify-content: center; align-items: center;">
@@ -64,22 +70,21 @@
                     </a>
                 </div>
             </div>
-            <div class="card-body">
-                <h5 class="card-title text-center"><span th:text="${conductor.getNombre()} + ' ' + ${conductor.getApellido()}"></span></h5>
+            <div class="card-body" style="align-content: center; justify-content: center; text-align: center;align-items: center">
+                <h5 class="card-title text-center"><span th:text="${conductor.getNombreUsuario()}"></span></h5>
                 <p class="card-title text-center"><span th:text="${conductor.getEmail()}"></span></p>
 
             </div>
             <div class="card-body">
-                <p class="card-text option active" data-target="perfil">Perfil</p>
-                <p class="card-text option" data-target="vehiculo">Vehiculo</p>
-                <p class="card-text option" data-target="historial_viajes">Historial de Viajes</p>
-                <p class="card-text option" data-target="seguridad">Seguridad</p>
+                <p class="card-text option active" data-target="perfil"><i class="fa-solid fa-id-card" ></i> Perfil</p>
+                <p class="card-text option" data-target="vehiculo"><i class="fa-solid fa-car-side" ></i> Vehiculo</p>
+                <p class="card-text option" data-target="seguridad"><i class="fa-solid fa-shield-halved" ></i> Seguridad</p>
             </div>
         </div>
 
 
-        <!-- TARJETA DERECHA 1 DE 4 (PERFIL) -->
-        <div id="perfil" class="card mx-3 p-3" style="width: 30rem;height: 35rem; background-color: white;">
+        <!-- TARJETA DERECHA 1 DE 3 (PERFIL) -->
+        <div id="perfil" class="card mx-3 p-3" style="width: 30rem;height: 35rem; background-color: #D9D9D9;  border-radius: 50px;">
             <div class="card-body">
                 <h5 class="card-title text-center p-2"><strong>Perfil</strong></h5>
                 <div class="d-flex justify-content-between pt-3">
@@ -95,8 +100,8 @@
             </div>
         </div>
 
-    <!-- TARJETA DERECHA 2 DE 4 (VEHICULO) -->
-        <div id="vehiculo" class="card mx-3 p-3" style="width: 30rem;height: 35rem; background-color: white;">
+    <!-- TARJETA DERECHA 2 DE 3 (VEHICULO) -->
+        <div id="vehiculo" class="card mx-3 p-3" style="width: 30rem;height: 35rem; background-color: #D9D9D9;  border-radius: 50px;">
             <div class="card-body">
                 <h5 class="card-title text-center p-2"><strong>Vehículo</strong></h5>
                 <div class="d-flex justify-content-between pt-3">
@@ -111,22 +116,9 @@
             </div>
         </div>
 
-    <!-- TARJETA DERECHA 3 DE 4 (HISTORIAL DE VIAJES) -->
-        <div id="historial_viajes" class="card mx-3 p-3" style="width: 30rem;height: 35rem; background-color: white;">
-            <div class="card-body">
-                <h5 class="card-title text-center p-2"><strong>Historial de Viajes</strong></h5>
-            </div>
-            <div class="card-body">
-                <p><strong>Viaje_Foto</strong></p>
-                <p><strong>Viaje_Direccion</strong></p>
-                <p><strong>Viaje_Fecha</strong></p>
-                <p><strong>Viaje_Ganancia</strong></p>
-                <p><strong>Viaje_Estado</strong></p>
-            </div>
-        </div>
 
-    <!-- TARJETA DERECHA 4 DE 4 (SOPORTE EN LÍNEA) -->
-        <div id="seguridad" class="card mx-3 p-3" style="width: 30rem;height: 35rem; background-color: white;">
+    <!-- TARJETA DERECHA 3 DE 3 (SOPORTE EN LÍNEA) -->
+        <div id="seguridad" class="card mx-3 p-3" style="width: 30rem;height: 35rem; background-color: #D9D9D9;  border-radius: 50px;">
             <div class="card-body">
                 <h5 class="card-title text-center p-2"><strong>Seguridad</strong></h5>
             </div>
