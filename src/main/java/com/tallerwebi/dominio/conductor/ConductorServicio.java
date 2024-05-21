@@ -6,7 +6,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 
 public interface ConductorServicio {
-    Conductor verificarDatosDeRegistro(Conductor nuevoConductor) throws Exception;
+
+    Conductor registrarConductorNoDuplicado(Conductor nuevoConductor) throws Exception;
 
     Conductor obtenerConductorPorId(Integer id) throws ConductorNoEncontradoException;
 
@@ -15,5 +16,6 @@ public interface ConductorServicio {
     void borrarConductor(Integer idusuario);
 
     void ingresarImagen (MultipartFile imagen, Integer id) throws IOException, ConductorNoEncontradoException;
+
     Boolean RelacionarVehiculoAConductor(Integer idConductor, Vehiculo vehiculo) throws ConductorNoEncontradoException;
 }
