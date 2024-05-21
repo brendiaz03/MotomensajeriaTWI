@@ -21,7 +21,7 @@ public class ConductorRepositorioImpl implements ConductorRepositorio {
     }
     @Override
     @Transactional
-    public Conductor registrar(Conductor nuevoConductor) {
+    public Conductor guardar(Conductor nuevoConductor) {
         Session session = this.sessionFactory.getCurrentSession();
         session.save(nuevoConductor);
         Integer idConductorGuardado = (Integer) session.getIdentifier(nuevoConductor);
@@ -30,7 +30,7 @@ public class ConductorRepositorioImpl implements ConductorRepositorio {
 
     @Override
     @Transactional
-    public Conductor buscarConductor(Integer id) {
+    public Conductor buscarConductorPorId(Integer id) {
         String hql= "FROM Conductor WHERE id =: id";
         Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
         query.setParameter("id", id);

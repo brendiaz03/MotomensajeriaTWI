@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.annotation.MultipartConfig;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
@@ -116,7 +115,7 @@ public class ConductorControlador {
     @PostMapping("/registro-conductor")
     public ModelAndView registrarConductor(@ModelAttribute("conductor") Conductor nuevoConductor, HttpSession session) throws Exception {
         try {
-            Conductor registrado = conductorServicio.verificarDatosDeRegistro(nuevoConductor);
+            Conductor registrado = conductorServicio.registrarConductorNoDuplicado(nuevoConductor);
             if(registrado != null){
                 session.setAttribute("IDUSUARIO", registrado.getId());
                 return new ModelAndView("redirect:/vehiculo");
