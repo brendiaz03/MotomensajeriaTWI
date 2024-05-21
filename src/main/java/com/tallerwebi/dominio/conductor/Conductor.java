@@ -34,8 +34,10 @@ public class Conductor {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @OneToOne(mappedBy = "conductor", cascade = CascadeType.ALL)
+    @OneToOne
+    @JoinColumn(name = "idVehiculo")
     private Vehiculo vehiculo;
+
 
     public Conductor(String nombre, String apellido, Integer numeroDeDni, String email, String password, String nombreUsuario, String domicilio, String nroTelefono, String cvu) {
         this.nombre=nombre;
@@ -51,14 +53,6 @@ public class Conductor {
 
     public Conductor() {
 
-    }
-
-    public Conductor(String email, String password, String nombre, String apellido, Integer numeroDeDni) {
-        this.email = email;
-        this.password = password;
-        this.nombre = nombre;
-        this.apellido = apellido;
-        this.numeroDeDni = numeroDeDni;
     }
 
     public String getNombre() {

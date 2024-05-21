@@ -3,6 +3,7 @@ package com.tallerwebi.infraestructura;
 import com.tallerwebi.dominio.conductor.Conductor;
 
 import com.tallerwebi.dominio.conductor.ConductorRepositorio;
+import com.tallerwebi.dominio.vehiculo.Vehiculo;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
@@ -20,7 +21,7 @@ public class ConductorRepositorioImpl implements ConductorRepositorio {
     }
     @Override
     @Transactional
-    public Conductor registrar(Conductor nuevoConductor) {
+    public Conductor guardar(Conductor nuevoConductor) {
         Session session = this.sessionFactory.getCurrentSession();
         session.save(nuevoConductor);
         Integer idConductorGuardado = (Integer) session.getIdentifier(nuevoConductor);
@@ -29,7 +30,7 @@ public class ConductorRepositorioImpl implements ConductorRepositorio {
 
     @Override
     @Transactional
-    public Conductor buscarConductor(Integer id) {
+    public Conductor buscarConductorPorId(Integer id) {
         String hql= "FROM Conductor WHERE id =: id";
         Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
         query.setParameter("id", id);
@@ -60,5 +61,14 @@ public class ConductorRepositorioImpl implements ConductorRepositorio {
            this.sessionFactory.getCurrentSession().delete(conductorABorrar);
     }
 
-
+    @Transactional
+    public void agregarVehiculoAConductor(Integer conductorId, Vehiculo vehiculo) {
+        Conductor conductor = sessionFactory.getCurrentSession().get(Conductor.class, conductorId);
+        if (conductor != null) {
+            conductor.setVehiculo(vehiculo);
+            sessionFactory.getCurrentSession().saveOrUpdate(conductor);
+        } else {
+            throw new IllegalArgumentException("Conductor no encontrado con el ID: " + conductorId);
+        }
+    }
 }

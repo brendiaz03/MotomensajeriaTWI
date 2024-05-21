@@ -34,6 +34,7 @@ public class ViajeControlador {
         this.request = request;
     }
 
+    //viajes que serian el historial
     @RequestMapping("/viajes")
     public ModelAndView mostrarVistaViajesAceptados(HttpServletRequest request) throws ConductorNoEncontradoException {
         ModelMap model = new ModelMap();
@@ -56,6 +57,7 @@ public class ViajeControlador {
         return new ModelAndView("viajes", model);
     }
 
+    //una vez aceptado que te lleve al viaje con el mapa
     @RequestMapping(value = "/ver-viaje")
     public ModelAndView verVistaViaje(HttpServletRequest request, @RequestParam("idViaje") Integer idViaje) throws ConductorNoEncontradoException {
         ModelMap model = new ModelMap();
@@ -77,6 +79,7 @@ public class ViajeControlador {
         return new ModelAndView("ver-viaje", model);
     }
 
+    //una vez que se acepta va al viaje
     @RequestMapping("/aceptar")
     public ModelAndView aceptarViaje(HttpServletRequest request, @RequestParam("idViaje") Integer idViaje){
         Integer idConductor = (Integer) request.getSession().getAttribute("IDUSUARIO");
@@ -84,11 +87,13 @@ public class ViajeControlador {
         return new ModelAndView("redirect:/home");
     }
 
+    //vuelve al home
     @RequestMapping("/volver")
     public ModelAndView volverAlHome(){
         return new ModelAndView("redirect:/home");
     }
 
+    //cancela y vuelve al home
     @RequestMapping("/cancelar")
     public ModelAndView cancelarViaje(HttpServletRequest request, @RequestParam("idViaje") Integer idViaje){
         Integer idConductor = (Integer) request.getSession().getAttribute("IDUSUARIO");
