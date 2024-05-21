@@ -4,7 +4,6 @@ import com.tallerwebi.dominio.conductor.Conductor;
 
 public interface VehiculoServicio {
 
-    Boolean registrarVehiculoSiPatenteNoEstaYaCargada(Vehiculo vehiculo);
-    Vehiculo getVehiculoByIdConductor(Conductor conductor);
-    void EditarVehiculo(Vehiculo vehiculo);
+    Vehiculo registrarVehiculo(Vehiculo vehiculo);
+    void actualizarVehiculo(Vehiculo vehiculo);
 }

@@ -4,8 +4,7 @@ import com.tallerwebi.dominio.conductor.Conductor;
 
 public interface VehiculoRepositorio {
 
-    void registrarVehiculo(Vehiculo vehiculo);
     Vehiculo buscarVehiculoPorPatente(String patente);
-    Vehiculo buscarVehiculoPorIdConductor(Conductor conductor);
-    void actualizarVehiculo(Vehiculo vehiculo);
+    Vehiculo guardarVehiculo(Vehiculo vehiculo);
+    void editar(Vehiculo vehiculo);
 }

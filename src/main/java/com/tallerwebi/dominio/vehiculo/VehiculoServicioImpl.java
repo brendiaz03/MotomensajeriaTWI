@@ -13,25 +13,20 @@ public class VehiculoServicioImpl implements VehiculoServicio {
         this.vehiculoRepositorio = _VehiculoRepositorio;
     }
     @Override
-    public Boolean registrarVehiculoSiPatenteNoEstaYaCargada(Vehiculo vehiculo) {
+    public Vehiculo registrarVehiculo(Vehiculo vehiculo) {
         Vehiculo buscado = vehiculoRepositorio.buscarVehiculoPorPatente(vehiculo.getPatente());
-        if (buscado != null) {
-            return false;
+        if (buscado == null) {
+            return vehiculoRepositorio.guardarVehiculo(vehiculo);
         } else {
-            vehiculoRepositorio.registrarVehiculo(vehiculo);
-            return true;
+            return null;
         }
     }
 
     @Override
-    public Vehiculo getVehiculoByIdConductor(Conductor conductor) {
-        return vehiculoRepositorio.buscarVehiculoPorIdConductor(conductor);
+    public void actualizarVehiculo(Vehiculo vehiculo) {
+        vehiculoRepositorio.editar(vehiculo);
     }
 
-    @Override
-    public void EditarVehiculo(Vehiculo vehiculo) {
-        vehiculoRepositorio.actualizarVehiculo(vehiculo);
-    }
 }
 
 

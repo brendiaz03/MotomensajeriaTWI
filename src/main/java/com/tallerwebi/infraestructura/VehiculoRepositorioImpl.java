@@ -3,6 +3,7 @@ package com.tallerwebi.infraestructura;
 import com.tallerwebi.dominio.conductor.Conductor;
 import com.tallerwebi.dominio.vehiculo.VehiculoRepositorio;
 import com.tallerwebi.dominio.vehiculo.Vehiculo;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
@@ -17,16 +18,6 @@ public class VehiculoRepositorioImpl implements VehiculoRepositorio {
         this.sessionFactory=sessionFactory;
     }
 
-
-    @Override
-    @Transactional
-    public void registrarVehiculo(Vehiculo vehiculo) {
-        // Guarda el vehículo en el repositorio (sin conductor asociado)
-        sessionFactory.getCurrentSession().save(vehiculo);
-        }
-
-
-
     @Override
     @Transactional
     public Vehiculo buscarVehiculoPorPatente(String patente) {
@@ -36,16 +27,16 @@ public class VehiculoRepositorioImpl implements VehiculoRepositorio {
 
     @Override
     @Transactional
-    public Vehiculo buscarVehiculoPorIdConductor(Conductor conductor) {
-        return (Vehiculo) sessionFactory.getCurrentSession().createCriteria(Vehiculo.class)
-                .add(Restrictions.eq("conductor", conductor)).uniqueResult();
+    public Vehiculo guardarVehiculo(Vehiculo vehiculo) {
+        Session session = this.sessionFactory.getCurrentSession();
+        session.save(vehiculo);
+        Long idVehiculoGuardado = (Long) session.getIdentifier(vehiculo);
+        return session.get(Vehiculo.class, idVehiculoGuardado);
     }
 
     @Override
     @Transactional
-    public void actualizarVehiculo(Vehiculo vehiculo) {
-        sessionFactory.getCurrentSession().update(vehiculo);
+    public void editar(Vehiculo vehiculo) {
+        this.sessionFactory.getCurrentSession().update(vehiculo);
     }
-
-
 }

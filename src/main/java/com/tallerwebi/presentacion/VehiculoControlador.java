@@ -44,14 +44,14 @@ public class VehiculoControlador {
         Imagen user = imagenServicio.getImagenByName("user");
         model.put("user", user);
 
-        String viewName = "registro-vehiculo";
+        String viewName = "form-vehiculo";
 
         Boolean editar = (Boolean) session.getAttribute("isEditForm");
         Conductor conductor = conductorServicio.obtenerConductorPorId( (Integer) session.getAttribute("IDUSUARIO"));
 
         if (editar != null && editar) {
             model.put("editar", editar);
-            model.put("vehiculo", vehiculoServicio.getVehiculoByIdConductor(conductor));
+            model.put("vehiculo", conductor.getVehiculo());
 
             return new ModelAndView(viewName, model);
         }else {
@@ -66,16 +66,20 @@ public class VehiculoControlador {
     public ModelAndView registrarVehiculo(@ModelAttribute("vehiculo") Vehiculo nuevoVehiculo, HttpSession session) throws ConductorNoEncontradoException {
        ModelMap model = new ModelMap();
 
-       nuevoVehiculo.setConductor(conductorServicio.obtenerConductorPorId((Integer)session.getAttribute("IDUSUARIO")));
+       Conductor conductor = conductorServicio.obtenerConductorPorId((Integer)session.getAttribute("IDUSUARIO"));
 
        Boolean editar = (Boolean) session.getAttribute("isEditForm");
 
        if(editar != null && editar){
            nuevoVehiculo.setId((Long)session.getAttribute("idVehiculo"));
-           vehiculoServicio.EditarVehiculo(nuevoVehiculo);
+           vehiculoServicio.actualizarVehiculo(nuevoVehiculo);
+           conductorServicio.RelacionarVehiculoAConductor(conductor.getId(), nuevoVehiculo);
+           session.setAttribute("isEditForm", false);
            return new ModelAndView("redirect:/perfil");
        }else{
-           if(vehiculoServicio.registrarVehiculoSiPatenteNoEstaYaCargada(nuevoVehiculo)){
+           Vehiculo vehiculo = vehiculoServicio.registrarVehiculo(nuevoVehiculo);
+           if(vehiculo != null){
+               conductorServicio.RelacionarVehiculoAConductor(conductor.getId(), vehiculo);
                return new ModelAndView("redirect:/home");
            }else{
                model.put("error", "Patente Repetida");
