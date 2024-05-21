@@ -10,10 +10,9 @@ function getDriverLocation() {
 async function showDriverPosition(position) {
     const latitude = position.coords.latitude;
     const longitude = position.coords.longitude;
-    document.getElementById("driverLocation").innerText = `Ubicación del conductor: Latitud: ${latitude}, Longitud: ${longitude}`;
 
     // Recorrer todos los elementos con la clase 'viaje' para calcular la distancia
-    document.querySelectorAll('.viaje').forEach(function(viajeElement) {
+    document.querySelectorAll('.contenedor-viaje').forEach(function(viajeElement) {
         const latitudSalida = parseFloat(viajeElement.dataset.latitudSalida);
         const longitudSalida = parseFloat(viajeElement.dataset.longitudSalida);
         const latitudLlegada = parseFloat(viajeElement.dataset.latitudLlegada);
