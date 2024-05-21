@@ -7,7 +7,7 @@
   <link rel="stylesheet" th:href="@{css/main.css}"/>
   <link rel="stylesheet" th:href="@{css/homeStyle.css}"/>
   <title>Motomensajeria</title>
-  <script th:src="@{/js/geolocalizacion.js}"></script>
+
 
 
   <!-- Boostrap core css -->
@@ -75,14 +75,21 @@
 
   <div class="card mt-3" th:if="${isUsuarioLogueado}">
     <div class="card-body" th:each="viaje : ${viajes}">
-      <div class="card mt-3 ml-3">
-        <div class="card-body viaje">
+      <div class="card mt-3 ml-3 viaje" th:data-latitud-salida="${viaje.latitudDeSalida}" th:data-longitud-salida="${viaje.longitudDeSalida}" th:data-latitud-llegada="${viaje.latitudDeLlegada}" th:data-longitud-llegada="${viaje.longitudDeLlegada}">
+      <div class="card-body viaje">
           <p class="card-text"><b>Direccion de Salida:</b> <span th:text="${viaje.domicilioDeSalida}"></span></p>
           <p class="card-text"><b>Direccion de Llegada:</b> <span th:text="${viaje.domicilioDeLlegada}"></span></p>
           <p class="card-text"><b>Paquete de:</b> <span th:text="${viaje.cliente.nombre}"></span></p>
           <p class="card-text"><b>Precio:</b> <span th:text="${viaje.precio}"></span></p>
           <p class="card-text"><b>Codigo postal:</b> <span th:text="${viaje.codigoPostal}"></span></p>
-          <form th:action="@{/viaje/accion}" method="post">
+<!--          <p class="card-text"><b>Latitud Salida:</b> <span th:text="${viaje.latitudDeSalida}"></span></p>-->
+<!--          <p class="card-text"><b>Longitud Salida:</b> <span th:text="${viaje.longitudDeSalida}"></span></p>-->
+<!--          <p class="card-text"><b>Latitud Llegada:</b> <span th:text="${viaje.latitudDeLlegada}"></span></p>-->
+<!--          <p class="card-text"><b>Longitud Llegada:</b> <span th:text="${viaje.longitudDeLlegada}"></span></p>-->
+          <p class="card-text"><b>Distancia desde tu ubicacion:</b> <span class="distanceFromCurrentPosition"></span></p>
+          <p class="card-text"><b>Distancia del viaje:</b> <span class="distanceFromStartToEnd"></span></p>
+
+        <form th:action="@{/viaje/accion}" method="post">
             <input type="hidden" th:name="${'idViaje'}" th:value="${viaje.id}">
             <button type="submit" th:name="${'accion'}" th:value="'aceptar'" class="btn btn-primary">Aceptar</button>
             <button type="submit" th:name="${'accion'}" th:value="'rechazar'" class="btn btn-secondary">Rechazar</button>
@@ -100,6 +107,7 @@
 </main>
 <!-- /.container -->
 <!-- Boostrap core js -->
+<script th:src="@{/js/geolocalizacion.js}" defer></script>
 <script type="text/javascript" th:src="@{webjars/bootstrap/5.2.0/js/bootstrap.min.js}"></script>
 </body>
 </html>
