@@ -2,7 +2,7 @@ package com.tallerwebi.dominio.viaje;
 
 import java.util.List;
 
-public interface ViajeService {
+public interface ViajeServicio {
     List<Viaje> obtenerTodosLosViajesDeLaBaseDeDatos();
 
     List<Viaje> obtenerLasSolicitudesDeViajesPendientes();

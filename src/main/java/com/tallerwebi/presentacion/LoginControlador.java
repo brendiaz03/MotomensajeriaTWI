@@ -3,23 +3,19 @@ package com.tallerwebi.presentacion;
 import com.tallerwebi.dominio.conductor.Conductor;
 import com.tallerwebi.dominio.conductor.ConductorNoEncontradoException;
 import com.tallerwebi.dominio.conductor.ConductorServicio;
-import com.tallerwebi.dominio.conductor.ConductorServicioServicioImpl;
 import com.tallerwebi.dominio.imagen.ImagenServicio;
 import com.tallerwebi.dominio.imagen.Imagen;
 import com.tallerwebi.presentacion.Datos.DatosLoginConductor;
 import com.tallerwebi.dominio.login.LoginServicio;
 import com.tallerwebi.dominio.viaje.Viaje;
-import com.tallerwebi.dominio.viaje.ViajeService;
+import com.tallerwebi.dominio.viaje.ViajeServicio;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -30,14 +26,14 @@ public class LoginControlador {
     private static LoginServicio loginServicio;
     private static ImagenServicio imagenServicio;
     private final ConductorServicio conductorServicio;
-    private ViajeService viajeService;
+    private ViajeServicio viajeServicio;
 
     @Autowired
-    public LoginControlador(LoginServicio _LoginServicio, ImagenServicio _imagenServicio, ConductorServicio _conductorServicio, ViajeService viajeService){
+    public LoginControlador(LoginServicio _LoginServicio, ImagenServicio _imagenServicio, ConductorServicio _conductorServicio, ViajeServicio viajeServicio){
         this.loginServicio = _LoginServicio;
         this.imagenServicio = _imagenServicio;
         this.conductorServicio = _conductorServicio;
-        this.viajeService = viajeService;
+        this.viajeServicio = viajeServicio;
     }
 
     @RequestMapping("/")
@@ -52,7 +48,7 @@ public class LoginControlador {
         String viewName= "home";
 
         Boolean isUsuarioLogueado = (Boolean) request.getSession().getAttribute("isUsuarioLogueado");
-        List<Viaje> viajes = viajeService.obtenerLasSolicitudesDeViajesPendientes();
+        List<Viaje> viajes = viajeServicio.obtenerLasSolicitudesDeViajesPendientes();
         model.put("viajes", viajes);
 
         Conductor conductor = new Conductor();

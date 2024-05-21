@@ -29,6 +29,12 @@ public class Viaje {
 
     }
 
+    public Viaje(Integer idViaje, String domicilioDeSalida, String domicilioDeLlegada) {
+        this.id = idViaje;
+        this.domicilioDeSalida = domicilioDeSalida;
+        this.domicilioDeLlegada = domicilioDeLlegada;
+    }
+
     public Viaje(String domicilioDeSalida, String domicilioDeLlegada, Double latitudDeSalida, Double longitudDeSalida, Double latitudDeLlegada, Double longitudDeLlegada, String codigoPostal, String precio, String medioDePago, Integer idConductor, Cliente cliente) {
         this.domicilioDeSalida = domicilioDeSalida;
         this.domicilioDeLlegada = domicilioDeLlegada;
