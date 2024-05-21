@@ -27,10 +27,10 @@
           <a th:href="home" class="nav-link p-2 text-white" href="#">Inicio</a>
         </li>
         <li class="nav-item p-2">
-          <a class="nav-link p-2 text-white" href="#">Compañía</a>
+          <a th:href="compania" class="nav-link p-2 text-white" href="#">Compañía</a>
         </li>
         <li class="nav-item p-2">
-          <a class="nav-link p-2 text-white" href="#">Ayuda</a>
+          <a th:href="ayuda" class="nav-link p-2 text-white" href="#">Ayuda</a>
         </li>
         <li class="nav-item p-2" th:if="${isUsuarioLogueado}">
           <a th:href="viajes" class="nav-link p-2 text-white" href="#">Mis Viajes</a>
