@@ -1,12 +1,11 @@
 package com.tallerwebi.infraestructura;
 
 import com.tallerwebi.dominio.viaje.Viaje;
-import com.tallerwebi.dominio.viaje.ViajeRepository;
+import com.tallerwebi.dominio.viaje.ViajeRepositorio;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
-import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,11 +15,11 @@ import javax.persistence.criteria.Root;
 import java.util.List;
 
 @Repository
-public class ViajeRepositoryImpl implements ViajeRepository {
+public class ViajeRepositorioImpl implements ViajeRepositorio {
 
     private SessionFactory sessionFactory;
 
-    public ViajeRepositoryImpl(SessionFactory sessionFactory) {
+    public ViajeRepositorioImpl(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
 

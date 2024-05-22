@@ -35,7 +35,7 @@
           <a th:href="ayuda" class="nav-link p-2 text-white" href="#">Ayuda</a>
         </li>
         <li class="nav-item p-2" th:if="${isUsuarioLogueado}">
-          <a th:href="viajes" class="nav-link p-2 text-white" href="#">Mis Viajes</a>
+          <a th:href="viajes" class="nav-link p-2 text-white" href="#">Historial de Viajes</a>
         </li>
       </ul>
       <a th:unless="${isUsuarioLogueado}" th:href="@{login}" class="btn-custom" style="text-decoration: none">Ingresar</a>

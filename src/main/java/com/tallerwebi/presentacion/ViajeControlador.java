@@ -6,40 +6,37 @@ import com.tallerwebi.dominio.conductor.ConductorServicio;
 import com.tallerwebi.dominio.imagen.Imagen;
 import com.tallerwebi.dominio.imagen.ImagenServicio;
 import com.tallerwebi.dominio.viaje.Viaje;
-import com.tallerwebi.dominio.viaje.ViajeService;
-import org.dom4j.rule.Mode;
+import com.tallerwebi.dominio.viaje.ViajeServicio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
-public class ViajeController {
+public class ViajeControlador {
 
-    private ViajeService viajeService;
+    private ViajeServicio viajeServicio;
     private List<Viaje> viajes;
     private ImagenServicio imagenServicio;
     private ConductorServicio conductorServicio;
+    private HttpServletRequest request;
 
     @Autowired
-    public ViajeController(ViajeService viajeService, ConductorServicio conductorServicio, ImagenServicio imagenServicio){
-        this.viajeService = viajeService;
+    public ViajeControlador(ViajeServicio viajeServicio, ConductorServicio conductorServicio, ImagenServicio imagenServicio, HttpServletRequest request){
+        this.viajeServicio = viajeServicio;
         this.conductorServicio = conductorServicio;
         this.imagenServicio = imagenServicio;
+        this.request = request;
     }
 
     //viajes que serian el historial
     @RequestMapping("/viajes")
-    public ModelAndView mostrarVistaViaje(HttpServletRequest request) throws ConductorNoEncontradoException {
+    public ModelAndView mostrarVistaViajesAceptados(HttpServletRequest request) throws ConductorNoEncontradoException {
         ModelMap model = new ModelMap();
         Boolean isUsuarioLogueado = (Boolean) request.getSession().getAttribute("isUsuarioLogueado");
         model.put("isUsuarioLogueado",isUsuarioLogueado);
@@ -55,7 +52,7 @@ public class ViajeController {
         model.put("fondo", fondo);
         Imagen botonPS = imagenServicio.getImagenByName("botonPS");
         model.put("botonPS", botonPS);
-        this.viajes = this.viajeService.obtenerLosViajesAceptadosPorElConductor(conductor.getId());
+        this.viajes = this.viajeServicio.obtenerLosViajesAceptadosPorElConductor(conductor.getId());
         model.put("viajesObtenidos", this.viajes);
         return new ModelAndView("viajes", model);
     }
@@ -86,7 +83,7 @@ public class ViajeController {
     @RequestMapping("/aceptar")
     public ModelAndView aceptarViaje(HttpServletRequest request, @RequestParam("idViaje") Integer idViaje){
         Integer idConductor = (Integer) request.getSession().getAttribute("IDUSUARIO");
-        this.viajeService.actualizarViajeConElIdDelConductorQueAceptoElViaje(idViaje, idConductor);
+        this.viajeServicio.actualizarViajeConElIdDelConductorQueAceptoElViaje(idViaje, idConductor);
         return new ModelAndView("redirect:/home");
     }
 
@@ -100,7 +97,7 @@ public class ViajeController {
     @RequestMapping("/cancelar")
     public ModelAndView cancelarViaje(HttpServletRequest request, @RequestParam("idViaje") Integer idViaje){
         Integer idConductor = (Integer) request.getSession().getAttribute("IDUSUARIO");
-        this.viajeService.actualizarViajeConElIdDelConductorQueAceptoElViajeYDespuesLoRechaza(idViaje, idConductor);
-        return new ModelAndView("redirect:/viajes");
+        this.viajeServicio.actualizarViajeConElIdDelConductorQueAceptoElViajeYDespuesLoRechaza(idViaje, idConductor);
+        return new ModelAndView("redirect:/home");
     }
 }
