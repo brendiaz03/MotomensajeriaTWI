@@ -61,6 +61,7 @@ public class ConductorRepositorioImpl implements ConductorRepositorio {
            this.sessionFactory.getCurrentSession().delete(conductorABorrar);
     }
 
+    @Override
     @Transactional
     public void agregarVehiculoAConductor(Integer conductorId, Vehiculo vehiculo) {
         Conductor conductor = sessionFactory.getCurrentSession().get(Conductor.class, conductorId);

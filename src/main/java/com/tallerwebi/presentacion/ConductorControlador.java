@@ -90,9 +90,9 @@ public class ConductorControlador {
     }
 
     @RequestMapping(value = "/editar", method = RequestMethod.GET)
-    public String mostrarEditarConductor(HttpSession session) {
+    public ModelAndView mostrarEditarConductor(HttpSession session) {
         session.setAttribute("isEditForm", true);
-        return "redirect:/registro-conductor";
+        return new ModelAndView("redirect:/registro-conductor") ;
     }
 
     @RequestMapping(path = "/foto-perfil", method = RequestMethod.GET)
@@ -147,8 +147,6 @@ public class ConductorControlador {
     public ModelAndView borrarCuenta (HttpSession session){
 
         conductorServicio.borrarConductor((Integer) session.getAttribute("IDUSUARIO"));
-        //cerrar-sesion
-
         return new ModelAndView("redirect:/cerrar-sesion");
     }
 
