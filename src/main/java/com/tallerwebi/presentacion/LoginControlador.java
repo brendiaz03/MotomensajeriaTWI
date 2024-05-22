@@ -5,16 +5,15 @@ import com.tallerwebi.dominio.conductor.ConductorNoEncontradoException;
 import com.tallerwebi.dominio.conductor.ConductorServicio;
 import com.tallerwebi.dominio.imagen.ImagenServicio;
 import com.tallerwebi.dominio.imagen.Imagen;
+import com.tallerwebi.dominio.viaje.Viaje;
+import com.tallerwebi.dominio.viaje.ViajeServicio;
 import com.tallerwebi.presentacion.Datos.DatosLoginConductor;
 import com.tallerwebi.dominio.login.LoginServicio;
-import com.tallerwebi.dominio.viaje.Viaje;
-import com.tallerwebi.dominio.viaje.ViajeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
@@ -26,14 +25,14 @@ public class LoginControlador {
     private static LoginServicio loginServicio;
     private static ImagenServicio imagenServicio;
     private final ConductorServicio conductorServicio;
-    private ViajeService viajeService;
+    private ViajeServicio viajeServicio;
 
     @Autowired
-    public LoginControlador(LoginServicio _LoginServicio, ImagenServicio _imagenServicio, ConductorServicio _conductorServicio, ViajeService viajeService){
+    public LoginControlador(LoginServicio _LoginServicio, ImagenServicio _imagenServicio, ConductorServicio _conductorServicio, ViajeServicio viajeServicio){
         this.loginServicio = _LoginServicio;
         this.imagenServicio = _imagenServicio;
         this.conductorServicio = _conductorServicio;
-        this.viajeService = viajeService;
+        this.viajeServicio = viajeServicio;
     }
 
     @RequestMapping("/")
@@ -48,7 +47,7 @@ public class LoginControlador {
         String viewName= "home";
 
         Boolean isUsuarioLogueado = (Boolean) request.getSession().getAttribute("isUsuarioLogueado");
-        List<Viaje> viajes = viajeService.obtenerLasSolicitudesDeViajesPendientes();
+        List<Viaje> viajes = viajeServicio.obtenerLasSolicitudesDeViajesPendientes();
         model.put("viajes", viajes);
 
         Conductor conductor = new Conductor();
@@ -93,7 +92,7 @@ public class LoginControlador {
                 request.getSession().setAttribute("APELLIDO", conductorBuscado.getApellido());
                 request.getSession().setAttribute("isUsuarioLogueado", true);
                 request.getSession().setAttribute("isEditForm", false);
-                model.put("error", "Usuario o clave correcta");
+                model.put("correcto", "Usuario o clave correcta");
                 return new ModelAndView("redirect:/home", model);
 
             }else{
@@ -109,5 +108,61 @@ public class LoginControlador {
     public ModelAndView cerrarSesion(HttpServletRequest request) throws ConductorNoEncontradoException {
         request.getSession().invalidate(); // Invalida la sesión, lo que equivale a cerrar sesión
         return mostrarHome(request);
+    }
+
+    @RequestMapping ("/ayuda")
+    public ModelAndView mostrarVistaAyuda(HttpServletRequest request) throws ConductorNoEncontradoException {
+        ModelMap model = new ModelMap();
+
+        Boolean isUsuarioLogueado = (Boolean) request.getSession().getAttribute("isUsuarioLogueado");
+
+        Conductor conductor;
+
+        model.put("isUsuarioLogueado",isUsuarioLogueado);
+        if(request.getSession().getAttribute("IDUSUARIO") != null){
+            conductor = conductorServicio.obtenerConductorPorId((Integer) request.getSession().getAttribute("IDUSUARIO"));
+        }else{
+            conductor = null;
+        }
+        model.put("conductor", conductor);
+        Imagen logo = imagenServicio.getImagenByName("logo");
+        model.put("logo", logo);
+        Imagen user = imagenServicio.getImagenByName("user");
+        model.put("user", user);
+        Imagen auto = imagenServicio.getImagenByName("auto");
+        model.put("auto", auto);
+        Imagen fondo = imagenServicio.getImagenByName("fondo");
+        model.put("fondo", fondo);
+        Imagen botonPS = imagenServicio.getImagenByName("botonPS");
+        model.put("botonPS", botonPS);
+        return new ModelAndView("ayuda", model);
+    }
+
+    @RequestMapping("/compania")
+    public ModelAndView mostrarVistaCompania(HttpServletRequest request) throws ConductorNoEncontradoException {
+        ModelMap model = new ModelMap();
+
+        Boolean isUsuarioLogueado = (Boolean) request.getSession().getAttribute("isUsuarioLogueado");
+
+        Conductor conductor;
+
+        model.put("isUsuarioLogueado",isUsuarioLogueado);
+        if(request.getSession().getAttribute("IDUSUARIO") != null){
+            conductor = conductorServicio.obtenerConductorPorId((Integer) request.getSession().getAttribute("IDUSUARIO"));
+        }else{
+            conductor = null;
+        }
+        model.put("conductor", conductor);
+        Imagen logo = imagenServicio.getImagenByName("logo");
+        model.put("logo", logo);
+        Imagen user = imagenServicio.getImagenByName("user");
+        model.put("user", user);
+        Imagen auto = imagenServicio.getImagenByName("auto");
+        model.put("auto", auto);
+        Imagen fondo = imagenServicio.getImagenByName("fondo");
+        model.put("fondo", fondo);
+        Imagen botonPS = imagenServicio.getImagenByName("botonPS");
+        model.put("botonPS", botonPS);
+        return new ModelAndView("compania", model);
     }
 }

@@ -107,12 +107,13 @@ public class Vehiculo {
         return Math.pow(this.dimensionDisponible, 2);
     }
 
-    public com.tallerwebi.dominio.conductor.Conductor getConductor() {
+    public Conductor getConductor() {
         return Conductor;
     }
 
     public void setConductor(com.tallerwebi.dominio.conductor.Conductor conductor) {
         Conductor = conductor;
     }
+
 }
 
