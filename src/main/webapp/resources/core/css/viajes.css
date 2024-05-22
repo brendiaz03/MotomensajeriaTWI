@@ -42,6 +42,9 @@
 }
 
 .titulo-solicitud{
+    font-weight: 500;
+    font-size: 30px;
+    line-height: 25px;
     margin-top: 40px;
     color: white;
 }
