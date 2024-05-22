@@ -63,8 +63,8 @@
                         <p class="card-text"><b>Paquete de:</b> <span th:text="${viaje.getCliente().getNombre()}"></span></p>
                         <p class="card-text"><b>Precio:</b> <span th:text="${viaje.getPrecio()}"></span></p>
                         <p class="card-text"><b>Codigo Postal:</b> <span th:text="${viaje.getCodigoPostal()}"></span></p>
-                        <div class="contenedor-boton-cancelar">
-                            <a th:href="@{cancelar(idViaje=${viaje.getId()})}" class="boton-rojo">Cancelar Viaje</a>
+                        <div class="imagen-viaje">
+
                         </div>
                     </div>
                 </div>

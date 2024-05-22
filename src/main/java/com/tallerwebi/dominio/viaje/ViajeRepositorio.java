@@ -13,4 +13,5 @@ public interface ViajeRepositorio {
     List<Viaje> obtenerLosViajesAceptadosPorElConductor(Integer idConductor);
 
     Viaje actualizarViajeConElIdDelConductorQueAceptoElViajeYDespuesLoRechaza(Integer idViaje, Integer idConductor);
+
 }

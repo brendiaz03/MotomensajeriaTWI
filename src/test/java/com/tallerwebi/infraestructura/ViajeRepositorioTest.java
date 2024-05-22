@@ -8,6 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,9 +33,17 @@ public class ViajeRepositorioTest {
 
     @Test
     @Transactional
+    @Rollback
     public void queSePuedanObtenerTodosLosViajesDeLaBaseDeDatos(){
         // Preparación
-        Integer totalDeViajesEsperados = 9;
+        Integer totalDeViajesEsperados = 3;
+        Viaje viaje1 = new Viaje();
+        Viaje viaje2 = new Viaje();
+        Viaje viaje3 = new Viaje();
+
+        this.sessionFactory.getCurrentSession().save(viaje1);
+        this.sessionFactory.getCurrentSession().save(viaje2);
+        this.sessionFactory.getCurrentSession().save(viaje3);
 
         // Ejecución
         Integer totalDeViajesObtenidos = this.viajeRepositorio.obtenerTodosLosViajesDeLaBaseDeDatos().size();
@@ -45,9 +54,17 @@ public class ViajeRepositorioTest {
 
     @Test
     @Transactional
+    @Rollback
     public void queSePuedanObtenerTodosLosViajesPendientesSinUnConductorAsignado(){
         // Preparación
         Integer viajesEsperados = 3;
+        Viaje viaje1 = new Viaje();
+        Viaje viaje2 = new Viaje();
+        Viaje viaje3 = new Viaje();
+
+        this.sessionFactory.getCurrentSession().save(viaje1);
+        this.sessionFactory.getCurrentSession().save(viaje2);
+        this.sessionFactory.getCurrentSession().save(viaje3);
 
         // Ejecución
         Integer viajesObtenidos = this.viajeRepositorio.obtenerLasSolicitudesDeViajesPendientes().size();
@@ -58,10 +75,23 @@ public class ViajeRepositorioTest {
 
     @Test
     @Transactional
+    @Rollback
     public void queSePuedaObtenerTodosLosViajesAceptadosPorElConductor(){
         // Preparación
         Integer idConductor = 1;
-        Integer totalDeViajesEsperados = 6;
+        Integer totalDeViajesEsperados = 3;
+
+        Viaje viaje1 = new Viaje();
+        Viaje viaje2 = new Viaje();
+        Viaje viaje3 = new Viaje();
+
+        viaje1.setIdConductor(idConductor);
+        viaje2.setIdConductor(idConductor);
+        viaje3.setIdConductor(idConductor);
+
+        this.sessionFactory.getCurrentSession().save(viaje1);
+        this.sessionFactory.getCurrentSession().save(viaje2);
+        this.sessionFactory.getCurrentSession().save(viaje3);
 
         // Ejecución
         Integer totalDeViajesObtenidos = this.viajeRepositorio.obtenerLosViajesAceptadosPorElConductor(idConductor).size();
@@ -72,16 +102,20 @@ public class ViajeRepositorioTest {
 
     @Test
     @Transactional
+    @Rollback
     public void queSePuedaActualizarUnViajeCuandoElConductorLoAcepta(){
         // Preparación
         Integer idConductor = 1;
-        Integer idViaje = 7;
+
+        Viaje viaje = new Viaje(1, "Miami", "Florida");
+
+        this.sessionFactory.getCurrentSession().save(viaje);
 
         // Ejecución
-        Viaje viajeActualizado = this.viajeRepositorio.actualizarViajeAceptadoPorElConductor(idViaje, idConductor);
+        Viaje viajeActualizado = this.viajeRepositorio.actualizarViajeAceptadoPorElConductor(viaje.getId(), idConductor);
 
         // Validación
-        assertThat(viajeActualizado.getId(), equalTo(idViaje));
+        assertThat(viaje.getId(), equalTo(viajeActualizado.getId()));
         assertThat(viajeActualizado.getIdConductor(), equalTo(idConductor));
         assertThat(viajeActualizado.getDomicilioDeSalida(), equalTo("Miami"));
         assertThat(viajeActualizado.getDomicilioDeLlegada(), equalTo("Florida"));
@@ -89,25 +123,29 @@ public class ViajeRepositorioTest {
 
     @Test
     @Transactional
+    @Rollback
     public void queSePuedaActualizarUnViajeCuandoElConductorLoAceptaYDespuesLoRechaza(){
         // Preparación
         Integer idConductor = 1;
-        Integer idViaje = 7;
+        Viaje viaje = new Viaje(1, "Miami", "Florida");
+
+        this.sessionFactory.getCurrentSession().save(viaje);
+
 
         // Ejecución
-        Viaje viajeActualizadoAceptadoYDespuesRechazado = this.viajeRepositorio.actualizarViajeAceptadoPorElConductor(idViaje, idConductor);
+        Viaje viajeActualizadoAceptadoYDespuesRechazado = this.viajeRepositorio.actualizarViajeAceptadoPorElConductor(viaje.getId(), idConductor);
 
         // Validación
-        assertThat(viajeActualizadoAceptadoYDespuesRechazado.getId(), equalTo(idViaje));
+        assertThat(viajeActualizadoAceptadoYDespuesRechazado.getId(), equalTo(viaje.getId()));
         assertThat(viajeActualizadoAceptadoYDespuesRechazado.getIdConductor(), equalTo(idConductor)); // Se setea el Id del conductor
         assertThat(viajeActualizadoAceptadoYDespuesRechazado.getDomicilioDeSalida(), equalTo("Miami"));
         assertThat(viajeActualizadoAceptadoYDespuesRechazado.getDomicilioDeLlegada(), equalTo("Florida"));
 
         // Ejecución
-        viajeActualizadoAceptadoYDespuesRechazado = this.viajeRepositorio.actualizarViajeConElIdDelConductorQueAceptoElViajeYDespuesLoRechaza(idViaje, idConductor);
+        viajeActualizadoAceptadoYDespuesRechazado = this.viajeRepositorio.actualizarViajeConElIdDelConductorQueAceptoElViajeYDespuesLoRechaza(viaje.getId(), idConductor);
 
         // Validación
-        assertThat(viajeActualizadoAceptadoYDespuesRechazado.getId(), equalTo(idViaje));
+        assertThat(viajeActualizadoAceptadoYDespuesRechazado.getId(), equalTo(viaje.getId()));
         assertThat(viajeActualizadoAceptadoYDespuesRechazado.getIdConductor(), equalTo(null)); // Es null porque se desetea el Id del Conductor
         assertThat(viajeActualizadoAceptadoYDespuesRechazado.getDomicilioDeSalida(), equalTo("Miami"));
         assertThat(viajeActualizadoAceptadoYDespuesRechazado.getDomicilioDeLlegada(), equalTo("Florida"));
