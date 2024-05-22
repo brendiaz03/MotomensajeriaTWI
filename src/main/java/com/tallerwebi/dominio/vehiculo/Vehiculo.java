@@ -47,6 +47,11 @@ public class Vehiculo {
 
     }
 
+    public Vehiculo(Long id, String patente) {
+        this.id = id;
+        this.patente = patente;
+    }
+
     public Long getId() {
         return id;
     }

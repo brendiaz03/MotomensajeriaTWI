@@ -8,6 +8,9 @@ import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
 
 @Repository
@@ -39,4 +42,5 @@ public class VehiculoRepositorioImpl implements VehiculoRepositorio {
     public void editar(Vehiculo vehiculo) {
         this.sessionFactory.getCurrentSession().update(vehiculo);
     }
+
 }
