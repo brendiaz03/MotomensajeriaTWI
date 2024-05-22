@@ -21,8 +21,8 @@
     font-family: "Codec Pro", serif;
     font-style: normal;
     font-weight: 500;
-    font-size: 48px;
-    line-height: 41px;
+    font-size: 30px;
+    line-height: 25px;
     text-align: center;
     color: #000000;
 }
@@ -67,11 +67,14 @@
     cursor: pointer; /* Cambia el cursor a una mano */
     padding: 10px; /* Espaciado interno para una mejor apariencia */
     transition: background-color 0.3s; /* Transición suave para el cambio de color */
+    border-radius: 15px;
 }
 
 /* Estilos para cuando el mouse pasa sobre las opciones */
 .card-text.option:hover {
-    background-color: gray; /* Cambia el color de fondo al pasar el mouse */
+    background-color: darkgray; /* Cambia el color de fondo al pasar el mouse */
+    color:black;
+    border-radius: 15px;
 }
 
 .boton_borrar_cuenta{

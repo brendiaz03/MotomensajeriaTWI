@@ -20,6 +20,9 @@ public class Viaje {
     private String precio;
     private String medioDePago;
     private Integer idConductor;
+    private Integer idPaquete;
+    private Boolean terminado;
+    private Boolean cancelado;
 
     @ManyToOne()
     @JoinColumn(name = "idCliente", referencedColumnName = "id")
@@ -138,4 +141,14 @@ public class Viaje {
     public void setIdConductor(Integer idConductor) {
         this.idConductor = idConductor;
     }
+
+    public Integer getIdPaquete() {
+        return idPaquete;
+    }
+
+    public void setIdPaquete(Integer idPaquete) {
+        this.idPaquete = idPaquete;
+    }
+
+
 }
