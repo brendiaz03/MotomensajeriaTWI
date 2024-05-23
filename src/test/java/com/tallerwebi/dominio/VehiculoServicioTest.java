@@ -1,5 +1,7 @@
 package com.tallerwebi.dominio;
 import com.tallerwebi.dominio.conductor.ConductorNoEncontradoException;
+import com.tallerwebi.dominio.enums.Color;
+import com.tallerwebi.dominio.enums.ModeloVehiculo;
 import com.tallerwebi.dominio.enums.TipoVehiculo;
 import com.tallerwebi.dominio.vehiculo.Vehiculo;
 import com.tallerwebi.dominio.vehiculo.VehiculoRepositorio;
@@ -25,7 +27,7 @@ public class VehiculoServicioTest {
     @Test
     public void queSePuedaRegistrarUnVehiculoYloDevuelva() {
         //PREPARACION
-        Vehiculo vehiculo= new Vehiculo("sfsfsfd", "Rojo", "Ford", TipoVehiculo.AUTO, 0.0, 0.0);
+        Vehiculo vehiculo= new Vehiculo("sfsfsfd", Color.ROJO, ModeloVehiculo.BMW, TipoVehiculo.AUTO, 0.0, 0.0);
 
         //EJECUCIÓN
         when(this.vehiculoRepositorio.guardarVehiculo(vehiculo)).thenReturn(vehiculo);

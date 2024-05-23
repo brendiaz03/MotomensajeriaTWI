@@ -41,7 +41,7 @@ public class VehiculoRepositorioTest {
     @Transactional
     public void queAlBuscarElVehiculoPorPatenteDevuelvaElVehiculo(){
 
-        Vehiculo vehiculoEsperado= new Vehiculo("sfsfsfd", "Rojo", "Ford", TipoVehiculo.AUTO, 0.0, 0.0);
+        Vehiculo vehiculoEsperado= new Vehiculo("sfsfsfd", Color.ROJO, ModeloVehiculo.BMW, TipoVehiculo.AUTO, 0.0, 0.0);
 
         vehiculoRepositorio.guardarVehiculo(vehiculoEsperado);
 
@@ -57,7 +57,7 @@ public class VehiculoRepositorioTest {
     @Transactional
     public void queAlGuardarUnVehiculoMeDevuelvaElVehiculo(){
 
-        Vehiculo vehiculoEsperado= new Vehiculo("sfsfsfd", "Rojo", "Ford", TipoVehiculo.AUTO, 0.0, 0.0);
+        Vehiculo vehiculoEsperado= new Vehiculo("sfsfsfd", Color.ROJO, ModeloVehiculo.BMW, TipoVehiculo.AUTO, 0.0, 0.0);
 
         vehiculoRepositorio.guardarVehiculo(vehiculoEsperado);
 
@@ -73,7 +73,7 @@ public class VehiculoRepositorioTest {
     @Transactional
     public void queSePuedaEditarUnVehiculo(){
 
-        Vehiculo vehiculoEsperado= new Vehiculo("sfsfsfd", "Rojo", "Ford", TipoVehiculo.AUTO, 0.0, 0.0);
+        Vehiculo vehiculoEsperado= new Vehiculo("sfsfsfd", Color.ROJO, ModeloVehiculo.BMW, TipoVehiculo.AUTO, 0.0, 0.0);
 
         vehiculoRepositorio.guardarVehiculo(vehiculoEsperado);
 

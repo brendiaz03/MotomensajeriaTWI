@@ -1,6 +1,8 @@
 package com.tallerwebi.dominio.vehiculo;
 
 import com.tallerwebi.dominio.conductor.Conductor;
+import com.tallerwebi.dominio.enums.Color;
+import com.tallerwebi.dominio.enums.ModeloVehiculo;
 import com.tallerwebi.dominio.enums.TipoVehiculo;
 
 import javax.persistence.*;
@@ -17,10 +19,10 @@ public class Vehiculo {
     private String patente;
 
     @Column(name = "Color")
-    private String color;
+    private Color color;
 
     @Column(name = "modelo")
-    private String modelo;
+    private ModeloVehiculo modelo;
 
     @Column(name = "tipoDeVehiculo")
     private TipoVehiculo tipoDeVehiculo;
@@ -34,7 +36,7 @@ public class Vehiculo {
     @OneToOne(mappedBy = "vehiculo", cascade = CascadeType.ALL)
     private Conductor Conductor;
 
-    public Vehiculo(String patente, String color, String modelo, TipoVehiculo tipoDeVehiculo, double pesoSoportado, double dimensionDisponible) {
+    public Vehiculo(String patente, Color color, ModeloVehiculo modelo, TipoVehiculo tipoDeVehiculo, double pesoSoportado, double dimensionDisponible) {
         this.patente = patente;
         this.color = color;
         this.modelo = modelo;
@@ -43,7 +45,7 @@ public class Vehiculo {
         this.dimensionDisponible = dimensionDisponible;
     }
 
-    public Vehiculo() {
+    public Vehiculo(){
 
     }
 
@@ -63,20 +65,20 @@ public class Vehiculo {
         this.patente = patente;
     }
 
-    public String getColor() {
-        return color;
-    }
-
-    public void setColor(String color) {
-        this.color = color;
-    }
-
-    public String getModelo() {
+    public ModeloVehiculo getModelo() {
         return modelo;
     }
 
-    public void setModelo(String modelo) {
+    public void setModelo(ModeloVehiculo modelo) {
         this.modelo = modelo;
+    }
+
+    public Color getColor() {
+        return color;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
     }
 
     public TipoVehiculo getTipoDeVehiculo() {
@@ -103,17 +105,12 @@ public class Vehiculo {
         this.dimensionDisponible = dimensionDisponible;
     }
 
-    public double getDimensionCuadrada() {
-        return Math.pow(this.dimensionDisponible, 2);
-    }
-
-    public Conductor getConductor() {
+    public com.tallerwebi.dominio.conductor.Conductor getConductor() {
         return Conductor;
     }
 
     public void setConductor(com.tallerwebi.dominio.conductor.Conductor conductor) {
         Conductor = conductor;
     }
-
 }
 
