@@ -12,9 +12,8 @@ public interface ViajeServicio {
 
     List<Viaje> obtenerHistorialDeViajes(Conductor conductor);
 
-    Viaje actualizarViajeConConductor(Viaje viaje);
+    Viaje actualizarViaje(Viaje viaje);
 
-//    List<Viaje> obtenerLosViajesAceptadosPorElConductor(Integer idConductor);
-//
-//    Viaje actualizarViajeConElIdDelConductorQueAceptoElViajeYDespuesLoRechaza(Integer idViaje, Integer idConductor);
+    List<Viaje> obtenerViajesEnProceso(Conductor conductor);
+
 }

@@ -52,9 +52,9 @@
 <main role="main" class="container">
     <div class="container">
         <div class="card-header">
-            <h1 class="text-center titulo-viajes">Historial de Viajes</h1>
+            <h1 class="text-center titulo-viajes">Viajes en Proceso</h1>
         </div>
-        <div class="card mt-3 contenedor-viajes">
+        <div th:if="${viajesObtenidos != null}" class="card mt-3 contenedor-viajes">
             <div class="card-body" th:each="viaje : ${viajesObtenidos}">
                 <div class="card mt-3 ml-3 contenedor-datos-viajes-aceptados">
                     <div class="card-body viaje">
@@ -64,9 +64,7 @@
                         <p class="card-text"><b>Precio:</b> <span th:text="${viaje.getPrecio()}"></span></p>
                         <p class="card-text"><b>Codigo Postal:</b> <span th:text="${viaje.getCodigoPostal()}"></span></p>
                         <div class="contenedor-boton-cancelar" >
-                            <a th:if="${viaje.getTerminado()}" class="boton-verde">Terminado</a>
-                        <div class="contenedor-boton-cancelar" >
-                            <a th:if="${viaje.getCancelado()}" class="boton-rojo">Cancelado</a>
+                            <a th:href="@{/viajeAceptado(idViaje=${viaje.getId()})}" class="boton-verde">Ver</a>
                         </div>
                     </div>
                 </div>

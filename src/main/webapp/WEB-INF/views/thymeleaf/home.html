@@ -33,6 +33,9 @@
           <a th:href="ayuda" class="nav-link p-2 text-white" href="#">Ayuda</a>
         </li>
         <li class="nav-item p-2" th:if="${isUsuarioLogueado}">
+          <a th:href="viajes-en-proceso" class="nav-link p-2 text-white">Viajes en Proceso</a>
+        </li>
+        <li class="nav-item p-2" th:if="${isUsuarioLogueado}">
           <a th:href="historial" class="nav-link p-2 text-white" href="#">Historial de Viajes</a>
         </li>
       </ul>
@@ -76,26 +79,25 @@
   <div class="card mt-3 contenedor-solicitudes" th:if="${isUsuarioLogueado}">
     <h1 class="text-center titulo-solicitud">Solicitudes de Viajes</h1>
     <div class="card-body viaje" th:each="viaje : ${viajes}">
-      <div class="card mt-3 ml-3 contenedor-viaje" th:data-latitud-salida="${viaje.latitudDeSalida}" th:data-longitud-salida="${viaje.longitudDeSalida}" th:data-latitud-llegada="${viaje.latitudDeLlegada}" th:data-longitud-llegada="${viaje.longitudDeLlegada}">
+<!--      <div class="card mt-3 ml-3 contenedor-viaje" th:data-latitud-salida="${viaje.latitudDeSalida}" th:data-longitud-salida="${viaje.longitudDeSalida}" th:data-latitud-llegada="${viaje.latitudDeLlegada}" th:data-longitud-llegada="${viaje.longitudDeLlegada}">-->
         <div class="card-body contenedor-datos-viaje grid">
-          <p class="card-text"><b>Direccion de Salida:</b> <span th:text="${viaje.domicilioDeSalida}"></span></p>
-          <p class="card-text"><b>Codigo postal:</b> <span th:text="${viaje.codigoPostal}"></span></p>
-          <p class="card-text"><b>Direccion de Llegada:</b> <span th:text="${viaje.domicilioDeLlegada}"></span></p>
-          <p class="card-text"><b>Precio: </b> $<span th:text="${viaje.precio}"></span> ARS</p>
-          <p class="card-text"><b>Paquete de:</b> <span th:text="${viaje.cliente.nombre}"></span></p>
-          <p class="card-text"><b>Distancia desde tu ubicación:</b><span class="distanceFromCurrentPosition"></span></p>
-          <p class="card-text"><b>Distancia del viaje:</b><span class="distanceFromStartToEnd"></span></p>
-        </div>
-
+          <p class="card-text"><b>Direccion de Salida:</b> <span th:text="${viaje.getDomicilioDeSalida()}"></span></p>
+          <p class="card-text"><b>Codigo postal:</b> <span th:text="${viaje.getCodigoPostal()}"></span></p>
+          <p class="card-text"><b>Direccion de Llegada:</b> <span th:text="${viaje.getDomicilioDeLlegada()}"></span></p>
+          <p class="card-text"><b>Precio: </b> $<span th:text="${viaje.getPrecio()}"></span> ARS</p>
+          <p class="card-text"><b>Paquete de:</b> <span th:text="${viaje.getCliente().getNombre()}"></span></p>
+<!--          <p class="card-text"><b>Distancia desde tu ubicación:</b><span class="distanceFromCurrentPosition"></span></p>-->
+<!--          <p class="card-text"><b>Distancia del viaje:</b><span class="distanceFromStartToEnd"></span></p>-->
+<!--          -->
         <div class="contenedor-botones">
           <div>
-            <a th:href="@{/viaje-aceptado(idViaje=${viaje.id})}" class="boton-verde">Aceptar</a>
+            <a th:href="@{/viaje-aceptado(idViaje=${viaje.getId()})}" class="boton-verde">Aceptar</a>
           </div>
           <div>
             <a href="#" onclick="eliminarViaje(this)" class="boton-rojo">Rechazar</a>
           </div>
         </div>
-
+        </div>
       </div>
     </div>
   </div>

@@ -51,31 +51,32 @@
     </nav>
 </header>
 <main role="main" class="container">
+    <h1 class="text-center titulo-solicitud">Datos de Viaje en Proceso</h1>
     <section class="imagen-viaje">
         <div class="contenedor-imagen-viaje">
         </div>
     </section>
     <section>
         <div class="card mt-3 contenedor-solicitudes">
-            <h1 class="text-center titulo-solicitud">Solicitudes de Viajes</h1>
-                <div class="card mt-3 ml-3 contenedor-viaje" th:text="${viaje.latitudDeSalida}" th:text="${viaje.longitudDeSalida}" th:data-latitud-llegada="${viaje.latitudDeLlegada}" th:data-longitud-llegada="${viaje.longitudDeLlegada}">
                     <div class="card-body contenedor-datos-viaje grid">
-                        <p class="card-text"><b>Direccion de Salida:</b> <span th:text="${viaje.domicilioDeSalida}"></span></p>
-                        <p class="card-text"><b>Codigo postal:</b> <span th:text="${viaje.codigoPostal}"></span></p>
-                        <p class="card-text"><b>Direccion de Llegada:</b> <span th:text="${viaje.domicilioDeLlegada}"></span></p>
-                        <p class="card-text"><b>Precio: </b> $<span th:text="${viaje.precio}"></span> ARS</p>
-                        <p class="card-text"><b>Paquete de:</b> <span th:text="${viaje.cliente.nombre}"></span></p>
-                        <p class="card-text"><b>Distancia desde tu ubicación:</b><span class="distanceFromCurrentPosition"></span></p>
-                        <p class="card-text"><b>Distancia del viaje:</b><span class="distanceFromStartToEnd"></span></p>
+                        <p class="card-text"><b>Direccion de Salida:</b> <span th:text="${viaje.getDomicilioDeSalida()}"></span></p>
+                        <p class="card-text"><b>Codigo postal:</b> <span th:text="${viaje.getCodigoPostal()}"></span></p>
+                        <p class="card-text"><b>Direccion de Llegada:</b> <span th:text="${viaje.getDomicilioDeLlegada()}"></span></p>
+                        <p class="card-text"><b>Precio: </b> $<span th:text="${viaje.getPrecio()}"></span> ARS</p>
+                        <p class="card-text"><b>Paquete de:</b> <span th:text="${viaje.getCliente().getNombre()}"></span></p>
                     </div>
                 </div>
+        </div>
     </section>
     <div class="contenedor-botones">
         <div>
-            <a th:href="@{aceptar(idViaje=${idViaje})}" class="boton-aceptar">Aceptar</a>
+            <a th:href="@{volver}" class="boton-enlace boton-volver">Volver</a>
         </div>
         <div>
-            <a th:href="@{volver}" class="boton-enlace boton-volver">Volver</a>
+            <a th:href="@{/cancelar-viaje(idViaje=${viaje.getId()})}" class="boton-rojo">Cancelar</a>
+        </div>
+        <div>
+            <a th:href="@{/terminar-viaje(idViaje=${viaje.getId()})}" class="boton-aceptar">Terminar</a>
         </div>
     </div>
 </main>

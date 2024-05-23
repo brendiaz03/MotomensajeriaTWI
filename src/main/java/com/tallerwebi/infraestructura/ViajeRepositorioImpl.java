@@ -23,12 +23,6 @@ public class ViajeRepositorioImpl implements ViajeRepositorio {
 
     @Override
     @Transactional
-    public List<Viaje> obtenerTodosLosViajesDeLaBaseDeDatos() {
-        return this.sessionFactory.getCurrentSession().createQuery("FROM Viaje", Viaje.class).list();
-    }
-
-    @Override
-    @Transactional
     public List<Viaje> obtenerViajesPorConductor(Conductor conductor) {
         Session session = this.sessionFactory.getCurrentSession();
         Criteria criteria = session.createCriteria(Viaje.class);
@@ -55,7 +49,7 @@ public class ViajeRepositorioImpl implements ViajeRepositorio {
 
     @Override
     @Transactional
-    public void actualizarViaje(Viaje viaje) {
+    public void editar(Viaje viaje) {
         sessionFactory.getCurrentSession().saveOrUpdate(viaje);
     }
 
@@ -66,50 +60,5 @@ public class ViajeRepositorioImpl implements ViajeRepositorio {
         Viaje viaje = session.get(Viaje.class, id); // Usa get para obtener el viaje por su id
         return viaje;
     }
-
-
-//    @Override
-//    @Transactional
-//    public Viaje actualizarViajeAceptadoPorElConductor(Integer idViaje, Integer idConductor) {
-//        Session session = this.sessionFactory.getCurrentSession();
-//        Viaje viaje = session.get(Viaje.class, idViaje);
-//
-//        if (viaje != null) {
-//            viaje.setId(idConductor);
-//            session.saveOrUpdate(viaje);
-//            return viaje;
-//        } else {
-//            return null;
-//        }
-//    }
-//
-//    @Override
-//    @Transactional
-//    public List<Viaje> obtenerLosViajesAceptadosPorElConductor(Integer idConductor) {
-//        Session session = this.sessionFactory.getCurrentSession();
-//        CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
-//        CriteriaQuery<Viaje> criteriaQuery = criteriaBuilder.createQuery(Viaje.class);
-//        Root<Viaje> viajeRoot = criteriaQuery.from(Viaje.class);
-//
-//        criteriaQuery.select(viajeRoot);
-//        criteriaQuery.where(criteriaBuilder.equal(viajeRoot.get("idConductor"), idConductor));
-//
-//        return session.createQuery(criteriaQuery).getResultList();
-//    }
-//
-//    @Override
-//    @Transactional
-//    public Viaje actualizarViajeConElIdDelConductorQueAceptoElViajeYDespuesLoRechaza(Integer idViaje, Integer idConductor) {
-//        Session session = this.sessionFactory.getCurrentSession();
-//        Viaje viaje = session.get(Viaje.class, idViaje);
-//
-//        if (viaje != null) {
-//            viaje.setId(null);
-//            session.saveOrUpdate(viaje);
-//            return viaje;
-//        } else {
-//            return null;
-//        }
-//    }
 
 }

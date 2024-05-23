@@ -58,6 +58,7 @@ public class LoginControlador {
             conductor = null;
         }
         model.put("conductor", conductor);
+
         Imagen logo = imagenServicio.getImagenByName("logo");
         model.put("logo", logo);
         Imagen user = imagenServicio.getImagenByName("user");
