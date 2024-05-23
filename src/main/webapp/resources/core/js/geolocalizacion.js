@@ -6,12 +6,14 @@ function getDriverLocation() {
     }
 }
 
-// Función para mostrar la posición del conductor
+
 async function showDriverPosition(position) {
     const latitude = position.coords.latitude;
     const longitude = position.coords.longitude;
 
-    // Recorrer todos los elementos con la clase 'viaje' para calcular la distancia
+    document.getElementById("driverLocation").innerText = `Ubicacion del conductor: Latitud: ${latitude}, Longitud: ${longitude}`;
+
+
     document.querySelectorAll('.contenedor-viaje').forEach(function(viajeElement) {
         const latitudSalida = parseFloat(viajeElement.dataset.latitudSalida);
         const longitudSalida = parseFloat(viajeElement.dataset.longitudSalida);
@@ -19,12 +21,9 @@ async function showDriverPosition(position) {
         const longitudLlegada = parseFloat(viajeElement.dataset.longitudLlegada);
 
         if (!isNaN(latitudSalida) && !isNaN(longitudSalida) && !isNaN(latitudLlegada) && !isNaN(longitudLlegada)) {
-            // Calcular la distancia desde tu ubicación actual hasta la longitud y latitud de salida del viaje
-            const distanceFromCurrentPosition = calculateDistance(latitude, longitude, latitudSalida, longitudSalida);
-            // Calcular la distancia desde la latitud/longitud de salida hasta la latitud/longitud de llegada del viaje
-            const distanceFromStartToEnd = calculateDistance(latitudSalida, longitudSalida, latitudLlegada, longitudLlegada);
+            const distanceFromCurrentPosition = calculateDistance(latitude, longitude, latitudSalida, longitudSalida); //HASTA EL LUGAR
+            const distanceFromStartToEnd = calculateDistance(latitudSalida, longitudSalida, latitudLlegada, longitudLlegada); //DESDE SALIDA HASTA LLEGADA
 
-            // Convertir las distancias de kilómetros a metros
             const distanceFromCurrentPositionInMeters = distanceFromCurrentPosition * 1000;
             const distanceFromStartToEndInMeters = distanceFromStartToEnd * 1000;
 
@@ -37,8 +36,6 @@ async function showDriverPosition(position) {
 }
 
 
-
-// Función para manejar errores
 function showError(error) {
     switch(error.code) {
         case error.PERMISSION_DENIED:
@@ -56,7 +53,7 @@ function showError(error) {
     }
 }
 
-// Función para calcular la distancia usando la fórmula de Haversine
+// FÓRMULA DE HAVERSINE
 function calculateDistance(lat1, lon1, lat2, lon2) {
     const R = 6371; // Radio de la Tierra en km
     const dLat = degreesToRadians(lat2 - lat1);
@@ -74,7 +71,6 @@ function degreesToRadians(degrees) {
     return degrees * (Math.PI / 180);
 }
 
-// Obtener la ubicación del conductor al cargar la página
 window.onload = function() {
     getDriverLocation();
 };
