@@ -166,4 +166,6 @@ public class LoginControlador {
         model.put("botonPS", botonPS);
         return new ModelAndView("compania", model);
     }
+
+
 }

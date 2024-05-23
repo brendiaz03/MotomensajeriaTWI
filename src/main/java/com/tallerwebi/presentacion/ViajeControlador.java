@@ -18,14 +18,14 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 @Controller
-public class ViajeController {
+public class ViajeControlador {
 
     private ViajeServicio viajeServicio;
     private ImagenServicio imagenServicio;
     private ConductorServicio conductorServicio;
 
     @Autowired
-    public ViajeController(ViajeServicio viajeServicio, ConductorServicio conductorServicio, ImagenServicio imagenServicio){
+    public ViajeControlador(ViajeServicio viajeServicio, ConductorServicio conductorServicio, ImagenServicio imagenServicio){
         this.viajeServicio = viajeServicio;
         this.conductorServicio = conductorServicio;
         this.imagenServicio = imagenServicio;

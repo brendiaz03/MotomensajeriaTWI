@@ -1,36 +1,26 @@
-package com.tallerwebi.dominio.compania;
-import com.tallerwebi.dominio.conductor.Conductor;
-import com.tallerwebi.dominio.conductor.ConductorNoEncontradoException;
-import com.tallerwebi.dominio.conductor.ConductorServicio;
-import com.tallerwebi.dominio.imagen.Imagen;
-import com.tallerwebi.dominio.imagen.ImagenServicio;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
+package com.tallerwebi.presentacion;
 
-import javax.servlet.http.HttpServletRequest;
+import org.springframework.stereotype.Controller;
+
 
 @Controller
-public class ControladorCompania {
+public class AyudaControlador {
 
-//    private IServiceCompania iServiceCompania;
+//    private IServiceAyuda serviceAyuda;
 //
 //    private ConductorServicio conductorServicio;
 //
 //    private ImagenServicio imagenServicio;
 //
 //    @Autowired
-//    public ControladorCompania(IServiceCompania iServiceCompania, ConductorServicio conductorServicio, ImagenServicio imagenServicio){
-//        this.iServiceCompania = iServiceCompania;
+//    public AyudaControlador(IServiceAyuda serviceAyuda, ConductorServicio conductorServicio, ImagenServicio imagenServicio){
+//        this.serviceAyuda = serviceAyuda;
 //        this.conductorServicio = conductorServicio;
 //        this.imagenServicio = imagenServicio;
-//
 //    }
 //
-//    @RequestMapping("/compania")
-//    public ModelAndView mostrarVistaCompania(HttpServletRequest request) throws ConductorNoEncontradoException {
+//    @RequestMapping ("/ayuda")
+//    public ModelAndView mostrarVistaAyuda(HttpServletRequest request) throws ConductorNoEncontradoException {
 //        ModelMap model = new ModelMap();
 //
 //        Boolean isUsuarioLogueado = (Boolean) request.getSession().getAttribute("isUsuarioLogueado");
@@ -54,7 +44,8 @@ public class ControladorCompania {
 //        model.put("fondo", fondo);
 //        Imagen botonPS = imagenServicio.getImagenByName("botonPS");
 //        model.put("botonPS", botonPS);
-//        return new ModelAndView("compania", model);
+//        return new ModelAndView("ayuda", model);
 //    }
+
 
 }
