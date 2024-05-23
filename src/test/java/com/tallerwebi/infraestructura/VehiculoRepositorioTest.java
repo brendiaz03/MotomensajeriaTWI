@@ -1,6 +1,8 @@
 package com.tallerwebi.infraestructura;
 
 import com.tallerwebi.dominio.enums.Color;
+import com.tallerwebi.dominio.enums.ModeloVehiculo;
+import com.tallerwebi.dominio.enums.TipoVehiculo;
 import com.tallerwebi.dominio.vehiculo.Vehiculo;
 import com.tallerwebi.dominio.vehiculo.VehiculoRepositorio;
 import com.tallerwebi.infraestructura.config.HibernateInfraestructuraTestConfig;
@@ -39,7 +41,9 @@ public class VehiculoRepositorioTest {
     @Transactional
     public void queAlBuscarElVehiculoPorPatenteDevuelvaElVehiculo(){
 
-        Vehiculo vehiculoEsperado = new Vehiculo(1L, "L12345");
+        Vehiculo vehiculoEsperado = new Vehiculo("L12345", Color.AMARILLO, ModeloVehiculo.BAJAJ,  TipoVehiculo.AUTO, 10.5, 25.0);
+
+        vehiculoRepositorio.save(vehiculoEsperado);
 
         Vehiculo vehiculoObtenido = this.vehiculoRepositorio.buscarVehiculoPorPatente(vehiculoEsperado.getPatente());
 
@@ -55,7 +59,9 @@ public class VehiculoRepositorioTest {
 
         Vehiculo vehiculoEsperado = new Vehiculo(1L, "L12345");
 
-        Vehiculo vehiculoObtenido = this.vehiculoRepositorio.guardarVehiculo(vehiculoEsperado);
+        vehiculoRepositorio.save(vehiculoEsperado);
+
+        Vehiculo vehiculoObtenido = vehiculoRepositorio.buscarVehiculoPorPatente(vehiculoEsperado.getPatente());
 
         assertThat(vehiculoEsperado, equalTo(vehiculoObtenido));
         assertThat(vehiculoEsperado.getId(), equalTo(vehiculoObtenido.getId()));
@@ -69,15 +75,15 @@ public class VehiculoRepositorioTest {
 
         Vehiculo vehiculoEsperado = new Vehiculo(1L, "L12345");
 
-        Vehiculo vehiculoGuardado = vehiculoRepositorio.guardarVehiculo(vehiculoEsperado);
+        vehiculoRepositorio.save(vehiculoEsperado);
 
-        vehiculoGuardado.setPatente("HolaMundo456");
+        vehiculoEsperado.setPatente("HolaMundo456");
 
-        vehiculoRepositorio.editar(vehiculoGuardado);
+        vehiculoRepositorio.update(vehiculoEsperado);
 
-        Vehiculo vehiculoObtenido = this.vehiculoRepositorio.buscarVehiculoPorPatente(vehiculoGuardado.getPatente());
+        Vehiculo vehiculoObtenido = this.vehiculoRepositorio.buscarVehiculoPorPatente(vehiculoEsperado.getPatente());
 
-        assertThat(vehiculoGuardado.getPatente(), equalTo(vehiculoObtenido.getPatente()));
+        assertThat(vehiculoEsperado.getPatente(), equalTo(vehiculoObtenido.getPatente()));
 
     }
 

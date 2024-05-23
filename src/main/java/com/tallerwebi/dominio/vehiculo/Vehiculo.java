@@ -1,6 +1,8 @@
 package com.tallerwebi.dominio.vehiculo;
 
 import com.tallerwebi.dominio.conductor.Conductor;
+import com.tallerwebi.dominio.enums.Color;
+import com.tallerwebi.dominio.enums.ModeloVehiculo;
 import com.tallerwebi.dominio.enums.TipoVehiculo;
 
 import javax.persistence.*;
@@ -17,10 +19,10 @@ public class Vehiculo {
     private String patente;
 
     @Column(name = "Color")
-    private String color;
+    private Color color;
 
     @Column(name = "modelo")
-    private String modelo;
+    private ModeloVehiculo modeloVehiculo;
 
     @Column(name = "tipoDeVehiculo")
     private TipoVehiculo tipoDeVehiculo;
@@ -34,10 +36,10 @@ public class Vehiculo {
     @OneToOne(mappedBy = "vehiculo", cascade = CascadeType.ALL)
     private Conductor Conductor;
 
-    public Vehiculo(String patente, String color, String modelo, TipoVehiculo tipoDeVehiculo, double pesoSoportado, double dimensionDisponible) {
+    public Vehiculo(String patente, Color color, ModeloVehiculo modeloVehiculo, TipoVehiculo tipoDeVehiculo, double pesoSoportado, double dimensionDisponible) {
         this.patente = patente;
         this.color = color;
-        this.modelo = modelo;
+        this.modeloVehiculo = modeloVehiculo;
         this.tipoDeVehiculo = tipoDeVehiculo;
         this.pesoSoportado = pesoSoportado;
         this.dimensionDisponible = dimensionDisponible;
@@ -68,20 +70,20 @@ public class Vehiculo {
         this.patente = patente;
     }
 
-    public String getColor() {
+    public Color getColor() {
         return color;
     }
 
-    public void setColor(String color) {
+    public void setColor(Color color) {
         this.color = color;
     }
 
-    public String getModelo() {
-        return modelo;
+    public ModeloVehiculo getModeloVehiculo() {
+        return modeloVehiculo;
     }
 
-    public void setModelo(String modelo) {
-        this.modelo = modelo;
+    public void setModeloVehiculo(ModeloVehiculo modeloVehiculo) {
+        this.modeloVehiculo = modeloVehiculo;
     }
 
     public TipoVehiculo getTipoDeVehiculo() {

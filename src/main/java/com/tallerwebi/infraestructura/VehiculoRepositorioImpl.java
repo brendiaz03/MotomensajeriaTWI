@@ -1,6 +1,5 @@
 package com.tallerwebi.infraestructura;
 
-import com.tallerwebi.dominio.conductor.Conductor;
 import com.tallerwebi.dominio.vehiculo.VehiculoRepositorio;
 import com.tallerwebi.dominio.vehiculo.Vehiculo;
 import org.hibernate.Session;
@@ -8,9 +7,6 @@ import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
 
 @Repository
@@ -41,6 +37,17 @@ public class VehiculoRepositorioImpl implements VehiculoRepositorio {
     @Transactional
     public void editar(Vehiculo vehiculo) {
         this.sessionFactory.getCurrentSession().update(vehiculo);
+    }
+
+    @Override
+    public void save(Vehiculo vehiculo) {
+        sessionFactory.getCurrentSession().save(vehiculo);
+    }
+
+    @Override
+    @Transactional
+    public void update(Vehiculo vehiculo) {
+        sessionFactory.getCurrentSession().update(vehiculo);
     }
 
 }
