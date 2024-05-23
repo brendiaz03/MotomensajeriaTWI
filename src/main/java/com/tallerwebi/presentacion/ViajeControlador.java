@@ -33,7 +33,7 @@ public class ViajeControlador {
 
     //viajes que serian el historial
     @RequestMapping("/historial")
-    public ModelAndView mostrarVistaViaje(HttpServletRequest request) throws ConductorNoEncontradoException {
+    public ModelAndView mostrarHistorial(HttpServletRequest request) throws ConductorNoEncontradoException {
         ModelMap model = new ModelMap();
         Boolean isUsuarioLogueado = (Boolean) request.getSession().getAttribute("isUsuarioLogueado");
         model.put("isUsuarioLogueado",isUsuarioLogueado);
@@ -60,7 +60,7 @@ public class ViajeControlador {
 
     //una vez aceptado que te lleve al viaje con el mapa
     @RequestMapping(value = "/viaje-aceptado", method = RequestMethod.GET)
-    public ModelAndView verVistaViaje(HttpServletRequest request, @RequestParam("idViaje") Integer idViaje) throws ConductorNoEncontradoException {
+    public ModelAndView AceptarViaje(HttpServletRequest request, @RequestParam("idViaje") Integer idViaje) throws ConductorNoEncontradoException {
         ModelMap model = new ModelMap();
 
         Boolean isUsuarioLogueado = (Boolean) request.getSession().getAttribute("isUsuarioLogueado");

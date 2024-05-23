@@ -1,4 +1,4 @@
-package com.tallerwebi.presentacion.VehiculoTest;
+package com.tallerwebi.presentacion;
 
 import com.tallerwebi.dominio.conductor.Conductor;
 import com.tallerwebi.dominio.conductor.ConductorNoEncontradoException;
@@ -7,7 +7,6 @@ import com.tallerwebi.dominio.imagen.Imagen;
 import com.tallerwebi.dominio.imagen.ImagenServicio;
 import com.tallerwebi.dominio.vehiculo.Vehiculo;
 import com.tallerwebi.dominio.vehiculo.VehiculoServicio;
-import com.tallerwebi.presentacion.VehiculoControlador;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.servlet.ModelAndView;
@@ -22,7 +21,7 @@ import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
-class ControladorVehiculoTest {
+class VehiculoControladorTest {
 
     private VehiculoControlador vehiculoControlador;
     private VehiculoServicio vehiculoServicio;
