@@ -60,5 +60,4 @@ public class ViajeRepositorioImpl implements ViajeRepositorio {
         Viaje viaje = session.get(Viaje.class, id); // Usa get para obtener el viaje por su id
         return viaje;
     }
-
 }
