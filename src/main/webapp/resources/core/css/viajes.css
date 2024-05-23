@@ -15,7 +15,6 @@
     display: inline-block;
     cursor: pointer;
     text-decoration: none;
-    margin: 0 30px;
 }
 
 .boton-volver {
@@ -36,10 +35,6 @@
     margin-bottom: 35px;
 }
 
-.contenedor-solicitudes{
-    border: none;
-    background-color: transparent;
-}
 
 .titulo-solicitud{
     font-weight: 500;
@@ -47,51 +42,6 @@
     line-height: 25px;
     margin-top: 40px;
     color: white;
-}
-
-.boton-verde {
-    background-color: #008cba;
-    color: #fff;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    display: inline-block;
-    cursor: pointer;
-    text-decoration: none;
-}
-
-.boton-rojo {
-    background-color: #dc3545;
-    color: #fff;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    display: inline-block;
-    cursor: pointer;
-    text-decoration: none;
-}
-
-.boton-rojo:hover {
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    transform: translateY(-1px);
-    color: black;
-    background-color: coral;
-}
-
-.boton-verde:hover {
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    transform: translateY(-1px);
-    color: black;
-    background-color: aqua;
-}
-
-.contenedor-datos-viaje.grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-gap: 0 300px;
-    padding: 25px 0;
-    margin: auto;
-    font-size: 20px;
 }
 
 .contenedor-viaje{
@@ -102,10 +52,6 @@
     color: white;
 }
 
-.contenedor-viajes{
-    border: none;
-    background-color: transparent;
-}
 
 .contenedor-datos-viajes-aceptados{
     font-size: 18px;
@@ -123,4 +69,116 @@
     height: 400px;
     text-align: center;
     margin: 40px 0;
+}
+
+/* Ajusta el estilo de las columnas y contenedores */
+.contenedor-datos-viaje {
+    display: flex;
+    justify-content: center; /* Centra horizontalmente */
+    align-items: flex-start; /* Alinea los elementos al inicio verticalmente */
+    padding: 15px 0; /* Ajusta el padding según sea necesario */
+    gap: 20px; /* Controla el espacio entre las columnas */
+    font-size: 20px;
+    border-radius: 10px;
+}
+
+.contenedor-datos-viaje > div {
+    flex: 1; /* Permite que los divs se distribuyan uniformemente */
+    max-width: 45%; /* Controla el ancho máximo de los divs */
+
+}
+
+.contenedor-botones {
+    display: flex;
+    justify-content: center; /* Centra horizontalmente */
+    align-items: center;
+    margin-bottom: 15px;
+    gap: 10px; /* Controla el espacio entre los botones */
+}
+
+
+.boton-verde, .boton-rojo {
+    background-color: #008cba;
+    color: #fff;
+    padding: 10px 30px;
+    border: none;
+    border-radius: 5px;
+    display: inline-block;
+    cursor: pointer;
+    text-decoration: none;
+    margin: 0 10px; /* Ajusta el margen según sea necesario */
+}
+
+.boton-rojo {
+    background-color: #dc3545;
+}
+
+/* Ajusta el estilo de los párrafos */
+p {
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 1.4; /* Ajusta el espaciado de línea */
+    margin: 5px 0; /* Reduce el margen para disminuir el espacio */
+    text-align: left; /* Mantén el texto alineado a la izquierda */
+}
+
+.titulo-solicitud {
+    font-weight: 500;
+    font-size: 30px;
+    line-height: 1.2;
+    margin-top: 20px;
+    color: white;
+    text-align: center; /* Centra el título */
+}
+
+/* Estilo general de la tarjeta */
+.card {
+    border-radius: 30px;
+    padding: 2%;
+    background-color: lightgrey;
+}
+
+.contenedor-viaje {
+    margin: 15px 0; /* Controla el margen entre tarjetas */
+}
+
+/* Ajusta el espaciado en los botones al hacer hover */
+.boton-rojo:hover, .boton-verde:hover {
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    transform: translateY(-1px);
+    color: black;
+    background-color: coral;
+}
+
+.boton-verde:hover {
+    background-color: aqua;
+}
+
+.viajes-proceso-img {
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch;
+    padding: 2%;
+}
+.imagen-viaje-proceso {
+    flex: 1;
+    max-width: 50%;
+    background-image: url("imagenes/obelisco.jpg");
+    background-position: center;
+    background-size: cover;
+}
+
+.contenedor-imagen-viaje-proceso {
+    height: 100%; /* Asegura que el div contenedor ocupe toda la altura */
+    display: flex;
+    justify-content: center; /* Centra horizontalmente */
+    align-items: flex-start; /* Alinea los elementos al inicio verticalmente */
+    padding: 15px 0; /* Ajusta el padding según sea necesario */
+    gap: 20px; /* Controla el espacio entre las columnas */
+    font-size: 20px;
+    border-radius: 10px;
+}
+
+.contenedor-datos-viajes-aceptados{
+
 }
