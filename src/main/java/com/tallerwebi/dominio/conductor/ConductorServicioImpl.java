@@ -71,7 +71,7 @@ public class ConductorServicioImpl implements ConductorServicio {
     }
 
     @Override
-    public Boolean RelacionarVehiculoAConductor(Integer idConductor, Vehiculo vehiculo) throws ConductorNoEncontradoException {
+    public Boolean RelacionarVehiculoAConductor(Integer idConductor, Vehiculo vehiculo) {
         try{
             conductorRepositorio.agregarVehiculoAConductor(idConductor,vehiculo);
             return true;

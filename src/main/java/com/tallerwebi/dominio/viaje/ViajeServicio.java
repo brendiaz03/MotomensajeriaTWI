@@ -1,15 +1,19 @@
 package com.tallerwebi.dominio.viaje;
 
+import com.tallerwebi.dominio.conductor.Conductor;
+
 import java.util.List;
 
 public interface ViajeServicio {
-    List<Viaje> obtenerTodosLosViajesDeLaBaseDeDatos();
 
     List<Viaje> obtenerLasSolicitudesDeViajesPendientes();
 
-    Viaje actualizarViajeConElIdDelConductorQueAceptoElViaje(Integer idViaje, Integer idConductor);
+    Viaje obtenerViajeAceptadoPorId(Integer id);
 
-    List<Viaje> obtenerLosViajesAceptadosPorElConductor(Integer idConductor);
+    List<Viaje> obtenerHistorialDeViajes(Conductor conductor);
 
-    Viaje actualizarViajeConElIdDelConductorQueAceptoElViajeYDespuesLoRechaza(Integer idViaje, Integer idConductor);
+    Viaje actualizarViaje(Viaje viaje);
+
+    List<Viaje> obtenerViajesEnProceso(Conductor conductor);
+
 }

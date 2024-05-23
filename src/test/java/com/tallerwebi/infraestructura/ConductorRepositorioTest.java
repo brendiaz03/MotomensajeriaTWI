@@ -11,6 +11,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -40,6 +41,7 @@ public class ConductorRepositorioTest {
 
     @Test
     @Transactional
+    @Rollback
     public void queSePuedaGuardarConductorEnBD() {
         Conductor nuevoConductor = new Conductor();
         nuevoConductor.setNombre("Facu");
@@ -52,6 +54,7 @@ public class ConductorRepositorioTest {
 
     @Test
     @Transactional
+    @Rollback
     public void queSePuedaBuscarConductorPorId() {
         Conductor nuevoConductor = new Conductor();
         nuevoConductor.setId(1);
@@ -69,6 +72,7 @@ public class ConductorRepositorioTest {
 
     @Test
     @Transactional
+    @Rollback
     public void queSePuedaEditarConductorExistente() {
         Conductor conductor = new Conductor();
         conductor.setCvu("123");
@@ -84,27 +88,48 @@ public class ConductorRepositorioTest {
 
     @Test
     @Transactional
+    @Rollback
+    public void queSeEncuentrenConductoresDuplicados() {
+        Conductor nuevoConductor = new Conductor();
+        nuevoConductor.setId(1);
+        nuevoConductor.setNombreUsuario("Facu");
+        nuevoConductor.setEmail("Facu@gmail.com");
+
+        this.conductorRepositorio.guardar(nuevoConductor);
+
+        Conductor conductorEncontrado = conductorRepositorio.buscarDuplicados(nuevoConductor.getEmail(),nuevoConductor.getNombreUsuario());
+
+        assertNotNull(conductorEncontrado);
+        assertEquals(nuevoConductor.getId(), conductorEncontrado.getId());
+        assertEquals(nuevoConductor.getNombre(), conductorEncontrado.getNombre());
+        assertThat(conductorEncontrado.getNombreUsuario(), equalTo("Facu"));
+    }
+    @Test
+    @Transactional
+    @Rollback
     public void testQueSePuedaBorrarUnConductor() throws ConductorNoEncontradoException {
         Conductor nuevoConductor = new Conductor();
-        conductorRepositorio.guardar(nuevoConductor);
-        conductorRepositorio.borrarConductor(nuevoConductor);
+        Conductor guardado=conductorRepositorio.guardar(nuevoConductor);
+        assertNotNull(guardado);
 
+        conductorRepositorio.borrarConductor(nuevoConductor);
         Conductor conductorBorrado = (Conductor) sessionFactory.getCurrentSession().get(Conductor.class, nuevoConductor.getId());
         assertNull(conductorBorrado);
     }
 
     @Test
     @Transactional
+    @Rollback
     public void testQueSePuedaAgregarUnVehiculoAlConductor()  {
         Conductor nuevoConductor = new Conductor();
         Vehiculo nuevoVehiculo= new Vehiculo();
         nuevoConductor.setId(1);
+
         conductorRepositorio.guardar(nuevoConductor);
+        nuevoConductor.setVehiculo(nuevoVehiculo);
+        sessionFactory.getCurrentSession().saveOrUpdate(nuevoConductor);
 
-        Conductor actual = (Conductor) sessionFactory.getCurrentSession().get(Conductor.class, nuevoConductor.getId());
-        actual.setVehiculo(nuevoVehiculo);
-        sessionFactory.getCurrentSession().saveOrUpdate(actual);
-
-        assertThat(actual.getVehiculo(),equalTo(nuevoVehiculo));
+        assertNotNull(nuevoConductor.getVehiculo());
+        assertThat(nuevoConductor.getVehiculo(),equalTo(nuevoVehiculo));
     }
     }
