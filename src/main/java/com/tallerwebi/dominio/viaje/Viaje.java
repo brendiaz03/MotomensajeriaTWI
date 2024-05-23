@@ -156,5 +156,19 @@ public class Viaje {
         this.idPaquete = idPaquete;
     }
 
+    public Boolean getTerminado() {
+        return terminado;
+    }
 
+    public void setTerminado(Boolean terminado) {
+        this.terminado = terminado;
+    }
+
+    public Boolean getCancelado() {
+        return cancelado;
+    }
+
+    public void setCancelado(Boolean cancelado) {
+        this.cancelado = cancelado;
+    }
 }

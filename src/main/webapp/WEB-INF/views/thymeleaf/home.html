@@ -99,6 +99,9 @@
             <a th:href="@{/ver-viaje(idViaje=${viaje.id})}" class="boton-verde">Ver</a>
           </div>
           <div>
+            <a th:href="@{aceptar(idViaje=${viaje.id})}" class="boton-aceptar">Aceptar</a>
+          </div>
+          <div>
             <a href="#" onclick="eliminarViaje(this)" class="boton-rojo">Rechazar</a>
           </div>
         </div>

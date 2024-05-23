@@ -82,9 +82,11 @@ public class ViajeControlador {
     //una vez que se acepta va al viaje
     @RequestMapping("/aceptar")
     public ModelAndView aceptarViaje(HttpServletRequest request, @RequestParam("idViaje") Integer idViaje){
+        ModelMap modelo = new ModelMap();
         Integer idConductor = (Integer) request.getSession().getAttribute("IDUSUARIO");
         this.viajeServicio.actualizarViajeConElIdDelConductorQueAceptoElViaje(idViaje, idConductor);
-        return new ModelAndView("redirect:/home");
+        modelo.put("idViaje", idViaje);
+        return new ModelAndView("redirect:/ver-viaje");
     }
 
     //vuelve al home

@@ -33,7 +33,7 @@ public class ControladorViajeTest {
     private ImagenServicio imagenServicio;
     private HttpServletRequest requestMock;
     private HttpSession sessionMock;
-    
+
     @BeforeEach
     public void init (){
         viajeServicio = mock(ViajeServicio.class);
