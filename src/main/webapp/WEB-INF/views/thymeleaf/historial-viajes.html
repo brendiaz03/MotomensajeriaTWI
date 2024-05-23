@@ -3,8 +3,6 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <script src="https://kit.fontawesome.com/ca80211b53.js" crossorigin="anonymous"></script>
-
     <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.0/css/bootstrap.min.css}"/>
     <link rel="stylesheet" th:href="@{css/main.css}"/>
     <link rel="stylesheet" th:href="@{css/homeStyle.css}"/>
@@ -54,7 +52,7 @@
 <main role="main" class="container">
     <div class="container">
         <div class="card-header">
-            <h1 class="text-center titulo-viajes">Tus Viajes</h1>
+            <h1 class="text-center titulo-viajes">Historial de Viajes</h1>
         </div>
         <div class="card mt-3 contenedor-viajes">
             <div class="card-body" th:each="viaje : ${viajesObtenidos}">
@@ -65,8 +63,10 @@
                         <p class="card-text"><b>Paquete de:</b> <span th:text="${viaje.getCliente().getNombre()}"></span></p>
                         <p class="card-text"><b>Precio:</b> <span th:text="${viaje.getPrecio()}"></span></p>
                         <p class="card-text"><b>Codigo Postal:</b> <span th:text="${viaje.getCodigoPostal()}"></span></p>
-                        <div class="imagen-viaje">
-
+                        <div class="contenedor-boton-cancelar" >
+                            <a th:if="${viaje.getTerminado()}" class="boton-verde">Terminado</a>
+                        <div class="contenedor-boton-cancelar" >
+                            <a th:if="${viaje.getCancelado()}" class="boton-rojo">Cancelado</a>
                         </div>
                     </div>
                 </div>

@@ -3,8 +3,6 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <script src="https://kit.fontawesome.com/ca80211b53.js" crossorigin="anonymous"></script>
-
     <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.0/css/bootstrap.min.css}"/>
     <link rel="stylesheet" th:href="@{css/main.css}"/>
     <link rel="stylesheet" th:href="@{css/homeStyle.css}"/>
@@ -35,9 +33,6 @@
                 <li class="nav-item p-2">
                     <a class="nav-link p-2 text-white" href="#">Ayuda</a>
                 </li>
-                <li class="nav-item p-2">
-                    <a th:href="viajes" class="nav-link p-2 text-white" href="#">Mis Viajes</a>
-                </li>
             </ul>
             <a th:unless="${isUsuarioLogueado}" th:href="@{login}" class="btn-custom">Ingresar</a>
             <!-- Muestra el botón de usuario solo si el usuario está logueado -->
@@ -55,22 +50,25 @@
     </nav>
 </header>
 <main role="main" class="container">
-    <section class="imagen-viaje">
-
-
-        <div class="contenedor-imagen-viaje">
-
-
+    <div class="container">
+        <div class="card-header">
+            <h1 class="text-center titulo-viajes">Viajes en Proceso</h1>
         </div>
-
-
-    </section>
-    <div class="contenedor-botones">
-        <div>
-            <a th:href="@{aceptar(idViaje=${idViaje})}" class="boton-aceptar">Aceptar</a>
-        </div>
-        <div>
-            <a th:href="@{volver}" class="boton-enlace boton-volver">Volver</a>
+        <div th:if="${viajesObtenidos != null}" class="card mt-3 contenedor-viajes">
+            <div class="card-body" th:each="viaje : ${viajesObtenidos}">
+                <div class="card mt-3 ml-3 contenedor-datos-viajes-aceptados">
+                    <div class="card-body viaje">
+                        <p class="card-text"><b>Salida:</b> <span th:text="${viaje.getDomicilioDeSalida()}"></span></p>
+                        <p class="card-text"><b>Llegada:</b> <span th:text="${viaje.getDomicilioDeLlegada()}"></span></p>
+                        <p class="card-text"><b>Paquete de:</b> <span th:text="${viaje.getCliente().getNombre()}"></span></p>
+                        <p class="card-text"><b>Precio:</b> <span th:text="${viaje.getPrecio()}"></span></p>
+                        <p class="card-text"><b>Codigo Postal:</b> <span th:text="${viaje.getCodigoPostal()}"></span></p>
+                        <div class="contenedor-boton-cancelar" >
+                            <a th:href="@{/viajeAceptado(idViaje=${viaje.getId()})}" class="boton-verde">Ver</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </main>

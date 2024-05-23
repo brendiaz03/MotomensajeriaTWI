@@ -1,11 +1,14 @@
 package com.tallerwebi.dominio.conductor;
 
 import com.tallerwebi.dominio.vehiculo.Vehiculo;
+import com.tallerwebi.dominio.viaje.Viaje;
 
 import javax.persistence.*;
 import java.util.Base64;
+import java.util.List;
 
 @Entity
+@Table(name = "conductor")
 public class Conductor {
 
     @Column(name = "nombre")
@@ -34,10 +37,12 @@ public class Conductor {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @OneToMany(mappedBy = "conductor")
+    private List<Viaje> viajes;
+
     @OneToOne
     @JoinColumn(name = "idVehiculo")
     private Vehiculo vehiculo;
-
 
     public Conductor(String nombre, String apellido, Integer numeroDeDni, String email, String password, String nombreUsuario, String domicilio, String nroTelefono, String cvu) {
         this.nombre=nombre;
@@ -53,6 +58,22 @@ public class Conductor {
 
     public Conductor() {
 
+    }
+
+    public List<Viaje> getViajes() {
+        return viajes;
+    }
+
+    public void setViajes(List<Viaje> viajes) {
+        this.viajes = viajes;
+    }
+
+    public Vehiculo getVehiculo() {
+        return vehiculo;
+    }
+
+    public void setVehiculo(Vehiculo vehiculo) {
+        this.vehiculo = vehiculo;
     }
 
     public String getNombre() {
@@ -147,11 +168,4 @@ public class Conductor {
         return Base64.getEncoder().encodeToString(Base64.getDecoder().decode(this.imagenPerfil));
     }
 
-    public Vehiculo getVehiculo() {
-        return vehiculo;
-    }
-
-    public void setVehiculo(Vehiculo vehiculo) {
-        this.vehiculo = vehiculo;
-    }
 }
