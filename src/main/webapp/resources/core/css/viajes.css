@@ -42,6 +42,9 @@
 }
 
 .titulo-solicitud{
+    font-weight: 500;
+    font-size: 30px;
+    line-height: 25px;
     margin-top: 40px;
     color: white;
 }
@@ -115,9 +118,9 @@
 
 .imagen-viaje{
     background-image: url("imagenes/obelisco.jpg");
-    background-size: cover;
     background-position: center;
-    height: 800px;
+    background-size: cover;
+    height: 400px;
     text-align: center;
     margin: 40px 0;
 }
