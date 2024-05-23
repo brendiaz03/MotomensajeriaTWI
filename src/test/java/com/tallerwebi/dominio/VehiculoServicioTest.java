@@ -1,5 +1,4 @@
-package com.tallerwebi.dominio.Vehiculo;
-import com.tallerwebi.dominio.conductor.Conductor;
+package com.tallerwebi.dominio;
 import com.tallerwebi.dominio.conductor.ConductorNoEncontradoException;
 import com.tallerwebi.dominio.enums.TipoVehiculo;
 import com.tallerwebi.dominio.vehiculo.Vehiculo;
@@ -12,7 +11,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.mockito.Mockito.*;
 
-public class ServicioVehiculoTest {
+public class VehiculoServicioTest {
 
     private VehiculoServicio vehiculoServicio;
     private VehiculoRepositorio vehiculoRepositorio;

@@ -16,7 +16,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.web.servlet.ModelAndView;
 
 
-public class ControladorLoginTest {
+public class LoginControladorTest {
 
 	private HttpServletRequest requestMock;
 	private HttpSession sessionMock;

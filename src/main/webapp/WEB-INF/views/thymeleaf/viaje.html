@@ -61,28 +61,32 @@
         </div>
     </section>
     <section>
-        <div class="card mt-3 contenedor-solicitudes">
-                    <div class="card-body contenedor-datos-viaje grid">
-                        <p class="card-text"><b>Direccion de Salida:</b> <span th:text="${viaje.getDomicilioDeSalida()}"></span></p>
-                        <p class="card-text"><b>Codigo postal:</b> <span th:text="${viaje.getCodigoPostal()}"></span></p>
-                        <p class="card-text"><b>Direccion de Llegada:</b> <span th:text="${viaje.getDomicilioDeLlegada()}"></span></p>
-                        <p class="card-text"><b>Precio: </b> $<span th:text="${viaje.getPrecio()}"></span> ARS</p>
-                        <p class="card-text"><b>Paquete de:</b> <span th:text="${viaje.getCliente().getNombre()}"></span></p>
+        <div class="card mt-3 contenedor-viaje">
+                    <div class="card-body contenedor-datos-viaje flex">
+                        <div>
+                            <p class="card-text"><b>Direccion de Salida:</b> <span th:text="${viaje.getDomicilioDeSalida()}"></span></p>
+                            <p class="card-text"><b>Direccion de Llegada:</b> <span th:text="${viaje.getDomicilioDeLlegada()}"></span></p>
+                            <p class="card-text"><b>Codigo postal:</b> <span th:text="${viaje.getCodigoPostal()}"></span></p>
+                        </div>
+                        <div>
+                            <p class="card-text"><b>Precio: </b> $<span th:text="${viaje.getPrecio()}"></span> ARS</p>
+                            <p class="card-text"><b>Paquete de:</b> <span th:text="${viaje.getCliente().getNombre()}"></span></p>
+                        </div>
                     </div>
+            <div class="contenedor-botones" style="margin-top: 4%">
+                <div>
+                    <a th:href="@{volver}" class="boton-enlace boton-volver">Volver</a>
                 </div>
+                <div>
+                    <a th:href="@{/cancelar-viaje(idViaje=${viaje.getId()})}" class="boton-rojo">Cancelar</a>
+                </div>
+                <div>
+                    <a th:href="@{/terminar-viaje(idViaje=${viaje.getId()})}" class="boton-aceptar">Terminar</a>
+                </div>
+            </div>
         </div>
     </section>
-    <div>
-        <a th:href="@{volver}" class="boton-enlace boton-volver">Volver</a>
-    </div>
-    <div class="contenedor-botones">
-        <div>
-            <a th:href="@{/cancelar-viaje(idViaje=${viaje.getId()})}" class="boton-rojo">Cancelar</a>
-        </div>
-        <div>
-            <a th:href="@{/terminar-viaje(idViaje=${viaje.getId()})}" class="boton-aceptar">Terminar</a>
-        </div>
-    </div>
+
 </main>
 <!-- /.container -->
 <!-- Boostrap core js -->

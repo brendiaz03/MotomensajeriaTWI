@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <script src="https://kit.fontawesome.com/ca80211b53.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.0/css/bootstrap.min.css}"/>
     <link rel="stylesheet" th:href="@{css/main.css}"/>
     <link rel="stylesheet" th:href="@{css/homeStyle.css}"/>
@@ -59,17 +60,26 @@
         <div class="card-header">
             <h1 class="text-center titulo-viajes">Viajes en Proceso</h1>
         </div>
-        <div th:if="${viajesObtenidos != null}" class="card mt-3 contenedor-viajes">
+        <div th:if="${viajesObtenidos != null}" class="card mt-3 contenedor-viajes" style="background-color: transparent;border:none;">
             <div class="card-body" th:each="viaje : ${viajesObtenidos}">
                 <div class="card mt-3 ml-3 contenedor-datos-viajes-aceptados">
                     <div class="card-body viaje">
-                        <p class="card-text"><b>Salida:</b> <span th:text="${viaje.getDomicilioDeSalida()}"></span></p>
-                        <p class="card-text"><b>Llegada:</b> <span th:text="${viaje.getDomicilioDeLlegada()}"></span></p>
-                        <p class="card-text"><b>Paquete de:</b> <span th:text="${viaje.getCliente().getNombre()}"></span></p>
-                        <p class="card-text"><b>Precio:</b> <span th:text="${viaje.getPrecio()}"></span></p>
-                        <p class="card-text"><b>Codigo Postal:</b> <span th:text="${viaje.getCodigoPostal()}"></span></p>
+                        <div class="viajes-proceso-img">
+                            <div>
+                                <p class="card-text"><b>Salida:</b> <span th:text="${viaje.getDomicilioDeSalida()}"></span></p>
+                                <p class="card-text"><b>Llegada:</b> <span th:text="${viaje.getDomicilioDeLlegada()}"></span></p>
+                                <p class="card-text"><b>Paquete de:</b> <span th:text="${viaje.getCliente().getNombre()}"></span></p>
+                                <p class="card-text"><b>Precio:</b> <span th:text="${viaje.getPrecio()}"></span></p>
+                                <p class="card-text"><b>Codigo Postal:</b> <span th:text="${viaje.getCodigoPostal()}"></span></p>
+                            </div>
+                            <section class="imagen-viaje-proceso">
+                                <div class="contenedor-imagen-viaje-proceso">
+                                </div>
+                            </section>
+                        </div>
+
                         <div class="contenedor-boton-cancelar" >
-                            <a th:href="@{/viajeAceptado(idViaje=${viaje.getId()})}" class="boton-verde">Ver</a>
+                            <a th:href="@{/viajeAceptado(idViaje=${viaje.getId()})}" class="boton-verde" style="padding: 10px 50px;">Ver</a>
                         </div>
                     </div>
                 </div>
