@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.NoResultException;
+import java.awt.desktop.SystemSleepEvent;
 import java.io.IOException;
 import java.util.Base64;
 
@@ -40,16 +41,12 @@ public class ConductorServicioImpl implements ConductorServicio {
 
     @Override
     public void editarConductor(Conductor conductorEditado) throws ConductorNoEncontradoException {
-        Conductor conductorEnBD=this.obtenerConductorPorId(conductorEditado.getId());
-
-         if(conductorEditado.getImagenPerfil()==null && (conductorEnBD.getImagenPerfil())==null){
-             this.conductorRepositorio.editarConductor(conductorEditado);
-         }else if(conductorEditado.getImagenPerfil()==null && conductorEnBD.getImagenPerfil()!=null){
-             conductorEditado.setImagenPerfil(conductorEnBD.getImagenPerfil());
-             this.conductorRepositorio.editarConductor(conductorEditado);
-         }else{
-             this.conductorRepositorio.editarConductor(conductorEditado);
-         };
+        Conductor conductor = this.conductorRepositorio.buscarConductorPorId(conductorEditado.getId());
+        conductorEditado.setVehiculo(conductor.getVehiculo());
+        if(conductorEditado.getImagenPerfil()==null){
+            conductorEditado.setImagenPerfil(conductor.getImagenPerfil());
+        }
+        this.conductorRepositorio.editarConductor(conductorEditado);
     }
 
     @Override
