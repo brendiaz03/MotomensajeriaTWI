@@ -63,6 +63,8 @@ public class ViajeControlador {
     public ModelAndView AceptarViaje(HttpServletRequest request, @RequestParam("idViaje") Integer idViaje) throws ConductorNoEncontradoException {
         ModelMap model = new ModelMap();
 
+        String claveGoogleMaps = "AIzaSyBylV7--oH5ZaWIdNS5n0bU59LFNN5zEso";
+
         Boolean isUsuarioLogueado = (Boolean) request.getSession().getAttribute("isUsuarioLogueado");
         model.put("isUsuarioLogueado",isUsuarioLogueado);
 
@@ -87,6 +89,7 @@ public class ViajeControlador {
         model.put("fondo", fondo);
         Imagen botonPS = imagenServicio.getImagenByName("botonPS");
         model.put("botonPS", botonPS);
+        model.put("clave",claveGoogleMaps);
 
         return new ModelAndView("viaje", model);
     }
