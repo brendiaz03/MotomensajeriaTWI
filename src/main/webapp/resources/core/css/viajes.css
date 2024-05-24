@@ -182,3 +182,8 @@ p {
 .contenedor-datos-viajes-aceptados{
 
 }
+
+#map{
+    height: 500px;
+    width: 100%;
+}

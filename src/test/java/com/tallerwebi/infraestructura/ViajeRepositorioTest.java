@@ -52,7 +52,7 @@ public class ViajeRepositorioTest {
         // Preparación
         Integer totalDeViajesEsperados = 3;
         Conductor conductor = dadoQueExisteUnConductor();
-        dadoQueExistenViajesConUnConductorAsginado(conductor);
+        dadoQueExistenViajesConUnConductorAsignado(conductor);
 
         // Ejecución
         Integer totalDeViajesObtenidos = this.viajeRepositorio.obtenerViajesPorConductor(conductor).size();
@@ -66,24 +66,16 @@ public class ViajeRepositorioTest {
     @Rollback
     public void queSePuedaActualizarUnViajeCuandoElConductorLoAcepta(){
         // Preparación
-        Conductor conductor1 = dadoQueExisteUnConductor();
+        Conductor conductor = dadoQueExisteUnConductor();
+        Viaje viaje = dadoQueExisteUnViajeQueSeLeAsignaUnConductor(conductor);
 
-        Viaje viaje = dadoQueExisterUnViajeQueSeLeSeteaUnConductor(conductor1);
-
+        // Ejecución
         this.sessionFactory.getCurrentSession().save(viaje);
 
-        assertThat(viaje.getId(), equalTo(viaje.getId()));
-        assertThat(viaje.getConductor().getId(), equalTo(conductor1.getId()));
+        // Validación
+        assertThat(viaje.getConductor(), equalTo(conductor));
         assertThat(viaje.getDomicilioDeLlegada(), equalTo("Miami"));
         assertThat(viaje.getDomicilioDeSalida(), equalTo("Florida"));
-    }
-
-    private static Viaje dadoQueExisterUnViajeQueSeLeSeteaUnConductor(Conductor conductor) {
-        Viaje viaje = new Viaje();
-        viaje.setConductor(conductor);
-        viaje.setDomicilioDeLlegada("Miami");
-        viaje.setDomicilioDeSalida("Florida");
-        return viaje;
     }
 
     private void dadoQueExistenViajes() {
@@ -97,12 +89,11 @@ public class ViajeRepositorioTest {
 
     private Conductor dadoQueExisteUnConductor() {
         Conductor conductor = new Conductor();
-        conductor.setId(1);
         this.sessionFactory.getCurrentSession().save(conductor);
         return conductor;
     }
 
-    private void dadoQueExistenViajesConUnConductorAsginado(Conductor conductor) {
+    private void dadoQueExistenViajesConUnConductorAsignado(Conductor conductor) {
         Viaje viaje1 = new Viaje();
         Viaje viaje2 = new Viaje();
         Viaje viaje3 = new Viaje();
@@ -112,5 +103,13 @@ public class ViajeRepositorioTest {
         this.sessionFactory.getCurrentSession().save(viaje1);
         this.sessionFactory.getCurrentSession().save(viaje2);
         this.sessionFactory.getCurrentSession().save(viaje3);
+    }
+
+    private static Viaje dadoQueExisteUnViajeQueSeLeAsignaUnConductor(Conductor conductor) {
+        Viaje viaje = new Viaje();
+        viaje.setConductor(conductor);
+        viaje.setDomicilioDeLlegada("Miami");
+        viaje.setDomicilioDeSalida("Florida");
+        return viaje;
     }
 }
