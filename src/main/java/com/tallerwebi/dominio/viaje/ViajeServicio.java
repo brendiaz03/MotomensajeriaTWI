@@ -16,4 +16,7 @@ public interface ViajeServicio {
 
     List<Viaje> obtenerViajesEnProceso(Conductor conductor);
 
+    List<Viaje> filtrarViajesPorDistanciaDelConductor(Double latitudActual, Double longitudActual);
+
+    void descartarViaje(Integer idViaje);
 }

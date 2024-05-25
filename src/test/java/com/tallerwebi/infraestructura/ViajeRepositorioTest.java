@@ -77,7 +77,7 @@ public class ViajeRepositorioTest {
         assertThat(viaje.getDomicilioDeLlegada(), equalTo("Miami"));
         assertThat(viaje.getDomicilioDeSalida(), equalTo("Florida"));
     }
-
+    
     private void dadoQueExistenViajes() {
         Viaje viaje1 = new Viaje();
         Viaje viaje2 = new Viaje();

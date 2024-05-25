@@ -68,4 +68,44 @@ public class ViajeServicioImpl implements ViajeServicio {
         return viajesEnProceso;
     }
 
+    @Override
+    public List<Viaje> filtrarViajesPorDistanciaDelConductor(Double latitudConductor, Double longitudConductor) {
+        List<Viaje> todosLosViajes = this.viajeRepositorio.obtenerLasSolicitudesDeViajesPendientes();
+        List<Viaje> viajesCercanos = new ArrayList<>();
+        double distanciaAFiltar = 5.0;
+
+        for (Viaje viaje : todosLosViajes) {
+            double distancia = calcularDistanciaHaversine(latitudConductor, longitudConductor, viaje.getLatitudDeSalida(), viaje.getLongitudDeSalida());
+            if (distancia < distanciaAFiltar) {
+                viajesCercanos.add(viaje);
+            }
+        }
+
+        return viajesCercanos;
+    }
+
+    @Override
+    public void descartarViaje(Integer idViaje) {
+        Viaje viaje = this.viajeRepositorio.obtenerViajePorId(idViaje);
+        viaje.setDescartado(true);
+        this.viajeRepositorio.editar(viaje);
+    }
+
+    private double calcularDistanciaHaversine(double latitudConductor, double longitudConductor, double latitudDestino, double longitudDestino) {
+        final int RADIO_TIERRA = 6371;
+
+        double diferenciaLatitud = Math.toRadians(latitudDestino - latitudConductor);
+        double diferenciaLongitud = Math.toRadians(longitudDestino - longitudConductor);
+
+        // Cálculo del cuadrado de la mitad del ángulo central entre los puntos
+        double mitadAnguloCentralCuadrado = Math.sin(diferenciaLatitud / 2) * Math.sin(diferenciaLatitud / 2) +
+                Math.cos(Math.toRadians(latitudConductor)) * Math.cos(Math.toRadians(latitudDestino)) *
+                        Math.sin(diferenciaLongitud / 2) * Math.sin(diferenciaLongitud / 2);
+
+        // Cálculo del ángulo central entre los puntos
+        double anguloCentral = 2 * Math.atan2(Math.sqrt(mitadAnguloCentralCuadrado), Math.sqrt(1 - mitadAnguloCentralCuadrado));
+
+        // Cálculo de la distancia entre los puntos utilizando la fórmula de Haversine
+        return RADIO_TIERRA * anguloCentral;
+    }
 }

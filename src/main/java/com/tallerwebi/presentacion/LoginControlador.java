@@ -43,12 +43,16 @@ public class LoginControlador {
     @RequestMapping("/home")
     public ModelAndView mostrarHome(HttpServletRequest request) throws ConductorNoEncontradoException {
         ModelMap model = new ModelMap();
-
         String viewName= "home";
 
+        Double latitudActual = -34.818569;
+        Double longitudActual = -58.646992;
+
+        List<Viaje> viajesCercanosPendientes = this.viajeServicio.filtrarViajesPorDistanciaDelConductor(latitudActual, longitudActual);
+
         Boolean isUsuarioLogueado = (Boolean) request.getSession().getAttribute("isUsuarioLogueado");
-        List<Viaje> viajes = viajeServicio.obtenerLasSolicitudesDeViajesPendientes();
-        model.put("viajes", viajes);
+        //List<Viaje> viajes = viajeServicio.obtenerLasSolicitudesDeViajesPendientes();
+        model.put("viajes", viajesCercanosPendientes);
 
         Conductor conductor = new Conductor();
         model.put("isUsuarioLogueado",isUsuarioLogueado);

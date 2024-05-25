@@ -7,6 +7,7 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
@@ -42,6 +43,7 @@ public class ViajeRepositorioImpl implements ViajeRepositorio {
 
         // Agregar la restricción para que el conductor sea null
         criteria.add(Restrictions.isNull("conductor"));
+        criteria.add(Restrictions.eq("descartado", false));
 
         List<Viaje> viajes = criteria.list();
         return viajes;
@@ -57,7 +59,6 @@ public class ViajeRepositorioImpl implements ViajeRepositorio {
     @Transactional
     public Viaje obtenerViajePorId(Integer id) {
         Session session = sessionFactory.getCurrentSession();
-        Viaje viaje = session.get(Viaje.class, id); // Usa get para obtener el viaje por su id
-        return viaje;
+        return session.get(Viaje.class, id);
     }
 }

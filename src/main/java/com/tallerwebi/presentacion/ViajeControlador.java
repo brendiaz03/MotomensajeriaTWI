@@ -175,4 +175,9 @@ public class ViajeControlador {
         return new ModelAndView("redirect:/home");
     }
 
+    @RequestMapping("/descartar")
+    public ModelAndView descartarViaje(@RequestParam("idViaje") Integer idViaje){
+        this.viajeServicio.descartarViaje(idViaje);
+        return new ModelAndView("redirect:/home");
+    }
 }
