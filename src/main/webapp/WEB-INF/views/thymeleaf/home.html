@@ -76,6 +76,8 @@
     </div>
   </div>
 
+  <h2 th:if="${isPenalizado}" class="isPenalizado">Usted ha sido penalizado</h2>
+  <div th:unless="${isPenalizado}">
   <div class="card mt-3 contenedor-solicitudes" th:if="${isUsuarioLogueado}" style=" background-color: transparent; border: none;">
     <h1 class="text-center titulo-solicitud">Solicitudes de Viajes</h1>
     <div class="card-body viaje" th:each="viaje : ${viajes}">
@@ -98,11 +100,12 @@
             <a th:href="@{/viaje-aceptado(idViaje=${viaje.getId()})}" class="boton-verde">Aceptar</a>
           </div>
           <div>
-            <a href="#" onclick="eliminarViaje(this)" class="boton-rojo">Rechazar</a>
+            <a th:href="@{/descartar(idViaje=${viaje.getId()})}" onclick="descartarViaje(this)" class="boton-rojo">Descartar</a>
           </div>
         </div>
       </div>
     </div>
+  </div>
   </div>
 
   <br><br><br><br><br>
@@ -113,5 +116,6 @@
 <!-- /.container -->
 <!-- Boostrap core js -->
 <script type="text/javascript" th:src="@{webjars/bootstrap/5.2.0/js/bootstrap.min.js}"></script>
+<script th:src="@{/js/geolocalizacion.js}" defer></script>
 </body>
 </html>

@@ -47,6 +47,9 @@ public class Viaje {
     @Column(name = "cancelado")
     private Boolean cancelado;
 
+    @Column(name = "descartado")
+    private Boolean descartado;
+
     @ManyToOne()
     @JoinColumn(name = "idCliente", referencedColumnName = "id")
     private Cliente cliente;
@@ -195,5 +198,13 @@ public class Viaje {
 
     public void setPaquete(Paquete paquete) {
         this.paquete = paquete;
+    }
+
+    public Boolean getDescartado() {
+        return descartado;
+    }
+
+    public void setDescartado(Boolean descartado) {
+        this.descartado = descartado;
     }
 }

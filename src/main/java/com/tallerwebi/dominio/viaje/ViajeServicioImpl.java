@@ -20,7 +20,7 @@ public class ViajeServicioImpl implements ViajeServicio {
     @Override
     public List<Viaje> obtenerLasSolicitudesDeViajesPendientes() {
         List<Viaje> viajes = viajeRepositorio.obtenerLasSolicitudesDeViajesPendientes();
-        if(viajes.size() == 0){
+        if(viajes.isEmpty()){
             return null;
         }else{
             return viajes;
@@ -29,12 +29,7 @@ public class ViajeServicioImpl implements ViajeServicio {
 
     @Override
     public Viaje obtenerViajeAceptadoPorId(Integer id) {
-        Viaje viaje = viajeRepositorio.obtenerViajePorId(id);
-        if(viaje == null){
-            return null;
-        }else{
-            return viaje;
-        }
+        return viajeRepositorio.obtenerViajePorId(id);
     }
 
     @Override
@@ -60,12 +55,42 @@ public class ViajeServicioImpl implements ViajeServicio {
         List<Viaje> viajes = viajeRepositorio.obtenerViajesPorConductor(conductor);
         List<Viaje> viajesEnProceso = new ArrayList<>();
 
-        for (Viaje v : viajes) {
-            if (!v.getCancelado() && !v.getTerminado()) {
-                viajesEnProceso.add(v);
+        for (Viaje viaje : viajes) {
+            if (!viaje.getCancelado() && !viaje.getTerminado()) {
+                viajesEnProceso.add(viaje);
             }
         }
         return viajesEnProceso;
     }
 
+    @Override
+    public void descartarViaje(Integer idViaje, Conductor conductor) {
+        Viaje viaje = this.viajeRepositorio.obtenerViajePorId(idViaje);
+        viaje.setDescartado(true);
+        viaje.setConductor(conductor);
+        this.viajeRepositorio.editar(viaje);
+    }
+
+    @Override
+    public Boolean estaPenalizado(Conductor conductor) {
+        List<Viaje> viajesObtenidos = this.viajeRepositorio.obtenerViajesPorConductor(conductor);
+        List<Viaje> viajesDescartados = new ArrayList<>();
+        boolean isPenalizado = false;
+        for (Viaje viaje : viajesObtenidos) {
+            if(viaje.getDescartado()){
+                viajesDescartados.add(viaje);
+            }
+        }
+
+        if(viajesDescartados.size() >= 5){
+            isPenalizado = true;
+        }
+
+        return isPenalizado;
+    }
+
+    @Override
+    public List<Viaje> filtrarViajesPorDistanciaDelConductor(Double latitudConductor, Double longitudConductor, Double distanciaAFiltrar) {
+        return this.viajeRepositorio.encontrarViajesCercanos(latitudConductor, longitudConductor, distanciaAFiltrar);
+    }
 }

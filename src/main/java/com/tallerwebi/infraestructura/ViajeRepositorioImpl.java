@@ -7,6 +7,7 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
@@ -42,6 +43,7 @@ public class ViajeRepositorioImpl implements ViajeRepositorio {
 
         // Agregar la restricción para que el conductor sea null
         criteria.add(Restrictions.isNull("conductor"));
+        criteria.add(Restrictions.eq("descartado", false));
 
         List<Viaje> viajes = criteria.list();
         return viajes;
@@ -57,7 +59,26 @@ public class ViajeRepositorioImpl implements ViajeRepositorio {
     @Transactional
     public Viaje obtenerViajePorId(Integer id) {
         Session session = sessionFactory.getCurrentSession();
-        Viaje viaje = session.get(Viaje.class, id); // Usa get para obtener el viaje por su id
-        return viaje;
+        return session.get(Viaje.class, id);
+    }
+
+    @Override
+    @Transactional
+    public List<Viaje> encontrarViajesCercanos(Double latitudConductor, Double longitudConductor, Double distanciaAFiltar) {
+        Session session = sessionFactory.getCurrentSession();
+
+        // Usamos una consulta HQL con Criteria para agregar las restricciones adicionales
+        String hql = "FROM Viaje v WHERE " +
+                "(6371 * acos(cos(radians(:latitudConductor)) * cos(radians(v.latitudDeSalida)) * " +
+                "cos(radians(v.longitudDeSalida) - radians(:longitudConductor)) + " +
+                "sin(radians(:latitudConductor)) * sin(radians(v.latitudDeSalida)))) < :distanciaAFiltar " +
+                "AND v.conductor IS NULL AND v.descartado = false";
+
+        Query<Viaje> query = session.createQuery(hql, Viaje.class)
+                .setParameter("latitudConductor", latitudConductor)
+                .setParameter("longitudConductor", longitudConductor)
+                .setParameter("distanciaAFiltar", distanciaAFiltar);
+
+        return query.getResultList();
     }
 }
