@@ -176,8 +176,11 @@ public class ViajeControlador {
     }
 
     @RequestMapping("/descartar")
-    public ModelAndView descartarViaje(@RequestParam("idViaje") Integer idViaje){
-        this.viajeServicio.descartarViaje(idViaje);
+    public ModelAndView descartarViaje(HttpServletRequest request, @RequestParam("idViaje") Integer idViaje) throws ConductorNoEncontradoException {
+        Conductor conductor = conductorServicio.obtenerConductorPorId((Integer) request.getSession().getAttribute("IDUSUARIO"));
+        this.viajeServicio.descartarViaje(idViaje, conductor);
+        Boolean isPenalizado = this.viajeServicio.estaPenalizado(conductor);
+        request.getSession().setAttribute("isPenalizado", isPenalizado);
         return new ModelAndView("redirect:/home");
     }
 }

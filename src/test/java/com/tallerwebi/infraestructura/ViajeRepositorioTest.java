@@ -82,6 +82,9 @@ public class ViajeRepositorioTest {
         Viaje viaje1 = new Viaje();
         Viaje viaje2 = new Viaje();
         Viaje viaje3 = new Viaje();
+        viaje1.setDescartado(false);
+        viaje2.setDescartado(false);
+        viaje3.setDescartado(false);
         this.sessionFactory.getCurrentSession().save(viaje1);
         this.sessionFactory.getCurrentSession().save(viaje2);
         this.sessionFactory.getCurrentSession().save(viaje3);

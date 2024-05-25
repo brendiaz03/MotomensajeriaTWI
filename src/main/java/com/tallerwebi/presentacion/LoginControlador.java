@@ -9,7 +9,9 @@ import com.tallerwebi.dominio.viaje.Viaje;
 import com.tallerwebi.dominio.viaje.ViajeServicio;
 import com.tallerwebi.presentacion.Datos.DatosLoginConductor;
 import com.tallerwebi.dominio.login.LoginServicio;
+import com.tallerwebi.presentacion.Datos.UbicacionDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
@@ -45,13 +47,16 @@ public class LoginControlador {
         ModelMap model = new ModelMap();
         String viewName= "home";
 
-        Double latitudActual = -34.818569;
-        Double longitudActual = -58.646992;
+        String claveGoogleMaps = "AIzaSyBylV7--oH5ZaWIdNS5n0bU59LFNN5zEso";
+        model.put("clave", claveGoogleMaps);
 
-        List<Viaje> viajesCercanosPendientes = this.viajeServicio.filtrarViajesPorDistanciaDelConductor(latitudActual, longitudActual);
+        Double latitudActual = -34.69549;
+        Double longitudActual = -58.529661;
+        Double distanciaAFiltrar = 5.0;
+
+        List<Viaje> viajesCercanosPendientes = this.viajeServicio.filtrarViajesPorDistanciaDelConductor(latitudActual, longitudActual, distanciaAFiltrar);
 
         Boolean isUsuarioLogueado = (Boolean) request.getSession().getAttribute("isUsuarioLogueado");
-        //List<Viaje> viajes = viajeServicio.obtenerLasSolicitudesDeViajesPendientes();
         model.put("viajes", viajesCercanosPendientes);
 
         Conductor conductor = new Conductor();
@@ -63,6 +68,8 @@ public class LoginControlador {
         }
         model.put("conductor", conductor);
 
+        request.getSession().setAttribute("isPenalizado", this.viajeServicio.estaPenalizado(conductor));
+        model.put("isPenalizado", request.getSession().getAttribute("isPenalizado"));
         Imagen logo = imagenServicio.getImagenByName("logo");
         model.put("logo", logo);
         Imagen user = imagenServicio.getImagenByName("user");
@@ -88,9 +95,8 @@ public class LoginControlador {
 
     @RequestMapping(path="/validar-login", method = RequestMethod.POST)
     public ModelAndView validarLogin(@ModelAttribute("datosLogin") DatosLoginConductor datosLoginnConductor, HttpServletRequest request) {
-
         ModelMap model = new ModelMap();
-            Conductor conductorBuscado = loginServicio.consultarUsuario(datosLoginnConductor.getUsuario(), datosLoginnConductor.getPassword());
+        Conductor conductorBuscado = loginServicio.consultarUsuario(datosLoginnConductor.getUsuario(), datosLoginnConductor.getPassword());
             if (conductorBuscado != null) {
                 request.getSession().setAttribute("NOMBRE", conductorBuscado.getNombre());
                 request.getSession().setAttribute("IDUSUARIO", conductorBuscado.getId());
@@ -170,6 +176,4 @@ public class LoginControlador {
         model.put("botonPS", botonPS);
         return new ModelAndView("compania", model);
     }
-
-
 }

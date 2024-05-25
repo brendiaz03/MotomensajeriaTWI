@@ -20,7 +20,7 @@ public class ViajeServicioImpl implements ViajeServicio {
     @Override
     public List<Viaje> obtenerLasSolicitudesDeViajesPendientes() {
         List<Viaje> viajes = viajeRepositorio.obtenerLasSolicitudesDeViajesPendientes();
-        if(viajes.size() == 0){
+        if(viajes.isEmpty()){
             return null;
         }else{
             return viajes;
@@ -29,12 +29,7 @@ public class ViajeServicioImpl implements ViajeServicio {
 
     @Override
     public Viaje obtenerViajeAceptadoPorId(Integer id) {
-        Viaje viaje = viajeRepositorio.obtenerViajePorId(id);
-        if(viaje == null){
-            return null;
-        }else{
-            return viaje;
-        }
+        return viajeRepositorio.obtenerViajePorId(id);
     }
 
     @Override
@@ -60,52 +55,42 @@ public class ViajeServicioImpl implements ViajeServicio {
         List<Viaje> viajes = viajeRepositorio.obtenerViajesPorConductor(conductor);
         List<Viaje> viajesEnProceso = new ArrayList<>();
 
-        for (Viaje v : viajes) {
-            if (!v.getCancelado() && !v.getTerminado()) {
-                viajesEnProceso.add(v);
+        for (Viaje viaje : viajes) {
+            if (!viaje.getCancelado() && !viaje.getTerminado()) {
+                viajesEnProceso.add(viaje);
             }
         }
         return viajesEnProceso;
     }
 
     @Override
-    public List<Viaje> filtrarViajesPorDistanciaDelConductor(Double latitudConductor, Double longitudConductor) {
-        List<Viaje> todosLosViajes = this.viajeRepositorio.obtenerLasSolicitudesDeViajesPendientes();
-        List<Viaje> viajesCercanos = new ArrayList<>();
-        double distanciaAFiltar = 5.0;
-
-        for (Viaje viaje : todosLosViajes) {
-            double distancia = calcularDistanciaHaversine(latitudConductor, longitudConductor, viaje.getLatitudDeSalida(), viaje.getLongitudDeSalida());
-            if (distancia < distanciaAFiltar) {
-                viajesCercanos.add(viaje);
-            }
-        }
-
-        return viajesCercanos;
-    }
-
-    @Override
-    public void descartarViaje(Integer idViaje) {
+    public void descartarViaje(Integer idViaje, Conductor conductor) {
         Viaje viaje = this.viajeRepositorio.obtenerViajePorId(idViaje);
         viaje.setDescartado(true);
+        viaje.setConductor(conductor);
         this.viajeRepositorio.editar(viaje);
     }
 
-    private double calcularDistanciaHaversine(double latitudConductor, double longitudConductor, double latitudDestino, double longitudDestino) {
-        final int RADIO_TIERRA = 6371;
+    @Override
+    public Boolean estaPenalizado(Conductor conductor) {
+        List<Viaje> viajesObtenidos = this.viajeRepositorio.obtenerViajesPorConductor(conductor);
+        List<Viaje> viajesDescartados = new ArrayList<>();
+        boolean isPenalizado = false;
+        for (Viaje viaje : viajesObtenidos) {
+            if(viaje.getDescartado()){
+                viajesDescartados.add(viaje);
+            }
+        }
 
-        double diferenciaLatitud = Math.toRadians(latitudDestino - latitudConductor);
-        double diferenciaLongitud = Math.toRadians(longitudDestino - longitudConductor);
+        if(viajesDescartados.size() >= 5){
+            isPenalizado = true;
+        }
 
-        // Cálculo del cuadrado de la mitad del ángulo central entre los puntos
-        double mitadAnguloCentralCuadrado = Math.sin(diferenciaLatitud / 2) * Math.sin(diferenciaLatitud / 2) +
-                Math.cos(Math.toRadians(latitudConductor)) * Math.cos(Math.toRadians(latitudDestino)) *
-                        Math.sin(diferenciaLongitud / 2) * Math.sin(diferenciaLongitud / 2);
+        return isPenalizado;
+    }
 
-        // Cálculo del ángulo central entre los puntos
-        double anguloCentral = 2 * Math.atan2(Math.sqrt(mitadAnguloCentralCuadrado), Math.sqrt(1 - mitadAnguloCentralCuadrado));
-
-        // Cálculo de la distancia entre los puntos utilizando la fórmula de Haversine
-        return RADIO_TIERRA * anguloCentral;
+    @Override
+    public List<Viaje> filtrarViajesPorDistanciaDelConductor(Double latitudConductor, Double longitudConductor, Double distanciaAFiltrar) {
+        return this.viajeRepositorio.encontrarViajesCercanos(latitudConductor, longitudConductor, distanciaAFiltrar);
     }
 }
