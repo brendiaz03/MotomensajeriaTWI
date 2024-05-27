@@ -7,6 +7,7 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
@@ -27,7 +28,6 @@ public class ViajeRepositorioImpl implements ViajeRepositorio {
         Session session = this.sessionFactory.getCurrentSession();
         Criteria criteria = session.createCriteria(Viaje.class);
 
-        // Agregar la restricción para el conductor específico
         criteria.add(Restrictions.eq("conductor", conductor));
 
         List<Viaje> viajes = criteria.list();
@@ -40,11 +40,10 @@ public class ViajeRepositorioImpl implements ViajeRepositorio {
         Session session = sessionFactory.getCurrentSession();
         Criteria criteria = session.createCriteria(Viaje.class);
 
-        // Agregar la restricción para que el conductor sea null
         criteria.add(Restrictions.isNull("conductor"));
+        criteria.add(Restrictions.eq("descartado", false));
 
-        List<Viaje> viajes = criteria.list();
-        return viajes;
+        return (List<Viaje>) criteria.list();
     }
 
     @Override
@@ -57,7 +56,28 @@ public class ViajeRepositorioImpl implements ViajeRepositorio {
     @Transactional
     public Viaje obtenerViajePorId(Integer id) {
         Session session = sessionFactory.getCurrentSession();
-        Viaje viaje = session.get(Viaje.class, id); // Usa get para obtener el viaje por su id
-        return viaje;
+        return session.get(Viaje.class, id);
+    }
+
+    @Override
+    @Transactional
+    public List<Viaje> encontrarViajesCercanos(Double latitudConductor, Double longitudConductor, Double distanciaAFiltar) {
+        Session session = sessionFactory.getCurrentSession();
+
+        String hql = "FROM Viaje viaje WHERE " +
+                "(6371 * acos(cos(radians(:latitudConductor)) * cos(radians(viaje.latitudDeSalida)) * " +
+                "cos(radians(viaje.longitudDeSalida) - radians(:longitudConductor)) + " +
+                "sin(radians(:latitudConductor)) * sin(radians(viaje.latitudDeSalida)))) < :distanciaAFiltar " +
+                "AND viaje.conductor IS NULL AND viaje.descartado = false AND viaje.cancelado = false AND viaje.terminado = false " +
+                "ORDER BY (6371 * acos(cos(radians(:latitudConductor)) * cos(radians(viaje.latitudDeSalida)) * " +
+                "cos(radians(viaje.longitudDeSalida) - radians(:longitudConductor)) + " +
+                "sin(radians(:latitudConductor)) * sin(radians(viaje.latitudDeSalida)))) ASC";
+
+        Query<Viaje> query = session.createQuery(hql, Viaje.class)
+                .setParameter("latitudConductor", latitudConductor)
+                .setParameter("longitudConductor", longitudConductor)
+                .setParameter("distanciaAFiltar", distanciaAFiltar);
+
+        return query.getResultList();
     }
 }

@@ -14,4 +14,6 @@ public interface ViajeRepositorio {
     void editar(Viaje viaje);
 
     Viaje obtenerViajePorId(Integer id);
+
+    List<Viaje> encontrarViajesCercanos(Double latitudConductor, Double longitudConductor, Double distanciaAFiltar);
 }

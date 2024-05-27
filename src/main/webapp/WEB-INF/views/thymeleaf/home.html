@@ -76,6 +76,8 @@
     </div>
   </div>
 
+  <h2 th:if="${isPenalizado}" class="isPenalizado">Usted ha sido penalizado</h2>
+  <div th:unless="${isPenalizado}">
   <div class="card mt-3 contenedor-solicitudes" th:if="${isUsuarioLogueado}" style=" background-color: transparent; border: none;">
     <h1 class="text-center titulo-solicitud">Solicitudes de Viajes</h1>
     <div class="card-body viaje" th:each="viaje : ${viajes}">
@@ -88,21 +90,22 @@
             <p class="card-text"><b>Distancia del viaje:</b><span class="distanceFromStartToEnd"></span></p>
           </div>
           <div>
-            <p class="card-text"><b>Paquete de:</b> <span th:text="${viaje.getCliente().getNombre()}"></span></p>
+            <p class="card-text"><b>Paquete de:</b> <span th:text="${viaje.getNombreDelCliente()}"></span></p>
             <p class="card-text"><b>Precio: </b> $<span th:text="${viaje.getPrecio()}"></span> ARS</p>
             <p class="card-text"><b>Distancia desde tu ubicación:</b><span class="distanceFromCurrentPosition"></span></p>
           </div>
         </div>
         <div class="contenedor-botones">
           <div>
-            <a th:href="@{/viaje-aceptado(idViaje=${viaje.getId()})}" class="boton-verde">Aceptar</a>
+            <a th:href="@{/viaje-aceptado(idViaje=${viaje.getIdViaje()})}" class="boton-verde">Aceptar</a>
           </div>
           <div>
-            <a href="#" onclick="eliminarViaje(this)" class="boton-rojo">Rechazar</a>
+            <a th:href="@{/descartar(idViaje=${viaje.getIdViaje()})}" onclick="descartarViaje(this)" class="boton-rojo">Descartar</a>
           </div>
         </div>
       </div>
     </div>
+  </div>
   </div>
 
   <br><br><br><br><br>
@@ -113,5 +116,6 @@
 <!-- /.container -->
 <!-- Boostrap core js -->
 <script type="text/javascript" th:src="@{webjars/bootstrap/5.2.0/js/bootstrap.min.js}"></script>
+<script th:src="@{/js/geolocalizacion.js}" defer></script>
 </body>
 </html>
