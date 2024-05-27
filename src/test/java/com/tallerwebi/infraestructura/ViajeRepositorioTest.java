@@ -48,7 +48,7 @@ public class ViajeRepositorioTest {
     @Test
     @Transactional
     @Rollback
-    public void queSePuedaObtenerTodosLosViajesAceptadosPorElConductor(){
+    public void queSePuedanObtenerTodosLosViajesAceptadosPorElConductor(){
         // Preparación
         Integer totalDeViajesEsperados = 3;
         Conductor conductor = dadoQueExisteUnConductor();

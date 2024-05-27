@@ -1,11 +1,13 @@
 package com.tallerwebi.dominio.viaje;
 
 import com.tallerwebi.dominio.conductor.Conductor;
+import com.tallerwebi.presentacion.Datos.DatosViaje;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ViajeServicioImpl implements ViajeServicio {
@@ -90,7 +92,16 @@ public class ViajeServicioImpl implements ViajeServicio {
     }
 
     @Override
-    public List<Viaje> filtrarViajesPorDistanciaDelConductor(Double latitudConductor, Double longitudConductor, Double distanciaAFiltrar) {
-        return this.viajeRepositorio.encontrarViajesCercanos(latitudConductor, longitudConductor, distanciaAFiltrar);
+    public List<DatosViaje> filtrarViajesPorDistanciaDelConductor(Double latitudConductor, Double longitudConductor, Double distanciaAFiltrar) {
+        List<Viaje> viajesCercanos = this.viajeRepositorio.encontrarViajesCercanos(latitudConductor, longitudConductor, distanciaAFiltrar);
+        return viajesCercanos.stream().limit(5)
+                .map(viaje -> new DatosViaje(viaje.getId(), viaje.getDomicilioDeSalida(), viaje.getDomicilioDeLlegada(), viaje.getCliente().getNombre(), viaje.getPrecio(), viaje.getCodigoPostal(), viaje.getLatitudDeSalida(), viaje.getLongitudDeSalida(), viaje.getLatitudDeLlegada(), viaje.getLongitudDeLlegada()))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public void asginarConductorAlViaje(Viaje viaje, Conductor conductor) {
+        viaje.setConductor(conductor);
+        viajeRepositorio.editar(viaje);
     }
 }
