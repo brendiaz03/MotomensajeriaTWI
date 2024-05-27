@@ -31,156 +31,145 @@ public class ViajeControlador {
         this.imagenServicio = imagenServicio;
     }
 
-    //viajes que serian el historial
     @RequestMapping("/historial")
     public ModelAndView mostrarHistorial(HttpServletRequest request) throws ConductorNoEncontradoException {
         ModelMap model = new ModelMap();
-        Boolean isUsuarioLogueado = (Boolean) request.getSession().getAttribute("isUsuarioLogueado");
-        model.put("isUsuarioLogueado",isUsuarioLogueado);
 
-        Conductor conductor = conductorServicio.obtenerConductorPorId((Integer) request.getSession().getAttribute("IDUSUARIO"));
-        model.put("conductor", conductor);
-
+        String viewName = "historial-viajes";
         Imagen logo = imagenServicio.getImagenByName("logo");
-        model.put("logo", logo);
         Imagen user = imagenServicio.getImagenByName("user");
-        model.put("user", user);
         Imagen auto = imagenServicio.getImagenByName("auto");
-        model.put("auto", auto);
         Imagen fondo = imagenServicio.getImagenByName("fondo");
-        model.put("fondo", fondo);
         Imagen botonPS = imagenServicio.getImagenByName("botonPS");
-        model.put("botonPS", botonPS);
-
+        Boolean isUsuarioLogueado = (Boolean) request.getSession().getAttribute("isUsuarioLogueado");
+        Conductor conductor = conductorServicio.obtenerConductorPorId((Integer) request.getSession().getAttribute("IDUSUARIO"));
         List<Viaje> historialViajes = this.viajeServicio.obtenerHistorialDeViajes(conductor);
+
+        model.put("logo", logo);
+        model.put("user", user);
+        model.put("auto", auto);
+        model.put("fondo", fondo);
+        model.put("botonPS", botonPS);
+        model.put("isUsuarioLogueado",isUsuarioLogueado);
+        model.put("conductor", conductor);
         model.put("viajesObtenidos", historialViajes);
-        return new ModelAndView("historial-viajes", model);
+        return new ModelAndView(viewName, model);
     }
 
-
-    //una vez aceptado que te lleve al viaje con el mapa
     @RequestMapping(value = "/viaje-aceptado", method = RequestMethod.GET)
     public ModelAndView AceptarViaje(HttpServletRequest request, @RequestParam("idViaje") Integer idViaje) throws ConductorNoEncontradoException {
         ModelMap model = new ModelMap();
 
+        String viewName = "viaje";
         String claveGoogleMaps = "AIzaSyBylV7--oH5ZaWIdNS5n0bU59LFNN5zEso";
-
+        Imagen logo = imagenServicio.getImagenByName("logo");
+        Imagen user = imagenServicio.getImagenByName("user");
+        Imagen auto = imagenServicio.getImagenByName("auto");
+        Imagen fondo = imagenServicio.getImagenByName("fondo");
+        Imagen botonPS = imagenServicio.getImagenByName("botonPS");
         Boolean isUsuarioLogueado = (Boolean) request.getSession().getAttribute("isUsuarioLogueado");
-        model.put("isUsuarioLogueado",isUsuarioLogueado);
-
         Conductor conductor = conductorServicio.obtenerConductorPorId((Integer) request.getSession().getAttribute("IDUSUARIO"));
-        model.put("conductor", conductor);
-
         Viaje viaje = viajeServicio.obtenerViajeAceptadoPorId(idViaje);
-        viaje.setConductor(conductor);
+        this.viajeServicio.asginarConductorAlViaje(viaje, conductor);
 
-        viajeServicio.actualizarViaje(viaje);
-
+        model.put("clave",claveGoogleMaps);
+        model.put("logo", logo);
+        model.put("user", user);
+        model.put("auto", auto);
+        model.put("fondo", fondo);
+        model.put("botonPS", botonPS);
+        model.put("isUsuarioLogueado",isUsuarioLogueado);
+        model.put("conductor", conductor);
         model.put("idViaje", viaje.getId());
         model.put("viaje", viaje);
-
-        Imagen logo = imagenServicio.getImagenByName("logo");
-        model.put("logo", logo);
-        Imagen user = imagenServicio.getImagenByName("user");
-        model.put("user", user);
-        Imagen auto = imagenServicio.getImagenByName("auto");
-        model.put("auto", auto);
-        Imagen fondo = imagenServicio.getImagenByName("fondo");
-        model.put("fondo", fondo);
-        Imagen botonPS = imagenServicio.getImagenByName("botonPS");
-        model.put("botonPS", botonPS);
-        model.put("clave",claveGoogleMaps);
-
-        return new ModelAndView("viaje", model);
+        return new ModelAndView(viewName, model);
     }
 
-    //si quiere sus viajes en proceso
     @RequestMapping(value = "/viajes-en-proceso")
     public ModelAndView verViajesEnProceso(HttpServletRequest request) throws ConductorNoEncontradoException {
         ModelMap model = new ModelMap();
 
+        String viewName = "viajes-aceptados";
+        Imagen logo = imagenServicio.getImagenByName("logo");
+        Imagen user = imagenServicio.getImagenByName("user");
+        Imagen auto = imagenServicio.getImagenByName("auto");
+        Imagen fondo = imagenServicio.getImagenByName("fondo");
+        Imagen botonPS = imagenServicio.getImagenByName("botonPS");
         Boolean isUsuarioLogueado = (Boolean) request.getSession().getAttribute("isUsuarioLogueado");
-        model.put("isUsuarioLogueado",isUsuarioLogueado);
-
         Conductor conductor = conductorServicio.obtenerConductorPorId((Integer) request.getSession().getAttribute("IDUSUARIO"));
-        model.put("conductor", conductor);
-
         List<Viaje> viajesObtenidos = viajeServicio.obtenerViajesEnProceso(conductor);
 
-        model.put("viajesObtenidos", viajesObtenidos);
-
-        Imagen logo = imagenServicio.getImagenByName("logo");
         model.put("logo", logo);
-        Imagen user = imagenServicio.getImagenByName("user");
         model.put("user", user);
-        Imagen auto = imagenServicio.getImagenByName("auto");
         model.put("auto", auto);
-        Imagen fondo = imagenServicio.getImagenByName("fondo");
         model.put("fondo", fondo);
-        Imagen botonPS = imagenServicio.getImagenByName("botonPS");
         model.put("botonPS", botonPS);
-
-        return new ModelAndView("viajes-aceptados", model);
+        model.put("isUsuarioLogueado",isUsuarioLogueado);
+        model.put("conductor", conductor);
+        model.put("viajesObtenidos", viajesObtenidos);
+        return new ModelAndView(viewName, model);
     }
 
-    //volver a ver el viaje aceptado desde viajes en proceso
     @RequestMapping(value = "/viajeAceptado", method = RequestMethod.GET)
     public ModelAndView verViaje(HttpServletRequest request, @RequestParam("idViaje") Integer idViaje) throws ConductorNoEncontradoException {
         ModelMap model = new ModelMap();
 
-        Boolean isUsuarioLogueado = (Boolean) request.getSession().getAttribute("isUsuarioLogueado");
-        model.put("isUsuarioLogueado", isUsuarioLogueado);
-
-        Conductor conductor = conductorServicio.obtenerConductorPorId((Integer) request.getSession().getAttribute("IDUSUARIO"));
-        model.put("conductor", conductor);
-
-        Viaje viaje = viajeServicio.obtenerViajeAceptadoPorId(idViaje);
-        model.put("viaje", viaje);
-
+        String viewName = "viaje";
+        String claveGoogleMaps = "AIzaSyBylV7--oH5ZaWIdNS5n0bU59LFNN5zEso";
         Imagen logo = imagenServicio.getImagenByName("logo");
-        model.put("logo", logo);
         Imagen user = imagenServicio.getImagenByName("user");
-        model.put("user", user);
         Imagen auto = imagenServicio.getImagenByName("auto");
-        model.put("auto", auto);
         Imagen fondo = imagenServicio.getImagenByName("fondo");
-        model.put("fondo", fondo);
         Imagen botonPS = imagenServicio.getImagenByName("botonPS");
+        Boolean isUsuarioLogueado = (Boolean) request.getSession().getAttribute("isUsuarioLogueado");
+        Conductor conductor = conductorServicio.obtenerConductorPorId((Integer) request.getSession().getAttribute("IDUSUARIO"));
+        Viaje viaje = viajeServicio.obtenerViajeAceptadoPorId(idViaje);
+
+        model.put("clave", claveGoogleMaps);
+        model.put("logo", logo);
+        model.put("user", user);
+        model.put("auto", auto);
+        model.put("fondo", fondo);
         model.put("botonPS", botonPS);
-
-        return new ModelAndView("viaje", model);
+        model.put("isUsuarioLogueado", isUsuarioLogueado);
+        model.put("conductor", conductor);
+        model.put("viaje", viaje);
+        return new ModelAndView(viewName, model);
     }
 
-    //vuelve al home
-    @RequestMapping("/volver")
-    public ModelAndView volverAlHome(){
-        return new ModelAndView("redirect:/home");
-    }
-
-    //cancela el viaje poniendo el boolean en true
     @RequestMapping("/cancelar-viaje")
     public ModelAndView cancelarViaje(@RequestParam("idViaje") Integer idViaje){
         Viaje viaje = viajeServicio.obtenerViajeAceptadoPorId(idViaje);
+
         viaje.setCancelado(true);
         viajeServicio.actualizarViaje(viaje);
+
         return new ModelAndView("redirect:/home");
     }
 
-    //termina el viaje poniendo el boolean en true
     @RequestMapping("/terminar-viaje")
     public ModelAndView terminarViaje(@RequestParam("idViaje") Integer idViaje){
         Viaje viaje = viajeServicio.obtenerViajeAceptadoPorId(idViaje);
+
         viaje.setTerminado(true);
         viajeServicio.actualizarViaje(viaje);
+
+        return new ModelAndView("redirect:/home");
+    }
+
+    @RequestMapping("/volver")
+    public ModelAndView volverAlHome(){
         return new ModelAndView("redirect:/home");
     }
 
     @RequestMapping("/descartar")
     public ModelAndView descartarViaje(HttpServletRequest request, @RequestParam("idViaje") Integer idViaje) throws ConductorNoEncontradoException {
         Conductor conductor = conductorServicio.obtenerConductorPorId((Integer) request.getSession().getAttribute("IDUSUARIO"));
+
         this.viajeServicio.descartarViaje(idViaje, conductor);
         Boolean isPenalizado = this.viajeServicio.estaPenalizado(conductor);
         request.getSession().setAttribute("isPenalizado", isPenalizado);
+
         return new ModelAndView("redirect:/home");
     }
 }
