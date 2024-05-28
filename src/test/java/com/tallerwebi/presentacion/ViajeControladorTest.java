@@ -89,6 +89,7 @@ public class ViajeControladorTest {
         conductor.setId(1);
         DatosViaje viaje = new DatosViaje();
         viaje.setIdViaje(1);
+        viaje.setAceptado(false);
         Imagen logo = new Imagen();
         Imagen user = new Imagen();
         Imagen auto = new Imagen();
@@ -105,6 +106,7 @@ public class ViajeControladorTest {
         when(imagenServicio.getImagenByName("auto")).thenReturn(auto);
         when(imagenServicio.getImagenByName("fondo")).thenReturn(fondo);
         when(imagenServicio.getImagenByName("botonPS")).thenReturn(botonPS);
+        doNothing().when(viajeServicio).aceptarViaje(viaje, conductor);
 
         // Ejecución
         ModelAndView modelAndView = viajeControlador.AceptarViaje(request, viaje.getIdViaje());
@@ -167,6 +169,9 @@ public class ViajeControladorTest {
         conductor.setId(1);
         DatosViaje viaje = new DatosViaje();
         viaje.setIdViaje(1);
+        viaje.setCancelado(false);
+        viaje.setTerminado(false);
+        viaje.setDescartado(false);
         Imagen logo = new Imagen();
         Imagen user = new Imagen();
         Imagen auto = new Imagen();
@@ -216,7 +221,7 @@ public class ViajeControladorTest {
         assertThat(modelAndView.getViewName(), equalToIgnoringCase("redirect:/home"));
     }
 
-    /*@Test
+    @Test
     public void queSiElConductorTerminaElViajeLoRedirijaAlHome() {
         // Preparación
         Integer idViaje = 1;
@@ -225,7 +230,7 @@ public class ViajeControladorTest {
         viaje.setTerminado(true);
 
         when(viajeServicio.obtenerViajeAceptadoPorId(idViaje)).thenReturn(viaje);
-        when(viajeServicio.actualizarViaje(viaje)).thenReturn(viaje);
+        doNothing().when(viajeServicio).terminarViaje(viaje);
 
         // Ejecución
         ModelAndView modelAndView = this.viajeControlador.terminarViaje(idViaje);
@@ -233,7 +238,7 @@ public class ViajeControladorTest {
         // Validación
         assertThat(modelAndView.getViewName(), equalToIgnoringCase("redirect:/home"));
     }
-*/
+
     @Test
     public void queSiElConductorApretaEnElBotonVolverQueVuelvaAlHome() {
         // Ejecución

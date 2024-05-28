@@ -31,4 +31,8 @@ public interface ViajeServicio {
     void cancelarViaje(DatosViaje viaje);
 
     void terminarViaje(DatosViaje viaje);
+
+    DatosViaje mapearViajeADatosViajeHistorial(Viaje viaje);
+
+    DatosViaje mapearViajeADatosViaje(Viaje viaje);
 }

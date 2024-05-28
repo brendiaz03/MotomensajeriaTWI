@@ -48,7 +48,7 @@ public class ViajeServicioImpl implements ViajeServicio {
         List<DatosViaje> historial = new ArrayList<>();
         for (Viaje viaje : viajes) {
             if (viaje.getCancelado() || viaje.getTerminado()) {
-                historial.add(mapearViajeADatosViaje(viaje));
+                historial.add(mapearViajeADatosViajeHistorial(viaje));
             }
         }
         return historial;
@@ -160,11 +160,13 @@ public class ViajeServicioImpl implements ViajeServicio {
         viajeRepositorio.editar(viajeAceptadoActual);
     }
 
-    public DatosViaje mapearViajeADatosViaje(Viaje viaje) {
-        return new DatosViaje(viaje.getId(), viaje.getDomicilioDeSalida(), viaje.getDomicilioDeLlegada(), viaje.getCliente().getNombre(), viaje.getPrecio(), viaje.getCodigoPostal(), viaje.getLatitudDeSalida(), viaje.getLongitudDeSalida(), viaje.getLatitudDeLlegada(), viaje.getLongitudDeLlegada(), viaje.getDistanciaDelViaje(), viaje.getTerminado(), viaje.getCancelado(), viaje.getAceptado(), viaje.getDescartado());
+    @Override
+    public DatosViaje mapearViajeADatosViajeHistorial(Viaje viaje) {
+        return new DatosViaje(viaje.getDomicilioDeSalida(), viaje.getDomicilioDeLlegada(), viaje.getCliente().getNombre(), viaje.getPrecio(), viaje.getCodigoPostal(),viaje.getTerminado(), viaje.getCancelado());
     }
 
-    public Viaje mapearDatosViajeAViaje(DatosViaje datosViaje) {
-        return new Viaje(datosViaje.getDomicilioDeSalida(), datosViaje.getDomicilioDeLlegada(), datosViaje.getLatitudDeSalida(), datosViaje.getLongitudDeSalida(), datosViaje.getLatitudDeLlegada(), datosViaje.getLongitudDeLlegada(), datosViaje.getCodigoPostal(), datosViaje.getPrecio(), datosViaje.getTerminado(), datosViaje.getCancelado());
+    @Override
+    public DatosViaje mapearViajeADatosViaje(Viaje viaje){
+        return new DatosViaje(viaje.getId(), viaje.getDomicilioDeSalida(), viaje.getDomicilioDeLlegada(), viaje.getCliente().getNombre(), viaje.getPrecio(), viaje.getCodigoPostal(), viaje.getLatitudDeSalida(), viaje.getLongitudDeSalida(), viaje.getLatitudDeLlegada(), viaje.getLongitudDeLlegada(), viaje.getDistanciaDelViaje(), viaje.getTerminado(), viaje.getCancelado(), viaje.getAceptado(), viaje.getDescartado());
     }
 }

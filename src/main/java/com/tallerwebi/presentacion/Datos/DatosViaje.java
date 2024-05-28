@@ -36,6 +36,16 @@ public class DatosViaje {
         this.descartado = descartado;
     }
 
+    public DatosViaje(String domicilioDeSalida, String domicilioDeLlegada, String nombreDelCliente, String precio, String codigoPostal, Boolean terminado, Boolean cancelado) {
+        this.domicilioDeSalida = domicilioDeSalida;
+        this.domicilioDeLlegada = domicilioDeLlegada;
+        this.nombreDelCliente = nombreDelCliente;
+        this.precio = precio;
+        this.codigoPostal = codigoPostal;
+        this.terminado = terminado;
+        this.cancelado = cancelado;
+    }
+
     public DatosViaje() {
 
     }

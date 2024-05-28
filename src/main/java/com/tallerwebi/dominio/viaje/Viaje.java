@@ -106,6 +106,17 @@ public class Viaje {
         this.cancelado = cancelado;
     }
 
+    public Viaje(String domicilioDeSalida, String domicilioDeLlegada, Cliente cliente, String precio, String codigoPostal, Boolean terminado, Boolean cancelado, Boolean descartado) {
+        this.domicilioDeSalida = domicilioDeSalida;
+        this.domicilioDeLlegada = domicilioDeLlegada;
+        this.cliente = cliente;
+        this.precio = precio;
+        this.codigoPostal = codigoPostal;
+        this.terminado = terminado;
+        this.cancelado = cancelado;
+        this.descartado = descartado;
+    }
+
     public Integer getId() {
         return id;
     }

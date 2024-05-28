@@ -1,5 +1,6 @@
 package com.tallerwebi.dominio;
 
+import com.tallerwebi.dominio.cliente.Cliente;
 import com.tallerwebi.dominio.conductor.Conductor;
 import com.tallerwebi.dominio.conductor.ConductorNoEncontradoException;
 import com.tallerwebi.dominio.viaje.Viaje;
@@ -108,16 +109,20 @@ public class ViajeServicioTest {
     }
 
     private Viaje dadoQueExisteUnViajeAceptado(){
-        Viaje viajeAceptado = new Viaje("Acevedo 3000", "Sgto. Cabral 2815", -34.667289, -58.530597, -34.663944, -58.536186, "1704", "1000", "Efectivo", false, false);
+        Cliente cliente = new Cliente();
+        cliente.setNombre("Joaquin");
+        Viaje viajeAceptado = new Viaje("Acevedo 3000", "Sgto. Cabral 2815", cliente, "1000", "1763", false, false, false);
         viajeAceptado.setId(1);
         return viajeAceptado;
     }
 
     private List<Viaje> dadoQueExistenViajesConUnConductorAsignado(Conductor conductor){
         List<Viaje> viajesConUnConductorAsignado = new ArrayList<>();
-        Viaje viajeTerminado = new Viaje("Acevedo 3000", "Sgto. Cabral 2815", -34.667289, -58.530597, -34.663944, -58.536186, "1704", "1000", "Efectivo", true, false);
-        Viaje viajeCancelado = new Viaje("Av. Gral. San Martín 3339", "Mariano Moreno 2842", -34.668074, -58.534727, -34.665153, -58.541068, "1704", "1200", "Tarjeta", false, true);
-        Viaje viajeEnProceso = new Viaje("Av. Gral. San Martín 3339", "Mariano Moreno 2842", -34.668074, -58.534727, -34.665153, -58.541068, "1704", "1200", "Tarjeta", false, false);
+        Cliente cliente = new Cliente();
+        cliente.setNombre("Joaquin");
+        Viaje viajeTerminado = new Viaje("Acevedo 3000", "Sgto. Cabral 2815", cliente, "1000", "1763", true, true, true);
+        Viaje viajeCancelado = new Viaje("Av. Gral. San Martín 3339", "Mariano Moreno 2842", cliente, "1000", "1763", true, true, true);
+        Viaje viajeEnProceso = new Viaje("Avend. Gral. San Martín 3339", "Marianooo Moreno 2842", cliente, "1000", "1763", false, false, false);
 
         viajeTerminado.setConductor(conductor);
         viajeCancelado.setConductor(conductor);
