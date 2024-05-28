@@ -7,13 +7,13 @@ import java.io.IOException;
 
 public interface ConductorServicio {
 
-    Conductor registrarConductorNoDuplicado(Conductor nuevoConductor) throws Exception;
+    Conductor registrarConductorNoDuplicado(Conductor nuevoConductor) throws ConductorDuplicadoException;
 
     Conductor obtenerConductorPorId(Integer id) throws ConductorNoEncontradoException;
 
     void editarConductor(Conductor nuevoConductor) throws ConductorNoEncontradoException;
 
-    void borrarConductor(Integer idusuario);
+    void borrarConductor(Integer idusuario) throws ConductorNoEncontradoException;
 
     void ingresarImagen (MultipartFile imagen, Integer id) throws IOException, ConductorNoEncontradoException;
 
