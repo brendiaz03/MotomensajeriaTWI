@@ -5,6 +5,7 @@ import com.tallerwebi.dominio.conductor.Conductor;
 import com.tallerwebi.dominio.paquete.Paquete;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "viaje")
@@ -50,6 +51,9 @@ public class Viaje {
     @Column(name = "descartado")
     private Boolean descartado;
 
+    @Column(name = "aceptado")
+    private Boolean aceptado;
+
     @ManyToOne()
     @JoinColumn(name = "idCliente", referencedColumnName = "id")
     private Cliente cliente;
@@ -61,6 +65,15 @@ public class Viaje {
     @OneToOne()
     @JoinColumn(name = "idPaquete", referencedColumnName = "id")
     private Paquete paquete;
+
+    @Column(name = "fecha_terminacion")
+    private LocalDateTime fechaDeTerminacion;
+
+    @Column(name = "fecha_cancelacion")
+    private LocalDateTime fechaDeCancelacion;
+
+    @Transient
+    private Double distanciaDelViaje;
 
     public Viaje() {
 
@@ -78,6 +91,30 @@ public class Viaje {
         this.medioDePago = medioDePago;
         this.terminado = terminado;
         this.cancelado = cancelado;
+    }
+
+    public Viaje(String domicilioDeSalida, String domicilioDeLlegada, Double latitudDeSalida, Double longitudDeSalida, Double latitudDeLlegada, Double longitudDeLlegada, String codigoPostal, String precio, Boolean terminado, Boolean cancelado) {
+        this.domicilioDeSalida = domicilioDeSalida;
+        this.domicilioDeLlegada = domicilioDeLlegada;
+        this.latitudDeSalida = latitudDeSalida;
+        this.longitudDeSalida = longitudDeSalida;
+        this.latitudDeLlegada = latitudDeLlegada;
+        this.longitudDeLlegada = longitudDeLlegada;
+        this.codigoPostal = codigoPostal;
+        this.precio = precio;
+        this.terminado = terminado;
+        this.cancelado = cancelado;
+    }
+
+    public Viaje(String domicilioDeSalida, String domicilioDeLlegada, Cliente cliente, String precio, String codigoPostal, Boolean terminado, Boolean cancelado, Boolean descartado) {
+        this.domicilioDeSalida = domicilioDeSalida;
+        this.domicilioDeLlegada = domicilioDeLlegada;
+        this.cliente = cliente;
+        this.precio = precio;
+        this.codigoPostal = codigoPostal;
+        this.terminado = terminado;
+        this.cancelado = cancelado;
+        this.descartado = descartado;
     }
 
     public Integer getId() {
@@ -206,5 +243,37 @@ public class Viaje {
 
     public void setDescartado(Boolean descartado) {
         this.descartado = descartado;
+    }
+
+    public Double getDistanciaDelViaje() {
+        return distanciaDelViaje;
+    }
+
+    public void setDistanciaDelViaje(Double distanciaDelViaje) {
+        this.distanciaDelViaje = distanciaDelViaje;
+    }
+
+    public LocalDateTime getFechaDeTerminacion() {
+        return fechaDeTerminacion;
+    }
+
+    public void setFechaDeTerminacion(LocalDateTime fechaDeTerminacion) {
+        this.fechaDeTerminacion = fechaDeTerminacion;
+    }
+
+    public LocalDateTime getFechaDeCancelacion() {
+        return fechaDeCancelacion;
+    }
+
+    public void setFechaDeCancelacion(LocalDateTime fechaDeCancelacion) {
+        this.fechaDeCancelacion = fechaDeCancelacion;
+    }
+
+    public Boolean getAceptado() {
+        return aceptado;
+    }
+
+    public void setAceptado(Boolean aceptado) {
+        this.aceptado = aceptado;
     }
 }
