@@ -35,7 +35,6 @@
     margin-bottom: 35px;
 }
 
-
 .titulo-solicitud{
     font-weight: 500;
     font-size: 30px;
@@ -51,7 +50,6 @@
 .titulo-viajes{
     color: white;
 }
-
 
 .contenedor-datos-viajes-aceptados{
     font-size: 18px;
@@ -71,31 +69,28 @@
     margin: 40px 0;
 }
 
-/* Ajusta el estilo de las columnas y contenedores */
 .contenedor-datos-viaje {
     display: flex;
-    justify-content: center; /* Centra horizontalmente */
-    align-items: flex-start; /* Alinea los elementos al inicio verticalmente */
-    padding: 15px 0; /* Ajusta el padding según sea necesario */
-    gap: 20px; /* Controla el espacio entre las columnas */
+    justify-content: center;
+    align-items: flex-start;
+    padding: 15px 0;
+    gap: 20px;
     font-size: 20px;
     border-radius: 10px;
 }
 
 .contenedor-datos-viaje > div {
-    flex: 1; /* Permite que los divs se distribuyan uniformemente */
-    max-width: 45%; /* Controla el ancho máximo de los divs */
-
+    flex: 1;
+    max-width: 45%;
 }
 
 .contenedor-botones {
     display: flex;
-    justify-content: center; /* Centra horizontalmente */
+    justify-content: center;
     align-items: center;
     margin-bottom: 15px;
-    gap: 10px; /* Controla el espacio entre los botones */
+    gap: 10px;
 }
-
 
 .boton-verde, .boton-rojo {
     background-color: #008cba;
@@ -106,20 +101,34 @@
     display: inline-block;
     cursor: pointer;
     text-decoration: none;
-    margin: 0 10px; /* Ajusta el margen según sea necesario */
+    margin: 0 10px;
 }
 
 .boton-rojo {
     background-color: #dc3545;
 }
 
-/* Ajusta el estilo de los párrafos */
+.terminado, .cancelado {
+    background-color: #008cba;
+    color: #fff;
+    padding: 10px 30px;
+    border: none;
+    border-radius: 5px;
+    display: inline-block;
+    text-decoration: none;
+    margin: 0 10px;
+}
+
+.cancelado {
+    background-color: #dc3545;
+}
+
 p {
     font-weight: 500;
     font-size: 18px;
-    line-height: 1.4; /* Ajusta el espaciado de línea */
-    margin: 5px 0; /* Reduce el margen para disminuir el espacio */
-    text-align: left; /* Mantén el texto alineado a la izquierda */
+    line-height: 1.4;
+    margin: 5px 0;
+    text-align: left;
 }
 
 .titulo-solicitud {
@@ -128,10 +137,9 @@ p {
     line-height: 1.2;
     margin-top: 20px;
     color: white;
-    text-align: center; /* Centra el título */
+    text-align: center;
 }
 
-/* Estilo general de la tarjeta */
 .card {
     border-radius: 30px;
     padding: 2%;
@@ -139,10 +147,9 @@ p {
 }
 
 .contenedor-viaje {
-    margin: 15px 0; /* Controla el margen entre tarjetas */
+    margin: 15px 0;
 }
 
-/* Ajusta el espaciado en los botones al hacer hover */
 .boton-rojo:hover, .boton-verde:hover {
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     transform: translateY(-1px);
@@ -160,6 +167,7 @@ p {
     align-items: stretch;
     padding: 2%;
 }
+
 .imagen-viaje-proceso {
     flex: 1;
     max-width: 50%;
@@ -169,21 +177,64 @@ p {
 }
 
 .contenedor-imagen-viaje-proceso {
-    height: 100%; /* Asegura que el div contenedor ocupe toda la altura */
+    height: 100%;
     display: flex;
-    justify-content: center; /* Centra horizontalmente */
-    align-items: flex-start; /* Alinea los elementos al inicio verticalmente */
-    padding: 15px 0; /* Ajusta el padding según sea necesario */
-    gap: 20px; /* Controla el espacio entre las columnas */
+    justify-content: center;
+    align-items: flex-start;
+    padding: 15px 0;
+    gap: 20px;
     font-size: 20px;
     border-radius: 10px;
-}
-
-.contenedor-datos-viajes-aceptados{
-
 }
 
 #map{
     height: 500px;
     width: 100%;
+}
+
+.contenedor-filtro {
+    width: 300px;
+    margin: 20px 0 20px auto;
+    border: none;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.label-filtro {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.select-filtro {
+    width: 100%;
+    font-size: 16px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+.boton-filtro {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 10px;
+}
+
+.boton-filtro:hover {
+    background-color: #0056b3;
+}
+
+.option-filtro{
+    font-size: 20px;
+}
+
+.isPenalizado{
+    color: #FFFFFF;
+    text-align: center;
+    margin-top: 30px;
 }

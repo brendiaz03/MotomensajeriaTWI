@@ -9,10 +9,7 @@
     <link rel="stylesheet" th:href="@{css/homeStyle.css}"/>
     <link rel="stylesheet" th:href="@{css/viajes.css}"/>
     <title>Motomensajeria</title>
-
-    <!-- Boostrap core css -->
-
-
+    <script th:src="@{/js/viaje.js}"></script>
 </head>
 <body>
 <header>
@@ -59,27 +56,25 @@
     <div class="container">
         <div class="card-header">
             <h1 class="text-center titulo-viajes">Viajes en Proceso</h1>
+            <h2 th:text="${sinViajes}" class="text-center titulo-viajes"></h2>
         </div>
         <div th:if="${viajesObtenidos != null}" class="card mt-3 contenedor-viajes" style="background-color: transparent;border:none;">
             <div class="card-body" th:each="viaje : ${viajesObtenidos}">
                 <div class="card mt-3 ml-3 contenedor-datos-viajes-aceptados">
                     <div class="card-body viaje">
-                        <div class="viajes-proceso-img">
-                            <div>
-                                <p class="card-text"><b>Salida:</b> <span th:text="${viaje.getDomicilioDeSalida()}"></span></p>
-                                <p class="card-text"><b>Llegada:</b> <span th:text="${viaje.getDomicilioDeLlegada()}"></span></p>
-                                <p class="card-text"><b>Paquete de:</b> <span th:text="${viaje.getCliente().getNombre()}"></span></p>
-                                <p class="card-text"><b>Precio:</b> <span th:text="${viaje.getPrecio()}"></span></p>
-                                <p class="card-text"><b>Codigo Postal:</b> <span th:text="${viaje.getCodigoPostal()}"></span></p>
-                            </div>
-                            <section class="imagen-viaje-proceso">
-                                <div class="contenedor-imagen-viaje-proceso">
+                        <div class="card mt-3 ml-3 contenedor-viaje" th:data-latitud-salida="${viaje.latitudDeSalida}" th:data-longitud-salida="${viaje.longitudDeSalida}" th:data-latitud-llegada="${viaje.latitudDeLlegada}" th:data-longitud-llegada="${viaje.longitudDeLlegada}">
+                            <div class="viajes-proceso-img">
+                                <div>
+                                    <p class="card-text"><b>Salida:</b> <span th:text="${viaje.getDomicilioDeSalida()}"></span></p>
+                                    <p class="card-text"><b>Llegada:</b> <span th:text="${viaje.getDomicilioDeLlegada()}"></span></p>
+                                    <p class="card-text"><b>Paquete de:</b> <span th:text="${viaje.getCliente().getNombre()}"></span></p>
+                                    <p class="card-text"><b>Precio:</b> <span th:text="${viaje.getPrecio()}"></span></p>
+                                    <p class="card-text"><b>Codigo Postal:</b> <span th:text="${viaje.getCodigoPostal()}"></span></p>
                                 </div>
-                            </section>
-                        </div>
-
-                        <div class="contenedor-boton-cancelar" >
-                            <a th:href="@{/viajeAceptado(idViaje=${viaje.getId()})}" class="boton-verde" style="padding: 10px 50px;">Ver</a>
+                            </div>
+                            <div class="contenedor-boton-cancelar" >
+                                <a th:href="@{/viajeAceptado(idViaje=${viaje.getId()})}" class="boton-verde" style="padding: 10px 50px;">Ver</a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -87,8 +82,8 @@
         </div>
     </div>
 </main>
-<!-- /.container -->
-<!-- Boostrap core js -->
 <script type="text/javascript" th:src="@{webjars/bootstrap/5.2.0/js/bootstrap.min.js}"></script>
+<script th:src="@{/js/googleMaps.js}"></script>
+<script async th:src="@{'https://maps.googleapis.com/maps/api/js?key=' + ${clave} + '&loading=async&libraries=places&callback=iniciarMap&libraries=marker'}" defer></script>
 </body>
 </html>

@@ -7,8 +7,8 @@ function iniciarMap() {
     const latitudLlegada = parseFloat(contenedorDeLosDatos.dataset.latitudLlegada);
     const longitudLlegada = parseFloat(contenedorDeLosDatos.dataset.longitudLlegada);
 
-    var latitudActual = -34.69549
-    var longitudActual = -58.529661
+    let latitudActual = -34.818787;
+    let longitudActual =  -58.646844;
 
     const map = new google.maps.Map(document.getElementById('map'), {
         zoom: 12,

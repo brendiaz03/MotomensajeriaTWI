@@ -4,25 +4,21 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <script src="https://kit.fontawesome.com/ca80211b53.js" crossorigin="anonymous"></script>
-
     <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.0/css/bootstrap.min.css}"/>
     <link rel="stylesheet" th:href="@{css/main.css}"/>
     <link rel="stylesheet" th:href="@{css/homeStyle.css}"/>
     <link rel="stylesheet" th:href="@{css/viajes.css}"/>
     <title>Motomensajeria</title>
-
-    <!-- Boostrap core css -->
 </head>
 <body>
 <header>
     <nav class="navbar navbar-expand-lg mx-4">
-        <div class="d-flex align-items-center bg-violet"> <!-- Div pegado a la izquierda -->
+        <div class="d-flex align-items-center bg-violet">
             <a th:href="home" class="mx-2">
                 <img th:src="${logo.getImagenBase64()}" class="d-block w-100 bg-violet" alt=",,," style="height: 50px;width: 50px">
             </a>
         </div>
-
-        <div class="collapse navbar-collapse justify-content-end"> <!-- Div pegado a la derecha -->
+        <div class="collapse navbar-collapse justify-content-end">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item active  p-2">
                     <a th:href="home" class="nav-link p-2 text-white" href="#">Inicio</a>
@@ -41,7 +37,6 @@
                 </li>
             </ul>
             <a th:unless="${isUsuarioLogueado}" th:href="@{login}" class="btn-custom" style="text-decoration: none">Ingresar</a>
-            <!-- Muestra el botón de usuario solo si el usuario está logueado -->
             <a th:if="${isUsuarioLogueado}" th:href="perfil" class="btn mx-2" style="border:none;">
                 <div class="container d-flex justify-content-center align-items-center"  th:if="${conductor.getImagenPerfil() != null}" style="border: none">
                     <img alt="img" class="d-block rounded-circle" th:src="'data:image/jpg;charset=utf-8;base64,' + ${conductor.getImageDataBase64()}" style=" width: 40px; height: 40px;"/>
@@ -56,41 +51,36 @@
 </header>
 <main role="main" class="container">
     <h1 class="text-center titulo-solicitud">Datos de Viaje en Proceso</h1>
-
     <section id="map">
         <div></div>
     </section>
-
     <section>
         <div class="card mt-3 contenedor-viaje">
-                    <div class="card-body contenedor-datos-viaje flex">
-                        <div>
-                            <p class="card-text"><b>Direccion de Salida:</b> <span th:text="${viaje.getDomicilioDeSalida()}"></span></p>
-                            <p class="card-text"><b>Direccion de Llegada:</b> <span th:text="${viaje.getDomicilioDeLlegada()}"></span></p>
-                            <p class="card-text"><b>Codigo postal:</b> <span th:text="${viaje.getCodigoPostal()}"></span></p>
-                            <div id="datosMap" th:data-latitud-salida="${viaje.latitudDeSalida}" th:data-longitud-salida="${viaje.longitudDeSalida}" th:data-latitud-llegada="${viaje.latitudDeLlegada}" th:data-longitud-llegada="${viaje.longitudDeLlegada}"></div>
-                        </div>
-                        <div>
-                            <p class="card-text"><b>Precio: </b> $<span th:text="${viaje.getPrecio()}"></span> ARS</p>
-                            <p class="card-text"><b>Paquete de:</b> <span th:text="${viaje.getCliente().getNombre()}"></span></p>
-                        </div>
-                    </div>
+            <div class="card-body contenedor-datos-viaje flex">
+                <div>
+                    <p class="card-text"><b>Direccion de Salida:</b> <span th:text="${viaje.getDomicilioDeSalida()}"></span></p>
+                    <p class="card-text"><b>Direccion de Llegada:</b> <span th:text="${viaje.getDomicilioDeLlegada()}"></span></p>
+                    <p class="card-text"><b>Precio:</b> $<span th:text="${viaje.getPrecio()}"></span> ARS</p>
+                    <p class="card-text"><b>Paquete de:</b> <span th:text="${viaje.getNombreDelCliente()}"></span></p>
+                </div>
+                <div>
+                    <div id="datosMap" th:data-latitud-salida="${viaje.latitudDeSalida}" th:data-longitud-salida="${viaje.longitudDeSalida}" th:data-latitud-llegada="${viaje.latitudDeLlegada}" th:data-longitud-llegada="${viaje.longitudDeLlegada}"></div>
+                </div>
+            </div>
             <div class="contenedor-botones" style="margin-top: 4%">
                 <div>
                     <a th:href="@{volver}" class="boton-enlace boton-volver">Volver</a>
                 </div>
                 <div>
-                    <a th:href="@{/cancelar-viaje(idViaje=${viaje.getId()})}" class="boton-rojo">Cancelar</a>
+                    <a th:href="@{/cancelar-viaje(idViaje=${viaje.getIdViaje()})}" class="boton-rojo">Cancelar</a>
                 </div>
                 <div>
-                    <a th:href="@{/terminar-viaje(idViaje=${viaje.getId()})}" class="boton-aceptar">Terminar</a>
+                    <a th:href="@{/terminar-viaje(idViaje=${viaje.getIdViaje()})}" class="boton-aceptar">Terminar</a>
                 </div>
             </div>
         </div>
     </section>
 </main>
-<!-- /.container -->
-<!-- Boostrap core js -->
 <script type="text/javascript" th:src="@{webjars/bootstrap/5.2.0/js/bootstrap.min.js}"></script>
 <script th:src="@{/js/geolocalizacion.js}" defer></script>
 <script th:src="@{/js/googleMaps.js}"></script>
