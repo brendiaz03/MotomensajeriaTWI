@@ -12,8 +12,13 @@ public class DatosViaje {
     private Double longitudDeSalida;
     private Double latitudDeLlegada;
     private Double longitudDeLlegada;
+    private Double distanciaDelViaje;
+    private Boolean terminado;
+    private Boolean cancelado;
+    private Boolean aceptado;
+    private Boolean descartado;
 
-    public DatosViaje(Integer idViaje, String domicilioDeSalida, String domicilioDeLlegada, String nombreDelCliente, String precio, String codigoPostal, Double latitudDeSalida, Double longitudDeSalida, Double latitudDeLlegada, Double longitudDeLlegada) {
+    public DatosViaje(Integer idViaje, String domicilioDeSalida, String domicilioDeLlegada, String nombreDelCliente, String precio, String codigoPostal, Double latitudDeSalida, Double longitudDeSalida, Double latitudDeLlegada, Double longitudDeLlegada, Double distanciaDelViaje, Boolean terminado, Boolean cancelado, Boolean aceptado, Boolean descartado) {
         this.idViaje = idViaje;
         this.domicilioDeSalida = domicilioDeSalida;
         this.domicilioDeLlegada = domicilioDeLlegada;
@@ -24,6 +29,15 @@ public class DatosViaje {
         this.longitudDeSalida = longitudDeSalida;
         this.latitudDeLlegada = latitudDeLlegada;
         this.longitudDeLlegada = longitudDeLlegada;
+        this.distanciaDelViaje = distanciaDelViaje;
+        this.terminado = terminado;
+        this.cancelado = cancelado;
+        this.aceptado = aceptado;
+        this.descartado = descartado;
+    }
+
+    public DatosViaje() {
+
     }
 
     public String getNombreDelCliente() {
@@ -104,5 +118,45 @@ public class DatosViaje {
 
     public void setIdViaje(Integer idViaje) {
         this.idViaje = idViaje;
+    }
+
+    public Double getDistanciaDelViaje() {
+        return distanciaDelViaje;
+    }
+
+    public void setDistanciaDelViaje(Double distanciaDelViaje) {
+        this.distanciaDelViaje = distanciaDelViaje;
+    }
+
+    public Boolean getTerminado() {
+        return terminado;
+    }
+
+    public void setTerminado(Boolean terminado) {
+        this.terminado = terminado;
+    }
+
+    public Boolean getCancelado() {
+        return cancelado;
+    }
+
+    public void setCancelado(Boolean cancelado) {
+        this.cancelado = cancelado;
+    }
+
+    public Boolean getAceptado() {
+        return aceptado;
+    }
+
+    public void setAceptado(Boolean aceptado) {
+        this.aceptado = aceptado;
+    }
+
+    public Boolean getDescartado() {
+        return descartado;
+    }
+
+    public void setDescartado(Boolean descartado) {
+        this.descartado = descartado;
     }
 }

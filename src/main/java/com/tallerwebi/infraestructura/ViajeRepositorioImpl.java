@@ -30,8 +30,7 @@ public class ViajeRepositorioImpl implements ViajeRepositorio {
 
         criteria.add(Restrictions.eq("conductor", conductor));
 
-        List<Viaje> viajes = criteria.list();
-        return viajes;
+        return (List<Viaje>) criteria.list();
     }
 
     @Override
@@ -69,6 +68,7 @@ public class ViajeRepositorioImpl implements ViajeRepositorio {
                 "cos(radians(viaje.longitudDeSalida) - radians(:longitudConductor)) + " +
                 "sin(radians(:latitudConductor)) * sin(radians(viaje.latitudDeSalida)))) < :distanciaAFiltar " +
                 "AND viaje.conductor IS NULL AND viaje.descartado = false AND viaje.cancelado = false AND viaje.terminado = false " +
+                "AND viaje.aceptado = false " +
                 "ORDER BY (6371 * acos(cos(radians(:latitudConductor)) * cos(radians(viaje.latitudDeSalida)) * " +
                 "cos(radians(viaje.longitudDeSalida) - radians(:longitudConductor)) + " +
                 "sin(radians(:latitudConductor)) * sin(radians(viaje.latitudDeSalida)))) ASC";

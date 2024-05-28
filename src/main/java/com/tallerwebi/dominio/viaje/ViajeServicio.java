@@ -1,6 +1,7 @@
 package com.tallerwebi.dominio.viaje;
 
 import com.tallerwebi.dominio.conductor.Conductor;
+import com.tallerwebi.dominio.conductor.ConductorNoEncontradoException;
 import com.tallerwebi.presentacion.Datos.DatosViaje;
 
 import java.util.List;
@@ -9,9 +10,9 @@ public interface ViajeServicio {
 
     List<Viaje> obtenerLasSolicitudesDeViajesPendientes();
 
-    Viaje obtenerViajeAceptadoPorId(Integer id);
+    DatosViaje obtenerViajeAceptadoPorId(Integer id);
 
-    List<Viaje> obtenerHistorialDeViajes(Conductor conductor);
+    List<DatosViaje> obtenerHistorialDeViajes(Conductor conductor) throws ConductorNoEncontradoException;
 
     Viaje actualizarViaje(Viaje viaje);
 
@@ -23,5 +24,11 @@ public interface ViajeServicio {
 
     Boolean estaPenalizado(Conductor conductor);
 
-    void asginarConductorAlViaje(Viaje viaje, Conductor conductor);
+    void aceptarViaje(DatosViaje viaje, Conductor conductor);
+
+    List<Viaje> calcularLaDistanciaDelViajeEntreLaSalidaYElDestino(List<Viaje> viajes);
+
+    void cancelarViaje(DatosViaje viaje);
+
+    void terminarViaje(DatosViaje viaje);
 }

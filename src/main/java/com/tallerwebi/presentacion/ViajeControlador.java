@@ -7,12 +7,11 @@ import com.tallerwebi.dominio.imagen.Imagen;
 import com.tallerwebi.dominio.imagen.ImagenServicio;
 import com.tallerwebi.dominio.viaje.Viaje;
 import com.tallerwebi.dominio.viaje.ViajeServicio;
+import com.tallerwebi.presentacion.Datos.DatosViaje;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
@@ -20,9 +19,9 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 public class ViajeControlador {
 
-    private ViajeServicio viajeServicio;
-    private ImagenServicio imagenServicio;
-    private ConductorServicio conductorServicio;
+    private final ViajeServicio viajeServicio;
+    private final ImagenServicio imagenServicio;
+    private final ConductorServicio conductorServicio;
 
     @Autowired
     public ViajeControlador(ViajeServicio viajeServicio, ConductorServicio conductorServicio, ImagenServicio imagenServicio){
@@ -42,8 +41,24 @@ public class ViajeControlador {
         Imagen fondo = imagenServicio.getImagenByName("fondo");
         Imagen botonPS = imagenServicio.getImagenByName("botonPS");
         Boolean isUsuarioLogueado = (Boolean) request.getSession().getAttribute("isUsuarioLogueado");
-        Conductor conductor = conductorServicio.obtenerConductorPorId((Integer) request.getSession().getAttribute("IDUSUARIO"));
-        List<Viaje> historialViajes = this.viajeServicio.obtenerHistorialDeViajes(conductor);
+        Conductor conductor;
+
+        if(isUsuarioLogueado == null) {
+            return new ModelAndView("redirect:/login");
+        }
+
+        try {
+            conductor = conductorServicio.obtenerConductorPorId((Integer) request.getSession().getAttribute("IDUSUARIO"));
+        } catch (ConductorNoEncontradoException e) {
+            model.put("error", "Conductor no encontrado");
+            return new ModelAndView(viewName, model);
+        }
+
+        List<DatosViaje> historialViajes = this.viajeServicio.obtenerHistorialDeViajes(conductor);
+
+        if(historialViajes == null || historialViajes.isEmpty()) {
+            model.put("sinViajes", "No hay viajes en el historial");
+        }
 
         model.put("logo", logo);
         model.put("user", user);
@@ -61,7 +76,7 @@ public class ViajeControlador {
         ModelMap model = new ModelMap();
 
         String viewName = "viaje";
-        String claveGoogleMaps = "AIzaSyBylV7--oH5ZaWIdNS5n0bU59LFNN5zEso";
+        String claveGoogleMaps = "AIzaSyDcPeOyMBqG_1mZgjpei_R2ficRigdkINg";
         Imagen logo = imagenServicio.getImagenByName("logo");
         Imagen user = imagenServicio.getImagenByName("user");
         Imagen auto = imagenServicio.getImagenByName("auto");
@@ -69,10 +84,32 @@ public class ViajeControlador {
         Imagen botonPS = imagenServicio.getImagenByName("botonPS");
         Boolean isUsuarioLogueado = (Boolean) request.getSession().getAttribute("isUsuarioLogueado");
         Conductor conductor = conductorServicio.obtenerConductorPorId((Integer) request.getSession().getAttribute("IDUSUARIO"));
-        Viaje viaje = viajeServicio.obtenerViajeAceptadoPorId(idViaje);
-        this.viajeServicio.asginarConductorAlViaje(viaje, conductor);
 
-        model.put("clave",claveGoogleMaps);
+        if(idViaje == null || idViaje <= 0) {
+            model.put("error", "ID de viaje inválido");
+            return new ModelAndView("viaje", model);
+        }
+
+        DatosViaje viaje = viajeServicio.obtenerViajeAceptadoPorId(idViaje);
+
+        if(viaje == null) {
+            model.put("error", "Viaje no encontrado");
+            return new ModelAndView("viaje", model);
+        }
+
+        if(viaje.getAceptado()) {
+            model.put("error", "Viaje no disponible para ser aceptado");
+            return new ModelAndView("viaje", model);
+        }
+
+        try {
+            this.viajeServicio.aceptarViaje(viaje, conductor);
+        } catch (Exception e) {
+            model.put("error", "Error al aceptar el viaje");
+            return new ModelAndView("viaje", model);
+        }
+
+        model.put("clave", claveGoogleMaps);
         model.put("logo", logo);
         model.put("user", user);
         model.put("auto", auto);
@@ -80,7 +117,7 @@ public class ViajeControlador {
         model.put("botonPS", botonPS);
         model.put("isUsuarioLogueado",isUsuarioLogueado);
         model.put("conductor", conductor);
-        model.put("idViaje", viaje.getId());
+        model.put("idViaje", viaje.getIdViaje());
         model.put("viaje", viaje);
         return new ModelAndView(viewName, model);
     }
@@ -96,8 +133,24 @@ public class ViajeControlador {
         Imagen fondo = imagenServicio.getImagenByName("fondo");
         Imagen botonPS = imagenServicio.getImagenByName("botonPS");
         Boolean isUsuarioLogueado = (Boolean) request.getSession().getAttribute("isUsuarioLogueado");
-        Conductor conductor = conductorServicio.obtenerConductorPorId((Integer) request.getSession().getAttribute("IDUSUARIO"));
+        Conductor conductor;
+
+        if(isUsuarioLogueado == null) {
+            return new ModelAndView("redirect:/login");
+        }
+
+        try {
+            conductor = conductorServicio.obtenerConductorPorId((Integer) request.getSession().getAttribute("IDUSUARIO"));
+        } catch (ConductorNoEncontradoException e) {
+            model.put("error", "Conductor no encontrado");
+            return new ModelAndView(viewName, model);
+        }
+
         List<Viaje> viajesObtenidos = viajeServicio.obtenerViajesEnProceso(conductor);
+
+        if(viajesObtenidos == null || viajesObtenidos.isEmpty()) {
+            model.put("sinViajes", "No hay viajes en proceso");
+        }
 
         model.put("logo", logo);
         model.put("user", user);
@@ -115,7 +168,7 @@ public class ViajeControlador {
         ModelMap model = new ModelMap();
 
         String viewName = "viaje";
-        String claveGoogleMaps = "AIzaSyBylV7--oH5ZaWIdNS5n0bU59LFNN5zEso";
+        String claveGoogleMaps = "AIzaSyDcPeOyMBqG_1mZgjpei_R2ficRigdkINg";
         Imagen logo = imagenServicio.getImagenByName("logo");
         Imagen user = imagenServicio.getImagenByName("user");
         Imagen auto = imagenServicio.getImagenByName("auto");
@@ -123,7 +176,23 @@ public class ViajeControlador {
         Imagen botonPS = imagenServicio.getImagenByName("botonPS");
         Boolean isUsuarioLogueado = (Boolean) request.getSession().getAttribute("isUsuarioLogueado");
         Conductor conductor = conductorServicio.obtenerConductorPorId((Integer) request.getSession().getAttribute("IDUSUARIO"));
-        Viaje viaje = viajeServicio.obtenerViajeAceptadoPorId(idViaje);
+
+        if (idViaje == null || idViaje <= 0) {
+            model.put("error", "ID de viaje inválido");
+            return new ModelAndView(viewName, model);
+        }
+
+        DatosViaje viaje = viajeServicio.obtenerViajeAceptadoPorId(idViaje);
+
+        if (viaje == null) {
+            model.put("error", "Viaje no encontrado");
+            return new ModelAndView(viewName, model);
+        }
+
+        if (viaje.getCancelado() || viaje.getTerminado() || viaje.getDescartado()) {
+            model.put("error", "Viaje no disponible para ser visto");
+            return new ModelAndView(viewName, model);
+        }
 
         model.put("clave", claveGoogleMaps);
         model.put("logo", logo);
@@ -139,20 +208,18 @@ public class ViajeControlador {
 
     @RequestMapping("/cancelar-viaje")
     public ModelAndView cancelarViaje(@RequestParam("idViaje") Integer idViaje){
-        Viaje viaje = viajeServicio.obtenerViajeAceptadoPorId(idViaje);
+        DatosViaje viaje = viajeServicio.obtenerViajeAceptadoPorId(idViaje);
 
-        viaje.setCancelado(true);
-        viajeServicio.actualizarViaje(viaje);
+        viajeServicio.cancelarViaje(viaje);
 
         return new ModelAndView("redirect:/home");
     }
 
     @RequestMapping("/terminar-viaje")
     public ModelAndView terminarViaje(@RequestParam("idViaje") Integer idViaje){
-        Viaje viaje = viajeServicio.obtenerViajeAceptadoPorId(idViaje);
+        DatosViaje viaje = viajeServicio.obtenerViajeAceptadoPorId(idViaje);
 
-        viaje.setTerminado(true);
-        viajeServicio.actualizarViaje(viaje);
+        viajeServicio.terminarViaje(viaje);
 
         return new ModelAndView("redirect:/home");
     }

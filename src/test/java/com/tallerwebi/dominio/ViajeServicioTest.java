@@ -1,10 +1,12 @@
 package com.tallerwebi.dominio;
 
 import com.tallerwebi.dominio.conductor.Conductor;
+import com.tallerwebi.dominio.conductor.ConductorNoEncontradoException;
 import com.tallerwebi.dominio.viaje.Viaje;
 import com.tallerwebi.dominio.viaje.ViajeRepositorio;
 import com.tallerwebi.dominio.viaje.ViajeServicio;
 import com.tallerwebi.dominio.viaje.ViajeServicioImpl;
+import com.tallerwebi.presentacion.Datos.DatosViaje;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -48,21 +50,21 @@ public class ViajeServicioTest {
         when(this.viajeRepositorio.obtenerViajePorId(viajeAceptado.getId())).thenReturn(viajeAceptado);
 
         // Ejecución
-        Viaje viajeObtenido = this.viajeServicio.obtenerViajeAceptadoPorId(viajeAceptado.getId());
+        DatosViaje viajeObtenido = this.viajeServicio.obtenerViajeAceptadoPorId(viajeAceptado.getId());
 
         // Validación
-        assertThat(viajeObtenido.getId(), equalTo(viajeAceptado.getId()));
+        assertThat(viajeObtenido.getIdViaje(), equalTo(viajeAceptado.getId()));
     }
 
     @Test
-    public void queSePuedanObtenerLosViajesTerminadosYCancelados() {
+    public void queSePuedanObtenerLosViajesTerminadosYCancelados() throws ConductorNoEncontradoException {
         // Preparación
         Conductor conductor = new Conductor();
         List<Viaje> viajes = dadoQueExistenViajesConUnConductorAsignado(conductor);
         when(viajeRepositorio.obtenerViajesPorConductor(conductor)).thenReturn(viajes);
 
         // Ejecución
-        List<Viaje> viajesObtenidos = viajeServicio.obtenerHistorialDeViajes(conductor);
+        List<DatosViaje> viajesObtenidos = viajeServicio.obtenerHistorialDeViajes(conductor);
 
         // Validación
         assertThat(viajesObtenidos.size(), equalTo(2));
