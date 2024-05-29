@@ -1,7 +1,6 @@
 package com.tallerwebi.dominio;
 
 import com.tallerwebi.dominio.conductor.*;
-import com.tallerwebi.dominio.imagen.Imagen;
 import com.tallerwebi.dominio.vehiculo.Vehiculo;
 import com.tallerwebi.infraestructura.config.HibernateInfraestructuraTestConfig;
 import org.hibernate.SessionFactory;

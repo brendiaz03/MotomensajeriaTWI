@@ -1,8 +1,6 @@
 package com.tallerwebi.presentacion;
 
 import com.tallerwebi.dominio.conductor.*;
-import com.tallerwebi.dominio.imagen.ImagenServicio;
-import com.tallerwebi.dominio.imagen.Imagen;
 import com.tallerwebi.dominio.vehiculo.Vehiculo;
 import com.tallerwebi.dominio.vehiculo.VehiculoServicio;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,14 +18,12 @@ import java.io.IOException;
 @MultipartConfig
 public class ConductorControlador {
     private ConductorServicio conductorServicio;
-    private ImagenServicio iimageService;
     private VehiculoServicio vehiculoService;
 
 
     @Autowired
-    public ConductorControlador(ConductorServicio conductorServicio, ImagenServicio imageService, VehiculoServicio _vehiculoService) {
+    public ConductorControlador(ConductorServicio conductorServicio, VehiculoServicio _vehiculoService) {
         this.conductorServicio = conductorServicio;
-        this.iimageService=imageService;
         this.vehiculoService=_vehiculoService;
     }
     @RequestMapping(value = "/registro-conductor", method = RequestMethod.GET)
@@ -35,21 +31,11 @@ public class ConductorControlador {
 
         String viewName= "registro-conductor";
         ModelMap model = new ModelMap();
-        Imagen logo = iimageService.getImagenByName("logo");
-        Imagen auto = iimageService.getImagenByName("auto");
-        Imagen fondo = iimageService.getImagenByName("fondo");
-        Imagen botonPS = iimageService.getImagenByName("botonPS");
-        Imagen user = iimageService.getImagenByName("user");
 
         boolean isEditForm = (session.getAttribute("isEditForm") != null) ? (boolean) session.getAttribute("isEditForm") : false;
 
-        model.put("logo", logo);
-        model.put("auto", auto);
-        model.put("fondo", fondo);
-        model.put("botonPS", botonPS);
         model.put("conductor", new Conductor());
         model.put("isEditForm", isEditForm);
-        model.put("user", user);
 
         if(!isEditForm) {
             if(mensajeError != ""){
@@ -70,13 +56,10 @@ public class ConductorControlador {
         String nombre = (String) session.getAttribute("NOMBRE");
         String apellido = (String) session.getAttribute("APELLIDO");
         Integer idUsuario = (Integer) session.getAttribute("IDUSUARIO");
-        Imagen logo = iimageService.getImagenByName("logo");
-        Imagen user = iimageService.getImagenByName("user");
+
         Conductor conductor = conductorServicio.obtenerConductorPorId(idUsuario);
         Vehiculo vehiculo = conductor.getVehiculo();
 
-        model.put("logo", logo);
-        model.put("user", user);
         model.put("isUsuarioLogueado", isUsuarioLogueado);
         model.put("nombreUsuario", nombre);
         model.put("apellidoUsuario", apellido);
@@ -84,7 +67,6 @@ public class ConductorControlador {
         session.setAttribute("idVehiculo", vehiculo.getId());
         model.put("conductor", conductor );
         model.put("vehiculo", vehiculo );
-
 
         return new ModelAndView("perfil-conductor",model);
     }
@@ -100,12 +82,8 @@ public class ConductorControlador {
         ModelMap model = new ModelMap();
         Boolean isUsuarioLogueado = (Boolean) session.getAttribute("isUsuarioLogueado");
         Integer idUsuario = (Integer) session.getAttribute("IDUSUARIO");
-        Imagen logo = iimageService.getImagenByName("logo");
-        Imagen user = iimageService.getImagenByName("user");
         Conductor conductor = conductorServicio.obtenerConductorPorId(idUsuario);
 
-        model.put("logo", logo);
-        model.put("user", user);
         model.put("isUsuarioLogueado", isUsuarioLogueado);
         model.put("idUsuario", idUsuario);
         model.put("conductor", conductor );

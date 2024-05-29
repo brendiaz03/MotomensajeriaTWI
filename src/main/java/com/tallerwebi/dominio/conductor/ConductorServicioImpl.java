@@ -63,7 +63,7 @@ public class ConductorServicioImpl implements ConductorServicio {
             conductor.setImagenPerfil(Base64.getEncoder().encode(imagen.getBytes()));
             this.editarConductor(conductor);
         }else{
-            System.out.println("Error");
+//            System.out.println("Error");
         }
     }
 

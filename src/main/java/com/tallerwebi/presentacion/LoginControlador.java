@@ -3,8 +3,6 @@ package com.tallerwebi.presentacion;
 import com.tallerwebi.dominio.conductor.Conductor;
 import com.tallerwebi.dominio.conductor.ConductorNoEncontradoException;
 import com.tallerwebi.dominio.conductor.ConductorServicio;
-import com.tallerwebi.dominio.imagen.ImagenServicio;
-import com.tallerwebi.dominio.imagen.Imagen;
 import com.tallerwebi.dominio.viaje.ViajeServicio;
 import com.tallerwebi.presentacion.Datos.DatosLoginConductor;
 import com.tallerwebi.dominio.login.LoginServicio;
@@ -22,14 +20,12 @@ import java.util.List;
 public class LoginControlador {
 
     private static LoginServicio loginServicio;
-    private static ImagenServicio imagenServicio;
     private final ConductorServicio conductorServicio;
     private ViajeServicio viajeServicio;
 
     @Autowired
-    public LoginControlador(LoginServicio _LoginServicio, ImagenServicio _imagenServicio, ConductorServicio _conductorServicio, ViajeServicio viajeServicio){
+    public LoginControlador(LoginServicio _LoginServicio, ConductorServicio _conductorServicio, ViajeServicio viajeServicio){
         this.loginServicio = _LoginServicio;
-        this.imagenServicio = _imagenServicio;
         this.conductorServicio = _conductorServicio;
         this.viajeServicio = viajeServicio;
     }
@@ -48,11 +44,6 @@ public class LoginControlador {
         Double longitudActual = -58.529661; // VER
         Double distanciaAFiltrar = 5.0; // VER
 
-        Imagen logo = imagenServicio.getImagenByName("logo");
-        Imagen user = imagenServicio.getImagenByName("user");
-        Imagen auto = imagenServicio.getImagenByName("auto");
-        Imagen fondo = imagenServicio.getImagenByName("fondo");
-        Imagen botonPS = imagenServicio.getImagenByName("botonPS");
         Boolean isUsuarioLogueado = (Boolean) request.getSession().getAttribute("isUsuarioLogueado");
         List<DatosViaje> viajesCercanosPendientes = this.viajeServicio.filtrarViajesPorDistanciaDelConductor(latitudActual, longitudActual, distanciaAFiltrar);
         Conductor conductor;
@@ -65,11 +56,6 @@ public class LoginControlador {
 
         request.getSession().setAttribute("isPenalizado", this.viajeServicio.estaPenalizado(conductor));
 
-        model.put("logo", logo);
-        model.put("user", user);
-        model.put("auto", auto);
-        model.put("fondo", fondo);
-        model.put("botonPS", botonPS);
         model.put("isUsuarioLogueado", isUsuarioLogueado);
         model.put("viajes", viajesCercanosPendientes);
         model.put("conductor", conductor);
@@ -81,11 +67,7 @@ public class LoginControlador {
     public ModelAndView mostrarLogin(){
         ModelMap model = new ModelMap();
         String viewName= "login-conductor";
-
-        Imagen logo = imagenServicio.getImagenByName("logo");
-
         model.put("datosLogin", new DatosLoginConductor());
-        model.put("logo", logo);
         return new ModelAndView(viewName, model);
     }
 
@@ -111,65 +93,9 @@ public class LoginControlador {
 
     @RequestMapping(path = "/cerrar-sesion")
     public ModelAndView cerrarSesion(HttpServletRequest request) throws ConductorNoEncontradoException {
-        request.getSession().invalidate(); // Invalida la sesión, lo que equivale a cerrar sesión
+        request.getSession().invalidate();
         return mostrarHome(request);
     }
 
-    @RequestMapping ("/ayuda")
-    public ModelAndView mostrarVistaAyuda(HttpServletRequest request) throws ConductorNoEncontradoException {
-        ModelMap model = new ModelMap();
 
-        String viewName= "ayuda";
-        Imagen logo = imagenServicio.getImagenByName("logo");
-        Imagen user = imagenServicio.getImagenByName("user");
-        Imagen auto = imagenServicio.getImagenByName("auto");
-        Imagen fondo = imagenServicio.getImagenByName("fondo");
-        Imagen botonPS = imagenServicio.getImagenByName("botonPS");
-        Boolean isUsuarioLogueado = (Boolean) request.getSession().getAttribute("isUsuarioLogueado");
-        Conductor conductor;
-
-        if(request.getSession().getAttribute("IDUSUARIO") != null){
-            conductor = conductorServicio.obtenerConductorPorId((Integer) request.getSession().getAttribute("IDUSUARIO"));
-        }else{
-            conductor = null;
-        }
-
-        model.put("logo", logo);
-        model.put("user", user);
-        model.put("auto", auto);
-        model.put("fondo", fondo);
-        model.put("botonPS", botonPS);
-        model.put("isUsuarioLogueado",isUsuarioLogueado);
-        model.put("conductor", conductor);
-        return new ModelAndView(viewName, model);
-    }
-
-    @RequestMapping("/compania")
-    public ModelAndView mostrarVistaCompania(HttpServletRequest request) throws ConductorNoEncontradoException {
-        ModelMap model = new ModelMap();
-
-        String viewName = "compania";
-        Imagen logo = imagenServicio.getImagenByName("logo");
-        Imagen user = imagenServicio.getImagenByName("user");
-        Imagen auto = imagenServicio.getImagenByName("auto");
-        Imagen fondo = imagenServicio.getImagenByName("fondo");
-        Imagen botonPS = imagenServicio.getImagenByName("botonPS");
-        Boolean isUsuarioLogueado = (Boolean) request.getSession().getAttribute("isUsuarioLogueado");
-        Conductor conductor;
-
-        if(request.getSession().getAttribute("IDUSUARIO") != null){
-            conductor = conductorServicio.obtenerConductorPorId((Integer) request.getSession().getAttribute("IDUSUARIO"));
-        }else{
-            conductor = null;
-        }
-
-        model.put("logo", logo);
-        model.put("user", user);
-        model.put("auto", auto);
-        model.put("fondo", fondo);
-        model.put("botonPS", botonPS);
-        model.put("isUsuarioLogueado",isUsuarioLogueado);
-        model.put("conductor", conductor);
-        return new ModelAndView(viewName, model);
-    }
 }

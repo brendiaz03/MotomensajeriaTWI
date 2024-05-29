@@ -3,8 +3,6 @@ package com.tallerwebi.presentacion;
 import com.tallerwebi.dominio.conductor.Conductor;
 import com.tallerwebi.dominio.conductor.ConductorNoEncontradoException;
 import com.tallerwebi.dominio.conductor.ConductorServicio;
-import com.tallerwebi.dominio.imagen.Imagen;
-import com.tallerwebi.dominio.imagen.ImagenServicio;
 import com.tallerwebi.dominio.viaje.Viaje;
 import com.tallerwebi.dominio.viaje.ViajeServicio;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,14 +19,12 @@ import javax.servlet.http.HttpServletRequest;
 public class ViajeControlador {
 
     private ViajeServicio viajeServicio;
-    private ImagenServicio imagenServicio;
     private ConductorServicio conductorServicio;
 
     @Autowired
-    public ViajeControlador(ViajeServicio viajeServicio, ConductorServicio conductorServicio, ImagenServicio imagenServicio){
+    public ViajeControlador(ViajeServicio viajeServicio, ConductorServicio conductorServicio){
         this.viajeServicio = viajeServicio;
         this.conductorServicio = conductorServicio;
-        this.imagenServicio = imagenServicio;
     }
 
     @RequestMapping("/historial")
@@ -36,20 +32,10 @@ public class ViajeControlador {
         ModelMap model = new ModelMap();
 
         String viewName = "historial-viajes";
-        Imagen logo = imagenServicio.getImagenByName("logo");
-        Imagen user = imagenServicio.getImagenByName("user");
-        Imagen auto = imagenServicio.getImagenByName("auto");
-        Imagen fondo = imagenServicio.getImagenByName("fondo");
-        Imagen botonPS = imagenServicio.getImagenByName("botonPS");
         Boolean isUsuarioLogueado = (Boolean) request.getSession().getAttribute("isUsuarioLogueado");
         Conductor conductor = conductorServicio.obtenerConductorPorId((Integer) request.getSession().getAttribute("IDUSUARIO"));
         List<Viaje> historialViajes = this.viajeServicio.obtenerHistorialDeViajes(conductor);
 
-        model.put("logo", logo);
-        model.put("user", user);
-        model.put("auto", auto);
-        model.put("fondo", fondo);
-        model.put("botonPS", botonPS);
         model.put("isUsuarioLogueado",isUsuarioLogueado);
         model.put("conductor", conductor);
         model.put("viajesObtenidos", historialViajes);
@@ -62,22 +48,12 @@ public class ViajeControlador {
 
         String viewName = "viaje";
         String claveGoogleMaps = "AIzaSyBylV7--oH5ZaWIdNS5n0bU59LFNN5zEso";
-        Imagen logo = imagenServicio.getImagenByName("logo");
-        Imagen user = imagenServicio.getImagenByName("user");
-        Imagen auto = imagenServicio.getImagenByName("auto");
-        Imagen fondo = imagenServicio.getImagenByName("fondo");
-        Imagen botonPS = imagenServicio.getImagenByName("botonPS");
         Boolean isUsuarioLogueado = (Boolean) request.getSession().getAttribute("isUsuarioLogueado");
         Conductor conductor = conductorServicio.obtenerConductorPorId((Integer) request.getSession().getAttribute("IDUSUARIO"));
         Viaje viaje = viajeServicio.obtenerViajeAceptadoPorId(idViaje);
         this.viajeServicio.asginarConductorAlViaje(viaje, conductor);
 
         model.put("clave",claveGoogleMaps);
-        model.put("logo", logo);
-        model.put("user", user);
-        model.put("auto", auto);
-        model.put("fondo", fondo);
-        model.put("botonPS", botonPS);
         model.put("isUsuarioLogueado",isUsuarioLogueado);
         model.put("conductor", conductor);
         model.put("idViaje", viaje.getId());
@@ -90,20 +66,10 @@ public class ViajeControlador {
         ModelMap model = new ModelMap();
 
         String viewName = "viajes-aceptados";
-        Imagen logo = imagenServicio.getImagenByName("logo");
-        Imagen user = imagenServicio.getImagenByName("user");
-        Imagen auto = imagenServicio.getImagenByName("auto");
-        Imagen fondo = imagenServicio.getImagenByName("fondo");
-        Imagen botonPS = imagenServicio.getImagenByName("botonPS");
         Boolean isUsuarioLogueado = (Boolean) request.getSession().getAttribute("isUsuarioLogueado");
         Conductor conductor = conductorServicio.obtenerConductorPorId((Integer) request.getSession().getAttribute("IDUSUARIO"));
         List<Viaje> viajesObtenidos = viajeServicio.obtenerViajesEnProceso(conductor);
 
-        model.put("logo", logo);
-        model.put("user", user);
-        model.put("auto", auto);
-        model.put("fondo", fondo);
-        model.put("botonPS", botonPS);
         model.put("isUsuarioLogueado",isUsuarioLogueado);
         model.put("conductor", conductor);
         model.put("viajesObtenidos", viajesObtenidos);
@@ -116,21 +82,11 @@ public class ViajeControlador {
 
         String viewName = "viaje";
         String claveGoogleMaps = "AIzaSyBylV7--oH5ZaWIdNS5n0bU59LFNN5zEso";
-        Imagen logo = imagenServicio.getImagenByName("logo");
-        Imagen user = imagenServicio.getImagenByName("user");
-        Imagen auto = imagenServicio.getImagenByName("auto");
-        Imagen fondo = imagenServicio.getImagenByName("fondo");
-        Imagen botonPS = imagenServicio.getImagenByName("botonPS");
         Boolean isUsuarioLogueado = (Boolean) request.getSession().getAttribute("isUsuarioLogueado");
         Conductor conductor = conductorServicio.obtenerConductorPorId((Integer) request.getSession().getAttribute("IDUSUARIO"));
         Viaje viaje = viajeServicio.obtenerViajeAceptadoPorId(idViaje);
 
         model.put("clave", claveGoogleMaps);
-        model.put("logo", logo);
-        model.put("user", user);
-        model.put("auto", auto);
-        model.put("fondo", fondo);
-        model.put("botonPS", botonPS);
         model.put("isUsuarioLogueado", isUsuarioLogueado);
         model.put("conductor", conductor);
         model.put("viaje", viaje);

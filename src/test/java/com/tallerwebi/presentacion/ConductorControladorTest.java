@@ -4,8 +4,6 @@ import com.tallerwebi.dominio.conductor.Conductor;
 import com.tallerwebi.dominio.conductor.ConductorDuplicadoException;
 import com.tallerwebi.dominio.conductor.ConductorNoEncontradoException;
 import com.tallerwebi.dominio.conductor.ConductorServicio;
-import com.tallerwebi.dominio.imagen.Imagen;
-import com.tallerwebi.dominio.imagen.ImagenServicio;
 import com.tallerwebi.dominio.vehiculo.Vehiculo;
 import com.tallerwebi.dominio.vehiculo.VehiculoServicio;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,8 +24,6 @@ public class ConductorControladorTest {
 
    private ConductorControlador conductorControlador;
    private ConductorServicio conductorServicio;
-   private ImagenServicio imagenServicio;
-
    private VehiculoServicio vehiculoServicio;
    private HttpSession session;
 
@@ -35,10 +31,9 @@ public class ConductorControladorTest {
     @BeforeEach //antes que ejecuten los test, se ejecute este método (como un constructor de test)
    public void init() throws Exception {
        this.conductorServicio = mock(ConductorServicio.class);
-       this.imagenServicio = mock(ImagenServicio.class);
        this.vehiculoServicio=mock(VehiculoServicio.class);
        this.session = mock(HttpSession.class);
-       this.conductorControlador = new ConductorControlador(this.conductorServicio, this.imagenServicio, this.vehiculoServicio);
+       this.conductorControlador = new ConductorControlador(this.conductorServicio, this.vehiculoServicio);
 
    }
 
@@ -47,9 +42,7 @@ public class ConductorControladorTest {
         String nombreEsperado= "registro-conductor";
         Conductor conductor=new Conductor();
         Integer idConductor=1;
-        Imagen nuevaImagen=new Imagen();
 
-        when(this.imagenServicio.getImagenByName(anyString())).thenReturn(nuevaImagen);
         when(this.session.getAttribute("isEditForm")).thenReturn(true);
         when(this.session.getAttribute("IDUSUARIO")).thenReturn(anyInt());
         when(this.conductorServicio.obtenerConductorPorId(idConductor)).thenReturn(conductor);
@@ -63,7 +56,6 @@ public class ConductorControladorTest {
     public void queAlSolicitarLaPantallaIrAPerfilSeMuestreElPerfilDelConductor() throws ConductorNoEncontradoException {
         String nombreEsperado = "perfil-conductor";
         Integer idUsuario = 1;
-        Imagen nuevaImagen=new Imagen();
 
         Conductor conductor = new Conductor();
         Vehiculo vehiculo = new Vehiculo();
@@ -74,7 +66,6 @@ public class ConductorControladorTest {
         when(session.getAttribute("NOMBRE")).thenReturn("facu");
         when(session.getAttribute("APELLIDO")).thenReturn("varela");
         when(session.getAttribute("IDUSUARIO")).thenReturn(idUsuario);
-        when(this.imagenServicio.getImagenByName(anyString())).thenReturn(nuevaImagen);
         when(conductorServicio.obtenerConductorPorId(idUsuario)).thenReturn(conductor);
 
         ModelAndView mav = this.conductorControlador.irAPerfil(session);
@@ -98,12 +89,10 @@ public class ConductorControladorTest {
     public void queSeMuestreElFormularioDeEditarImagenDePerfilDeConductor() throws ConductorNoEncontradoException {
         String nombreEsperado = "foto-perfil";
         Integer idUsuario = 1;
-        Imagen nuevaImagen=new Imagen();
         Conductor conductor=new Conductor();
 
         when(session.getAttribute("isUsuarioLogueado")).thenReturn(true);
         when(session.getAttribute("IDUSUARIO")).thenReturn(idUsuario);
-        when(this.imagenServicio.getImagenByName(anyString())).thenReturn(nuevaImagen);
         when(conductorServicio.obtenerConductorPorId(idUsuario)).thenReturn(conductor);
 
         ModelAndView mav = conductorControlador.irAEditarFotoPerfil(session);

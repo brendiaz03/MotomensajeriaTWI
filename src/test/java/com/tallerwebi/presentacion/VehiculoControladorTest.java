@@ -3,8 +3,6 @@ package com.tallerwebi.presentacion;
 import com.tallerwebi.dominio.conductor.Conductor;
 import com.tallerwebi.dominio.conductor.ConductorNoEncontradoException;
 import com.tallerwebi.dominio.conductor.ConductorServicio;
-import com.tallerwebi.dominio.imagen.Imagen;
-import com.tallerwebi.dominio.imagen.ImagenServicio;
 import com.tallerwebi.dominio.vehiculo.Vehiculo;
 import com.tallerwebi.dominio.vehiculo.VehiculoServicio;
 import org.junit.jupiter.api.BeforeEach;
@@ -25,7 +23,6 @@ class VehiculoControladorTest {
 
     private VehiculoControlador vehiculoControlador;
     private VehiculoServicio vehiculoServicio;
-    private ImagenServicio imagenServicio;
     private ConductorServicio conductorServicio;
     private HttpSession httpSession;
 
@@ -34,26 +31,20 @@ class VehiculoControladorTest {
 
         this.vehiculoServicio = mock(VehiculoServicio.class);
 
-        this.imagenServicio = mock(ImagenServicio.class);
-
         this.conductorServicio = mock(ConductorServicio.class);
 
         this.httpSession = mock(HttpSession.class);
 
-        this.vehiculoControlador = new VehiculoControlador(this.vehiculoServicio, this.imagenServicio, this.conductorServicio);
+        this.vehiculoControlador = new VehiculoControlador(this.vehiculoServicio, this.conductorServicio);
 
     }
 
     @Test
     public void queSePuedaVerElFormDelVehiculo() throws ConductorNoEncontradoException {
 
-        Imagen imagen = new Imagen();
-
         Integer idUsuario = 1;
 
         Conductor conductorNuevo = new Conductor ();
-
-        when(this.imagenServicio.getImagenByName(anyString())).thenReturn(imagen);
 
         when(this.httpSession.getAttribute("isEditForm")).thenReturn(true);
 
