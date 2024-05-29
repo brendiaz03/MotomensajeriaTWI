@@ -8,8 +8,6 @@ import java.util.List;
 
 public interface ViajeServicio {
 
-    List<Viaje> obtenerLasSolicitudesDeViajesPendientes();
-
     DatosViaje obtenerViajeAceptadoPorId(Integer id);
 
     List<DatosViaje> obtenerHistorialDeViajes(Conductor conductor) throws ConductorNoEncontradoException;
