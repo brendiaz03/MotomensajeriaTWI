@@ -16,7 +16,7 @@ import java.util.List;
 @Repository
 public class ViajeRepositorioImpl implements ViajeRepositorio {
 
-    private SessionFactory sessionFactory;
+    private final SessionFactory sessionFactory;
 
     public ViajeRepositorioImpl(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
@@ -29,19 +29,6 @@ public class ViajeRepositorioImpl implements ViajeRepositorio {
         Criteria criteria = session.createCriteria(Viaje.class);
 
         criteria.add(Restrictions.eq("conductor", conductor));
-
-        List<Viaje> viajes = criteria.list();
-        return viajes;
-    }
-
-    @Override
-    @Transactional
-    public List<Viaje> obtenerLasSolicitudesDeViajesPendientes() {
-        Session session = sessionFactory.getCurrentSession();
-        Criteria criteria = session.createCriteria(Viaje.class);
-
-        criteria.add(Restrictions.isNull("conductor"));
-        criteria.add(Restrictions.eq("descartado", false));
 
         return (List<Viaje>) criteria.list();
     }
@@ -69,6 +56,7 @@ public class ViajeRepositorioImpl implements ViajeRepositorio {
                 "cos(radians(viaje.longitudDeSalida) - radians(:longitudConductor)) + " +
                 "sin(radians(:latitudConductor)) * sin(radians(viaje.latitudDeSalida)))) < :distanciaAFiltar " +
                 "AND viaje.conductor IS NULL AND viaje.descartado = false AND viaje.cancelado = false AND viaje.terminado = false " +
+                "AND viaje.aceptado = false " +
                 "ORDER BY (6371 * acos(cos(radians(:latitudConductor)) * cos(radians(viaje.latitudDeSalida)) * " +
                 "cos(radians(viaje.longitudDeSalida) - radians(:longitudConductor)) + " +
                 "sin(radians(:latitudConductor)) * sin(radians(viaje.latitudDeSalida)))) ASC";

@@ -5,6 +5,7 @@ import com.tallerwebi.dominio.conductor.ConductorNoEncontradoException;
 import com.tallerwebi.dominio.conductor.ConductorServicio;
 import com.tallerwebi.dominio.viaje.Viaje;
 import com.tallerwebi.dominio.viaje.ViajeServicio;
+import com.tallerwebi.presentacion.Datos.DatosViaje;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.servlet.ModelAndView;
@@ -69,6 +70,7 @@ public class ViajeControladorTest {
         // Preparación
         Conductor conductor = new Conductor();
         conductor.setId(1);
+        DatosViaje viaje = new DatosViaje();
         Viaje viaje = new Viaje();
         viaje.setId(1);
 
@@ -77,6 +79,7 @@ public class ViajeControladorTest {
         when(httpSession.getAttribute("IDUSUARIO")).thenReturn(conductor.getId());
         when(conductorServicio.obtenerConductorPorId(1)).thenReturn(conductor);
         when(viajeServicio.obtenerViajeAceptadoPorId(1)).thenReturn(viaje);
+        doNothing().when(viajeServicio).aceptarViaje(viaje, conductor);
 
         // Ejecución
         ModelAndView modelAndView = viajeControlador.AceptarViaje(request, viaje.getId());
@@ -121,7 +124,10 @@ public class ViajeControladorTest {
         conductor.setId(1);
         Viaje viaje = new Viaje();
         viaje.setId(1);
-
+        DatosViaje viaje = new DatosViaje();
+        viaje.setCancelado(false);
+        viaje.setTerminado(false);
+        viaje.setDescartado(false);
         when(request.getSession()).thenReturn(httpSession);
         when(httpSession.getAttribute("isUsuarioLogueado")).thenReturn(true);
         when(httpSession.getAttribute("IDUSUARIO")).thenReturn(1);
@@ -143,8 +149,8 @@ public class ViajeControladorTest {
     public void queSiElConductorCancelaElViajeLoRedirijaAlHome() {
         // Preparación
         Integer idViaje = 1;
-        Viaje viaje = new Viaje();
-        viaje.setId(idViaje);
+        DatosViaje viaje = new DatosViaje();
+        viaje.setIdViaje(idViaje);
         viaje.setCancelado(true);
 
         when(viajeServicio.obtenerViajeAceptadoPorId(idViaje)).thenReturn(viaje);
@@ -160,12 +166,12 @@ public class ViajeControladorTest {
     public void queSiElConductorTerminaElViajeLoRedirijaAlHome() {
         // Preparación
         Integer idViaje = 1;
-        Viaje viaje = new Viaje();
-        viaje.setId(idViaje);
+        DatosViaje viaje = new DatosViaje();
+        viaje.setIdViaje(idViaje);
         viaje.setTerminado(true);
 
         when(viajeServicio.obtenerViajeAceptadoPorId(idViaje)).thenReturn(viaje);
-        when(viajeServicio.actualizarViaje(viaje)).thenReturn(viaje);
+        doNothing().when(viajeServicio).terminarViaje(viaje);
 
         // Ejecución
         ModelAndView modelAndView = this.viajeControlador.terminarViaje(idViaje);

@@ -21,13 +21,15 @@ public class LoginControlador {
 
     private static LoginServicio loginServicio;
     private final ConductorServicio conductorServicio;
-    private ViajeServicio viajeServicio;
+    private final ViajeServicio viajeServicio;
+    private Double distanciaAFiltrar;
 
     @Autowired
     public LoginControlador(LoginServicio _LoginServicio, ConductorServicio _conductorServicio, ViajeServicio viajeServicio){
         this.loginServicio = _LoginServicio;
         this.conductorServicio = _conductorServicio;
         this.viajeServicio = viajeServicio;
+        this.distanciaAFiltrar = 100.0;
     }
 
     @RequestMapping("/")
@@ -40,9 +42,8 @@ public class LoginControlador {
         ModelMap model = new ModelMap();
         String viewName = "home";
 
-        Double latitudActual = -34.69549; // VER
-        Double longitudActual = -58.529661; // VER
-        Double distanciaAFiltrar = 5.0; // VER
+        Double latitudActual = -34.818787; // VER
+        Double longitudActual =  -58.646844; // VER
 
         Boolean isUsuarioLogueado = (Boolean) request.getSession().getAttribute("isUsuarioLogueado");
         List<DatosViaje> viajesCercanosPendientes = this.viajeServicio.filtrarViajesPorDistanciaDelConductor(latitudActual, longitudActual, distanciaAFiltrar);
@@ -97,5 +98,13 @@ public class LoginControlador {
         return mostrarHome(request);
     }
 
-
+    @RequestMapping(value = "/filtrarPorDistancia", method = RequestMethod.POST)
+    public ModelAndView filtrarPorDistancia(@RequestParam String distancia){
+        if (distancia == null || distancia.isEmpty()) {
+            return new ModelAndView("redirect:/home?error=DistanciaNoSeleccionada");
+        } else {
+            this.distanciaAFiltrar = Double.parseDouble(distancia);
+            return new ModelAndView("redirect:/home");
+        }
+    }
 }

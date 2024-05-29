@@ -14,6 +14,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
@@ -28,21 +30,6 @@ public class ViajeRepositorioTest {
     @BeforeEach
     public void init(){
         this.viajeRepositorio = new ViajeRepositorioImpl(sessionFactory);
-    }
-
-    @Test
-    @Transactional
-    @Rollback
-    public void queSePuedanObtenerTodosLosViajesPendientesSinUnConductorAsignado(){
-        // Preparación
-        dadoQueExistenViajes();
-        Integer viajesEsperados = 3;
-
-        // Ejecución
-        Integer viajesObtenidos = this.viajeRepositorio.obtenerLasSolicitudesDeViajesPendientes().size();
-
-        // Validación
-        assertThat(viajesObtenidos, equalTo(viajesEsperados));
     }
 
     @Test
@@ -64,7 +51,7 @@ public class ViajeRepositorioTest {
     @Test
     @Transactional
     @Rollback
-    public void queSePuedaActualizarUnViajeCuandoElConductorLoAcepta(){
+    public void queSePuedaEditarUnViaje(){
         // Preparación
         Conductor conductor = dadoQueExisteUnConductor();
         Viaje viaje = dadoQueExisteUnViajeQueSeLeAsignaUnConductor(conductor);
@@ -77,14 +64,65 @@ public class ViajeRepositorioTest {
         assertThat(viaje.getDomicilioDeLlegada(), equalTo("Miami"));
         assertThat(viaje.getDomicilioDeSalida(), equalTo("Florida"));
     }
-    
+
+    @Test
+    @Transactional
+    @Rollback
+    public void queSePuedaObtenerUnViajePorSuId(){
+        Viaje viaje = dadoQueExisteUnViaje();
+        this.sessionFactory.getCurrentSession().save(viaje);
+
+        Viaje viajeObtenido = this.viajeRepositorio.obtenerViajePorId(viaje.getId());
+
+        assertThat(viajeObtenido, equalTo(viaje));
+        assertThat(viajeObtenido.getId(), equalTo(viaje.getId()));
+    }
+
+    @Test
+    @Transactional
+    @Rollback
+    public void queSePuedanEncontrarLosViajesCercanos(){
+        Double latitudConductor = -34.665206;
+        Double longitudConductor = -58.531884;
+        Integer totalDeViajesEsperados = 3;
+        dadoQueExistenViajes();
+
+        List<Viaje> viajesCercanosObtenidos = this.viajeRepositorio.encontrarViajesCercanos(latitudConductor, longitudConductor, 100.0);
+
+        assertThat(viajesCercanosObtenidos.size(), equalTo(totalDeViajesEsperados));
+    }
+
     private void dadoQueExistenViajes() {
         Viaje viaje1 = new Viaje();
         Viaje viaje2 = new Viaje();
         Viaje viaje3 = new Viaje();
+        viaje1.setLatitudDeSalida(-34.667289);
+        viaje1.setLongitudDeSalida(-58.530597);
+        viaje1.setLatitudDeLlegada(-34.663944);
+        viaje1.setLongitudDeLlegada(-58.536186);
+        viaje1.setConductor(null);
         viaje1.setDescartado(false);
+        viaje1.setCancelado(false);
+        viaje1.setTerminado(false);
+        viaje1.setAceptado(false);
+        viaje2.setLatitudDeSalida(-34.668074);
+        viaje2.setLongitudDeSalida(-58.534727);
+        viaje2.setLatitudDeLlegada(-34.665153);
+        viaje2.setLongitudDeLlegada(-58.541068);
+        viaje2.setConductor(null);
         viaje2.setDescartado(false);
+        viaje2.setCancelado(false);
+        viaje2.setTerminado(false);
+        viaje2.setAceptado(false);
+        viaje3.setLatitudDeSalida(-34.670465);
+        viaje3.setLongitudDeSalida(-58.533708);
+        viaje3.setLatitudDeLlegada(-34.668612);
+        viaje3.setLongitudDeLlegada(-58.529116);
+        viaje3.setConductor(null);
         viaje3.setDescartado(false);
+        viaje3.setCancelado(false);
+        viaje3.setTerminado(false);
+        viaje3.setAceptado(false);
         this.sessionFactory.getCurrentSession().save(viaje1);
         this.sessionFactory.getCurrentSession().save(viaje2);
         this.sessionFactory.getCurrentSession().save(viaje3);
@@ -114,5 +152,9 @@ public class ViajeRepositorioTest {
         viaje.setDomicilioDeLlegada("Miami");
         viaje.setDomicilioDeSalida("Florida");
         return viaje;
+    }
+
+    private static Viaje dadoQueExisteUnViaje(){
+        return new Viaje();
     }
 }
