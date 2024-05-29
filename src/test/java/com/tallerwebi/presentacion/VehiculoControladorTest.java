@@ -45,7 +45,7 @@ class VehiculoControladorTest {
     }
 
     @Test
-    public void queSePuedaVerElFormDelVehiculo() throws ConductorNoEncontradoException {
+    public void queSePuedaVerElFormularioDelVehiculo() throws ConductorNoEncontradoException {
 
         Imagen imagen = new Imagen();
 
@@ -117,7 +117,7 @@ class VehiculoControladorTest {
     }
 
     @Test
-    public void queAlRegistrarseUnVehiculoMuestreError() throws ConductorNoEncontradoException {
+    public void queAlRegistrarUnVehiculoConPatenteRepetidaMuestreError() throws ConductorNoEncontradoException {
 
         Integer idUsuario = 1;
         Conductor conductorNuevo = new Conductor();
@@ -138,5 +138,16 @@ class VehiculoControladorTest {
         assertNotNull(mav.getModel().get("error"));
         assertEquals("Patente Repetida", mav.getModel().get("error"));
     }
+
+    @Test
+    public void queAlMostrarEditarVehiculoSeEstablezcaIsEditFormYRedirijaAlaVistaVehiculo() {
+
+            String viewName = this.vehiculoControlador.mostrarEditarVehiculo(httpSession);
+
+            verify(httpSession).setAttribute("isEditForm", true);
+
+            assertThat(viewName, equalToIgnoringCase("redirect:/vehiculo"));
+        }
+
 
 }
