@@ -50,35 +50,39 @@
     </nav>
 </header>
 <main role="main" class="container">
-    <div class="container">
-        <div class="card-header">
-            <h1 class="text-center titulo-viajes">Historial de Viajes</h1>
-            <h2 th:text="${sinViajes}" class="text-center titulo-viajes"></h2>
-        </div>
-        <div class="card mt-3 contenedor-viajes" style="background-color: transparent; border: none;">
-            <div class="card-body" th:each="viaje : ${viajesObtenidos}">
-                <div class="card mt-3 ml-3 contenedor-datos-viajes-aceptados">
-                    <div class="card-body viaje" th:data-viaje-id="${viaje.idViaje}">
-                        <div class="viajes-proceso-img">
-                            <div>
-                                <p class="card-text"><b>Salida:</b> <span th:text="${viaje.getDomicilioDeSalida()}"></span></p>
-                                <p class="card-text"><b>Llegada:</b> <span th:text="${viaje.getDomicilioDeLlegada()}"></span></p>
-                                <p class="card-text"><b>Paquete de:</b> <span th:text="${viaje.getNombreDelCliente()}"></span></p>
-                                <p class="card-text"><b>Precio:</b> <span th:text="${viaje.getPrecio()}"></span></p>
-                                <p class="card-text"><b>Codigo Postal:</b> <span th:text="${viaje.getCodigoPostal()}"></span></p>
-                            </div>
-                        </div>
-                        <div class="contenedor-boton-cancelar">
-                            <div th:if="${viaje.getTerminado()}" class="terminado">Terminado</div>
-                            <div th:if="${viaje.getCancelado()}" class="cancelado">Cancelado</div>
-                            <a th:href="@{/detalle(idViaje=${viaje.getIdViaje()})}" class="boton-verde">Ver detalle</a>
-                        </div>
-                    </div>
+    <h1 class="text-center titulo-solicitud">Detalle del Viaje</h1>
+    <section id="map">
+        <div></div>
+    </section>
+    <section>
+        <div class="card mt-3 contenedor-viaje">
+            <div class="card-body contenedor-datos-viaje flex">
+                <div>
+                    <p class="card-text"><b>Direccion de Salida:</b> <span th:text="${viaje.getDomicilioDeSalida()}"></span></p>
+                    <p class="card-text"><b>Direccion de Llegada:</b> <span th:text="${viaje.getDomicilioDeLlegada()}"></span></p>
+                    <p class="card-text"><b>Precio:</b> $<span th:text="${viaje.getPrecio()}"></span> ARS</p>
+                    <p class="card-text"><b>Paquete de:</b> <span th:text="${viaje.getNombreDelCliente()}"></span></p>
+                </div>
+                <div>
+                    <div id="datosMapDetalle" th:data-latitud-salida="${viaje.latitudDeSalida}" th:data-longitud-salida="${viaje.longitudDeSalida}" th:data-latitud-llegada="${viaje.latitudDeLlegada}" th:data-longitud-llegada="${viaje.longitudDeLlegada}"></div>
+                </div>
+            </div>
+            <div class="contenedor-botones" style="margin-top: 4%">
+                <div class="contenedor-boton-cancelar" >
+                    <div th:if="${viaje.getTerminado()}" class="terminado">Terminado</div>
+                </div>
+                <div class="contenedor-boton-cancelar" >
+                    <div th:if="${viaje.getCancelado()}" class="cancelado">Cancelado</div>
+                </div>
+                <div class="contenedor-boton-cancelar" >
+                    <a th:href="@{volver-historial}" class="boton-enlace boton-volver">Volver</a>
                 </div>
             </div>
         </div>
-    </div>
+    </section>
 </main>
 <script type="text/javascript" th:src="@{webjars/bootstrap/5.2.0/js/bootstrap.min.js}"></script>
+<script th:src="@{/js/geolocalizacion.js}"></script>
+<script async th:src="@{'https://maps.googleapis.com/maps/api/js?key=' + ${clave} + '&loading=async&libraries=places&callback=iniciarMapaDetalle&libraries=marker'}" defer></script>
 </body>
 </html>
