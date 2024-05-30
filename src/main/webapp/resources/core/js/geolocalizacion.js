@@ -13,7 +13,6 @@ async function showDriverPosition(position) {
 
     document.getElementById("driverLocation").innerText = `Ubicacion del conductor: Latitud: ${latitudActual}, Longitud: ${longitudActual}`;
 
-    iniciarMap(latitudActual, longitudActual)
 }
 
 function showError(error) {

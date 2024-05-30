@@ -79,41 +79,20 @@ public class Viaje {
 
     }
 
-    public Viaje(String domicilioDeSalida, String domicilioDeLlegada, Double latitudDeSalida, Double longitudDeSalida, Double latitudDeLlegada, Double longitudDeLlegada, String codigoPostal, String precio, String medioDePago, Boolean terminado, Boolean cancelado) {
-        this.domicilioDeSalida = domicilioDeSalida;
-        this.domicilioDeLlegada = domicilioDeLlegada;
-        this.latitudDeSalida = latitudDeSalida;
-        this.longitudDeSalida = longitudDeSalida;
-        this.latitudDeLlegada = latitudDeLlegada;
-        this.longitudDeLlegada = longitudDeLlegada;
-        this.codigoPostal = codigoPostal;
-        this.precio = precio;
-        this.medioDePago = medioDePago;
-        this.terminado = terminado;
-        this.cancelado = cancelado;
-    }
-
-    public Viaje(String domicilioDeSalida, String domicilioDeLlegada, Double latitudDeSalida, Double longitudDeSalida, Double latitudDeLlegada, Double longitudDeLlegada, String codigoPostal, String precio, Boolean terminado, Boolean cancelado) {
-        this.domicilioDeSalida = domicilioDeSalida;
-        this.domicilioDeLlegada = domicilioDeLlegada;
-        this.latitudDeSalida = latitudDeSalida;
-        this.longitudDeSalida = longitudDeSalida;
-        this.latitudDeLlegada = latitudDeLlegada;
-        this.longitudDeLlegada = longitudDeLlegada;
-        this.codigoPostal = codigoPostal;
-        this.precio = precio;
-        this.terminado = terminado;
-        this.cancelado = cancelado;
-    }
-
-    public Viaje(String domicilioDeSalida, String domicilioDeLlegada, Cliente cliente, String precio, String codigoPostal, Boolean terminado, Boolean cancelado, Boolean descartado) {
+    public Viaje(String domicilioDeSalida, String domicilioDeLlegada, Cliente cliente, String precio, String codigoPostal, Double latitudDeSalida, Double longitudDeSalida, Double latitudDeLlegada, Double longitudDeLlegada, Double distanciaDelViaje, Boolean terminado, Boolean cancelado, Boolean aceptado, Boolean descartado) {
         this.domicilioDeSalida = domicilioDeSalida;
         this.domicilioDeLlegada = domicilioDeLlegada;
         this.cliente = cliente;
         this.precio = precio;
         this.codigoPostal = codigoPostal;
+        this.latitudDeSalida = latitudDeSalida;
+        this.longitudDeSalida = longitudDeSalida;
+        this.latitudDeLlegada = latitudDeLlegada;
+        this.longitudDeLlegada = longitudDeLlegada;
+        this.distanciaDelViaje = distanciaDelViaje;
         this.terminado = terminado;
         this.cancelado = cancelado;
+        this.aceptado = aceptado;
         this.descartado = descartado;
     }
 

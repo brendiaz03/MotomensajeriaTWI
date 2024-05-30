@@ -23,16 +23,6 @@ public class ViajeServicioImpl implements ViajeServicio {
     }
 
     @Override
-    public List<Viaje> obtenerLasSolicitudesDeViajesPendientes() {
-        List<Viaje> viajes = viajeRepositorio.obtenerLasSolicitudesDeViajesPendientes();
-        if(viajes.isEmpty()){
-            return null;
-        }else{
-            return viajes;
-        }
-    }
-
-    @Override
     public DatosViaje obtenerViajeAceptadoPorId(Integer id) {
         Viaje viaje = viajeRepositorio.obtenerViajePorId(id);
         return mapearViajeADatosViaje(viaje);
@@ -119,6 +109,21 @@ public class ViajeServicioImpl implements ViajeServicio {
     }
 
     @Override
+    public void cancelarViaje(DatosViaje datosViaje) {
+        Viaje viajeAceptadoActual = this.viajeRepositorio.obtenerViajePorId(datosViaje.getIdViaje());
+        viajeAceptadoActual.setCancelado(true);
+        viajeAceptadoActual.setFechaDeCancelacion(LocalDateTime.now());
+        viajeRepositorio.editar(viajeAceptadoActual);
+    }
+
+    @Override
+    public void terminarViaje(DatosViaje datosViaje) {
+        Viaje viajeAceptadoActual = this.viajeRepositorio.obtenerViajePorId(datosViaje.getIdViaje());
+        viajeAceptadoActual.setTerminado(true);
+        viajeAceptadoActual.setFechaDeTerminacion(LocalDateTime.now());
+        viajeRepositorio.editar(viajeAceptadoActual);
+    }
+
     public List<Viaje> calcularLaDistanciaDelViajeEntreLaSalidaYElDestino(List<Viaje> viajes) {
         final double RADIO_TIERRA = 6371;
         double diferenciaDeLatitud;
@@ -144,28 +149,10 @@ public class ViajeServicioImpl implements ViajeServicio {
         return viajesConDistanciaCalculada;
     }
 
-    @Override
-    public void cancelarViaje(DatosViaje datosViaje) {
-        Viaje viajeAceptadoActual = this.viajeRepositorio.obtenerViajePorId(datosViaje.getIdViaje());
-        viajeAceptadoActual.setCancelado(true);
-        viajeAceptadoActual.setFechaDeCancelacion(LocalDateTime.now());
-        viajeRepositorio.editar(viajeAceptadoActual);
-    }
-
-    @Override
-    public void terminarViaje(DatosViaje datosViaje) {
-        Viaje viajeAceptadoActual = this.viajeRepositorio.obtenerViajePorId(datosViaje.getIdViaje());
-        viajeAceptadoActual.setTerminado(true);
-        viajeAceptadoActual.setFechaDeTerminacion(LocalDateTime.now());
-        viajeRepositorio.editar(viajeAceptadoActual);
-    }
-
-    @Override
     public DatosViaje mapearViajeADatosViajeHistorial(Viaje viaje) {
         return new DatosViaje(viaje.getDomicilioDeSalida(), viaje.getDomicilioDeLlegada(), viaje.getCliente().getNombre(), viaje.getPrecio(), viaje.getCodigoPostal(),viaje.getTerminado(), viaje.getCancelado());
     }
 
-    @Override
     public DatosViaje mapearViajeADatosViaje(Viaje viaje){
         return new DatosViaje(viaje.getId(), viaje.getDomicilioDeSalida(), viaje.getDomicilioDeLlegada(), viaje.getCliente().getNombre(), viaje.getPrecio(), viaje.getCodigoPostal(), viaje.getLatitudDeSalida(), viaje.getLongitudDeSalida(), viaje.getLatitudDeLlegada(), viaje.getLongitudDeLlegada(), viaje.getDistanciaDelViaje(), viaje.getTerminado(), viaje.getCancelado(), viaje.getAceptado(), viaje.getDescartado());
     }
