@@ -20,7 +20,7 @@ public class ConductorServicioImpl implements ConductorServicio {
     }
 
     @Override
-    public Conductor registrarConductorNoDuplicado(Conductor nuevoConductor) throws  ConductorDuplicadoException {
+    public Conductor registrarConductorNoDuplicado(Conductor nuevoConductor) throws ConductorDuplicadoException {
         try{
             this.conductorRepositorio.buscarDuplicados(nuevoConductor.getEmail(),nuevoConductor.getNombreUsuario());
             throw new ConductorDuplicadoException("E-mail o Usuario Duplicado");
@@ -34,45 +34,55 @@ public class ConductorServicioImpl implements ConductorServicio {
         try{
             return this.conductorRepositorio.buscarConductorPorId(id);
         }catch(NoResultException e){
-            throw new ConductorNoEncontradoException("Usuario no Encontrado");
+            throw new ConductorNoEncontradoException("Conductor no Encontrado");
         }
     }
 
     @Override
     public void editarConductor(Conductor conductorEditado) throws ConductorNoEncontradoException {
-        Conductor conductor = this.conductorRepositorio.buscarConductorPorId(conductorEditado.getId());
-        conductorEditado.setVehiculo(conductor.getVehiculo());
-        if(conductorEditado.getImagenPerfil()==null){
-            conductorEditado.setImagenPerfil(conductor.getImagenPerfil());
+        try{
+            Conductor conductor = this.conductorRepositorio.buscarConductorPorId(conductorEditado.getId());
+            conductorEditado.setVehiculo(conductor.getVehiculo());
+            if(conductorEditado.getImagenPerfil()==null){
+                conductorEditado.setImagenPerfil(conductor.getImagenPerfil());
+            }
+            this.conductorRepositorio.editarConductor(conductorEditado);
+        }catch (NoResultException e){
+            throw new ConductorNoEncontradoException("No se pudo editar al conductor ya que el mismo no existe.");
         }
-        this.conductorRepositorio.editarConductor(conductorEditado);
     }
 
     @Override
-    public void borrarConductor(Integer idusuario) {
-        Conductor conductorABorrar= this.conductorRepositorio.buscarConductorPorId(idusuario);
-        this.conductorRepositorio.borrarConductor(conductorABorrar);
+    public void borrarConductor(Integer idusuario) throws ConductorNoEncontradoException {
+        try{
+            Conductor conductorABorrar= this.conductorRepositorio.buscarConductorPorId(idusuario);
+            this.conductorRepositorio.borrarConductor(conductorABorrar);
+        }catch (NoResultException e){
+            throw new ConductorNoEncontradoException("No se pudo borrar al conductor ya que el mismo no existe.");
+        }
     }
 
     @Override
     public void ingresarImagen(MultipartFile imagen, Integer idUsuario) throws IOException, ConductorNoEncontradoException {
-
-        Conductor conductor = this.conductorRepositorio.buscarConductorPorId(idUsuario);
-        if (conductor!=null){
+        try{
+            Conductor conductor = this.conductorRepositorio.buscarConductorPorId(idUsuario);
             conductor.setImagenPerfil(Base64.getEncoder().encode(imagen.getBytes()));
             this.editarConductor(conductor);
-        }else{
-            System.out.println("Error");
-        }
+
+        }catch (NoResultException e){
+            throw new ConductorNoEncontradoException("No se pudo ingresar la imagen ya que el Conductor no existe.");
+        } catch (IOException e) {
+        throw new RuntimeException("Error al ingresar la imagen", e);
+    }
     }
 
     @Override
-    public Boolean RelacionarVehiculoAConductor(Integer idConductor, Vehiculo vehiculo) {
+    public Boolean RelacionarVehiculoAConductor(Integer idConductor, Vehiculo vehiculo) throws ConductorNoEncontradoException {
         try{
             conductorRepositorio.agregarVehiculoAConductor(idConductor,vehiculo);
             return true;
         }catch(NoResultException e){
-            return false;
+            throw new ConductorNoEncontradoException("No se pudo realizar la relación entre el Vehiculo y el Conductor ya que el Conductor no existe.");
         }
     }
 

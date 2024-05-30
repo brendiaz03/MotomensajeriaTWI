@@ -23,24 +23,24 @@ public class ConductorControlador {
     private ImagenServicio iimageService;
     private VehiculoServicio vehiculoService;
 
-
     @Autowired
     public ConductorControlador(ConductorServicio conductorServicio, ImagenServicio imageService, VehiculoServicio _vehiculoService) {
         this.conductorServicio = conductorServicio;
-        this.iimageService=imageService;
-        this.vehiculoService=_vehiculoService;
+        this.iimageService = imageService;
+        this.vehiculoService = _vehiculoService;
     }
-    @RequestMapping(value = "/registro-conductor", method = RequestMethod.GET)
-    public ModelAndView mostrarFormConductor(String mensajeError, HttpSession session) throws ConductorNoEncontradoException {
 
-        String viewName= "registro-conductor";
+    @RequestMapping(value = "/registro-conductor", method = RequestMethod.GET)
+    public ModelAndView mostrarFormConductor(String mensajeError, HttpSession session) {
+
+        String viewName = "registro-conductor";
         ModelMap model = new ModelMap();
         Imagen logo = iimageService.getImagenByName("logo");
         Imagen auto = iimageService.getImagenByName("auto");
         Imagen fondo = iimageService.getImagenByName("fondo");
         Imagen botonPS = iimageService.getImagenByName("botonPS");
         Imagen user = iimageService.getImagenByName("user");
-
+        Integer idUsuario = (Integer) session.getAttribute("IDUSUARIO");
         boolean isEditForm = (session.getAttribute("isEditForm") != null) ? (boolean) session.getAttribute("isEditForm") : false;
 
         model.put("logo", logo);
@@ -51,104 +51,131 @@ public class ConductorControlador {
         model.put("isEditForm", isEditForm);
         model.put("user", user);
 
-        if(!isEditForm) {
-            if(mensajeError != ""){
+        if (!isEditForm) {
+            if (mensajeError != null && !mensajeError.isEmpty()) {
                 model.put("mensajeError", mensajeError);
             }
         } else {
-            Integer idUsuario = (Integer) session.getAttribute("IDUSUARIO");
-            Conductor conductor = conductorServicio.obtenerConductorPorId(idUsuario);
-            model.put("conductor", conductor );
+            try {
+                Conductor conductor = conductorServicio.obtenerConductorPorId(idUsuario);
+                model.put("conductor", conductor);
+            } catch (ConductorNoEncontradoException e) {
+                model.put("mensajeError", e.getMessage());
+            }
         }
+
         return new ModelAndView(viewName, model);
     }
 
     @RequestMapping(path = "/perfil", method = RequestMethod.GET)
-    public ModelAndView irAPerfil(HttpSession session) throws ConductorNoEncontradoException {
+    public ModelAndView irAPerfil(HttpSession session) {
+
+
         ModelMap model = new ModelMap();
         Boolean isUsuarioLogueado = (Boolean) session.getAttribute("isUsuarioLogueado");
-        String nombre = (String) session.getAttribute("NOMBRE");
-        String apellido = (String) session.getAttribute("APELLIDO");
+        if(isUsuarioLogueado == null) {
+            return new ModelAndView("redirect:/login");
+        }
         Integer idUsuario = (Integer) session.getAttribute("IDUSUARIO");
         Imagen logo = iimageService.getImagenByName("logo");
         Imagen user = iimageService.getImagenByName("user");
-        Conductor conductor = conductorServicio.obtenerConductorPorId(idUsuario);
-        Vehiculo vehiculo = conductor.getVehiculo();
 
+        model.put("isUsuarioLogueado", isUsuarioLogueado);
         model.put("logo", logo);
         model.put("user", user);
-        model.put("isUsuarioLogueado", isUsuarioLogueado);
-        model.put("nombreUsuario", nombre);
-        model.put("apellidoUsuario", apellido);
-        model.put("idUsuario", idUsuario);
-        session.setAttribute("idVehiculo", vehiculo.getId());
-        model.put("conductor", conductor );
-        model.put("vehiculo", vehiculo );
 
+        try {
+            Conductor conductor = conductorServicio.obtenerConductorPorId(idUsuario);
+            Vehiculo vehiculo = conductor.getVehiculo();
+            if (vehiculo!=null){
+            session.setAttribute("idVehiculo", vehiculo.getId());
+            model.put("vehiculo", vehiculo);
+            }
+            model.put("conductor", conductor);
+        } catch (ConductorNoEncontradoException e) {
+            model.put("mensajeError", e.getMessage());
+        }
 
-        return new ModelAndView("perfil-conductor",model);
+        return new ModelAndView("perfil-conductor", model);
     }
 
     @RequestMapping(value = "/editar", method = RequestMethod.GET)
     public ModelAndView mostrarEditarConductor(HttpSession session) {
         session.setAttribute("isEditForm", true);
-        return new ModelAndView("redirect:/registro-conductor") ;
+        return new ModelAndView("redirect:/registro-conductor");
     }
 
     @RequestMapping(path = "/foto-perfil", method = RequestMethod.GET)
-    public ModelAndView irAEditarFotoPerfil(HttpSession session) throws ConductorNoEncontradoException {
+    public ModelAndView irAEditarFotoPerfil(HttpSession session) {
         ModelMap model = new ModelMap();
         Boolean isUsuarioLogueado = (Boolean) session.getAttribute("isUsuarioLogueado");
+        if(isUsuarioLogueado == null) {
+            return new ModelAndView("redirect:/login");
+        }
         Integer idUsuario = (Integer) session.getAttribute("IDUSUARIO");
         Imagen logo = iimageService.getImagenByName("logo");
         Imagen user = iimageService.getImagenByName("user");
-        Conductor conductor = conductorServicio.obtenerConductorPorId(idUsuario);
 
         model.put("logo", logo);
         model.put("user", user);
         model.put("isUsuarioLogueado", isUsuarioLogueado);
-        model.put("idUsuario", idUsuario);
-        model.put("conductor", conductor );
-        return new ModelAndView("foto-perfil",model);
+
+        try {
+            Conductor conductor = conductorServicio.obtenerConductorPorId(idUsuario);
+            model.put("conductor", conductor);
+        } catch (ConductorNoEncontradoException e) {
+            model.put("mensajeError", e.getMessage());
+        }
+
+
+        return new ModelAndView("foto-perfil", model);
     }
 
     @PostMapping("/registro-conductor")
-    public ModelAndView registrarConductor(@ModelAttribute("conductor") Conductor nuevoConductor, HttpSession session) throws Exception {
+    public ModelAndView registrarConductor(@ModelAttribute("conductor") Conductor nuevoConductor, HttpSession session) {
         try {
-            Conductor registrado = conductorServicio.registrarConductorNoDuplicado(nuevoConductor);
-            if(registrado != null){
+                Conductor registrado = conductorServicio.registrarConductorNoDuplicado(nuevoConductor);
                 session.setAttribute("IDUSUARIO", registrado.getId());
                 return new ModelAndView("redirect:/vehiculo");
-            }
+
         } catch (ConductorDuplicadoException e) {
-            return this.mostrarFormConductor(e.getMessage(),session);
+            return this.mostrarFormConductor(e.getMessage(), session);
         }
-        return this.mostrarFormConductor("Se ha producido un error en el servidor.",session);
     }
 
     @PostMapping("/editar-conductor")
-    public ModelAndView editarConductor(HttpSession session, @ModelAttribute("conductor") Conductor conductorEditado) throws ConductorNoEncontradoException {
+    public ModelAndView editarConductor(HttpSession session, @ModelAttribute("conductor") Conductor conductorEditado) {
         Integer idUsuario = (Integer) session.getAttribute("IDUSUARIO");
         conductorEditado.setId(idUsuario);
-        conductorServicio.editarConductor(conductorEditado);
-        session.setAttribute("isEditForm", false);
+        try {
+            conductorServicio.editarConductor(conductorEditado);
+            session.setAttribute("isEditForm", false);
+        } catch (ConductorNoEncontradoException e) {
+            return this.mostrarFormConductor(e.getMessage(), session);
+        }
         return new ModelAndView("redirect:/perfil");
     }
 
     @PostMapping("/subir-foto")
-    public ModelAndView subirFoto(@RequestParam("imagenPerfil") MultipartFile imagen, HttpSession session) throws ConductorNoEncontradoException, IOException {
-
+    public ModelAndView subirFoto(@RequestParam("imagenPerfil") MultipartFile imagen, HttpSession session) {
         Integer idUsuario = (Integer) session.getAttribute("IDUSUARIO");
-        this.conductorServicio.ingresarImagen(imagen,idUsuario);
-        return new ModelAndView("redirect:/perfil");
+        try {
+            this.conductorServicio.ingresarImagen(imagen, idUsuario);
+            return new ModelAndView("redirect:/perfil");
+        } catch (ConductorNoEncontradoException e) {
+            return this.mostrarFormConductor(e.getMessage(), session);
+        } catch (IOException e) {
+            return this.mostrarFormConductor("Error al subir la imagen", session);
+        }
     }
 
-    @RequestMapping(value="/borrar-cuenta", method = RequestMethod.GET)
-    public ModelAndView borrarCuenta (HttpSession session){
-
-        conductorServicio.borrarConductor((Integer) session.getAttribute("IDUSUARIO"));
+    @RequestMapping(value = "/borrar-cuenta", method = RequestMethod.GET)
+    public ModelAndView borrarCuenta(HttpSession session) {
+        try {
+            conductorServicio.borrarConductor((Integer) session.getAttribute("IDUSUARIO"));
+        } catch (ConductorNoEncontradoException e) {
+            return this.mostrarFormConductor(e.getMessage(), session);
+        }
         return new ModelAndView("redirect:/cerrar-sesion");
     }
-
-
 }
