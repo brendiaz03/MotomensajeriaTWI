@@ -123,7 +123,7 @@ public class ViajeServicioTest {
         viaje.setIdViaje(1);
         when(viajeRepositorio.obtenerViajePorId(viaje.getIdViaje())).thenReturn(viajeEsperado);
         viajeEsperado.setCancelado(true);
-        viajeEsperado.setFechaDeCancelacion(LocalDateTime.now());
+        viajeEsperado.setFecha(LocalDateTime.now());
         doNothing().when(viajeRepositorio).editar(viajeEsperado);
 
         // Ejecución
@@ -143,7 +143,7 @@ public class ViajeServicioTest {
         viaje.setIdViaje(1);
         when(viajeRepositorio.obtenerViajePorId(viaje.getIdViaje())).thenReturn(viajeEsperado);
         viajeEsperado.setTerminado(true);
-        viajeEsperado.setFechaDeTerminacion(LocalDateTime.now());
+        viajeEsperado.setFecha(LocalDateTime.now());
         doNothing().when(viajeRepositorio).editar(viajeEsperado);
 
         // Ejecución
