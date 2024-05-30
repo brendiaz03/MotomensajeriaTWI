@@ -46,6 +46,9 @@
         </div>
       </a>
       <a th:if="${isUsuarioLogueado}" th:href="@{cerrar-sesion}"><i class="fa-solid fa-arrow-right-from-bracket" style=" border-radius:25px; padding:11px; background-color: white; color: #36054E; transition: color 0.3s;" onmouseover="this.style.color='white';this.style.backgroundColor='lightgray'" onmouseout="this.style.color='purple'; this.style.backgroundColor='white'" ></i></a>
+      <a th:if="${isUsuarioLogueado}" th:href="@{cerrar-sesion}">
+        <i class="fa-solid fa-arrow-right-from-bracket" style="border-radius:25px; padding:11px; background-color: white; color: #36054E; transition: color 0.3s;" onmouseover="this.style.color='white';this.style.backgroundColor='lightgray'" onmouseout="this.style.color='#36054E'; this.style.backgroundColor='white'"></i>
+      </a>
     </div>
   </nav>
 </header>
@@ -74,9 +77,9 @@
   <div th:unless="${isPenalizado}">
   <div class="card mt-3 contenedor-solicitudes" th:if="${isUsuarioLogueado}" style=" background-color: transparent; border: none;">
     <h1 class="text-center titulo-solicitud">Solicitudes de Viajes</h1>
-    <h2 th:if="${noTieneVehiculo}" class="text-center titulo-solicitud"> Usted no tiene ningun vehiculo asociado. Por favor asocie uno primero</h2>
     <div th:if="${noTieneVehiculo}">
-      <a th:href="vehiculo">Asociar vehiculo</a>
+      <h2 class="text-center titulo-solicitud"> Usted no tiene ningun vehiculo asociado. Por favor asocie uno primero</h2>
+      <a th:href="vehiculo" class="btn btn-primary">Asociar Vehículo</a>
     </div>
     <div class="contenedor-filtro" th:unless="${noTieneVehiculo}">
       <form th:action="@{/filtrarPorDistancia}" method="post">
