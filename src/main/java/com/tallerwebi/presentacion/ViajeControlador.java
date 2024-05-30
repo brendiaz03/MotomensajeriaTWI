@@ -35,6 +35,7 @@ public class ViajeControlador {
         ModelMap model = new ModelMap();
 
         String viewName = "historial-viajes";
+        String claveGoogleMaps = "AIzaSyDcPeOyMBqG_1mZgjpei_R2ficRigdkINg";
         Imagen logo = imagenServicio.getImagenByName("logo");
         Imagen user = imagenServicio.getImagenByName("user");
         Imagen auto = imagenServicio.getImagenByName("auto");
@@ -60,6 +61,7 @@ public class ViajeControlador {
             model.put("sinViajes", "No hay viajes en el historial");
         }
 
+        model.put("clave", claveGoogleMaps);
         model.put("logo", logo);
         model.put("user", user);
         model.put("auto", auto);
@@ -123,7 +125,7 @@ public class ViajeControlador {
     }
 
     @RequestMapping(value = "/viajes-en-proceso")
-    public ModelAndView verViajesEnProceso(HttpServletRequest request) throws ConductorNoEncontradoException {
+    public ModelAndView verViajesEnProceso(HttpServletRequest request) {
         ModelMap model = new ModelMap();
 
         String viewName = "viajes-aceptados";
@@ -238,5 +240,39 @@ public class ViajeControlador {
         request.getSession().setAttribute("isPenalizado", isPenalizado);
 
         return new ModelAndView("redirect:/home");
+    }
+
+    @RequestMapping("/detalle")
+    public ModelAndView VerDetalleDelViaje(HttpServletRequest request, @RequestParam("idViaje") Integer idViaje) throws ConductorNoEncontradoException {
+        ModelMap model = new ModelMap();
+
+        String viewName = "detalle-viaje";
+        String claveGoogleMaps = "AIzaSyDcPeOyMBqG_1mZgjpei_R2ficRigdkINg";
+        Imagen logo = imagenServicio.getImagenByName("logo");
+        Imagen user = imagenServicio.getImagenByName("user");
+        Imagen auto = imagenServicio.getImagenByName("auto");
+        Imagen fondo = imagenServicio.getImagenByName("fondo");
+        Imagen botonPS = imagenServicio.getImagenByName("botonPS");
+        Boolean isUsuarioLogueado = (Boolean) request.getSession().getAttribute("isUsuarioLogueado");
+        Conductor conductor = conductorServicio.obtenerConductorPorId((Integer) request.getSession().getAttribute("IDUSUARIO"));
+
+        DatosViaje viaje = viajeServicio.obtenerViajeAceptadoPorId(idViaje);
+
+        model.put("clave", claveGoogleMaps);
+        model.put("logo", logo);
+        model.put("user", user);
+        model.put("auto", auto);
+        model.put("fondo", fondo);
+        model.put("botonPS", botonPS);
+        model.put("isUsuarioLogueado",isUsuarioLogueado);
+        model.put("conductor", conductor);
+        model.put("idViaje", viaje.getIdViaje());
+        model.put("viaje", viaje);
+        return new ModelAndView(viewName, model);
+    }
+
+    @RequestMapping("/volver-historial")
+    public ModelAndView volverAlHistorial(){
+        return new ModelAndView("redirect:/historial");
     }
 }

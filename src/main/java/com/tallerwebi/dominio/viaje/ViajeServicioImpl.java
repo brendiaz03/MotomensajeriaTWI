@@ -6,7 +6,6 @@ import com.tallerwebi.presentacion.Datos.DatosViaje;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +37,7 @@ public class ViajeServicioImpl implements ViajeServicio {
         List<DatosViaje> historial = new ArrayList<>();
         for (Viaje viaje : viajes) {
             if (viaje.getCancelado() || viaje.getTerminado()) {
-                historial.add(mapearViajeADatosViajeHistorial(viaje));
+                historial.add(mapearViajeADatosViaje(viaje));
             }
         }
         return historial;
@@ -91,6 +90,15 @@ public class ViajeServicioImpl implements ViajeServicio {
 
     @Override
     public List<DatosViaje> filtrarViajesPorDistanciaDelConductor(Double latitudConductor, Double longitudConductor, Double distanciaAFiltrar) {
+
+        if(distanciaAFiltrar == null){
+            List<Viaje> viajes = this.viajeRepositorio.traerTodosLosViajesQueNoEstenAceptados();
+            List<Viaje> viajesAMostrar = calcularLaDistanciaDelViajeEntreLaSalidaYElDestino(viajes);
+            return viajesAMostrar.stream().limit(5)
+                    .map(viaje -> new DatosViaje(viaje.getId(), viaje.getDomicilioDeSalida(), viaje.getDomicilioDeLlegada(), viaje.getCliente().getNombre(), viaje.getPrecio(), viaje.getCodigoPostal(), viaje.getLatitudDeSalida(), viaje.getLongitudDeSalida(), viaje.getLatitudDeLlegada(), viaje.getLongitudDeLlegada(), viaje.getDistanciaDelViaje(), viaje.getTerminado(), viaje.getCancelado(), viaje.getAceptado(), viaje.getDescartado()))
+                    .collect(Collectors.toList());
+        }
+
         List<Viaje> viajesCercanos = this.viajeRepositorio.encontrarViajesCercanos(latitudConductor, longitudConductor, distanciaAFiltrar);
 
         List<Viaje> viajesAMostrar = calcularLaDistanciaDelViajeEntreLaSalidaYElDestino(viajesCercanos);
@@ -112,7 +120,7 @@ public class ViajeServicioImpl implements ViajeServicio {
     public void cancelarViaje(DatosViaje datosViaje) {
         Viaje viajeAceptadoActual = this.viajeRepositorio.obtenerViajePorId(datosViaje.getIdViaje());
         viajeAceptadoActual.setCancelado(true);
-        viajeAceptadoActual.setFechaDeCancelacion(LocalDateTime.now());
+        viajeAceptadoActual.setFecha(LocalDateTime.now());
         viajeRepositorio.editar(viajeAceptadoActual);
     }
 
@@ -120,7 +128,7 @@ public class ViajeServicioImpl implements ViajeServicio {
     public void terminarViaje(DatosViaje datosViaje) {
         Viaje viajeAceptadoActual = this.viajeRepositorio.obtenerViajePorId(datosViaje.getIdViaje());
         viajeAceptadoActual.setTerminado(true);
-        viajeAceptadoActual.setFechaDeTerminacion(LocalDateTime.now());
+        viajeAceptadoActual.setFecha(LocalDateTime.now());
         viajeRepositorio.editar(viajeAceptadoActual);
     }
 
@@ -150,7 +158,7 @@ public class ViajeServicioImpl implements ViajeServicio {
     }
 
     public DatosViaje mapearViajeADatosViajeHistorial(Viaje viaje) {
-        return new DatosViaje(viaje.getDomicilioDeSalida(), viaje.getDomicilioDeLlegada(), viaje.getCliente().getNombre(), viaje.getPrecio(), viaje.getCodigoPostal(),viaje.getTerminado(), viaje.getCancelado());
+        return new DatosViaje(viaje.getId(), viaje.getDomicilioDeSalida(), viaje.getDomicilioDeLlegada(), viaje.getCliente().getNombre(), viaje.getPrecio(), viaje.getCodigoPostal(),viaje.getTerminado(), viaje.getCancelado());
     }
 
     public DatosViaje mapearViajeADatosViaje(Viaje viaje){

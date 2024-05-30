@@ -1,7 +1,6 @@
 package com.tallerwebi.dominio.viaje;
 
 import com.tallerwebi.dominio.conductor.Conductor;
-import org.springframework.beans.MutablePropertyValues;
 
 import java.util.List;
 
@@ -14,4 +13,6 @@ public interface ViajeRepositorio {
     Viaje obtenerViajePorId(Integer id);
 
     List<Viaje> encontrarViajesCercanos(Double latitudConductor, Double longitudConductor, Double distanciaAFiltar);
+
+    List<Viaje> traerTodosLosViajesQueNoEstenAceptados();
 }

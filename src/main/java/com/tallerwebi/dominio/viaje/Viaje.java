@@ -66,11 +66,8 @@ public class Viaje {
     @JoinColumn(name = "idPaquete", referencedColumnName = "id")
     private Paquete paquete;
 
-    @Column(name = "fecha_terminacion")
-    private LocalDateTime fechaDeTerminacion;
-
-    @Column(name = "fecha_cancelacion")
-    private LocalDateTime fechaDeCancelacion;
+    @Column(name = "fecha")
+    private LocalDateTime fecha;
 
     @Transient
     private Double distanciaDelViaje;
@@ -232,20 +229,12 @@ public class Viaje {
         this.distanciaDelViaje = distanciaDelViaje;
     }
 
-    public LocalDateTime getFechaDeTerminacion() {
-        return fechaDeTerminacion;
+    public LocalDateTime getFecha() {
+        return fecha;
     }
 
-    public void setFechaDeTerminacion(LocalDateTime fechaDeTerminacion) {
-        this.fechaDeTerminacion = fechaDeTerminacion;
-    }
-
-    public LocalDateTime getFechaDeCancelacion() {
-        return fechaDeCancelacion;
-    }
-
-    public void setFechaDeCancelacion(LocalDateTime fechaDeCancelacion) {
-        this.fechaDeCancelacion = fechaDeCancelacion;
+    public void setFecha(LocalDateTime fecha) {
+        this.fecha = fecha;
     }
 
     public Boolean getAceptado() {
