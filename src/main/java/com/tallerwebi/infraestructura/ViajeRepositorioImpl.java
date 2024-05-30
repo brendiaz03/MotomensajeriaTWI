@@ -71,7 +71,14 @@ public class ViajeRepositorioImpl implements ViajeRepositorio {
 
     @Override
     @Transactional
-    public List<Viaje> traerTodosLosViajes() {
-        return sessionFactory.getCurrentSession().createQuery("FROM Viaje", Viaje.class).list();
+    public List<Viaje> traerTodosLosViajesQueNoEstenAceptados() {
+        Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Viaje.class);
+
+        criteria.add(Restrictions.eq("terminado", false));
+        criteria.add(Restrictions.eq("cancelado", false));
+        criteria.add(Restrictions.eq("descartado", false));
+        criteria.add(Restrictions.eq("aceptado", false));
+
+        return (List<Viaje>) criteria.list();
     }
 }

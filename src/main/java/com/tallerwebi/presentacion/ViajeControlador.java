@@ -35,6 +35,7 @@ public class ViajeControlador {
         ModelMap model = new ModelMap();
 
         String viewName = "historial-viajes";
+        String claveGoogleMaps = "AIzaSyDcPeOyMBqG_1mZgjpei_R2ficRigdkINg";
         Imagen logo = imagenServicio.getImagenByName("logo");
         Imagen user = imagenServicio.getImagenByName("user");
         Imagen auto = imagenServicio.getImagenByName("auto");
@@ -60,6 +61,7 @@ public class ViajeControlador {
             model.put("sinViajes", "No hay viajes en el historial");
         }
 
+        model.put("clave", claveGoogleMaps);
         model.put("logo", logo);
         model.put("user", user);
         model.put("auto", auto);
@@ -254,7 +256,6 @@ public class ViajeControlador {
         Boolean isUsuarioLogueado = (Boolean) request.getSession().getAttribute("isUsuarioLogueado");
         Conductor conductor = conductorServicio.obtenerConductorPorId((Integer) request.getSession().getAttribute("IDUSUARIO"));
 
-        System.out.println(idViaje);
         DatosViaje viaje = viajeServicio.obtenerViajeAceptadoPorId(idViaje);
 
         model.put("clave", claveGoogleMaps);
