@@ -9,6 +9,8 @@ import com.tallerwebi.dominio.vehiculo.VehiculoServicio;
 import com.tallerwebi.dominio.vehiculo.VehiculoServicioImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
+
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.mockito.Mockito.*;
@@ -53,6 +55,24 @@ public class VehiculoServicioTest {
         vehiculoServicio.actualizarVehiculo(vehiculo);
 
         assertThat(vehiculo.getPatente(), equalTo("Kira"));
+    }
+
+    @Test
+    public void queSePuedaActualizarUnVehiculo() {
+
+        Vehiculo vehiculoModificado = new Vehiculo("ABC123", Color.AZUL, ModeloVehiculo.FORD, TipoVehiculo.AUTO, 1500.0, 2.5);
+
+        when(vehiculoRepositorio.buscarVehiculoPorPatente("ABC123")).thenReturn(vehiculoModificado);
+
+        doNothing().when(vehiculoRepositorio).editar(any(Vehiculo.class));
+
+        vehiculoServicio.actualizarVehiculo(vehiculoModificado);
+
+        assertThat(vehiculoModificado.getColor(), equalTo(Color.AZUL));
+        assertThat(vehiculoModificado.getModelo(), equalTo(ModeloVehiculo.FORD));
+        assertThat(vehiculoModificado.getTipoDeVehiculo(), equalTo(TipoVehiculo.AUTO));
+        assertThat(vehiculoModificado.getPesoSoportado(), equalTo(1500.0));
+        assertThat(vehiculoModificado.getDimensionDisponible(), equalTo(2.5));
     }
 
 }

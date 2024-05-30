@@ -15,6 +15,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -94,8 +95,13 @@ public class LoginControlador {
     public ModelAndView validarLogin(@ModelAttribute("datosLogin") DatosLoginConductor datosLoginnConductor, HttpServletRequest request) {
         ModelMap model = new ModelMap();
 
+        request.getSession().invalidate();
+
+        //HttpSession newSession = request.getSession(true);
+
         Conductor conductorBuscado = loginServicio.consultarUsuario(datosLoginnConductor.getUsuario(), datosLoginnConductor.getPassword());
-            if (conductorBuscado != null) {
+
+            if (conductorBuscado != null ) {
                 request.getSession().setAttribute("NOMBRE", conductorBuscado.getNombre());
                 request.getSession().setAttribute("IDUSUARIO", conductorBuscado.getId());
                 request.getSession().setAttribute("APELLIDO", conductorBuscado.getApellido());
@@ -104,7 +110,7 @@ public class LoginControlador {
                 model.put("correcto", "Usuario o clave correcta");
                 return new ModelAndView("redirect:/home", model);
             }else{
-                request.getSession().setAttribute("isUsuarioLogueado", false);
+                //request.getSession().setAttribute("isUsuarioLogueado", false);
                 model.put("error", "Usuario o clave incorrecta");
                 return new ModelAndView("redirect:/login", model);
             }

@@ -40,7 +40,7 @@
                     <a th:href="viajes" class="nav-link p-2 text-white" href="#">Mis Viajes</a>
                 </li>
             </ul>
-            <a th:unless="${isUsuarioLogueado}" th:href="@{login}" class="btn-custom" style="text-decoration: none">Ingresar</a>
+            <a th:unless="${isUsuarioLogueado}" th:href="@{login}" class="btn-custom" style="text-decoration: none">Registrar</a>
             <!-- Muestra el botón de usuario solo si el usuario está logueado -->
             <a th:if="${isUsuarioLogueado}" th:href="perfil" class="btn mx-2" style="border:none;">
                 <div class="container d-flex justify-content-center align-items-center"  th:if="${conductor.getImagenPerfil() != null}" style="border: none">
@@ -118,7 +118,7 @@
 
             <!-- Botón Ingresar / Editar -->
             <button th:if="${isEditForm}" type="submit" class="boton_submit">Editar</button>
-            <button th:unless="${isEditForm}" type="submit" class="boton_submit">Ingresar</button>
+            <button th:unless="${isEditForm}" type="submit" class="boton_submit">Registrar</button>
         </section>
     </form>
 </div>

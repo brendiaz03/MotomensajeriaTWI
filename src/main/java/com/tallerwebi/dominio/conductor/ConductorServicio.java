@@ -18,4 +18,5 @@ public interface ConductorServicio {
     void ingresarImagen (MultipartFile imagen, Integer id) throws IOException, ConductorNoEncontradoException;
 
     Boolean RelacionarVehiculoAConductor(Integer idConductor, Vehiculo vehiculo) throws ConductorNoEncontradoException;
+
 }
