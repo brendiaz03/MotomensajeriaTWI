@@ -94,8 +94,15 @@ function iniciarMapa(latitudActual, longitudActual){
             });
 
             directionsRendererRuta1.setMap(map);
-            contenedorDeLosDatos.innerHTML += "<p>Distancia entre Conductor y Paquete: " + distanceConductorPaquete + "</p>";
-            contenedorDeLosDatos.innerHTML += "<p>Tiempo estimado de viaje entre Conductor y Paquete: " + travelTimeConductorPaquete + "</p>";
+
+            if (!contenedorDeLosDatos.innerHTML.includes(distanceConductorPaquete)) {
+                contenedorDeLosDatos.innerHTML += "<p>Distancia entre Conductor y Paquete: " + distanceConductorPaquete + "</p>";
+            }
+            if (!contenedorDeLosDatos.innerHTML.includes(travelTimeConductorPaquete)) {
+                contenedorDeLosDatos.innerHTML += "<p>Tiempo estimado de viaje entre Conductor y Paquete: " + travelTimeConductorPaquete + "</p>";
+            } else {
+                console.error('Solicitud de direcciones fallida debido a: ' + statusRuta1);
+            }
         }
     });
 
@@ -115,8 +122,15 @@ function iniciarMapa(latitudActual, longitudActual){
                 }
             });
             directionsRendererRuta2.setMap(map);
-            contenedorDeLosDatos.innerHTML += "<p>Distancia entre Paquete y Destino: " + distancePaqueteDestino + "</p>";
-            contenedorDeLosDatos.innerHTML += "<p>Tiempo estimado de viaje entre Paquete y Destino: " + travelTimePaqueteDestino + "</p>";
+
+            if (!contenedorDeLosDatos.innerHTML.includes(distancePaqueteDestino)) {
+                contenedorDeLosDatos.innerHTML += "<p>Distancia entre Paquete y Destino: " + distancePaqueteDestino + "</p>";
+            }
+            if (!contenedorDeLosDatos.innerHTML.includes(travelTimePaqueteDestino)) {
+                contenedorDeLosDatos.innerHTML += "<p>Tiempo estimado de viaje entre Paquete y Destino: " + travelTimePaqueteDestino + "</p>";
+            }
+        } else {
+            console.error('Solicitud de direcciones fallida debido a: ' + statusRuta2);
         }
     });
 }
