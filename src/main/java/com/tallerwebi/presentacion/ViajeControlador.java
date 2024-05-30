@@ -125,7 +125,7 @@ public class ViajeControlador {
     }
 
     @RequestMapping(value = "/viajes-en-proceso")
-    public ModelAndView verViajesEnProceso(HttpServletRequest request) throws ConductorNoEncontradoException {
+    public ModelAndView verViajesEnProceso(HttpServletRequest request) {
         ModelMap model = new ModelMap();
 
         String viewName = "viajes-aceptados";
