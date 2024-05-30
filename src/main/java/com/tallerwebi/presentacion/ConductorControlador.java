@@ -81,9 +81,11 @@ public class ConductorControlador {
         try {
             Conductor conductor = conductorServicio.obtenerConductorPorId(idUsuario);
             Vehiculo vehiculo = conductor.getVehiculo();
+            if (vehiculo!=null){
             session.setAttribute("idVehiculo", vehiculo.getId());
-            model.put("conductor", conductor);
             model.put("vehiculo", vehiculo);
+            }
+            model.put("conductor", conductor);
         } catch (ConductorNoEncontradoException e) {
             model.put("mensajeError", e.getMessage());
         }
