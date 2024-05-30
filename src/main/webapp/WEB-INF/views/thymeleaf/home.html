@@ -74,14 +74,18 @@
   <div th:unless="${isPenalizado}">
   <div class="card mt-3 contenedor-solicitudes" th:if="${isUsuarioLogueado}" style=" background-color: transparent; border: none;">
     <h1 class="text-center titulo-solicitud">Solicitudes de Viajes</h1>
-    <div class="contenedor-filtro">
+    <h2 th:if="${noTieneVehiculo}" class="text-center titulo-solicitud"> Usted no tiene ningun vehiculo asociado. Por favor asocie uno primero</h2>
+    <div th:if="${noTieneVehiculo}">
+      <a th:href="vehiculo">Asociar vehiculo</a>
+    </div>
+    <div class="contenedor-filtro" th:unless="${noTieneVehiculo}">
       <form th:action="@{/filtrarPorDistancia}" method="post">
         <label for="filtro-distancia" class="label-filtro"></label>
         <select id="filtro-distancia" name="distancia" class="select-filtro">
           <option value="" selected class="option-filtro">Filtrar viajes por distancia</option>
-          <option value="2.0" class="option-filtro">2 Kilometros de distancia</option>
-          <option value="5.0" class="option-filtro">5 Kilometros de distancia</option>
-          <option value="10.0" class="option-filtro">10 Kilometros de distancia</option>
+          <option value=2.0 class="option-filtro">2 Kilometros de distancia</option>
+          <option value=5.0 class="option-filtro">5 Kilometros de distancia</option>
+          <option value=10.0 class="option-filtro">10 Kilometros de distancia</option>
         </select>
         <button type="submit" class="boton-filtro">Filtrar</button>
       </form>
@@ -117,7 +121,5 @@
   </div>
 </main>
 <script type="text/javascript" th:src="@{webjars/bootstrap/5.2.0/js/bootstrap.min.js}"></script>
-<script th:src="@{/js/geolocalizacion.js}" defer></script>
-<script th:src="@{/js/viaje.js}"></script>
 </body>
 </html>

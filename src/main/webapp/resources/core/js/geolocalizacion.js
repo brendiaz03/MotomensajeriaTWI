@@ -7,13 +7,11 @@ function getDriverLocation() {
     }
 }
 
-async function showDriverPosition(position) {
+function showDriverPosition(position) {
     const latitudActual = position.coords.latitude;
     const longitudActual = position.coords.longitude;
 
-    document.getElementById("driverLocation").innerText = `Ubicacion del conductor: Latitud: ${latitudActual}, Longitud: ${longitudActual}`;
 
-    iniciarMap(latitudActual, longitudActual)
 }
 
 function showError(error) {

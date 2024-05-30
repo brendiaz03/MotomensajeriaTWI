@@ -239,4 +239,39 @@ public class ViajeControlador {
 
         return new ModelAndView("redirect:/home");
     }
+
+    @RequestMapping("/detalle")
+    public ModelAndView VerDetalleDelViaje(HttpServletRequest request, @RequestParam("idViaje") Integer idViaje) throws ConductorNoEncontradoException {
+        ModelMap model = new ModelMap();
+
+        String viewName = "detalle-viaje";
+        String claveGoogleMaps = "AIzaSyDcPeOyMBqG_1mZgjpei_R2ficRigdkINg";
+        Imagen logo = imagenServicio.getImagenByName("logo");
+        Imagen user = imagenServicio.getImagenByName("user");
+        Imagen auto = imagenServicio.getImagenByName("auto");
+        Imagen fondo = imagenServicio.getImagenByName("fondo");
+        Imagen botonPS = imagenServicio.getImagenByName("botonPS");
+        Boolean isUsuarioLogueado = (Boolean) request.getSession().getAttribute("isUsuarioLogueado");
+        Conductor conductor = conductorServicio.obtenerConductorPorId((Integer) request.getSession().getAttribute("IDUSUARIO"));
+
+        System.out.println(idViaje);
+        DatosViaje viaje = viajeServicio.obtenerViajeAceptadoPorId(idViaje);
+
+        model.put("clave", claveGoogleMaps);
+        model.put("logo", logo);
+        model.put("user", user);
+        model.put("auto", auto);
+        model.put("fondo", fondo);
+        model.put("botonPS", botonPS);
+        model.put("isUsuarioLogueado",isUsuarioLogueado);
+        model.put("conductor", conductor);
+        model.put("idViaje", viaje.getIdViaje());
+        model.put("viaje", viaje);
+        return new ModelAndView(viewName, model);
+    }
+
+    @RequestMapping("/volver-historial")
+    public ModelAndView volverAlHistorial(){
+        return new ModelAndView("redirect:/historial");
+    }
 }

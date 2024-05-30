@@ -68,4 +68,10 @@ public class ViajeRepositorioImpl implements ViajeRepositorio {
 
         return query.getResultList();
     }
+
+    @Override
+    @Transactional
+    public List<Viaje> traerTodosLosViajes() {
+        return sessionFactory.getCurrentSession().createQuery("FROM Viaje", Viaje.class).list();
+    }
 }

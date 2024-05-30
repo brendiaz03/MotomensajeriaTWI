@@ -25,7 +25,9 @@ public class LoginControlador {
     private static ImagenServicio imagenServicio;
     private final ConductorServicio conductorServicio;
     private final ViajeServicio viajeServicio;
-    private Double distanciaAFiltrar;
+    private Double latitudActual = -34.668822; // VER
+    private Double longitudActual =  -58.532878; // VER
+
 
     @Autowired
     public LoginControlador(LoginServicio _LoginServicio, ImagenServicio _imagenServicio, ConductorServicio _conductorServicio, ViajeServicio viajeServicio){
@@ -33,7 +35,6 @@ public class LoginControlador {
         imagenServicio = _imagenServicio;
         this.conductorServicio = _conductorServicio;
         this.viajeServicio = viajeServicio;
-        this.distanciaAFiltrar = 100.0;
     }
 
     @RequestMapping("/")
@@ -46,22 +47,29 @@ public class LoginControlador {
         ModelMap model = new ModelMap();
         String viewName = "home";
 
-        Double latitudActual = -34.818787; // VER
-        Double longitudActual =  -58.646844; // VER
-
         Imagen logo = imagenServicio.getImagenByName("logo");
         Imagen user = imagenServicio.getImagenByName("user");
         Imagen auto = imagenServicio.getImagenByName("auto");
         Imagen fondo = imagenServicio.getImagenByName("fondo");
         Imagen botonPS = imagenServicio.getImagenByName("botonPS");
         Boolean isUsuarioLogueado = (Boolean) request.getSession().getAttribute("isUsuarioLogueado");
-        List<DatosViaje> viajesCercanosPendientes = this.viajeServicio.filtrarViajesPorDistanciaDelConductor(latitudActual, longitudActual, distanciaAFiltrar);
         Conductor conductor;
+        Double distanciaAFiltrar = (Double) request.getSession().getAttribute("distancia");
 
         if(request.getSession().getAttribute("IDUSUARIO") != null){
             conductor = conductorServicio.obtenerConductorPorId((Integer) request.getSession().getAttribute("IDUSUARIO"));
         }else{
             conductor = null;
+        }
+
+        List<DatosViaje> viajesCercanosPendientes;
+
+        if (request.getSession().getAttribute("VEHICULO") != null) {
+            viajesCercanosPendientes = this.viajeServicio.filtrarViajesPorDistanciaDelConductor(latitudActual, longitudActual, distanciaAFiltrar);
+            model.put("noTieneVehiculo", false);
+        } else {
+            viajesCercanosPendientes = null;
+            model.put("noTieneVehiculo", true);
         }
 
         request.getSession().setAttribute("isPenalizado", this.viajeServicio.estaPenalizado(conductor));
@@ -99,6 +107,7 @@ public class LoginControlador {
                 request.getSession().setAttribute("NOMBRE", conductorBuscado.getNombre());
                 request.getSession().setAttribute("IDUSUARIO", conductorBuscado.getId());
                 request.getSession().setAttribute("APELLIDO", conductorBuscado.getApellido());
+                request.getSession().setAttribute("VEHICULO", conductorBuscado.getVehiculo());
                 request.getSession().setAttribute("isUsuarioLogueado", true);
                 request.getSession().setAttribute("isEditForm", false);
                 model.put("correcto", "Usuario o clave correcta");
@@ -112,7 +121,7 @@ public class LoginControlador {
 
     @RequestMapping(path = "/cerrar-sesion")
     public ModelAndView cerrarSesion(HttpServletRequest request) throws ConductorNoEncontradoException {
-        request.getSession().invalidate(); // Invalida la sesión, lo que equivale a cerrar sesión
+        request.getSession().invalidate();
         return mostrarHome(request);
     }
 
@@ -175,12 +184,12 @@ public class LoginControlador {
     }
 
     @RequestMapping(value = "/filtrarPorDistancia", method = RequestMethod.POST)
-    public ModelAndView filtrarPorDistancia(@RequestParam String distancia){
-        if (distancia == null || distancia.isEmpty()) {
+    public ModelAndView filtrarPorDistancia(HttpServletRequest request, @RequestParam Double distancia) throws ConductorNoEncontradoException {
+        if (distancia == null) {
             return new ModelAndView("redirect:/home?error=DistanciaNoSeleccionada");
         } else {
-            this.distanciaAFiltrar = Double.parseDouble(distancia);
-            return new ModelAndView("redirect:/home");
+            request.getSession().setAttribute("distancia", distancia);
+            return mostrarHome(request);
         }
     }
 }
