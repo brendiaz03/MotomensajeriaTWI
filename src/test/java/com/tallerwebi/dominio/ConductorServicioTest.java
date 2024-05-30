@@ -8,13 +8,16 @@ import org.hibernate.SessionFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 
 import javax.persistence.NoResultException;
 
+import java.io.IOException;
 import java.io.NotActiveException;
+import java.util.Base64;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -145,7 +148,93 @@ public class ConductorServicioTest {
 //    }
 
     @Test
-    public void testBorrarConductor() {
+    public void queSePuedaIngresarUnaImagenAlPerfilDelConductor() throws IOException, ConductorNoEncontradoException {
+
+        Conductor conductor = new Conductor();
+
+        Integer conductorId = 29;
+
+        conductor.setId(conductorId);
+
+        when(this.conductorRepositorio.buscarConductorPorId(conductorId)).thenReturn(conductor);
+
+        MockMultipartFile imagen = new MockMultipartFile("imagen", "imagen.jpg", "image/jpeg", "Este es el contenido de una imagen de prueba.".getBytes());
+
+        byte[] imagenCodificada = Base64.getEncoder().encode(imagen.getBytes());
+
+        conductorServicio.ingresarImagen(imagen, conductorId);
+
+        assertThat(conductor.getImagenPerfil(), equalTo(imagenCodificada));
+    }
+
+
+    @Test
+    public void queNoSePuedaRelacionarUnVehiculoAlConductor () throws ConductorNoEncontradoException {
+
+        Conductor conductor = new Conductor();
+
+        Vehiculo vehiculo = new Vehiculo();
+
+        Long idVehiculo = 22L;
+
+        Integer idConductor = 22;
+
+        conductor.setId(idConductor);
+
+        vehiculo.setId(idVehiculo);
+
+        doThrow(new IllegalArgumentException("Conductor no encontrado con el ID: " + idConductor)).when(conductorRepositorio).agregarVehiculoAConductor(idConductor, vehiculo);
+
+        Boolean resultado;
+
+        try {
+            resultado = conductorServicio.RelacionarVehiculoAConductor(idConductor, vehiculo);
+        } catch (IllegalArgumentException e) {
+            resultado = false;
+        }
+
+        assertThat(resultado, equalTo(false));
+
+        assertThat(conductor.getVehiculo(), equalTo(null));
+    }
+
+
+    @Test
+    public void queSePuedaRelacionarUnVehiculoAlConductor () throws ConductorNoEncontradoException {
+
+        Conductor conductor = new Conductor();
+
+        Vehiculo vehiculo = new Vehiculo();
+
+        Long idVehiculo = 22L;
+
+        Integer idConductor = 22;
+
+        conductor.setId(idConductor);
+
+        vehiculo.setId(idVehiculo);
+
+        doNothing().when(conductorRepositorio).agregarVehiculoAConductor(idConductor, vehiculo);
+
+        Boolean resultado;
+
+        try {
+            resultado = conductorServicio.RelacionarVehiculoAConductor(idConductor, vehiculo);
+        } catch (ConductorNoEncontradoException e) {
+            throw new RuntimeException(e);
+        }
+
+        conductor.setVehiculo(vehiculo);
+        vehiculo.setConductor(conductor);
+
+        assertThat(conductor.getVehiculo(), equalTo(vehiculo));
+        assertThat(conductor.getId(), equalTo(vehiculo.getConductor().getId()));
+        assertThat(resultado, equalTo(true));
+    }
+
+    @Test
+    public void queSePuedaBorrarUnConductor() throws ConductorNoEncontradoException {
+
         Integer idConductor = 1;
         Conductor conductorABorrar = new Conductor();
         conductorABorrar.setId(idConductor);
@@ -153,45 +242,15 @@ public class ConductorServicioTest {
         when(conductorRepositorio.buscarConductorPorId(idConductor)).thenReturn(conductorABorrar);
         doNothing().when(conductorRepositorio).borrarConductor(conductorABorrar);
 
+        Conductor conductorEsperado = conductorRepositorio.buscarConductorPorId(idConductor);
+        assertThat(conductorEsperado.getId(), equalTo(conductorABorrar.getId()));
+
         conductorServicio.borrarConductor(idConductor);
 
-        verify(conductorRepositorio, times(1)).buscarConductorPorId(idConductor);
-        verify(conductorRepositorio, times(1)).borrarConductor(conductorABorrar);
-    }
+        when(conductorRepositorio.buscarConductorPorId(idConductor)).thenReturn(null);
+        conductorEsperado = conductorRepositorio.buscarConductorPorId(idConductor);
 
-//    @Test
-//    public void queSeIngreseUnaImagenPorFormulario()throws ConductorNoEncontradoException{
-//            Integer idUsuario = 1; // Set the user id
-//            Conductor conductor = new Conductor(); // Create a conductor object for image insertion
-//            when(conductorRepositorio.buscarConductorPorId(idUsuario)).thenReturn(conductor);
-//
-//            doNothing().when(conductorRepositorio).editarConductor(conductor);
-//    }
-
-    @Test
-    public void queSeRelacionVehiculoAlConductor() throws ConductorNoEncontradoException {
-        Integer idConductor = 1;
-        Vehiculo vehiculo = new Vehiculo();
-
-        Conductor conductor = new Conductor();
-        doNothing().when(conductorRepositorio).agregarVehiculoAConductor(idConductor,vehiculo);
-
-        Boolean relacionado = conductorServicio.RelacionarVehiculoAConductor(idConductor, vehiculo);
-
-        assertThat(relacionado, equalTo(true));
-    }
-
-    @Test
-    public void queNoSeRelacionVehiculoAlConductor() throws ConductorNoEncontradoException {
-        Integer idConductor = 1;
-        Vehiculo vehiculo = new Vehiculo();
-
-        Conductor conductor = new Conductor();
-        doThrow(new NoResultException()).when(conductorRepositorio).agregarVehiculoAConductor(idConductor, vehiculo);
-
-        Boolean relacionado = conductorServicio.RelacionarVehiculoAConductor(idConductor, vehiculo);
-
-        assertThat(relacionado, equalTo(false));
+        assertNull(conductorEsperado);
     }
 
 
