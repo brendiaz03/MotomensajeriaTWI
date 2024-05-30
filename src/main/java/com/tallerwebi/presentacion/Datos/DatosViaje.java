@@ -36,7 +36,8 @@ public class DatosViaje {
         this.descartado = descartado;
     }
 
-    public DatosViaje(String domicilioDeSalida, String domicilioDeLlegada, String nombreDelCliente, String precio, String codigoPostal, Boolean terminado, Boolean cancelado) {
+    public DatosViaje(Integer idViaje, String domicilioDeSalida, String domicilioDeLlegada, String nombreDelCliente, String precio, String codigoPostal, Boolean terminado, Boolean cancelado) {
+        this.idViaje = idViaje;
         this.domicilioDeSalida = domicilioDeSalida;
         this.domicilioDeLlegada = domicilioDeLlegada;
         this.nombreDelCliente = nombreDelCliente;

@@ -15,36 +15,37 @@
   <nav class="navbar navbar-expand-lg mx-4">
     <div class="d-flex align-items-center bg-violet">
       <a th:href="home" class="mx-2">
-        <img th:src="${logo.getImagenBase64()}" class="d-block w-100 bg-violet" alt="Logo" style="height: 50px;width: 50px">
+        <img th:src="${logo.getImagenBase64()}" class="d-block w-100 bg-violet" alt=",,," style="height: 50px;width: 50px">
       </a>
     </div>
     <div class="collapse navbar-collapse justify-content-end">
       <ul class="navbar-nav mr-auto">
-        <li class="nav-item active p-2">
-          <a th:href="home" class="nav-link p-2 text-white">Inicio</a>
+        <li class="nav-item active  p-2">
+          <a th:href="home" class="nav-link p-2 text-white" href="#">Inicio</a>
         </li>
         <li class="nav-item p-2">
-          <a th:href="compania" class="nav-link p-2 text-white">Compañía</a>
+          <a th:href="compania" class="nav-link p-2 text-white" href="#">Compañía</a>
         </li>
         <li class="nav-item p-2">
-          <a th:href="ayuda" class="nav-link p-2 text-white">Ayuda</a>
+          <a th:href="ayuda" class="nav-link p-2 text-white" href="#">Ayuda</a>
         </li>
         <li class="nav-item p-2" th:if="${isUsuarioLogueado}">
           <a th:href="viajes-en-proceso" class="nav-link p-2 text-white">Viajes en Proceso</a>
         </li>
         <li class="nav-item p-2" th:if="${isUsuarioLogueado}">
-          <a th:href="historial" class="nav-link p-2 text-white">Historial de Viajes</a>
+          <a th:href="historial" class="nav-link p-2 text-white" href="#">Historial de Viajes</a>
         </li>
       </ul>
       <a th:unless="${isUsuarioLogueado}" th:href="@{login}" class="btn-custom" style="text-decoration: none">Ingresar</a>
       <a th:if="${isUsuarioLogueado}" th:href="perfil" class="btn mx-2" style="border:none;">
-        <div class="container d-flex justify-content-center align-items-center" th:if="${conductor.getImagenPerfil() != null}" style="border: none">
-          <img alt="img" class="d-block rounded-circle" th:src="'data:image/jpg;charset=utf-8;base64,' + ${conductor.getImageDataBase64()}" style="width: 40px; height: 40px;"/>
+        <div class="container d-flex justify-content-center align-items-center"  th:if="${conductor.getImagenPerfil() != null}" style="border: none">
+          <img alt="img" class="d-block rounded-circle" th:src="'data:image/jpg;charset=utf-8;base64,' + ${conductor.getImageDataBase64()}" style=" width: 40px; height: 40px;"/>
         </div>
         <div th:if="${conductor.getImagenPerfil() == null}">
-          <img th:src="${user.getImagenBase64()}" alt="Usuario" style="height: 20px;width: 20px">
+          <img th:src="${user.getImagenBase64()}" alt=",,," style="height: 20px;width: 20px">
         </div>
       </a>
+      <a th:if="${isUsuarioLogueado}" th:href="@{cerrar-sesion}"><i class="fa-solid fa-arrow-right-from-bracket" style=" border-radius:25px; padding:11px; background-color: white; color: #36054E; transition: color 0.3s;" onmouseover="this.style.color='white';this.style.backgroundColor='lightgray'" onmouseout="this.style.color='purple'; this.style.backgroundColor='white'" ></i></a>
       <a th:if="${isUsuarioLogueado}" th:href="@{cerrar-sesion}">
         <i class="fa-solid fa-arrow-right-from-bracket" style="border-radius:25px; padding:11px; background-color: white; color: #36054E; transition: color 0.3s;" onmouseover="this.style.color='white';this.style.backgroundColor='lightgray'" onmouseout="this.style.color='#36054E'; this.style.backgroundColor='white'"></i>
       </a>
@@ -74,61 +75,54 @@
   </div>
   <h2 th:if="${isPenalizado}" class="isPenalizado">Usted ha sido penalizado</h2>
   <div th:unless="${isPenalizado}">
-    <div th:if="${isUsuarioLogueado}">
-      <div th:if="${conductor.getVehiculo() == null}">
-        <h2>Usted no tiene ningún vehículo registrado, por favor, registre uno.</h2>
-        <a th:href="vehiculo" class="btn btn-primary">Registrar Vehículo</a>
-      </div>
-      <div th:if="${conductor.getVehiculo() != null}">
-        <div class="card mt-3 contenedor-solicitudes" style="background-color: transparent; border: none;">
-          <h1 class="text-center titulo-solicitud">Solicitudes de Viajes</h1>
-          <div class="contenedor-filtro">
-            <form th:action="@{/filtrarPorDistancia}" method="post">
-              <label for="filtro-distancia" class="label-filtro"></label>
-              <select id="filtro-distancia" name="distancia" class="select-filtro">
-                <option value="" selected class="option-filtro">Filtrar viajes por distancia</option>
-                <option value="2.0" class="option-filtro">2 Kilometros de distancia</option>
-                <option value="5.0" class="option-filtro">5 Kilometros de distancia</option>
-                <option value="10.0" class="option-filtro">10 Kilometros de distancia</option>
-              </select>
-              <button type="submit" class="boton-filtro">Filtrar</button>
-            </form>
+  <div class="card mt-3 contenedor-solicitudes" th:if="${isUsuarioLogueado}" style=" background-color: transparent; border: none;">
+    <h1 class="text-center titulo-solicitud">Solicitudes de Viajes</h1>
+    <div th:if="${noTieneVehiculo}">
+      <h2 class="text-center titulo-solicitud"> Usted no tiene ningun vehiculo asociado. Por favor asocie uno primero</h2>
+      <a th:href="vehiculo" class="btn btn-primary">Asociar Vehículo</a>
+    </div>
+    <div class="contenedor-filtro" th:unless="${noTieneVehiculo}">
+      <form th:action="@{/filtrarPorDistancia}" method="post">
+        <label for="filtro-distancia" class="label-filtro"></label>
+        <select id="filtro-distancia" name="distancia" class="select-filtro">
+          <option value="" selected class="option-filtro">Filtrar viajes por distancia</option>
+          <option value=2.0 class="option-filtro">2 Kilometros de distancia</option>
+          <option value=5.0 class="option-filtro">5 Kilometros de distancia</option>
+          <option value=10.0 class="option-filtro">10 Kilometros de distancia</option>
+        </select>
+        <button type="submit" class="boton-filtro">Filtrar</button>
+      </form>
+    </div>
+    <div class="card-body viaje" th:each="viaje : ${viajes}">
+      <div class="card mt-3 ml-3 contenedor-viaje" th:data-latitud-salida="${viaje.latitudDeSalida}" th:data-longitud-salida="${viaje.longitudDeSalida}" th:data-latitud-llegada="${viaje.latitudDeLlegada}" th:data-longitud-llegada="${viaje.longitudDeLlegada}">
+        <div class="card-body contenedor-datos-viaje flex" >
+          <div>
+            <p class="card-text"><b>Direccion de Salida:</b> <span th:text="${viaje.getDomicilioDeSalida()}"></span></p>
+            <p class="card-text"><b>Direccion de Llegada:</b> <span th:text="${viaje.getDomicilioDeLlegada()}"></span></p>
+            <p class="card-text"><b>Distancia del viaje:</b> <span th:text="${viaje.getDistanciaDelViaje()}"></span> Kilometros</p>
           </div>
-          <div class="card-body viaje" th:each="viaje : ${viajes}">
-            <div class="card mt-3 ml-3 contenedor-viaje" th:data-latitud-salida="${viaje.latitudDeSalida}" th:data-longitud-salida="${viaje.longitudDeSalida}" th:data-latitud-llegada="${viaje.latitudDeLlegada}" th:data-longitud-llegada="${viaje.longitudDeLlegada}">
-              <div class="card-body contenedor-datos-viaje flex">
-                <div>
-                  <p class="card-text"><b>Direccion de Salida:</b> <span th:text="${viaje.getDomicilioDeSalida()}"></span></p>
-                  <p class="card-text"><b>Direccion de Llegada:</b> <span th:text="${viaje.getDomicilioDeLlegada()}"></span></p>
-                  <p class="card-text"><b>Distancia del viaje:</b> <span th:text="${viaje.getDistanciaDelViaje()}"></span> Kilometros</p>
-                </div>
-                <div>
-                  <p class="card-text"><b>Paquete de:</b> <span th:text="${viaje.getNombreDelCliente()}"></span></p>
-                  <p class="card-text"><b>Precio:</b> $<span th:text="${viaje.getPrecio()}"></span> ARS</p>
-                  <p class="card-text"><b>Distancia desde tu ubicación:</b><span class="distanceFromCurrentPosition"></span></p>
-                </div>
-              </div>
-              <div class="contenedor-botones">
-                <div>
-                  <a th:href="@{/viaje-aceptado(idViaje=${viaje.getIdViaje()})}" class="boton-verde">Aceptar</a>
-                </div>
-                <div>
-                  <a th:href="@{/descartar(idViaje=${viaje.getIdViaje()})}" onclick="descartarViaje(this)" class="boton-rojo">Descartar</a>
-                </div>
-              </div>
-            </div>
+          <div>
+            <p class="card-text"><b>Paquete de:</b> <span th:text="${viaje.getNombreDelCliente()}"></span></p>
+            <p class="card-text"><b>Precio:</b> $<span th:text="${viaje.getPrecio()}"></span> ARS</p>
+            <p class="card-text"><b>Distancia desde tu ubicación:</b><span class="distanceFromCurrentPosition"></span></p>
+          </div>
+        </div>
+        <div class="contenedor-botones">
+          <div>
+            <a th:href="@{/viaje-aceptado(idViaje=${viaje.getIdViaje()})}" class="boton-verde">Aceptar</a>
+          </div>
+          <div>
+            <a th:href="@{/descartar(idViaje=${viaje.getIdViaje()})}" onclick="descartarViaje(this)" class="boton-rojo">Descartar</a>
           </div>
         </div>
       </div>
     </div>
   </div>
+  </div>
   <div th:unless="${isUsuarioLogueado}">
     <p id="driverLocation" style="background-color: white; border-radius: 10px; padding: 3%">Ubicacion del conductor:</p>
   </div>
 </main>
-</main>
 <script type="text/javascript" th:src="@{webjars/bootstrap/5.2.0/js/bootstrap.min.js}"></script>
-<script th:src="@{/js/geolocalizacion.js}" defer></script>
-<script th:src="@{/js/viaje.js}"></script>
 </body>
 </html>

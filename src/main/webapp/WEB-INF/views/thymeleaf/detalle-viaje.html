@@ -50,7 +50,7 @@
     </nav>
 </header>
 <main role="main" class="container">
-    <h1 class="text-center titulo-solicitud">Datos de Viaje en Proceso</h1>
+    <h1 class="text-center titulo-solicitud">Detalle del Viaje</h1>
     <section id="map">
         <div></div>
     </section>
@@ -64,25 +64,25 @@
                     <p class="card-text"><b>Paquete de:</b> <span th:text="${viaje.getNombreDelCliente()}"></span></p>
                 </div>
                 <div>
-                    <div id="datosMap" th:data-latitud-salida="${viaje.latitudDeSalida}" th:data-longitud-salida="${viaje.longitudDeSalida}" th:data-latitud-llegada="${viaje.latitudDeLlegada}" th:data-longitud-llegada="${viaje.longitudDeLlegada}"></div>
+                    <div id="datosMapDetalle" th:data-latitud-salida="${viaje.latitudDeSalida}" th:data-longitud-salida="${viaje.longitudDeSalida}" th:data-latitud-llegada="${viaje.latitudDeLlegada}" th:data-longitud-llegada="${viaje.longitudDeLlegada}"></div>
                 </div>
             </div>
             <div class="contenedor-botones" style="margin-top: 4%">
-                <div>
-                    <a th:href="@{volver}" class="boton-enlace boton-volver">Volver</a>
+                <div class="contenedor-boton-cancelar" >
+                    <div th:if="${viaje.getTerminado()}" class="terminado">Terminado</div>
                 </div>
-                <div>
-                    <a th:href="@{/cancelar-viaje(idViaje=${viaje.getIdViaje()})}" class="boton-rojo">Cancelar</a>
+                <div class="contenedor-boton-cancelar" >
+                    <div th:if="${viaje.getCancelado()}" class="cancelado">Cancelado</div>
                 </div>
-                <div>
-                    <a th:href="@{/terminar-viaje(idViaje=${viaje.getIdViaje()})}" class="boton-aceptar">Terminar</a>
+                <div class="contenedor-boton-cancelar" >
+                    <a th:href="@{volver-historial}" class="boton-enlace boton-volver">Volver</a>
                 </div>
             </div>
         </div>
     </section>
 </main>
 <script type="text/javascript" th:src="@{webjars/bootstrap/5.2.0/js/bootstrap.min.js}"></script>
-<script th:src="@{/js/maps.js}"></script>
-<script async th:src="@{'https://maps.googleapis.com/maps/api/js?key=' + ${clave} + '&loading=async&libraries=places&callback=iniciarMapa&libraries=marker'}" defer></script>
+<script th:src="@{/js/geolocalizacion.js}"></script>
+<script async th:src="@{'https://maps.googleapis.com/maps/api/js?key=' + ${clave} + '&loading=async&libraries=places&callback=iniciarMapaDetalle&libraries=marker'}" defer></script>
 </body>
 </html>

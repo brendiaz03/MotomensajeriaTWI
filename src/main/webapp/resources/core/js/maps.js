@@ -1,5 +1,41 @@
-function iniciarMap() {
+window.onload = function() {
+    getDriverLocation();
+};
 
+function getDriverLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showDriverPosition, showError, {
+        });
+    } else {
+        document.getElementById("driverLocation").innerText = "La geolocalización no es soportada por este navegador.";
+    }
+}
+
+function showDriverPosition(position) {
+    let latitudActual = position.coords.latitude;
+    let longitudActual = position.coords.longitude;
+
+    iniciarMapa(latitudActual, longitudActual)
+}
+
+function showError(error) {
+    switch(error.code) {
+        case error.PERMISSION_DENIED:
+            document.getElementById("driverLocation").innerText = "El usuario denegó la solicitud de geolocalización.";
+            break;
+        case error.POSITION_UNAVAILABLE:
+            document.getElementById("driverLocation").innerText = "La información de la ubicación no está disponible.";
+            break;
+        case error.TIMEOUT:
+            document.getElementById("driverLocation").innerText = "La solicitud de ubicación ha expirado.";
+            break;
+        case error.UNKNOWN_ERROR:
+            document.getElementById("driverLocation").innerText = "Se produjo un error desconocido.";
+            break;
+    }
+}
+
+function iniciarMapa(latitudActual, longitudActual){
     const contenedorDeLosDatos = document.getElementById("datosMap");
 
     const latitudSalida = parseFloat(contenedorDeLosDatos.dataset.latitudSalida);
@@ -7,18 +43,16 @@ function iniciarMap() {
     const latitudLlegada = parseFloat(contenedorDeLosDatos.dataset.latitudLlegada);
     const longitudLlegada = parseFloat(contenedorDeLosDatos.dataset.longitudLlegada);
 
-    let latitudActual = -34.818787;
-    let longitudActual =  -58.646844;
-
     const map = new google.maps.Map(document.getElementById('map'), {
+        center: {lat: latitudActual, lng: longitudActual},
         zoom: 12,
-        mapId: "DEMO_MAP_ID",
+        mapId: "DEMO_MAP_ID"
     });
 
     const markerConductor = new google.maps.Marker({
         position: {lat: latitudActual, lng: longitudActual},
         map: map,
-        label: 'Ubicacion actual',
+        label: 'Ubicación actual',
     });
 
     const markerSalida = new google.maps.Marker({
@@ -60,15 +94,8 @@ function iniciarMap() {
             });
 
             directionsRendererRuta1.setMap(map);
-
-            if (!contenedorDeLosDatos.innerHTML.includes(distanceConductorPaquete)) {
-                contenedorDeLosDatos.innerHTML += "<p>Distancia entre Conductor y Paquete: " + distanceConductorPaquete + "</p>";
-            }
-            if (!contenedorDeLosDatos.innerHTML.includes(travelTimeConductorPaquete)) {
-                contenedorDeLosDatos.innerHTML += "<p>Tiempo estimado de viaje entre Conductor y Paquete: " + travelTimeConductorPaquete + "</p>";
-            } else {
-                console.error('Solicitud de direcciones fallida debido a: ' + statusRuta1);
-            }
+            contenedorDeLosDatos.innerHTML += "<p>Distancia entre Conductor y Paquete: " + distanceConductorPaquete + "</p>";
+            contenedorDeLosDatos.innerHTML += "<p>Tiempo estimado de viaje entre Conductor y Paquete: " + travelTimeConductorPaquete + "</p>";
         }
     });
 
@@ -88,15 +115,8 @@ function iniciarMap() {
                 }
             });
             directionsRendererRuta2.setMap(map);
-
-            if (!contenedorDeLosDatos.innerHTML.includes(distancePaqueteDestino)) {
-                contenedorDeLosDatos.innerHTML += "<p>Distancia entre Paquete y Destino: " + distancePaqueteDestino + "</p>";
-            }
-            if (!contenedorDeLosDatos.innerHTML.includes(travelTimePaqueteDestino)) {
-                contenedorDeLosDatos.innerHTML += "<p>Tiempo estimado de viaje entre Paquete y Destino: " + travelTimePaqueteDestino + "</p>";
-            }
-        } else {
-            console.error('Solicitud de direcciones fallida debido a: ' + statusRuta2);
+            contenedorDeLosDatos.innerHTML += "<p>Distancia entre Paquete y Destino: " + distancePaqueteDestino + "</p>";
+            contenedorDeLosDatos.innerHTML += "<p>Tiempo estimado de viaje entre Paquete y Destino: " + travelTimePaqueteDestino + "</p>";
         }
     });
 }

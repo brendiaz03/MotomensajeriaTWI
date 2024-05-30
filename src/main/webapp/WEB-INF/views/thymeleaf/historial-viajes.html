@@ -55,10 +55,10 @@
             <h1 class="text-center titulo-viajes">Historial de Viajes</h1>
             <h2 th:text="${sinViajes}" class="text-center titulo-viajes"></h2>
         </div>
-        <div class="card mt-3 contenedor-viajes" style="background-color: transparent;border:none;">
+        <div class="card mt-3 contenedor-viajes" style="background-color: transparent; border: none;">
             <div class="card-body" th:each="viaje : ${viajesObtenidos}">
-                <div class="card mt-3 ml-3 contenedor-datos-viajes-aceptados" >
-                    <div class="card-body viaje">
+                <div class="card mt-3 ml-3 contenedor-datos-viajes-aceptados">
+                    <div class="card-body viaje" th:data-viaje-id="${viaje.idViaje}">
                         <div class="viajes-proceso-img">
                             <div>
                                 <p class="card-text"><b>Salida:</b> <span th:text="${viaje.getDomicilioDeSalida()}"></span></p>
@@ -66,16 +66,26 @@
                                 <p class="card-text"><b>Paquete de:</b> <span th:text="${viaje.getNombreDelCliente()}"></span></p>
                                 <p class="card-text"><b>Precio:</b> <span th:text="${viaje.getPrecio()}"></span></p>
                                 <p class="card-text"><b>Codigo Postal:</b> <span th:text="${viaje.getCodigoPostal()}"></span></p>
+                                <p th:text="${viaje.latitudDeSalida}"></p>
+                                <p th:text="${viaje.longitudDeSalida}"></p>
+                                <p th:text="${viaje.latitudDeLlegada}"></p>
+                                <p th:text="${viaje.longitudDeLlegada}"></p>
+                                <p th:text="${viaje.idViaje}"></p>
+                                <div th:id="'datosMapHistorial-' + ${viaje.idViaje}"
+                                     th:data-latitud-salida="${viaje.latitudDeSalida}"
+                                     th:data-longitud-salida="${viaje.longitudDeSalida}"
+                                     th:data-latitud-llegada="${viaje.latitudDeLlegada}"
+                                     th:data-longitud-llegada="${viaje.longitudDeLlegada}">
+                                </div>
                             </div>
-                            <section class="imagen-viaje-proceso">
-                                <div class="contenedor-imagen-viaje-proceso"></div>
+                            <section th:id="'map-' + ${viaje.idViaje}">
+                                <div></div>
                             </section>
                         </div>
-                        <div class="contenedor-boton-cancelar" >
+                        <div class="contenedor-boton-cancelar">
                             <div th:if="${viaje.getTerminado()}" class="terminado">Terminado</div>
-                        </div>
-                        <div class="contenedor-boton-cancelar" >
                             <div th:if="${viaje.getCancelado()}" class="cancelado">Cancelado</div>
+                            <a th:href="@{/detalle(idViaje=${viaje.getIdViaje()})}" class="boton-verde">Ver detalle</a>
                         </div>
                     </div>
                 </div>
@@ -84,5 +94,7 @@
     </div>
 </main>
 <script type="text/javascript" th:src="@{webjars/bootstrap/5.2.0/js/bootstrap.min.js}"></script>
+<script th:src="@{/js/mapaHistorial.js}"></script>
+<script async th:src="@{'https://maps.googleapis.com/maps/api/js?key=' + ${clave} + '&loading=async&libraries=places&callback=iniciarMapasHistorial&libraries=marker'}" defer></script>
 </body>
 </html>
