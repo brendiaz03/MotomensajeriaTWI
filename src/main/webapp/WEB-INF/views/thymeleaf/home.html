@@ -76,9 +76,45 @@
   <div th:unless="${isPenalizado}">
     <div th:if="${isUsuarioLogueado}">
       <div th:if="${conductor.getVehiculo() == null}">
-        <h2>Usted no tiene ningún vehículo registrado, por favor, registre uno.</h2>
-        <a th:href="vehiculo" class="btn btn-primary">Registrar Vehículo</a>
+        <style>
+          .titulo_registroConductor {
+            font-family: "Codec Pro", serif;
+            font-style: normal;
+            font-weight: 500;
+            font-size: 30px;
+            line-height: 35px;
+            text-align: center;
+            color: #ffffff; /* Letras blancas */
+            background-color: #36054E; /* Color de fondo acorde a la página */
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+          }
+
+          .btn_registro {
+            display: inline-block;
+            width: 262px;
+            height: 67px;
+            background: #36054E;
+            border-radius: 50px;
+            color: white;
+            text-align: center;
+            line-height: 67px; /* Para centrar verticalmente el texto */
+            text-decoration: none; /* Eliminar subrayado del enlace */
+            font-family: "Codec Pro", serif;
+            font-weight: 500;
+            font-size: 20px;
+          }
+
+          .btn_registro:hover {
+            background: darkviolet;
+            border-color: #36054E;
+          }
+        </style>
+        <h2 class="titulo_registroConductor">Usted no tiene ningún vehículo registrado, por favor, registre uno.</h2>
+        <a th:href="vehiculo" class="btn_registro">Registrar Vehículo</a>
       </div>
+
       <div th:if="${conductor.getVehiculo() != null}">
         <div class="card mt-3 contenedor-solicitudes" style="background-color: transparent; border: none;">
           <h1 class="text-center titulo-solicitud">Solicitudes de Viajes</h1>
