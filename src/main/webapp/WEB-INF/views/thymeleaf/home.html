@@ -8,6 +8,7 @@
   <link rel="stylesheet" th:href="@{css/main.css}"/>
   <link rel="stylesheet" th:href="@{css/homeStyle.css}"/>
   <link rel="stylesheet" th:href="@{css/viajes.css}"/>
+
   <title>Motomensajeria</title>
 </head>
 <body>
@@ -76,9 +77,9 @@
   <div th:unless="${isPenalizado}">
   <div class="card mt-3 contenedor-solicitudes" th:if="${isUsuarioLogueado}" style=" background-color: transparent; border: none;">
     <h1 class="text-center titulo-solicitud">Solicitudes de Viajes</h1>
-    <div th:if="${noTieneVehiculo}">
-      <h2 class="text-center titulo-solicitud"> Usted no tiene ningun vehiculo asociado. Por favor asocie uno primero</h2>
-      <a th:href="vehiculo" class="btn btn-primary">Asociar Vehículo</a>
+    <div th:if="${noTieneVehiculo}" class="noVehiculo">
+      <h2 class="titulo_registroConductor">Usted no tiene ningún vehículo registrado, por favor, registre uno.</h2>
+      <a th:href="vehiculo" class="btn_registro">Registrar Vehículo</a>
     </div>
     <div class="contenedor-filtro" th:unless="${noTieneVehiculo}">
       <form th:action="@{/filtrarPorDistancia}" method="post">
@@ -118,9 +119,9 @@
     </div>
   </div>
   </div>
-  <div th:unless="${isUsuarioLogueado}">
-    <p id="driverLocation" style="background-color: white; border-radius: 10px; padding: 3%">Ubicacion del conductor:</p>
-  </div>
+<!--  <div th:unless="${isUsuarioLogueado}">-->
+<!--    <p id="driverLocation" style="background-color: white; border-radius: 10px; padding: 3%">Ubicacion del conductor:</p>-->
+<!--  </div>-->
 </main>
 <script type="text/javascript" th:src="@{webjars/bootstrap/5.2.0/js/bootstrap.min.js}"></script>
 </body>

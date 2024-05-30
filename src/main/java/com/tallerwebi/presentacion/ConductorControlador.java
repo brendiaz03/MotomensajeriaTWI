@@ -32,6 +32,7 @@ public class ConductorControlador {
 
     @RequestMapping(value = "/registro-conductor", method = RequestMethod.GET)
     public ModelAndView mostrarFormConductor(String mensajeError, HttpSession session) {
+
         String viewName = "registro-conductor";
         ModelMap model = new ModelMap();
         Imagen logo = iimageService.getImagenByName("logo");
@@ -68,8 +69,13 @@ public class ConductorControlador {
 
     @RequestMapping(path = "/perfil", method = RequestMethod.GET)
     public ModelAndView irAPerfil(HttpSession session) {
+
+
         ModelMap model = new ModelMap();
         Boolean isUsuarioLogueado = (Boolean) session.getAttribute("isUsuarioLogueado");
+        if(isUsuarioLogueado == null) {
+            return new ModelAndView("redirect:/login");
+        }
         Integer idUsuario = (Integer) session.getAttribute("IDUSUARIO");
         Imagen logo = iimageService.getImagenByName("logo");
         Imagen user = iimageService.getImagenByName("user");
@@ -103,6 +109,9 @@ public class ConductorControlador {
     public ModelAndView irAEditarFotoPerfil(HttpSession session) {
         ModelMap model = new ModelMap();
         Boolean isUsuarioLogueado = (Boolean) session.getAttribute("isUsuarioLogueado");
+        if(isUsuarioLogueado == null) {
+            return new ModelAndView("redirect:/login");
+        }
         Integer idUsuario = (Integer) session.getAttribute("IDUSUARIO");
         Imagen logo = iimageService.getImagenByName("logo");
         Imagen user = iimageService.getImagenByName("user");

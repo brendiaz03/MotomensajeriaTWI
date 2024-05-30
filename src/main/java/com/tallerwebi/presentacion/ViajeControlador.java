@@ -42,6 +42,7 @@ public class ViajeControlador {
         Imagen fondo = imagenServicio.getImagenByName("fondo");
         Imagen botonPS = imagenServicio.getImagenByName("botonPS");
         Boolean isUsuarioLogueado = (Boolean) request.getSession().getAttribute("isUsuarioLogueado");
+
         Conductor conductor;
 
         if(isUsuarioLogueado == null) {
