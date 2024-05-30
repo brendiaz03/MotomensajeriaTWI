@@ -120,7 +120,7 @@ public class ViajeServicioImpl implements ViajeServicio {
     public void cancelarViaje(DatosViaje datosViaje) {
         Viaje viajeAceptadoActual = this.viajeRepositorio.obtenerViajePorId(datosViaje.getIdViaje());
         viajeAceptadoActual.setCancelado(true);
-        viajeAceptadoActual.setFechaDeCancelacion(LocalDateTime.now());
+        viajeAceptadoActual.setFecha(LocalDateTime.now());
         viajeRepositorio.editar(viajeAceptadoActual);
     }
 
@@ -128,7 +128,7 @@ public class ViajeServicioImpl implements ViajeServicio {
     public void terminarViaje(DatosViaje datosViaje) {
         Viaje viajeAceptadoActual = this.viajeRepositorio.obtenerViajePorId(datosViaje.getIdViaje());
         viajeAceptadoActual.setTerminado(true);
-        viajeAceptadoActual.setFechaDeTerminacion(LocalDateTime.now());
+        viajeAceptadoActual.setFecha(LocalDateTime.now());
         viajeRepositorio.editar(viajeAceptadoActual);
     }
 
