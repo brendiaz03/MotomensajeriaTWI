@@ -39,9 +39,8 @@ public class ConductorRepositorioImpl implements ConductorRepositorio {
 
     @Override
     @Transactional
-    public Boolean editarConductor(Conductor conductorEditado) {
+    public void editarConductor(Conductor conductorEditado) {
         sessionFactory.getCurrentSession().update(conductorEditado);
-        return true;
     }
 
     @Override

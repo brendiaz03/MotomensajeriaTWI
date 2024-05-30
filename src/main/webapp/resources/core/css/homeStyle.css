@@ -21,8 +21,8 @@ body {
     font-size: 30px;
     line-height: 35px;
     text-align: center;
-    color: #ffffff; /* Letras blancas */
-    background-color: #36054E; /* Color de fondo acorde a la página */
+    color: #ffffff;
+    background-color: #36054E;
     padding: 20px;
     border-radius: 10px;
     margin: 20px 0;
@@ -36,8 +36,8 @@ body {
     border-radius: 50px;
     color: white;
     text-align: center;
-    line-height: 67px; /* Para centrar verticalmente el texto */
-    text-decoration: none; /* Eliminar subrayado del enlace */
+    line-height: 67px;
+    text-decoration: none;
     font-family: "Codec Pro", serif;
     font-weight: 500;
     font-size: 20px;
@@ -45,8 +45,17 @@ body {
 
 .btn_registro:hover {
     background: darkviolet;
+    text-decoration: none;
+    color:white;
     border-color: #36054E;
 }
+
+.noVehiculo{
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 
 
 

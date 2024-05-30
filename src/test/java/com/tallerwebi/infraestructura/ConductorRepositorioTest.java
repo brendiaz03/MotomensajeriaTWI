@@ -42,7 +42,7 @@ public class ConductorRepositorioTest {
     @Test
     @Transactional
     @Rollback
-    public void queSePuedaGuardarConductorEnBD() {
+    public void queSePuedaGuardarUnNuevoConductorEnBD() {
         Conductor nuevoConductor = new Conductor();
         nuevoConductor.setNombre("Facu");
 
@@ -55,7 +55,7 @@ public class ConductorRepositorioTest {
     @Test
     @Transactional
     @Rollback
-    public void queSePuedaBuscarConductorPorId() {
+    public void queSePuedaBuscarUnConductorExistentePorId() {
         Conductor nuevoConductor = new Conductor();
         nuevoConductor.setId(1);
         nuevoConductor.setNombre("Facu");
@@ -73,7 +73,7 @@ public class ConductorRepositorioTest {
     @Test
     @Transactional
     @Rollback
-    public void queSePuedaEditarConductorExistente() {
+    public void queSePuedaEditarUnConductorExistente() {
         Conductor conductor = new Conductor();
         conductor.setCvu("123");
         conductorRepositorio.guardar(conductor);
@@ -89,7 +89,7 @@ public class ConductorRepositorioTest {
     @Test
     @Transactional
     @Rollback
-    public void queSeEncuentrenConductoresDuplicados() {
+    public void queSeEncuentrenUnConductorDuplicado() {
         Conductor nuevoConductor = new Conductor();
         nuevoConductor.setId(1);
         nuevoConductor.setNombreUsuario("Facu");
@@ -107,7 +107,7 @@ public class ConductorRepositorioTest {
     @Test
     @Transactional
     @Rollback
-    public void testQueSePuedaBorrarUnConductor() throws ConductorNoEncontradoException {
+    public void queSePuedaBorrarUnConductorExistente() throws ConductorNoEncontradoException {
         Conductor nuevoConductor = new Conductor();
         Conductor guardado=conductorRepositorio.guardar(nuevoConductor);
         assertNotNull(guardado);
@@ -120,7 +120,7 @@ public class ConductorRepositorioTest {
     @Test
     @Transactional
     @Rollback
-    public void testQueSePuedaAgregarUnVehiculoAlConductor()  {
+    public void queSePuedaAgregarUnVehiculoAlConductorExistente()  {
         Conductor nuevoConductor = new Conductor();
         Vehiculo nuevoVehiculo= new Vehiculo();
         nuevoConductor.setId(1);

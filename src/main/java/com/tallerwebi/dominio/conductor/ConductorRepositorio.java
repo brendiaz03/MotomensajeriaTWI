@@ -7,7 +7,7 @@ public interface ConductorRepositorio {
 
     Conductor guardar(Conductor nuevoConductor);
     Conductor buscarConductorPorId(Integer id);
-    Boolean editarConductor(Conductor nuevoConductor);
+    void editarConductor(Conductor nuevoConductor);
     Conductor buscarDuplicados(String email, String nombreUsuario);
     void borrarConductor(Conductor conductor);
     void agregarVehiculoAConductor(Integer conductorId, Vehiculo vehiculo);

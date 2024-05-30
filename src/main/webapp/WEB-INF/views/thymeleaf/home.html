@@ -8,6 +8,7 @@
   <link rel="stylesheet" th:href="@{css/main.css}"/>
   <link rel="stylesheet" th:href="@{css/homeStyle.css}"/>
   <link rel="stylesheet" th:href="@{css/viajes.css}"/>
+
   <title>Motomensajeria</title>
 </head>
 <body>
@@ -74,93 +75,53 @@
   </div>
   <h2 th:if="${isPenalizado}" class="isPenalizado">Usted ha sido penalizado</h2>
   <div th:unless="${isPenalizado}">
-    <div th:if="${isUsuarioLogueado}">
-      <div th:if="${conductor.getVehiculo() == null}">
-        <style>
-          .titulo_registroConductor {
-            font-family: "Codec Pro", serif;
-            font-style: normal;
-            font-weight: 500;
-            font-size: 30px;
-            line-height: 35px;
-            text-align: center;
-            color: #ffffff;
-            background-color: #36054E;
-            padding: 20px;
-            border-radius: 10px;
-            margin: 20px 0;
-          }
-
-          .btn_registro {
-            display: inline-block;
-            width: 262px;
-            height: 67px;
-            background: #36054E;
-            border-radius: 50px;
-            color: white;
-            text-align: center;
-            line-height: 67px;
-            text-decoration: none;
-            font-family: "Codec Pro", serif;
-            font-weight: 500;
-            font-size: 20px;
-          }
-
-          .btn_registro:hover {
-            background: darkviolet;
-            border-color: #36054E;
-          }
-        </style>
-        <h2 class="titulo_registroConductor">Usted no tiene ningún vehículo registrado, por favor, registre uno.</h2>
-        <a th:href="vehiculo" class="btn_registro">Registrar Vehículo</a>
-      </div>
-    <div class="card mt-3 contenedor-solicitudes" th:if="${isUsuarioLogueado}" style=" background-color: transparent; border: none;">
-      <h1 class="text-center titulo-solicitud">Solicitudes de Viajes</h1>
-      <div th:if="${noTieneVehiculo}">
-        <h2 class="text-center titulo-solicitud"> Usted no tiene ningun vehiculo asociado. Por favor asocie uno primero</h2>
-        <a th:href="vehiculo" class="btn btn-primary">Asociar Vehículo</a>
-      </div>
-      <div class="contenedor-filtro" th:unless="${noTieneVehiculo}">
-        <form th:action="@{/filtrarPorDistancia}" method="post">
-          <label for="filtro-distancia" class="label-filtro"></label>
-          <select id="filtro-distancia" name="distancia" class="select-filtro">
-            <option value="" selected class="option-filtro">Filtrar viajes por distancia</option>
-            <option value=2.0 class="option-filtro">2 Kilometros de distancia</option>
-            <option value=5.0 class="option-filtro">5 Kilometros de distancia</option>
-            <option value=10.0 class="option-filtro">10 Kilometros de distancia</option>
-          </select>
-          <button type="submit" class="boton-filtro">Filtrar</button>
-        </form>
-      </div>
-      <div class="card-body viaje" th:each="viaje : ${viajes}">
-        <div class="card mt-3 ml-3 contenedor-viaje" th:data-latitud-salida="${viaje.latitudDeSalida}" th:data-longitud-salida="${viaje.longitudDeSalida}" th:data-latitud-llegada="${viaje.latitudDeLlegada}" th:data-longitud-llegada="${viaje.longitudDeLlegada}">
-          <div class="card-body contenedor-datos-viaje flex" >
-            <div>
-              <p class="card-text"><b>Direccion de Salida:</b> <span th:text="${viaje.getDomicilioDeSalida()}"></span></p>
-              <p class="card-text"><b>Direccion de Llegada:</b> <span th:text="${viaje.getDomicilioDeLlegada()}"></span></p>
-              <p class="card-text"><b>Distancia del viaje:</b> <span th:text="${viaje.getDistanciaDelViaje()}"></span> Kilometros</p>
-            </div>
-            <div>
-              <p class="card-text"><b>Paquete de:</b> <span th:text="${viaje.getNombreDelCliente()}"></span></p>
-              <p class="card-text"><b>Precio:</b> $<span th:text="${viaje.getPrecio()}"></span> ARS</p>
-              <p class="card-text"><b>Distancia desde tu ubicación:</b><span class="distanceFromCurrentPosition"></span></p>
-            </div>
+  <div class="card mt-3 contenedor-solicitudes" th:if="${isUsuarioLogueado}" style=" background-color: transparent; border: none;">
+    <h1 class="text-center titulo-solicitud">Solicitudes de Viajes</h1>
+    <div th:if="${noTieneVehiculo}" class="noVehiculo">
+      <h2 class="titulo_registroConductor">Usted no tiene ningún vehículo registrado, por favor, registre uno.</h2>
+      <a th:href="vehiculo" class="btn_registro">Registrar Vehículo</a>
+    </div>
+    <div class="contenedor-filtro" th:unless="${noTieneVehiculo}">
+      <form th:action="@{/filtrarPorDistancia}" method="post">
+        <label for="filtro-distancia" class="label-filtro"></label>
+        <select id="filtro-distancia" name="distancia" class="select-filtro">
+          <option value="" selected class="option-filtro">Filtrar viajes por distancia</option>
+          <option value=2.0 class="option-filtro">2 Kilometros de distancia</option>
+          <option value=5.0 class="option-filtro">5 Kilometros de distancia</option>
+          <option value=10.0 class="option-filtro">10 Kilometros de distancia</option>
+        </select>
+        <button type="submit" class="boton-filtro">Filtrar</button>
+      </form>
+    </div>
+    <div class="card-body viaje" th:each="viaje : ${viajes}">
+      <div class="card mt-3 ml-3 contenedor-viaje" th:data-latitud-salida="${viaje.latitudDeSalida}" th:data-longitud-salida="${viaje.longitudDeSalida}" th:data-latitud-llegada="${viaje.latitudDeLlegada}" th:data-longitud-llegada="${viaje.longitudDeLlegada}">
+        <div class="card-body contenedor-datos-viaje flex" >
+          <div>
+            <p class="card-text"><b>Direccion de Salida:</b> <span th:text="${viaje.getDomicilioDeSalida()}"></span></p>
+            <p class="card-text"><b>Direccion de Llegada:</b> <span th:text="${viaje.getDomicilioDeLlegada()}"></span></p>
+            <p class="card-text"><b>Distancia del viaje:</b> <span th:text="${viaje.getDistanciaDelViaje()}"></span> Kilometros</p>
           </div>
-          <div class="contenedor-botones">
-            <div>
-              <a th:href="@{/viaje-aceptado(idViaje=${viaje.getIdViaje()})}" class="boton-verde">Aceptar</a>
-            </div>
-            <div>
-              <a th:href="@{/descartar(idViaje=${viaje.getIdViaje()})}" onclick="descartarViaje(this)" class="boton-rojo">Descartar</a>
-            </div>
+          <div>
+            <p class="card-text"><b>Paquete de:</b> <span th:text="${viaje.getNombreDelCliente()}"></span></p>
+            <p class="card-text"><b>Precio:</b> $<span th:text="${viaje.getPrecio()}"></span> ARS</p>
+            <p class="card-text"><b>Distancia desde tu ubicación:</b><span class="distanceFromCurrentPosition"></span></p>
+          </div>
+        </div>
+        <div class="contenedor-botones">
+          <div>
+            <a th:href="@{/viaje-aceptado(idViaje=${viaje.getIdViaje()})}" class="boton-verde">Aceptar</a>
+          </div>
+          <div>
+            <a th:href="@{/descartar(idViaje=${viaje.getIdViaje()})}" onclick="descartarViaje(this)" class="boton-rojo">Descartar</a>
           </div>
         </div>
       </div>
     </div>
   </div>
-  <div th:unless="${isUsuarioLogueado}">
-    <p id="driverLocation" style="background-color: white; border-radius: 10px; padding: 3%">Ubicacion del conductor:</p>
   </div>
+<!--  <div th:unless="${isUsuarioLogueado}">-->
+<!--    <p id="driverLocation" style="background-color: white; border-radius: 10px; padding: 3%">Ubicacion del conductor:</p>-->
+<!--  </div>-->
 </main>
 <script type="text/javascript" th:src="@{webjars/bootstrap/5.2.0/js/bootstrap.min.js}"></script>
 </body>
