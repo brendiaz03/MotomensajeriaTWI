@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.NoResultException;
-import java.awt.desktop.SystemSleepEvent;
 import java.io.IOException;
 import java.util.Base64;
 
@@ -76,5 +75,6 @@ public class ConductorServicioImpl implements ConductorServicio {
             return false;
         }
     }
+
 
 }
