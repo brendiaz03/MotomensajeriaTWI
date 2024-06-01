@@ -68,11 +68,11 @@
                 </div>
             </div>
             <div class="contenedor-botones" style="margin-top: 4%">
-                <div class="contenedor-boton-cancelar" >
-                    <div th:if="${viaje.getTerminado()}" class="terminado">Terminado</div>
+                <div class="contenedor-boton-cancelar" th:with="TERMINADO=${T(com.tallerwebi.dominio.viaje.TipoEstado).TERMINADO}">
+                    <div th:if="${viaje.getEstado() == TERMINADO}" class="terminado">Terminado</div>
                 </div>
-                <div class="contenedor-boton-cancelar" >
-                    <div th:if="${viaje.getCancelado()}" class="cancelado">Cancelado</div>
+                <div class="contenedor-boton-cancelar" th:with="TERMINADO=${T(com.tallerwebi.dominio.viaje.TipoEstado).TERMINADO}">
+                    <div th:if="${viaje.getEstado() == CANCELADO}" class="cancelado">Cancelado</div>
                 </div>
                 <div class="contenedor-boton-cancelar" >
                     <a th:href="@{volver-historial}" class="boton-enlace boton-volver">Volver</a>

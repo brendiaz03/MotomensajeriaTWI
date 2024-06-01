@@ -1,6 +1,6 @@
 package com.tallerwebi.presentacion;
 import com.tallerwebi.dominio.conductor.Conductor;
-import com.tallerwebi.dominio.conductor.ConductorNoEncontradoException;
+import com.tallerwebi.dominio.usuario.UsuarioNoEncontradoException;
 import com.tallerwebi.dominio.conductor.ConductorServicio;
 import com.tallerwebi.dominio.imagen.ImagenServicio;
 import com.tallerwebi.dominio.imagen.Imagen;
@@ -35,7 +35,7 @@ public class VehiculoControlador {
     }
 
     @RequestMapping(path = "/vehiculo", method = RequestMethod.GET)
-    public ModelAndView mostrarRegistroDelVehiculo(HttpSession session) throws ConductorNoEncontradoException {
+    public ModelAndView mostrarRegistroDelVehiculo(HttpSession session) throws UsuarioNoEncontradoException {
 
         ModelMap model = new ModelMap();
         Imagen logo = imagenServicio.getImagenByName("logo");
@@ -62,7 +62,7 @@ public class VehiculoControlador {
     }
 
     @PostMapping("/registro-vehiculo")
-    public ModelAndView registrarVehiculo(@ModelAttribute("vehiculo") Vehiculo nuevoVehiculo, HttpSession session) throws ConductorNoEncontradoException {
+    public ModelAndView registrarVehiculo(@ModelAttribute("vehiculo") Vehiculo nuevoVehiculo, HttpSession session) throws UsuarioNoEncontradoException {
        ModelMap model = new ModelMap();
 
        Conductor conductor = conductorServicio.obtenerConductorPorId((Integer)session.getAttribute("IDUSUARIO"));

@@ -2,7 +2,8 @@ package com.tallerwebi.dominio;
 
 import com.tallerwebi.dominio.cliente.Cliente;
 import com.tallerwebi.dominio.conductor.Conductor;
-import com.tallerwebi.dominio.conductor.ConductorNoEncontradoException;
+import com.tallerwebi.dominio.enums.TipoEstado;
+import com.tallerwebi.dominio.usuario.UsuarioNoEncontradoException;
 import com.tallerwebi.dominio.viaje.*;
 import com.tallerwebi.presentacion.Datos.DatosViaje;
 import org.junit.jupiter.api.BeforeEach;
@@ -42,7 +43,7 @@ public class ViajeServicioTest {
     }
 
     @Test
-    public void queSePuedanObtenerElHistorialDeViajesDelConductor() throws ConductorNoEncontradoException {
+    public void queSePuedanObtenerElHistorialDeViajesDelConductor() throws UsuarioNoEncontradoException {
         // Preparación
         Conductor conductor = new Conductor();
         List<Viaje> viajes = dadoQueExistenViajesConUnConductorAsignado(conductor);

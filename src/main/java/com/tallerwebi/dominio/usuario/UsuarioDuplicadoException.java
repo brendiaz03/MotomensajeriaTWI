@@ -1,8 +1,8 @@
-package com.tallerwebi.dominio.conductor;
+package com.tallerwebi.dominio.usuario;
 
-public class ConductorDuplicadoException extends Exception{
+public class UsuarioDuplicadoException extends Exception{
     private final String mensajeError;
-    public ConductorDuplicadoException(String message) {
+    public UsuarioDuplicadoException(String message) {
         this.mensajeError=message;
 
     }

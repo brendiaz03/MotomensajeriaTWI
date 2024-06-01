@@ -1,6 +1,6 @@
 package com.tallerwebi.dominio.conductor;
 
-import com.tallerwebi.dominio.usuario.TipoUsuario;
+import com.tallerwebi.dominio.enums.TipoUsuario;
 import com.tallerwebi.dominio.usuario.Usuario;
 import com.tallerwebi.dominio.vehiculo.Vehiculo;
 import com.tallerwebi.dominio.viaje.Viaje;

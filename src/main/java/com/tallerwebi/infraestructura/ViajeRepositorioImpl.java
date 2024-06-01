@@ -1,7 +1,7 @@
 package com.tallerwebi.infraestructura;
 
 import com.tallerwebi.dominio.conductor.Conductor;
-import com.tallerwebi.dominio.viaje.TipoEstado;
+import com.tallerwebi.dominio.enums.TipoEstado;
 import com.tallerwebi.dominio.viaje.Viaje;
 import com.tallerwebi.dominio.viaje.ViajeRepositorio;
 import org.hibernate.Criteria;
@@ -75,8 +75,13 @@ public class ViajeRepositorioImpl implements ViajeRepositorio {
     public List<Viaje> traerTodosLosViajesQueNoEstenAceptados() {
         Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Viaje.class);
 
-        criteria.add(Restrictions.eq("estado", null));
+        criteria.add(Restrictions.eq("estado", TipoEstado.PENDIENTE));
 
         return (List<Viaje>) criteria.list();
+    }
+
+    @Override
+    public void guardarViaje(Viaje viajeMapeado) {
+        this.sessionFactory.getCurrentSession().saveOrUpdate(viajeMapeado);
     }
 }

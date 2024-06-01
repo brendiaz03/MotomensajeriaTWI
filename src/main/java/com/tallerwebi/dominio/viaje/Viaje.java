@@ -2,6 +2,7 @@ package com.tallerwebi.dominio.viaje;
 
 import com.tallerwebi.dominio.cliente.Cliente;
 import com.tallerwebi.dominio.conductor.Conductor;
+import com.tallerwebi.dominio.enums.TipoEstado;
 import com.tallerwebi.dominio.paquete.Paquete;
 
 import javax.persistence.*;

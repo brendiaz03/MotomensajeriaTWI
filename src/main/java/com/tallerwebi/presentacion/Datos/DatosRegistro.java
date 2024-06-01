@@ -1,10 +1,11 @@
 package com.tallerwebi.presentacion.Datos;
 
-import com.tallerwebi.dominio.usuario.TipoUsuario;
+import com.tallerwebi.dominio.cliente.Cliente;
+import com.tallerwebi.dominio.conductor.Conductor;
+import com.tallerwebi.dominio.enums.TipoUsuario;
 
 public class DatosRegistro {
 
-    private Integer id;
     private String nombre;
     private String apellido;
     private Integer numeroDeDni;
@@ -15,8 +16,7 @@ public class DatosRegistro {
     private String domicilio;
     private TipoUsuario tipoUsuario;
 
-    public DatosRegistro(Integer id, String nombre, String apellido, Integer numeroDeDni, String email, String numeroDeTelefono, String nombreUsuario, String password, String domicilio, TipoUsuario tipoUsuario) {
-        this.id = id;
+    public DatosRegistro(String nombre, String apellido, Integer numeroDeDni, String email, String numeroDeTelefono, String nombreUsuario, String password, String domicilio, TipoUsuario tipoUsuario) {
         this.nombre = nombre;
         this.apellido = apellido;
         this.numeroDeDni = numeroDeDni;
@@ -28,12 +28,7 @@ public class DatosRegistro {
         this.tipoUsuario = tipoUsuario;
     }
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
+    public DatosRegistro() {
     }
 
     public String getNombre() {
@@ -106,5 +101,33 @@ public class DatosRegistro {
 
     public void setTipoUsuario(TipoUsuario tipoUsuario) {
         this.tipoUsuario = tipoUsuario;
+    }
+
+    public Conductor toConductor(DatosRegistro datosConductor) {
+        Conductor conductor = new Conductor();
+        conductor.setNombre(datosConductor.getNombre());
+        conductor.setApellido(datosConductor.getApellido());
+        conductor.setNumeroDeDni(datosConductor.getNumeroDeDni());
+        conductor.setEmail(datosConductor.getEmail());
+        conductor.setNumeroDeTelefono(datosConductor.getNumeroDeTelefono());
+        conductor.setNombreUsuario(datosConductor.getNombreUsuario());
+        conductor.setPassword(datosConductor.getPassword());
+        conductor.setDomicilio(datosConductor.getDomicilio());
+        conductor.setTipoUsuario(datosConductor.getTipoUsuario());
+        return conductor;
+    }
+
+    public Cliente toCliente(DatosRegistro datosCliente) {
+        Cliente cliente = new Cliente();
+        cliente.setNombre(datosCliente.getNombre());
+        cliente.setApellido(datosCliente.getApellido());
+        cliente.setNumeroDeDni(datosCliente.getNumeroDeDni());
+        cliente.setEmail(datosCliente.getEmail());
+        cliente.setNumeroDeTelefono(datosCliente.getNumeroDeTelefono());
+        cliente.setNombreUsuario(datosCliente.getNombreUsuario());
+        cliente.setPassword(datosCliente.getPassword());
+        cliente.setDomicilio(datosCliente.getDomicilio());
+        cliente.setTipoUsuario(datosCliente.getTipoUsuario());
+        return cliente;
     }
 }

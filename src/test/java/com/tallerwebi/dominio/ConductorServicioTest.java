@@ -1,8 +1,7 @@
 package com.tallerwebi.dominio;
 
 import com.tallerwebi.dominio.conductor.*;
-import com.tallerwebi.dominio.enums.Color;
-import com.tallerwebi.dominio.imagen.Imagen;
+import com.tallerwebi.dominio.usuario.UsuarioNoEncontradoException;
 import com.tallerwebi.dominio.vehiculo.Vehiculo;
 import com.tallerwebi.infraestructura.config.HibernateInfraestructuraTestConfig;
 import org.hibernate.SessionFactory;
@@ -17,7 +16,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import javax.persistence.NoResultException;
 
 import java.io.IOException;
-import java.io.NotActiveException;
 import java.util.Base64;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -42,7 +40,7 @@ public class ConductorServicioTest {
 
 
    /* @Test
-    public void queSeEnvieLaSolicitudDeRegistroYQueNoSeEncuentrenDuplicadosPorEndeSeRegistreCorrectamente() throws ConductorDuplicadoException {
+    public void queSeEnvieLaSolicitudDeRegistroYQueNoSeEncuentrenDuplicadosPorEndeSeRegistreCorrectamente() throws UsuarioDuplicadoException {
 
         Conductor nuevoConductor = new Conductor();
         nuevoConductor.setEmail("facu@gmail.com");
@@ -59,18 +57,18 @@ public class ConductorServicioTest {
     }*/
 
     /*@Test
-    public void queSeEnvieLaSolicitudDeRegistroYQueSeEncuentrenDuplicadosPorEndeNoSeRegistre() throws ConductorDuplicadoException {
+    public void queSeEnvieLaSolicitudDeRegistroYQueSeEncuentrenDuplicadosPorEndeNoSeRegistre() throws UsuarioDuplicadoException {
         Conductor conductor = new Conductor();
         conductor.setEmail("facu@gmail.com");
         conductor.setNombreUsuario("Facu");
 
         when(this.conductorRepositorio.buscarDuplicados(conductor.getEmail(), conductor.getNombreUsuario())).thenReturn(conductor);
 
-        assertThrows(ConductorDuplicadoException.class, () -> conductorServicio.registrarConductorNoDuplicado(conductor));
+        assertThrows(UsuarioDuplicadoException.class, () -> conductorServicio.registrarConductorNoDuplicado(conductor));
     }*/
 
     @Test
-    public void queSeObtengaConductorBuscadoPorIDSiExisteElMismo() throws ConductorNoEncontradoException {
+    public void queSeObtengaConductorBuscadoPorIDSiExisteElMismo() throws UsuarioNoEncontradoException {
         Integer conductorId = 1;
         Conductor conductorBuscado = new Conductor();
         conductorBuscado.setId(conductorId);
@@ -83,18 +81,18 @@ public class ConductorServicioTest {
     }
 
     @Test
-    public void queSeNoEncuentreConductorBuscadoPorIDSiNoExiste() throws ConductorNoEncontradoException {
+    public void queSeNoEncuentreConductorBuscadoPorIDSiNoExiste() throws UsuarioNoEncontradoException {
         Integer conductorId = 1;
         Conductor conductorBuscado = new Conductor();
         conductorBuscado.setId(conductorId);
 
         when(conductorRepositorio.buscarConductorPorId(conductorId)).thenThrow(NoResultException.class);
 
-        assertThrows(ConductorNoEncontradoException.class, () -> conductorServicio.obtenerConductorPorId(conductorBuscado.getId()));
+        assertThrows(UsuarioNoEncontradoException.class, () -> conductorServicio.obtenerConductorPorId(conductorBuscado.getId()));
     }
 
     @Test
-    public void queSeEditeConductorSinImagenDePerfilManteniendoLaExistente() throws ConductorNoEncontradoException {
+    public void queSeEditeConductorSinImagenDePerfilManteniendoLaExistente() throws UsuarioNoEncontradoException {
         Conductor conductorEditado = new Conductor();
         conductorEditado.setId(1);
         conductorEditado.setNombre("Kira");
@@ -120,7 +118,7 @@ public class ConductorServicioTest {
     }
 
     @Test
-    public void queSeEditeConductorConImagenDePerfilNueva() throws ConductorNoEncontradoException {
+    public void queSeEditeConductorConImagenDePerfilNueva() throws UsuarioNoEncontradoException {
         Conductor conductorEditado = new Conductor();
         conductorEditado.setId(1);
         conductorEditado.setNombre("Kira");
@@ -148,7 +146,7 @@ public class ConductorServicioTest {
     }
 
     @Test
-    public void queSeBusqueUnConductorParaEditarloYNoSeEncuentre() throws ConductorNoEncontradoException {
+    public void queSeBusqueUnConductorParaEditarloYNoSeEncuentre() throws UsuarioNoEncontradoException {
         Conductor conductorEditado = new Conductor();
         conductorEditado.setId(1);
         conductorEditado.setNombre("Kira");
@@ -157,7 +155,7 @@ public class ConductorServicioTest {
 
         when(conductorRepositorio.buscarConductorPorId(conductorEditado.getId())).thenThrow(new NoResultException());
 
-        assertThrows(ConductorNoEncontradoException.class, () -> {
+        assertThrows(UsuarioNoEncontradoException.class, () -> {
             conductorServicio.editarConductor(conductorEditado);
         });
 
@@ -166,7 +164,7 @@ public class ConductorServicioTest {
     }
 
     @Test
-    public void queSePuedaIngresarUnaImagenAlPerfilDelConductor() throws IOException, ConductorNoEncontradoException {
+    public void queSePuedaIngresarUnaImagenAlPerfilDelConductor() throws IOException, UsuarioNoEncontradoException {
         Conductor conductor = new Conductor();
         Integer conductorId = 29;
         conductor.setId(conductorId);
@@ -178,7 +176,7 @@ public class ConductorServicioTest {
     }
 
     @Test
-    public void queNoSePuedaRelacionarUnVehiculoAlConductor() throws ConductorNoEncontradoException {
+    public void queNoSePuedaRelacionarUnVehiculoAlConductor() throws UsuarioNoEncontradoException {
         Conductor conductor = new Conductor();
         Vehiculo vehiculo = new Vehiculo();
         Long idVehiculo = 22L;
@@ -197,7 +195,7 @@ public class ConductorServicioTest {
     }
 
     @Test
-    public void queSePuedaRelacionarUnVehiculoAlConductor() throws ConductorNoEncontradoException {
+    public void queSePuedaRelacionarUnVehiculoAlConductor() throws UsuarioNoEncontradoException {
         Conductor conductor = new Conductor();
         Vehiculo vehiculo = new Vehiculo();
         Long idVehiculo = 22L;
@@ -208,7 +206,7 @@ public class ConductorServicioTest {
         Boolean resultado;
         try {
             resultado = conductorServicio.RelacionarVehiculoAConductor(idConductor, vehiculo);
-        } catch (ConductorNoEncontradoException e) {
+        } catch (UsuarioNoEncontradoException e) {
             throw new RuntimeException(e);
         }
         conductor.setVehiculo(vehiculo);
@@ -219,7 +217,7 @@ public class ConductorServicioTest {
     }
 
     @Test
-    public void queSePuedaBorrarUnConductorExistente() throws ConductorNoEncontradoException {
+    public void queSePuedaBorrarUnConductorExistente() throws UsuarioNoEncontradoException {
         Integer idConductor = 1;
         Conductor conductorABorrar = new Conductor();
         conductorABorrar.setId(idConductor);

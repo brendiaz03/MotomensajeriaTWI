@@ -2,6 +2,8 @@ package com.tallerwebi.infraestructura;
 
 import com.tallerwebi.dominio.cliente.Cliente;
 import com.tallerwebi.dominio.cliente.ClienteRepositorio;
+import com.tallerwebi.dominio.conductor.Conductor;
+import com.tallerwebi.dominio.paquete.Paquete;
 import com.tallerwebi.dominio.viaje.Viaje;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -33,7 +35,10 @@ public class ClienteRepositorioImpl implements ClienteRepositorio {
     @Override
     @Transactional
     public Cliente registrarCliente(Cliente cliente) {
-        return (Cliente) this.sessionFactory.getCurrentSession().save(cliente);
+        Session session = this.sessionFactory.getCurrentSession();
+        session.save(cliente);
+        Integer idConductorGuardado = (Integer) session.getIdentifier(cliente);
+        return session.get(Cliente.class, idConductorGuardado);
     }
 
     @Override
@@ -44,5 +49,15 @@ public class ClienteRepositorioImpl implements ClienteRepositorio {
         query.setParameter("email", email);
         query.setParameter("nombreUsuario", nombreUsuario);
         return (Cliente) query.uniqueResult();
+    }
+
+    @Override
+    public Cliente obtenerClientePorId(Integer idusuario) {
+        return this.sessionFactory.getCurrentSession().get(Cliente.class, idusuario);
+    }
+
+    @Override
+    public void guardarPaquete(Paquete paquete) {
+        this.sessionFactory.getCurrentSession().save(paquete);
     }
 }

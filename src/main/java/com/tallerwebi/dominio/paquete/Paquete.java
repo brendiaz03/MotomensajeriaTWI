@@ -27,10 +27,6 @@ public class Paquete {
     @OneToOne(mappedBy = "paquete", cascade = CascadeType.ALL)
     private Viaje viaje;
 
-    @OneToOne
-    @JoinColumn(name = "idCliente", referencedColumnName = "id")
-    private Cliente cliente;
-
     public Paquete(Double peso, Double dimension, Boolean esFragil) {
         this.peso = peso;
         this.dimension = dimension;
@@ -80,13 +76,5 @@ public class Paquete {
 
     public void setViaje(Viaje viaje) {
         this.viaje = viaje;
-    }
-
-    public Cliente getCliente() {
-        return cliente;
-    }
-
-    public void setCliente(Cliente cliente) {
-        this.cliente = cliente;
     }
 }

@@ -1,14 +1,12 @@
 package com.tallerwebi.presentacion;
 
-import com.tallerwebi.dominio.cliente.Cliente;
 import com.tallerwebi.dominio.cliente.ClienteServicio;
 import com.tallerwebi.dominio.imagen.Imagen;
 import com.tallerwebi.dominio.imagen.ImagenServicio;
+import com.tallerwebi.dominio.paquete.Paquete;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -24,10 +22,10 @@ public class ClienteControlador {
         this.imagenServicio = imagenServicio;
     }
 
-    /*@RequestMapping("/form-cliente")
-    public ModelAndView homeCliente() {
+    @RequestMapping("/realizar-paquete")
+    public ModelAndView mostrarFormArmarPaquete() {
         ModelMap model = new ModelMap();
-        String viewName = "form-cliente";
+        String viewName = "form-paquete";
 
         Imagen logo = imagenServicio.getImagenByName("logo");
         Imagen user = imagenServicio.getImagenByName("user");
@@ -40,12 +38,7 @@ public class ClienteControlador {
         model.put("auto", auto);
         model.put("fondo", fondo);
         model.put("botonPS", botonPS);
+        model.put("paquete", new Paquete());
         return new ModelAndView(viewName, model);
     }
-
-    @PostMapping("/registrar-cliente")
-    public ModelAndView registrarCliente(@ModelAttribute("cliente") Cliente cliente) {
-        this.clienteServicio.registrarClienteNoDuplicado(cliente);
-        return new ModelAndView("redirect:/home-cliente");
-    }*/
 }

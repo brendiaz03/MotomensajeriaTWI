@@ -1,24 +1,13 @@
 package com.tallerwebi.presentacion;
 
-import com.tallerwebi.dominio.conductor.Conductor;
-import com.tallerwebi.dominio.conductor.ConductorDuplicadoException;
-import com.tallerwebi.dominio.conductor.ConductorNoEncontradoException;
 import com.tallerwebi.dominio.conductor.ConductorServicio;
-import com.tallerwebi.dominio.imagen.Imagen;
 import com.tallerwebi.dominio.imagen.ImagenServicio;
-import com.tallerwebi.dominio.vehiculo.Vehiculo;
 import com.tallerwebi.dominio.vehiculo.VehiculoServicio;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
 
-import java.io.IOException;
-
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
 import static org.mockito.Mockito.*;
 
 public class ConductorControladorTest {
@@ -42,7 +31,7 @@ public class ConductorControladorTest {
    }
 
     /*@Test
-    public void queAlSolicitarLaPantallaRegistrarmeSeMuestreElFormularioDeRegistroDelConductor() throws ConductorNoEncontradoException {
+    public void queAlSolicitarLaPantallaRegistrarmeSeMuestreElFormularioDeRegistroDelConductor() throws UsuarioNoEncontradoException {
         String nombreEsperado= "registro-conductor";
         Imagen logo = new Imagen();
         Imagen user = new Imagen();
@@ -65,7 +54,7 @@ public class ConductorControladorTest {
     }
 
     @Test
-    public void queAlSolicitarPantallaRegistroConMensajeDeErrorMuestreFormularioConError() throws ConductorNoEncontradoException {
+    public void queAlSolicitarPantallaRegistroConMensajeDeErrorMuestreFormularioConError() throws UsuarioNoEncontradoException {
         String nombreEsperado= "registro-conductor";
         Imagen logo = new Imagen();
         Imagen user = new Imagen();
@@ -89,7 +78,7 @@ public class ConductorControladorTest {
     }
 
     @Test
-    public void queAlSolicitarPantallaRegistroConIsEditFormTrueMuestreFormularioRegistroParaEdicion() throws ConductorNoEncontradoException {
+    public void queAlSolicitarPantallaRegistroConIsEditFormTrueMuestreFormularioRegistroParaEdicion() throws UsuarioNoEncontradoException {
         String nombreEsperado = "registro-conductor";
         Imagen logo = new Imagen();
         Imagen user = new Imagen();
@@ -117,7 +106,7 @@ public class ConductorControladorTest {
     }
 
     @Test
-    public void queAlSolicitarPantallaEdicionYNoEncontrarConductorMuestreError() throws ConductorNoEncontradoException {
+    public void queAlSolicitarPantallaEdicionYNoEncontrarConductorMuestreError() throws UsuarioNoEncontradoException {
         String nombreEsperado = "registro-conductor";
         Imagen logo = new Imagen();
         Imagen user = new Imagen();
@@ -134,7 +123,7 @@ public class ConductorControladorTest {
         when(imagenServicio.getImagenByName("botonPS")).thenReturn(botonPS);
         when(session.getAttribute("isEditForm")).thenReturn(true);
         when(session.getAttribute("IDUSUARIO")).thenReturn(idConductor);
-        when(conductorServicio.obtenerConductorPorId(idConductor)).thenThrow(new ConductorNoEncontradoException("Conductor no encontrado"));
+        when(conductorServicio.obtenerConductorPorId(idConductor)).thenThrow(new UsuarioNoEncontradoException("Conductor no encontrado"));
 
         ModelAndView mav = conductorControlador.mostrarFormConductor("", session);
 
@@ -144,7 +133,7 @@ public class ConductorControladorTest {
 
 
     @Test
-    public void queAlSolicitarLaPantallaIrAPerfilSeMuestreElPerfilDelConductor() throws ConductorNoEncontradoException {
+    public void queAlSolicitarLaPantallaIrAPerfilSeMuestreElPerfilDelConductor() throws UsuarioNoEncontradoException {
         String nombreEsperado = "perfil-conductor";
         Imagen logo = new Imagen();
         Imagen user = new Imagen();
@@ -168,7 +157,7 @@ public class ConductorControladorTest {
     }
 
     @Test
-    public void queAlSolicitarLaPantallaIrAPerfilYNoEncontrarConductorMuestreError() throws ConductorNoEncontradoException {
+    public void queAlSolicitarLaPantallaIrAPerfilYNoEncontrarConductorMuestreError() throws UsuarioNoEncontradoException {
         String nombreEsperado = "perfil-conductor";
         Imagen logo = new Imagen();
         Imagen user = new Imagen();
@@ -183,7 +172,7 @@ public class ConductorControladorTest {
         when(imagenServicio.getImagenByName("user")).thenReturn(user);
         when(session.getAttribute("isUsuarioLogueado")).thenReturn(true);
         when(session.getAttribute("IDUSUARIO")).thenReturn(idConductor);
-        when(conductorServicio.obtenerConductorPorId(idConductor)).thenThrow(new ConductorNoEncontradoException("Conductor no encontrado"));
+        when(conductorServicio.obtenerConductorPorId(idConductor)).thenThrow(new UsuarioNoEncontradoException("Conductor no encontrado"));
 
         ModelAndView mav = this.conductorControlador.irAPerfil(session);
 
@@ -201,7 +190,7 @@ public class ConductorControladorTest {
     }
 
     @Test
-    public void queSeMuestreElFormularioDeEditarImagenDePerfilDeConductorSiExisteElConductor() throws ConductorNoEncontradoException {
+    public void queSeMuestreElFormularioDeEditarImagenDePerfilDeConductorSiExisteElConductor() throws UsuarioNoEncontradoException {
         String nombreEsperado = "foto-perfil";
         Integer idConductor = 1;
         Conductor conductor=new Conductor();
@@ -221,7 +210,7 @@ public class ConductorControladorTest {
     }
 
     @Test
-    public void queNoSeMuestreElFormularioDeEditarImagenDePerfilDeConductorSiNoExisteElConductor() throws ConductorNoEncontradoException {
+    public void queNoSeMuestreElFormularioDeEditarImagenDePerfilDeConductorSiNoExisteElConductor() throws UsuarioNoEncontradoException {
         String nombreEsperado = "foto-perfil";
         Integer idConductor = 1;
         Conductor conductor=new Conductor();
@@ -232,7 +221,7 @@ public class ConductorControladorTest {
         when(imagenServicio.getImagenByName("user")).thenReturn(user);
         when(session.getAttribute("isUsuarioLogueado")).thenReturn(true);
         when(session.getAttribute("IDUSUARIO")).thenReturn(idConductor);
-        when(conductorServicio.obtenerConductorPorId(idConductor)).thenThrow(new ConductorNoEncontradoException("Conductor no encontrado"));
+        when(conductorServicio.obtenerConductorPorId(idConductor)).thenThrow(new UsuarioNoEncontradoException("Conductor no encontrado"));
 
         ModelAndView mav = conductorControlador.irAEditarFotoPerfil(session);
         assertThat(mav.getViewName(),equalTo(nombreEsperado));
@@ -242,7 +231,7 @@ public class ConductorControladorTest {
     }*/
 
     /*@Test
-    public void queSePuedaRegistrarUnNuevoConductor() throws ConductorDuplicadoException {
+    public void queSePuedaRegistrarUnNuevoConductor() throws UsuarioDuplicadoException {
         Conductor nuevoConductor = new Conductor();
         Conductor conductor = new Conductor();
         conductor.setId(1);
@@ -257,11 +246,11 @@ public class ConductorControladorTest {
     }*/
 /*
     @Test
-    public void queNoSePuedaRegistrarUnConductorDuplicado() throws ConductorDuplicadoException {
+    public void queNoSePuedaRegistrarUnConductorDuplicado() throws UsuarioDuplicadoException {
         Conductor nuevoConductor = new Conductor();
         Conductor conductor = new Conductor();
         conductor.setId(1);
-        when(conductorServicio.registrarConductorNoDuplicado(nuevoConductor)).thenThrow(new ConductorDuplicadoException("Conductor Duplicado"));
+        when(conductorServicio.registrarConductorNoDuplicado(nuevoConductor)).thenThrow(new UsuarioDuplicadoException("Conductor Duplicado"));
 
         ModelAndView mav = conductorControlador.registrarConductor(nuevoConductor, session);
 
@@ -269,7 +258,7 @@ public class ConductorControladorTest {
         assertThat(mav.getModel().get("mensajeError"), equalTo("Conductor Duplicado"));
     }*/
     /*@Test
-    public void queSePuedaEditarUnConductorExistente() throws ConductorNoEncontradoException {
+    public void queSePuedaEditarUnConductorExistente() throws UsuarioNoEncontradoException {
         String nombreEsperado = "redirect:/perfil";
         Integer idUsuario = 1;
         Conductor nuevo= new Conductor();
@@ -284,7 +273,7 @@ public class ConductorControladorTest {
     }
 
     @Test
-    public void queNoSePuedaEditarUnConductorInexistente() throws ConductorNoEncontradoException {
+    public void queNoSePuedaEditarUnConductorInexistente() throws UsuarioNoEncontradoException {
         String nombreEsperado = "registro-conductor";
         Integer idUsuario = 1;
         Conductor nuevo= new Conductor();
@@ -292,7 +281,7 @@ public class ConductorControladorTest {
 
         when(session.getAttribute("IDUSUARIO")).thenReturn(idUsuario);
 
-        doThrow(new ConductorNoEncontradoException("Conductor No Encontrado.")).when(conductorServicio).editarConductor(nuevo);
+        doThrow(new UsuarioNoEncontradoException("Conductor No Encontrado.")).when(conductorServicio).editarConductor(nuevo);
 
         ModelAndView mav=this.conductorControlador.editarConductor(session,nuevo);
 
@@ -302,7 +291,7 @@ public class ConductorControladorTest {
 
     }
     @Test
-    public void queUnConductorSubaUnaFotoDesdeElFormularioParaIngresarFotoDePerfil() throws ConductorNoEncontradoException, IOException {
+    public void queUnConductorSubaUnaFotoDesdeElFormularioParaIngresarFotoDePerfil() throws UsuarioNoEncontradoException, IOException {
         String nombreEsperado = "redirect:/perfil";
         Integer idUsuario = 1;
         MultipartFile imagen = mock(MultipartFile.class);
@@ -316,13 +305,13 @@ public class ConductorControladorTest {
     }
 
     @Test
-    public void queUnConductorInexistenteNoSubaUnaFotoDesdeElFormularioParaIngresarFotoDePerfil() throws ConductorNoEncontradoException, IOException {
+    public void queUnConductorInexistenteNoSubaUnaFotoDesdeElFormularioParaIngresarFotoDePerfil() throws UsuarioNoEncontradoException, IOException {
         String nombreEsperado = "registro-conductor";
         Integer idUsuario = 1;
         MultipartFile imagen = mock(MultipartFile.class);
 
         when(session.getAttribute("IDUSUARIO")).thenReturn(idUsuario);
-        doThrow(new ConductorNoEncontradoException("Conductor no encontrado")).when(conductorServicio).ingresarImagen(imagen, idUsuario);
+        doThrow(new UsuarioNoEncontradoException("Conductor no encontrado")).when(conductorServicio).ingresarImagen(imagen, idUsuario);
 
         ModelAndView mav = this.conductorControlador.subirFoto(imagen,session);
 
@@ -332,7 +321,7 @@ public class ConductorControladorTest {
     }
 
     @Test
-    public void queUnConductorExistenteNoSubaUnaFotoDesdeElFormularioParaIngresarFotoDePerfilPorIOException() throws ConductorNoEncontradoException, IOException {
+    public void queUnConductorExistenteNoSubaUnaFotoDesdeElFormularioParaIngresarFotoDePerfilPorIOException() throws UsuarioNoEncontradoException, IOException {
         String nombreEsperado = "registro-conductor";
         Integer idUsuario = 1;
         MultipartFile imagen = mock(MultipartFile.class);
@@ -348,7 +337,7 @@ public class ConductorControladorTest {
     }
 
     @Test
-    public void queSeBorreUnConductorExistente() throws ConductorNoEncontradoException {
+    public void queSeBorreUnConductorExistente() throws UsuarioNoEncontradoException {
         String nombreEsperado = "redirect:/cerrar-sesion";
         Integer idUsuario = 1;
 
@@ -361,12 +350,12 @@ public class ConductorControladorTest {
     }
 
     @Test
-    public void queSeNoSeBorreUnConductorInexistente() throws ConductorNoEncontradoException {
+    public void queSeNoSeBorreUnConductorInexistente() throws UsuarioNoEncontradoException {
         String nombreEsperado = "registro-conductor";
         Integer idUsuario = 1;
 
         when(session.getAttribute("IDUSUARIO")).thenReturn(idUsuario);
-        doThrow(new ConductorNoEncontradoException("Conductor no encontrado")).when(conductorServicio).borrarConductor(idUsuario);
+        doThrow(new UsuarioNoEncontradoException("Conductor no encontrado")).when(conductorServicio).borrarConductor(idUsuario);
 
         ModelAndView mav = this.conductorControlador.borrarCuenta(session);
 

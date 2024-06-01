@@ -19,7 +19,7 @@ public class CompaniaControlador {
 //    }
 //
 //    @RequestMapping("/compania")
-//    public ModelAndView mostrarVistaCompania(HttpServletRequest request) throws ConductorNoEncontradoException {
+//    public ModelAndView mostrarVistaCompania(HttpServletRequest request) throws UsuarioNoEncontradoException {
 //        ModelMap model = new ModelMap();
 //
 //        Boolean isUsuarioLogueado = (Boolean) request.getSession().getAttribute("isUsuarioLogueado");

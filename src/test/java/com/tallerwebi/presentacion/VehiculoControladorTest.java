@@ -1,7 +1,7 @@
 package com.tallerwebi.presentacion;
 
 import com.tallerwebi.dominio.conductor.Conductor;
-import com.tallerwebi.dominio.conductor.ConductorNoEncontradoException;
+import com.tallerwebi.dominio.usuario.UsuarioNoEncontradoException;
 import com.tallerwebi.dominio.conductor.ConductorServicio;
 import com.tallerwebi.dominio.imagen.Imagen;
 import com.tallerwebi.dominio.imagen.ImagenServicio;
@@ -45,7 +45,7 @@ class VehiculoControladorTest {
     }
 
     @Test
-    public void queSePuedaVerElFormularioDelVehiculo() throws ConductorNoEncontradoException {
+    public void queSePuedaVerElFormularioDelVehiculo() throws UsuarioNoEncontradoException {
 
         Imagen imagen = new Imagen();
 
@@ -67,7 +67,7 @@ class VehiculoControladorTest {
     }
 
     @Test
-    public void queAlEditarUnVehiculoVayaAlPerfil() throws ConductorNoEncontradoException {
+    public void queAlEditarUnVehiculoVayaAlPerfil() throws UsuarioNoEncontradoException {
 
         Integer idUsuario = 1;
         Long idVehiculoA = 1L;
@@ -94,7 +94,7 @@ class VehiculoControladorTest {
     }
 
     @Test
-    public void queAlEditarUnVehiculoVayaAlHome() throws ConductorNoEncontradoException {
+    public void queAlEditarUnVehiculoVayaAlHome() throws UsuarioNoEncontradoException {
 
         Integer idUsuario = 1;
         Conductor conductorNuevo = new Conductor();
@@ -117,7 +117,7 @@ class VehiculoControladorTest {
     }
 
     @Test
-    public void queAlRegistrarUnVehiculoConPatenteRepetidaMuestreError() throws ConductorNoEncontradoException {
+    public void queAlRegistrarUnVehiculoConPatenteRepetidaMuestreError() throws UsuarioNoEncontradoException {
 
         Integer idUsuario = 1;
         Conductor conductorNuevo = new Conductor();

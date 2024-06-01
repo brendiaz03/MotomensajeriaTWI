@@ -1,5 +1,6 @@
 package com.tallerwebi.dominio.usuario;
 
+import com.tallerwebi.dominio.enums.TipoUsuario;
 import com.tallerwebi.dominio.viaje.Viaje;
 
 import javax.persistence.*;

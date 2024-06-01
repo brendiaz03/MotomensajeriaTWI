@@ -1,6 +1,7 @@
 package com.tallerwebi.presentacion.Datos;
 
-import com.tallerwebi.dominio.viaje.TipoEstado;
+import com.tallerwebi.dominio.enums.TipoEstado;
+import com.tallerwebi.dominio.viaje.Viaje;
 
 public class DatosViaje {
 
@@ -140,5 +141,14 @@ public class DatosViaje {
 
     public void setEstado(TipoEstado estado) {
         this.estado = estado;
+    }
+
+    public Viaje toViaje(DatosViaje viajeActual) {
+        Viaje viaje = new Viaje();
+        viaje.setDomicilioDeSalida(viajeActual.getDomicilioDeSalida());
+        viaje.setDomicilioDeLlegada(viajeActual.getDomicilioDeLlegada());
+
+        viaje.setCodigoPostal(viajeActual.getCodigoPostal());
+        return viaje;
     }
 }

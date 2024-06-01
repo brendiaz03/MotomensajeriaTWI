@@ -1,7 +1,10 @@
 package com.tallerwebi.dominio.viaje;
 
+import com.tallerwebi.dominio.cliente.Cliente;
 import com.tallerwebi.dominio.conductor.Conductor;
-import com.tallerwebi.dominio.conductor.ConductorNoEncontradoException;
+import com.tallerwebi.dominio.enums.TipoEstado;
+import com.tallerwebi.dominio.paquete.Paquete;
+import com.tallerwebi.dominio.usuario.UsuarioNoEncontradoException;
 import com.tallerwebi.presentacion.Datos.DatosViaje;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,9 +31,9 @@ public class ViajeServicioImpl implements ViajeServicio {
     }
 
     @Override
-    public List<DatosViaje> obtenerHistorialDeViajes(Conductor conductor) throws ConductorNoEncontradoException {
+    public List<DatosViaje> obtenerHistorialDeViajes(Conductor conductor) throws UsuarioNoEncontradoException {
         if(conductor == null){
-            throw new ConductorNoEncontradoException("No se encuentra logueado");
+            throw new UsuarioNoEncontradoException("No se encuentra logueado");
         }
 
         List<Viaje> viajes = viajeRepositorio.obtenerViajesPorConductor(conductor);
@@ -163,5 +166,14 @@ public class ViajeServicioImpl implements ViajeServicio {
 
     public DatosViaje mapearViajeADatosViaje(Viaje viaje){
         return new DatosViaje(viaje.getId(), viaje.getDomicilioDeSalida(), viaje.getDomicilioDeLlegada(), viaje.getCliente().getNombre(), viaje.getPrecio(), viaje.getCodigoPostal(), viaje.getLatitudDeSalida(), viaje.getLongitudDeSalida(), viaje.getLatitudDeLlegada(), viaje.getLongitudDeLlegada(), viaje.getDistanciaDelViaje(), viaje.getEstado());
+    }
+
+    @Override
+    public void crearViaje(Cliente cliente, DatosViaje viaje, Paquete paquete) {
+        Viaje viajeMapeado = viaje.toViaje(viaje);
+        viajeMapeado.setCliente(cliente);
+        viajeMapeado.setPaquete(paquete);
+        viajeMapeado.setEstado(TipoEstado.PENDIENTE);
+        this.viajeRepositorio.guardarViaje(viajeMapeado);
     }
 }

@@ -1,6 +1,6 @@
 package com.tallerwebi.dominio.cliente;
 
-import com.tallerwebi.dominio.usuario.TipoUsuario;
+import com.tallerwebi.dominio.enums.TipoUsuario;
 import com.tallerwebi.dominio.usuario.Usuario;
 
 import javax.persistence.*;

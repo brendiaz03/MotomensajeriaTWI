@@ -1,17 +1,14 @@
 package com.tallerwebi.presentacion;
 
-import com.tallerwebi.dominio.usuario.TipoUsuario;
-import com.tallerwebi.dominio.cliente.Cliente;
 import com.tallerwebi.dominio.cliente.ClienteServicio;
 import com.tallerwebi.dominio.conductor.Conductor;
-import com.tallerwebi.dominio.conductor.ConductorNoEncontradoException;
+import com.tallerwebi.dominio.usuario.UsuarioNoEncontradoException;
 import com.tallerwebi.dominio.conductor.ConductorServicio;
 import com.tallerwebi.dominio.imagen.ImagenServicio;
 import com.tallerwebi.dominio.imagen.Imagen;
 import com.tallerwebi.dominio.viaje.ViajeServicio;
 import com.tallerwebi.presentacion.Datos.DatosLoginConductor;
 import com.tallerwebi.dominio.login.LoginServicio;
-import com.tallerwebi.presentacion.Datos.DatosRegistro;
 import com.tallerwebi.presentacion.Datos.DatosViaje;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,7 +16,6 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -50,7 +46,7 @@ public class LoginControlador {
     }
 
     @RequestMapping("/home")
-    public ModelAndView mostrarHome(HttpServletRequest request) throws ConductorNoEncontradoException {
+    public ModelAndView mostrarHome(HttpServletRequest request) throws UsuarioNoEncontradoException {
         ModelMap model = new ModelMap();
         String viewName = "home";
 
@@ -96,7 +92,7 @@ public class LoginControlador {
     @RequestMapping(path = "/login")
     public ModelAndView mostrarLogin(){
         ModelMap model = new ModelMap();
-        String viewName= "login-conductor";
+        String viewName= "login";
 
         Imagen logo = imagenServicio.getImagenByName("logo");
 
@@ -130,13 +126,13 @@ public class LoginControlador {
     }
 
     @RequestMapping(path = "/cerrar-sesion")
-    public ModelAndView cerrarSesion(HttpServletRequest request) throws ConductorNoEncontradoException {
+    public ModelAndView cerrarSesion(HttpServletRequest request) throws UsuarioNoEncontradoException {
         request.getSession().invalidate();
         return mostrarHome(request);
     }
 
     @RequestMapping ("/ayuda")
-    public ModelAndView mostrarVistaAyuda(HttpServletRequest request) throws ConductorNoEncontradoException {
+    public ModelAndView mostrarVistaAyuda(HttpServletRequest request) throws UsuarioNoEncontradoException {
         ModelMap model = new ModelMap();
 
         String viewName= "ayuda";
@@ -165,7 +161,7 @@ public class LoginControlador {
     }
 
     @RequestMapping("/compania")
-    public ModelAndView mostrarVistaCompania(HttpServletRequest request) throws ConductorNoEncontradoException {
+    public ModelAndView mostrarVistaCompania(HttpServletRequest request) throws UsuarioNoEncontradoException {
         ModelMap model = new ModelMap();
 
         String viewName = "compania";
@@ -194,65 +190,12 @@ public class LoginControlador {
     }
 
     @RequestMapping(value = "/filtrarPorDistancia", method = RequestMethod.POST)
-    public ModelAndView filtrarPorDistancia(HttpServletRequest request, @RequestParam Double distancia) throws ConductorNoEncontradoException {
+    public ModelAndView filtrarPorDistancia(HttpServletRequest request, @RequestParam Double distancia) throws UsuarioNoEncontradoException {
         if (distancia == null) {
             return new ModelAndView("redirect:/distanciaNoSeleccionada"); // Excepcion
         } else {
             request.getSession().setAttribute("distancia", distancia);
             return mostrarHome(request);
         }
-    }
-
-    @RequestMapping(value = "/registro-conductor", method = RequestMethod.GET)
-    public ModelAndView mostrarFormConductor(String mensajeError, HttpSession session) throws ConductorNoEncontradoException {
-
-        String viewName= "registro-conductor";
-        ModelMap model = new ModelMap();
-        Imagen logo = imagenServicio.getImagenByName("logo");
-        Imagen auto = imagenServicio.getImagenByName("auto");
-        Imagen fondo = imagenServicio.getImagenByName("fondo");
-        Imagen botonPS = imagenServicio.getImagenByName("botonPS");
-        Imagen user = imagenServicio.getImagenByName("user");
-
-        boolean isEditForm = (session.getAttribute("isEditForm") != null) ? (boolean) session.getAttribute("isEditForm") : false;
-
-        model.put("logo", logo);
-        model.put("auto", auto);
-        model.put("fondo", fondo);
-        model.put("botonPS", botonPS);
-        model.put("conductor", new Conductor());
-        model.put("isEditForm", isEditForm);
-        model.put("user", user);
-
-        if(!isEditForm) {
-            if(mensajeError != ""){
-                model.put("mensajeError", mensajeError);
-            }
-        } else {
-            Integer idUsuario = (Integer) session.getAttribute("IDUSUARIO");
-            Conductor conductor = conductorServicio.obtenerConductorPorId(idUsuario);
-            model.put("conductor", conductor );
-        }
-        return new ModelAndView(viewName, model);
-    }
-
-    @PostMapping("/registro-conductor")
-    public ModelAndView registrarConductor(@ModelAttribute("usuario") DatosRegistro nuevoUsuario, HttpSession session) throws Exception {
-        if(nuevoUsuario.getTipoUsuario() == TipoUsuario.CONDUCTOR){
-            Conductor conductorRegistrado = conductorServicio.registrarConductorNoDuplicado(nuevoUsuario);
-            if(conductorRegistrado != null){
-                session.setAttribute("IDUSUARIO", conductorRegistrado.getId());
-                return new ModelAndView("redirect:/vehiculo");
-            } else if(nuevoUsuario.getTipoUsuario() == TipoUsuario.CLIENTE) {
-                Cliente clienteRegistrado = clienteServicio.registrarClienteNoDuplicado(nuevoUsuario);
-                if(clienteRegistrado != null){
-                    session.setAttribute("IDUSUARIO", clienteRegistrado.getId());
-                    return new ModelAndView("redirect:/home");
-                }
-            } else {
-                throw new Exception();
-            }
-        }
-        return this.mostrarFormConductor("Se ha producido un error en el servidor.",session);
     }
 }

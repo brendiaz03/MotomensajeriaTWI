@@ -1,11 +1,10 @@
 package com.tallerwebi.infraestructura;
 
 import com.tallerwebi.dominio.conductor.Conductor;
-import com.tallerwebi.dominio.conductor.ConductorNoEncontradoException;
+import com.tallerwebi.dominio.usuario.UsuarioNoEncontradoException;
 import com.tallerwebi.dominio.conductor.ConductorRepositorio;
 import com.tallerwebi.dominio.vehiculo.Vehiculo;
 import com.tallerwebi.infraestructura.config.HibernateInfraestructuraTestConfig;
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,15 +14,11 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import javax.persistence.NoResultException;
-import javax.persistence.PersistenceException;
-import javax.persistence.Query;
 import javax.transaction.Transactional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = HibernateInfraestructuraTestConfig.class)
@@ -107,7 +102,7 @@ public class ConductorRepositorioTest {
     @Test
     @Transactional
     @Rollback
-    public void queSePuedaBorrarUnConductorExistente() throws ConductorNoEncontradoException {
+    public void queSePuedaBorrarUnConductorExistente() throws UsuarioNoEncontradoException {
         Conductor nuevoConductor = new Conductor();
         Conductor guardado=conductorRepositorio.guardar(nuevoConductor);
         assertNotNull(guardado);

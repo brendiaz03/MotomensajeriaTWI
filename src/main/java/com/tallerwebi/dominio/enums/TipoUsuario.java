@@ -1,4 +1,4 @@
-package com.tallerwebi.dominio.usuario;
+package com.tallerwebi.dominio.enums;
 
 public enum TipoUsuario {
     CONDUCTOR, CLIENTE

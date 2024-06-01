@@ -1,7 +1,7 @@
 package com.tallerwebi.infraestructura;
 
 import com.tallerwebi.dominio.conductor.Conductor;
-import com.tallerwebi.dominio.viaje.TipoEstado;
+import com.tallerwebi.dominio.enums.TipoEstado;
 import com.tallerwebi.dominio.viaje.Viaje;
 import com.tallerwebi.dominio.viaje.ViajeRepositorio;
 import com.tallerwebi.infraestructura.config.HibernateInfraestructuraTestConfig;

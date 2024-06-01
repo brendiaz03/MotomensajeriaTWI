@@ -1,12 +1,11 @@
-package com.tallerwebi.dominio.cliente;
+package com.tallerwebi.dominio.usuario;
 
-public class ClienteDuplicadoException extends Throwable {
+public class UsuarioNoEncontradoException extends Exception {
     private final String mensajeError;
 
-    public ClienteDuplicadoException(String message) {
+    public UsuarioNoEncontradoException(String message) {
         this.mensajeError=message;
     }
-
     @Override
     public String getMessage() {
         return mensajeError;
