@@ -61,7 +61,7 @@
     <h1 th:if="${isEditForm}" class="titulo_registroConductor">Editar Datos Personales</h1>
     <h1 th:unless="${isEditForm}" class="titulo_registroConductor">Registrarme</h1>
 
-    <form id="conductorForm" th:action="${isEditForm ? 'editar-conductor' : 'registro-conductor'}" method="POST" th:object="${conductor}"> <!--th:method="${isEditForm ? 'PUT' : 'POST'}"-->
+    <form id="conductorForm" th:action="${isEditForm ? 'editar-conductor' : 'registrar-usuario'}" method="POST" th:object="${usuario}"> <!--th:method="${isEditForm ? 'PUT' : 'POST'}"-->
       <section class="formulario">
         <div class="columna">
             <div>
@@ -78,7 +78,7 @@
             </div>
             <div>
                 <label for="nroTelefono" class="telefono fuente_formulario_registro">Número de Teléfono</label>
-                <input type="text" class="form-control" id="nroTelefono" name="nroTelefono" th:field="*{nroTelefono}" th:value="${isEditForm ? conductor.nroTelefono : ''}" required>
+                <input type="text" class="form-control" id="nroTelefono" name="nroTelefono" th:field="*{numeroDeTelefono}" th:value="${isEditForm ? conductor.nroTelefono : ''}" required>
             </div>
             <div>
                 <label for="numeroDeDni" class="dni fuente_formulario_registro">Número de DNI</label>
@@ -103,8 +103,12 @@
                 <input type="password" class="form-control" id="confirmarPassword" name="confirmarPassword"  th:value="${isEditForm ? conductor.password : ''}" th:readonly="${isEditForm}" required>
             </div>
             <div>
-                <label for="cvu" class="cvu fuente_formulario_registro">CVU</label>
-                <input type="number" class="form-control" id="cvu" name="cvu" th:field="*{cvu}" th:value="${isEditForm ? conductor.cvu : ''}" required>
+                <label for="tipoUsuario">Tipo de Usuario:</label>
+                <select id="tipoUsuario" name="tipoUsuario" class="form-control" th:field="*{tipoUsuario}">
+                    <option th:each="tipo : ${T(com.tallerwebi.dominio.usuario.TipoUsuario).values()}" th:value="${tipo}" th:text="${tipo}">
+                        {tipo}
+                    </option>
+                </select>
             </div>
         </div>
 

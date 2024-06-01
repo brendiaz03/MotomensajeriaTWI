@@ -1,5 +1,8 @@
 package com.tallerwebi.presentacion.Datos;
 
+import com.tallerwebi.dominio.enums.TipoEstado;
+import com.tallerwebi.dominio.viaje.Viaje;
+
 public class DatosViaje {
 
     private Integer idViaje;
@@ -13,12 +16,9 @@ public class DatosViaje {
     private Double latitudDeLlegada;
     private Double longitudDeLlegada;
     private Double distanciaDelViaje;
-    private Boolean terminado;
-    private Boolean cancelado;
-    private Boolean aceptado;
-    private Boolean descartado;
+    private TipoEstado estado;
 
-    public DatosViaje(Integer idViaje, String domicilioDeSalida, String domicilioDeLlegada, String nombreDelCliente, String precio, String codigoPostal, Double latitudDeSalida, Double longitudDeSalida, Double latitudDeLlegada, Double longitudDeLlegada, Double distanciaDelViaje, Boolean terminado, Boolean cancelado, Boolean aceptado, Boolean descartado) {
+    public DatosViaje(Integer idViaje, String domicilioDeSalida, String domicilioDeLlegada, String nombreDelCliente, String precio, String codigoPostal, Double latitudDeSalida, Double longitudDeSalida, Double latitudDeLlegada, Double longitudDeLlegada, Double distanciaDelViaje, TipoEstado estado) {
         this.idViaje = idViaje;
         this.domicilioDeSalida = domicilioDeSalida;
         this.domicilioDeLlegada = domicilioDeLlegada;
@@ -30,21 +30,17 @@ public class DatosViaje {
         this.latitudDeLlegada = latitudDeLlegada;
         this.longitudDeLlegada = longitudDeLlegada;
         this.distanciaDelViaje = distanciaDelViaje;
-        this.terminado = terminado;
-        this.cancelado = cancelado;
-        this.aceptado = aceptado;
-        this.descartado = descartado;
+        this.estado = estado;
     }
 
-    public DatosViaje(Integer idViaje, String domicilioDeSalida, String domicilioDeLlegada, String nombreDelCliente, String precio, String codigoPostal, Boolean terminado, Boolean cancelado) {
+    public DatosViaje(Integer idViaje, String domicilioDeSalida, String domicilioDeLlegada, String nombreDelCliente, String precio, String codigoPostal, TipoEstado estado) {
         this.idViaje = idViaje;
         this.domicilioDeSalida = domicilioDeSalida;
         this.domicilioDeLlegada = domicilioDeLlegada;
         this.nombreDelCliente = nombreDelCliente;
         this.precio = precio;
         this.codigoPostal = codigoPostal;
-        this.terminado = terminado;
-        this.cancelado = cancelado;
+        this.estado = estado;
     }
 
     public DatosViaje() {
@@ -139,35 +135,20 @@ public class DatosViaje {
         this.distanciaDelViaje = distanciaDelViaje;
     }
 
-    public Boolean getTerminado() {
-        return terminado;
+    public TipoEstado getEstado() {
+        return estado;
     }
 
-    public void setTerminado(Boolean terminado) {
-        this.terminado = terminado;
+    public void setEstado(TipoEstado estado) {
+        this.estado = estado;
     }
 
-    public Boolean getCancelado() {
-        return cancelado;
-    }
+    public Viaje toViaje(DatosViaje viajeActual) {
+        Viaje viaje = new Viaje();
+        viaje.setDomicilioDeSalida(viajeActual.getDomicilioDeSalida());
+        viaje.setDomicilioDeLlegada(viajeActual.getDomicilioDeLlegada());
 
-    public void setCancelado(Boolean cancelado) {
-        this.cancelado = cancelado;
-    }
-
-    public Boolean getAceptado() {
-        return aceptado;
-    }
-
-    public void setAceptado(Boolean aceptado) {
-        this.aceptado = aceptado;
-    }
-
-    public Boolean getDescartado() {
-        return descartado;
-    }
-
-    public void setDescartado(Boolean descartado) {
-        this.descartado = descartado;
+        viaje.setCodigoPostal(viajeActual.getCodigoPostal());
+        return viaje;
     }
 }

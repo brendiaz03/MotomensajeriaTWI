@@ -1,5 +1,5 @@
 package com.tallerwebi.dominio;
-import com.tallerwebi.dominio.conductor.ConductorNoEncontradoException;
+import com.tallerwebi.dominio.usuario.UsuarioNoEncontradoException;
 import com.tallerwebi.dominio.enums.Color;
 import com.tallerwebi.dominio.enums.ModeloVehiculo;
 import com.tallerwebi.dominio.enums.TipoVehiculo;
@@ -9,7 +9,6 @@ import com.tallerwebi.dominio.vehiculo.VehiculoServicio;
 import com.tallerwebi.dominio.vehiculo.VehiculoServicioImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -43,7 +42,7 @@ public class VehiculoServicioTest {
     }
 
     @Test
-    public void queSeEditeConductor() throws ConductorNoEncontradoException {
+    public void queSeEditeConductor() throws UsuarioNoEncontradoException {
         Vehiculo vehiculo = new Vehiculo();
         vehiculo.setPatente("blanco");
 

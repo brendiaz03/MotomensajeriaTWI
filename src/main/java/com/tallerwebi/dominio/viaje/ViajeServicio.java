@@ -1,7 +1,9 @@
 package com.tallerwebi.dominio.viaje;
 
+import com.tallerwebi.dominio.cliente.Cliente;
 import com.tallerwebi.dominio.conductor.Conductor;
-import com.tallerwebi.dominio.conductor.ConductorNoEncontradoException;
+import com.tallerwebi.dominio.paquete.Paquete;
+import com.tallerwebi.dominio.usuario.UsuarioNoEncontradoException;
 import com.tallerwebi.presentacion.Datos.DatosViaje;
 
 import java.util.List;
@@ -10,7 +12,7 @@ public interface ViajeServicio {
 
     DatosViaje obtenerViajeAceptadoPorId(Integer id);
 
-    List<DatosViaje> obtenerHistorialDeViajes(Conductor conductor) throws ConductorNoEncontradoException;
+    List<DatosViaje> obtenerHistorialDeViajes(Conductor conductor) throws UsuarioNoEncontradoException;
 
     Viaje actualizarViaje(Viaje viaje);
 
@@ -33,4 +35,6 @@ public interface ViajeServicio {
     DatosViaje mapearViajeADatosViajeHistorial(Viaje viaje);
 
     DatosViaje mapearViajeADatosViaje(Viaje viaje);
+
+    void crearViaje(Cliente cliente, DatosViaje viaje, Paquete paquete);
 }

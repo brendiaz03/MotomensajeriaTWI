@@ -20,7 +20,7 @@ public class AyudaControlador {
 //    }
 //
 //    @RequestMapping ("/ayuda")
-//    public ModelAndView mostrarVistaAyuda(HttpServletRequest request) throws ConductorNoEncontradoException {
+//    public ModelAndView mostrarVistaAyuda(HttpServletRequest request) throws UsuarioNoEncontradoException {
 //        ModelMap model = new ModelMap();
 //
 //        Boolean isUsuarioLogueado = (Boolean) request.getSession().getAttribute("isUsuarioLogueado");
