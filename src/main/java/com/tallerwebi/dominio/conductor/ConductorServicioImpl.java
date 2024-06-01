@@ -1,6 +1,8 @@
 package com.tallerwebi.dominio.conductor;
 
+import com.tallerwebi.dominio.usuario.TipoUsuario;
 import com.tallerwebi.dominio.vehiculo.Vehiculo;
+import com.tallerwebi.presentacion.Datos.DatosRegistro;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -20,14 +22,19 @@ public class ConductorServicioImpl implements ConductorServicio {
     }
 
     @Override
-    public Conductor registrarConductorNoDuplicado(Conductor nuevoConductor) throws  ConductorDuplicadoException {
+    public Conductor registrarConductorNoDuplicado(DatosRegistro nuevoConductor) throws  ConductorDuplicadoException {
+        Conductor conductorARegistrar = mapearUsuarioAConductor(nuevoConductor);
         try{
             this.conductorRepositorio.buscarDuplicados(nuevoConductor.getEmail(),nuevoConductor.getNombreUsuario());
             throw new ConductorDuplicadoException("E-mail o Usuario Duplicado");
         }catch(NoResultException e){
-           return this.conductorRepositorio.guardar(nuevoConductor);
+           return this.conductorRepositorio.guardar(conductorARegistrar);
         }
 }
+
+    private Conductor mapearUsuarioAConductor(DatosRegistro nuevoConductor) {
+        return new Conductor(nuevoConductor.getNombre(), nuevoConductor.getApellido(), nuevoConductor.getNumeroDeDni(), nuevoConductor.getEmail(), nuevoConductor.getNumeroDeTelefono(), nuevoConductor.getNombreUsuario(), nuevoConductor.getPassword(), nuevoConductor.getDomicilio(), TipoUsuario.CONDUCTOR);
+    }
 
     @Override
     public Conductor obtenerConductorPorId(Integer id) throws ConductorNoEncontradoException {

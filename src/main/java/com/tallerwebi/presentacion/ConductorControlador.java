@@ -30,38 +30,6 @@ public class ConductorControlador {
         this.iimageService=imageService;
         this.vehiculoService=_vehiculoService;
     }
-    @RequestMapping(value = "/registro-conductor", method = RequestMethod.GET)
-    public ModelAndView mostrarFormConductor(String mensajeError, HttpSession session) throws ConductorNoEncontradoException {
-
-        String viewName= "registro-conductor";
-        ModelMap model = new ModelMap();
-        Imagen logo = iimageService.getImagenByName("logo");
-        Imagen auto = iimageService.getImagenByName("auto");
-        Imagen fondo = iimageService.getImagenByName("fondo");
-        Imagen botonPS = iimageService.getImagenByName("botonPS");
-        Imagen user = iimageService.getImagenByName("user");
-
-        boolean isEditForm = (session.getAttribute("isEditForm") != null) ? (boolean) session.getAttribute("isEditForm") : false;
-
-        model.put("logo", logo);
-        model.put("auto", auto);
-        model.put("fondo", fondo);
-        model.put("botonPS", botonPS);
-        model.put("conductor", new Conductor());
-        model.put("isEditForm", isEditForm);
-        model.put("user", user);
-
-        if(!isEditForm) {
-            if(mensajeError != ""){
-                model.put("mensajeError", mensajeError);
-            }
-        } else {
-            Integer idUsuario = (Integer) session.getAttribute("IDUSUARIO");
-            Conductor conductor = conductorServicio.obtenerConductorPorId(idUsuario);
-            model.put("conductor", conductor );
-        }
-        return new ModelAndView(viewName, model);
-    }
 
     @RequestMapping(path = "/perfil", method = RequestMethod.GET)
     public ModelAndView irAPerfil(HttpSession session) throws ConductorNoEncontradoException {
@@ -112,19 +80,7 @@ public class ConductorControlador {
         return new ModelAndView("foto-perfil",model);
     }
 
-    @PostMapping("/registro-conductor")
-    public ModelAndView registrarConductor(@ModelAttribute("conductor") Conductor nuevoConductor, HttpSession session) throws Exception {
-        try {
-            Conductor registrado = conductorServicio.registrarConductorNoDuplicado(nuevoConductor);
-            if(registrado != null){
-                session.setAttribute("IDUSUARIO", registrado.getId());
-                return new ModelAndView("redirect:/vehiculo");
-            }
-        } catch (ConductorDuplicadoException e) {
-            return this.mostrarFormConductor(e.getMessage(),session);
-        }
-        return this.mostrarFormConductor("Se ha producido un error en el servidor.",session);
-    }
+
 
     @PostMapping("/editar-conductor")
     public ModelAndView editarConductor(HttpSession session, @ModelAttribute("conductor") Conductor conductorEditado) throws ConductorNoEncontradoException {

@@ -78,7 +78,7 @@
             </div>
             <div>
                 <label for="nroTelefono" class="telefono fuente_formulario_registro">Número de Teléfono</label>
-                <input type="text" class="form-control" id="nroTelefono" name="nroTelefono" th:field="*{nroTelefono}" th:value="${isEditForm ? conductor.nroTelefono : ''}" required>
+                <input type="text" class="form-control" id="nroTelefono" name="nroTelefono" th:field="*{numeroDeTelefono}" th:value="${isEditForm ? conductor.nroTelefono : ''}" required>
             </div>
             <div>
                 <label for="numeroDeDni" class="dni fuente_formulario_registro">Número de DNI</label>
@@ -103,8 +103,12 @@
                 <input type="password" class="form-control" id="confirmarPassword" name="confirmarPassword"  th:value="${isEditForm ? conductor.password : ''}" th:readonly="${isEditForm}" required>
             </div>
             <div>
-                <label for="cvu" class="cvu fuente_formulario_registro">CVU</label>
-                <input type="number" class="form-control" id="cvu" name="cvu" th:field="*{cvu}" th:value="${isEditForm ? conductor.cvu : ''}" required>
+                <label for="tipoUsuario">Tipo de Usuario:</label>
+                <select id="tipoUsuario" name="tipoUsuario" class="form-control" th:field="*{tipoUsuario}">
+                    <option th:each="tipo : ${T(com.tallerwebi.dominio.TipoUsuario).values()}" th:value="${tipo}" th:text="${tipo}">
+                        {tipo}
+                    </option>
+                </select>
             </div>
         </div>
 

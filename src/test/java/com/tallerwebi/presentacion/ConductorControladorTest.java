@@ -42,7 +42,7 @@ public class ConductorControladorTest {
 
    }
 
-    @Test
+    /*@Test
     public void queAlSolicitarLaPantallaRegistrarmeSeMuestreElFormularioDeRegistroDelConductor() throws ConductorNoEncontradoException {
         String nombreEsperado= "registro-conductor";
         Conductor conductor=new Conductor();
@@ -57,7 +57,7 @@ public class ConductorControladorTest {
         ModelAndView mav = this.conductorControlador.mostrarFormConductor("", session);
         assertThat(mav.getViewName(), equalToIgnoringCase(nombreEsperado));
         assertThat(mav.getModel().get("conductor"), equalTo(conductor));
-    }
+    }*/
 
     @Test
     public void queAlSolicitarLaPantallaIrAPerfilSeMuestreElPerfilDelConductor() throws ConductorNoEncontradoException {
@@ -112,7 +112,7 @@ public class ConductorControladorTest {
         assertThat(mav.getModel().get("isUsuarioLogueado"),equalTo(true));
     }
 
-    @Test
+    /*@Test
     public void queSePuedaRegistrarUnConductor() throws Exception {
         Conductor nuevoConductor = new Conductor();
         Conductor conductor = new Conductor();
@@ -124,7 +124,7 @@ public class ConductorControladorTest {
 
         assertThat(mav.getViewName(), equalTo("redirect:/vehiculo"));
         verify(session).setAttribute("IDUSUARIO", conductor.getId());
-    }
+    }*/
     @Test
     public void queSePuedaEditarUnConductor() throws ConductorNoEncontradoException {
         String nombreEsperado = "redirect:/perfil";

@@ -5,6 +5,7 @@ import com.tallerwebi.dominio.conductor.ConductorNoEncontradoException;
 import com.tallerwebi.dominio.conductor.ConductorServicio;
 import com.tallerwebi.dominio.imagen.Imagen;
 import com.tallerwebi.dominio.imagen.ImagenServicio;
+import com.tallerwebi.dominio.viaje.TipoEstado;
 import com.tallerwebi.dominio.viaje.Viaje;
 import com.tallerwebi.dominio.viaje.ViajeServicio;
 import com.tallerwebi.presentacion.Datos.DatosViaje;
@@ -99,7 +100,7 @@ public class ViajeControlador {
             return new ModelAndView("viaje", model);
         }
 
-        if(viaje.getAceptado()) {
+        if(viaje.getEstado() == TipoEstado.ACEPTADO) { // Va al service
             model.put("error", "Viaje no disponible para ser aceptado");
             return new ModelAndView("viaje", model);
         }
@@ -191,7 +192,7 @@ public class ViajeControlador {
             return new ModelAndView(viewName, model);
         }
 
-        if (viaje.getCancelado() || viaje.getTerminado() || viaje.getDescartado()) {
+        if (viaje.getEstado() != TipoEstado.CANCELADO && viaje.getEstado() != TipoEstado.TERMINADO && viaje.getEstado() != TipoEstado.DESCARTADO) {
             model.put("error", "Viaje no disponible para ser visto");
             return new ModelAndView(viewName, model);
         }

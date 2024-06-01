@@ -42,17 +42,8 @@ public class Viaje {
     @Column(name = "medioDePago")
     private String medioDePago;
 
-    @Column(name = "terminado")
-    private Boolean terminado;
-
-    @Column(name = "cancelado")
-    private Boolean cancelado;
-
-    @Column(name = "descartado")
-    private Boolean descartado;
-
-    @Column(name = "aceptado")
-    private Boolean aceptado;
+    @Column(name = "estado")
+    private TipoEstado estado;
 
     @ManyToOne()
     @JoinColumn(name = "idCliente", referencedColumnName = "id")
@@ -76,7 +67,7 @@ public class Viaje {
 
     }
 
-    public Viaje(String domicilioDeSalida, String domicilioDeLlegada, Cliente cliente, String precio, String codigoPostal, Double latitudDeSalida, Double longitudDeSalida, Double latitudDeLlegada, Double longitudDeLlegada, Double distanciaDelViaje, Boolean terminado, Boolean cancelado, Boolean aceptado, Boolean descartado) {
+    public Viaje(String domicilioDeSalida, String domicilioDeLlegada, Cliente cliente, String precio, String codigoPostal, Double latitudDeSalida, Double longitudDeSalida, Double latitudDeLlegada, Double longitudDeLlegada, Double distanciaDelViaje, TipoEstado estado) {
         this.domicilioDeSalida = domicilioDeSalida;
         this.domicilioDeLlegada = domicilioDeLlegada;
         this.cliente = cliente;
@@ -87,10 +78,7 @@ public class Viaje {
         this.latitudDeLlegada = latitudDeLlegada;
         this.longitudDeLlegada = longitudDeLlegada;
         this.distanciaDelViaje = distanciaDelViaje;
-        this.terminado = terminado;
-        this.cancelado = cancelado;
-        this.aceptado = aceptado;
-        this.descartado = descartado;
+        this.estado = estado;
     }
 
     public Integer getId() {
@@ -173,22 +161,6 @@ public class Viaje {
         this.medioDePago = medioDePago;
     }
 
-    public Boolean getTerminado() {
-        return terminado;
-    }
-
-    public void setTerminado(Boolean terminado) {
-        this.terminado = terminado;
-    }
-
-    public Boolean getCancelado() {
-        return cancelado;
-    }
-
-    public void setCancelado(Boolean cancelado) {
-        this.cancelado = cancelado;
-    }
-
     public Cliente getCliente() {
         return cliente;
     }
@@ -213,14 +185,6 @@ public class Viaje {
         this.paquete = paquete;
     }
 
-    public Boolean getDescartado() {
-        return descartado;
-    }
-
-    public void setDescartado(Boolean descartado) {
-        this.descartado = descartado;
-    }
-
     public Double getDistanciaDelViaje() {
         return distanciaDelViaje;
     }
@@ -237,11 +201,11 @@ public class Viaje {
         this.fecha = fecha;
     }
 
-    public Boolean getAceptado() {
-        return aceptado;
+    public TipoEstado getEstado() {
+        return estado;
     }
 
-    public void setAceptado(Boolean aceptado) {
-        this.aceptado = aceptado;
+    public void setEstado(TipoEstado estado) {
+        this.estado = estado;
     }
 }

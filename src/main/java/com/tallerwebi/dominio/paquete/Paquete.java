@@ -1,5 +1,6 @@
 package com.tallerwebi.dominio.paquete;
 
+import com.tallerwebi.dominio.cliente.Cliente;
 import com.tallerwebi.dominio.conductor.Conductor;
 import com.tallerwebi.dominio.vehiculo.Vehiculo;
 import com.tallerwebi.dominio.viaje.Viaje;
@@ -25,6 +26,10 @@ public class Paquete {
 
     @OneToOne(mappedBy = "paquete", cascade = CascadeType.ALL)
     private Viaje viaje;
+
+    @OneToOne
+    @JoinColumn(name = "idCliente", referencedColumnName = "id")
+    private Cliente cliente;
 
     public Paquete(Double peso, Double dimension, Boolean esFragil) {
         this.peso = peso;
@@ -75,5 +80,13 @@ public class Paquete {
 
     public void setViaje(Viaje viaje) {
         this.viaje = viaje;
+    }
+
+    public Cliente getCliente() {
+        return cliente;
+    }
+
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
     }
 }

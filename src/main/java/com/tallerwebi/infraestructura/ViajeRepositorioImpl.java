@@ -1,6 +1,7 @@
 package com.tallerwebi.infraestructura;
 
 import com.tallerwebi.dominio.conductor.Conductor;
+import com.tallerwebi.dominio.viaje.TipoEstado;
 import com.tallerwebi.dominio.viaje.Viaje;
 import com.tallerwebi.dominio.viaje.ViajeRepositorio;
 import org.hibernate.Criteria;
@@ -55,8 +56,7 @@ public class ViajeRepositorioImpl implements ViajeRepositorio {
                 "(6371 * acos(cos(radians(:latitudConductor)) * cos(radians(viaje.latitudDeSalida)) * " +
                 "cos(radians(viaje.longitudDeSalida) - radians(:longitudConductor)) + " +
                 "sin(radians(:latitudConductor)) * sin(radians(viaje.latitudDeSalida)))) < :distanciaAFiltar " +
-                "AND viaje.conductor IS NULL AND viaje.descartado = false AND viaje.cancelado = false AND viaje.terminado = false " +
-                "AND viaje.aceptado = false " +
+                "AND viaje.conductor IS NULL AND viaje.estado = :estado " +
                 "ORDER BY (6371 * acos(cos(radians(:latitudConductor)) * cos(radians(viaje.latitudDeSalida)) * " +
                 "cos(radians(viaje.longitudDeSalida) - radians(:longitudConductor)) + " +
                 "sin(radians(:latitudConductor)) * sin(radians(viaje.latitudDeSalida)))) ASC";
@@ -64,7 +64,8 @@ public class ViajeRepositorioImpl implements ViajeRepositorio {
         Query<Viaje> query = session.createQuery(hql, Viaje.class)
                 .setParameter("latitudConductor", latitudConductor)
                 .setParameter("longitudConductor", longitudConductor)
-                .setParameter("distanciaAFiltar", distanciaAFiltar);
+                .setParameter("distanciaAFiltar", distanciaAFiltar)
+                .setParameter("estado", TipoEstado.PENDIENTE);
 
         return query.getResultList();
     }
@@ -74,10 +75,7 @@ public class ViajeRepositorioImpl implements ViajeRepositorio {
     public List<Viaje> traerTodosLosViajesQueNoEstenAceptados() {
         Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Viaje.class);
 
-        criteria.add(Restrictions.eq("terminado", false));
-        criteria.add(Restrictions.eq("cancelado", false));
-        criteria.add(Restrictions.eq("descartado", false));
-        criteria.add(Restrictions.eq("aceptado", false));
+        criteria.add(Restrictions.eq("estado", null));
 
         return (List<Viaje>) criteria.list();
     }

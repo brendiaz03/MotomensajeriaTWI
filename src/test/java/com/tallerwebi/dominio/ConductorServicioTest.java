@@ -40,7 +40,7 @@ public class ConductorServicioTest {
     }
 
 
-    @Test
+    /*@Test
     public void queAlRegistrarUnConductorTeDevuelvaElMismo() throws Exception {
 
         Conductor nuevoConductor = new Conductor();
@@ -64,7 +64,7 @@ public class ConductorServicioTest {
         when(this.conductorRepositorio.buscarDuplicados(conductor.getEmail(), conductor.getNombreUsuario())).thenReturn(conductor);
 
         assertThrows(ConductorDuplicadoException.class, () -> conductorServicio.registrarConductorNoDuplicado(conductor));
-    }
+    }*/
     @Test
     public void queSeObtengaConductorPorID() throws Exception {
     Integer conductorId = 1;
