@@ -78,6 +78,7 @@ public class VehiculoControlador {
        }else{
            Vehiculo vehiculo = vehiculoServicio.registrarVehiculo(nuevoVehiculo);
            if(vehiculo != null){
+               session.setAttribute("VEHICULO", vehiculo);
                conductorServicio.RelacionarVehiculoAConductor(conductor.getId(), vehiculo);
                return new ModelAndView("redirect:/home");
            }else{

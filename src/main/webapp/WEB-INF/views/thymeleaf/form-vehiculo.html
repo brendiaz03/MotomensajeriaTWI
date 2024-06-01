@@ -105,14 +105,17 @@
                 </div>
 
             </section>
+
             <section class="errores" th:if="${mensajeError != null and !mensajeError.isEmpty()}">
                 <p th:text="${mensajeError}">Mensaje de error predeterminado</p>
             </section>
             <section class="botones">
+                <a th:href="home"><button id="boton_cancelar_ingresar" type="button" class="boton_cancelar">Cancelar</button></a>
+                <!-- Botón Ingresar / Editar -->
                 <button type="submit" class="boton_submit">Registrar</button>
+            </section>
         </form>
-        <a th:href="home.html"><button class="boton_cancelar">Cancelar</button></a>
-        </section>
+
     </div>
 
 </main>

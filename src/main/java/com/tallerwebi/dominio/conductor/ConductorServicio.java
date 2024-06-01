@@ -14,7 +14,7 @@ public interface ConductorServicio {
 
     void editarConductor(Conductor nuevoConductor) throws ConductorNoEncontradoException;
 
-    void borrarConductor(Integer idusuario);
+    void borrarConductor(Integer idusuario) throws ConductorNoEncontradoException;
 
     void ingresarImagen (MultipartFile imagen, Integer id) throws IOException, ConductorNoEncontradoException;
 

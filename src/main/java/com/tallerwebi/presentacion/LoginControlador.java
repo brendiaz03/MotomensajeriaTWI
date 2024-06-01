@@ -237,7 +237,7 @@ public class LoginControlador {
     }
 
     @PostMapping("/registro-conductor")
-    public ModelAndView registrarConductor(@ModelAttribute("conductor") DatosRegistro nuevoUsuario, HttpSession session) throws Exception {
+    public ModelAndView registrarConductor(@ModelAttribute("usuario") DatosRegistro nuevoUsuario, HttpSession session) throws Exception {
         if(nuevoUsuario.getTipoUsuario() == TipoUsuario.CONDUCTOR){
             Conductor conductorRegistrado = conductorServicio.registrarConductorNoDuplicado(nuevoUsuario);
             if(conductorRegistrado != null){

@@ -61,7 +61,7 @@
     <h1 th:if="${isEditForm}" class="titulo_registroConductor">Editar Datos Personales</h1>
     <h1 th:unless="${isEditForm}" class="titulo_registroConductor">Registrarme</h1>
 
-    <form id="conductorForm" th:action="${isEditForm ? 'editar-conductor' : 'registro-conductor'}" method="POST" th:object="${conductor}"> <!--th:method="${isEditForm ? 'PUT' : 'POST'}"-->
+    <form id="conductorForm" th:action="${isEditForm ? 'editar-conductor' : 'registro-conductor'}" method="POST" th:object="${usuario}"> <!--th:method="${isEditForm ? 'PUT' : 'POST'}"-->
       <section class="formulario">
         <div class="columna">
             <div>
