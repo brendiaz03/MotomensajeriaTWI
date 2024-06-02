@@ -2,6 +2,7 @@ package com.tallerwebi.dominio.viaje;
 
 import com.tallerwebi.dominio.cliente.Cliente;
 import com.tallerwebi.dominio.conductor.Conductor;
+import com.tallerwebi.dominio.enums.TipoEstado;
 import com.tallerwebi.dominio.paquete.Paquete;
 
 import javax.persistence.*;
@@ -42,17 +43,8 @@ public class Viaje {
     @Column(name = "medioDePago")
     private String medioDePago;
 
-    @Column(name = "terminado")
-    private Boolean terminado;
-
-    @Column(name = "cancelado")
-    private Boolean cancelado;
-
-    @Column(name = "descartado")
-    private Boolean descartado;
-
-    @Column(name = "aceptado")
-    private Boolean aceptado;
+    @Column(name = "estado")
+    private TipoEstado estado;
 
     @ManyToOne()
     @JoinColumn(name = "idCliente", referencedColumnName = "id")
@@ -66,11 +58,8 @@ public class Viaje {
     @JoinColumn(name = "idPaquete", referencedColumnName = "id")
     private Paquete paquete;
 
-    @Column(name = "fecha_terminacion")
-    private LocalDateTime fechaDeTerminacion;
-
-    @Column(name = "fecha_cancelacion")
-    private LocalDateTime fechaDeCancelacion;
+    @Column(name = "fecha")
+    private LocalDateTime fecha;
 
     @Transient
     private Double distanciaDelViaje;
@@ -79,7 +68,7 @@ public class Viaje {
 
     }
 
-    public Viaje(String domicilioDeSalida, String domicilioDeLlegada, Cliente cliente, String precio, String codigoPostal, Double latitudDeSalida, Double longitudDeSalida, Double latitudDeLlegada, Double longitudDeLlegada, Double distanciaDelViaje, Boolean terminado, Boolean cancelado, Boolean aceptado, Boolean descartado) {
+    public Viaje(String domicilioDeSalida, String domicilioDeLlegada, Cliente cliente, String precio, String codigoPostal, Double latitudDeSalida, Double longitudDeSalida, Double latitudDeLlegada, Double longitudDeLlegada, Double distanciaDelViaje, TipoEstado estado) {
         this.domicilioDeSalida = domicilioDeSalida;
         this.domicilioDeLlegada = domicilioDeLlegada;
         this.cliente = cliente;
@@ -90,10 +79,7 @@ public class Viaje {
         this.latitudDeLlegada = latitudDeLlegada;
         this.longitudDeLlegada = longitudDeLlegada;
         this.distanciaDelViaje = distanciaDelViaje;
-        this.terminado = terminado;
-        this.cancelado = cancelado;
-        this.aceptado = aceptado;
-        this.descartado = descartado;
+        this.estado = estado;
     }
 
     public Integer getId() {
@@ -176,22 +162,6 @@ public class Viaje {
         this.medioDePago = medioDePago;
     }
 
-    public Boolean getTerminado() {
-        return terminado;
-    }
-
-    public void setTerminado(Boolean terminado) {
-        this.terminado = terminado;
-    }
-
-    public Boolean getCancelado() {
-        return cancelado;
-    }
-
-    public void setCancelado(Boolean cancelado) {
-        this.cancelado = cancelado;
-    }
-
     public Cliente getCliente() {
         return cliente;
     }
@@ -216,14 +186,6 @@ public class Viaje {
         this.paquete = paquete;
     }
 
-    public Boolean getDescartado() {
-        return descartado;
-    }
-
-    public void setDescartado(Boolean descartado) {
-        this.descartado = descartado;
-    }
-
     public Double getDistanciaDelViaje() {
         return distanciaDelViaje;
     }
@@ -232,27 +194,19 @@ public class Viaje {
         this.distanciaDelViaje = distanciaDelViaje;
     }
 
-    public LocalDateTime getFechaDeTerminacion() {
-        return fechaDeTerminacion;
+    public LocalDateTime getFecha() {
+        return fecha;
     }
 
-    public void setFechaDeTerminacion(LocalDateTime fechaDeTerminacion) {
-        this.fechaDeTerminacion = fechaDeTerminacion;
+    public void setFecha(LocalDateTime fecha) {
+        this.fecha = fecha;
     }
 
-    public LocalDateTime getFechaDeCancelacion() {
-        return fechaDeCancelacion;
+    public TipoEstado getEstado() {
+        return estado;
     }
 
-    public void setFechaDeCancelacion(LocalDateTime fechaDeCancelacion) {
-        this.fechaDeCancelacion = fechaDeCancelacion;
-    }
-
-    public Boolean getAceptado() {
-        return aceptado;
-    }
-
-    public void setAceptado(Boolean aceptado) {
-        this.aceptado = aceptado;
+    public void setEstado(TipoEstado estado) {
+        this.estado = estado;
     }
 }

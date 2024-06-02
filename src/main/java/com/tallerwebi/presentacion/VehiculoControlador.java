@@ -1,6 +1,6 @@
 package com.tallerwebi.presentacion;
 import com.tallerwebi.dominio.conductor.Conductor;
-import com.tallerwebi.dominio.conductor.ConductorNoEncontradoException;
+import com.tallerwebi.dominio.usuario.UsuarioNoEncontradoException;
 import com.tallerwebi.dominio.conductor.ConductorServicio;
 import com.tallerwebi.dominio.vehiculo.VehiculoServicio;
 import com.tallerwebi.dominio.vehiculo.Vehiculo;
@@ -28,7 +28,7 @@ public class VehiculoControlador {
     }
 
     @RequestMapping(path = "/vehiculo", method = RequestMethod.GET)
-    public ModelAndView mostrarRegistroDelVehiculo(HttpSession session) throws ConductorNoEncontradoException {
+    public ModelAndView mostrarRegistroDelVehiculo(HttpSession session) throws UsuarioNoEncontradoException {
 
         ModelMap model = new ModelMap();
 
@@ -51,7 +51,7 @@ public class VehiculoControlador {
     }
 
     @PostMapping("/registro-vehiculo")
-    public ModelAndView registrarVehiculo(@ModelAttribute("vehiculo") Vehiculo nuevoVehiculo, HttpSession session) throws ConductorNoEncontradoException {
+    public ModelAndView registrarVehiculo(@ModelAttribute("vehiculo") Vehiculo nuevoVehiculo, HttpSession session) throws UsuarioNoEncontradoException {
        ModelMap model = new ModelMap();
 
        Conductor conductor = conductorServicio.obtenerConductorPorId((Integer)session.getAttribute("IDUSUARIO"));
@@ -67,6 +67,7 @@ public class VehiculoControlador {
        }else{
            Vehiculo vehiculo = vehiculoServicio.registrarVehiculo(nuevoVehiculo);
            if(vehiculo != null){
+               session.setAttribute("VEHICULO", vehiculo);
                conductorServicio.RelacionarVehiculoAConductor(conductor.getId(), vehiculo);
                return new ModelAndView("redirect:/home");
            }else{

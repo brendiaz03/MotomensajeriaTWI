@@ -67,9 +67,11 @@
 
           <div class="contenedor_botones">
             <div>
-              <button th:href="@{/perfil}" class="boton_subir_imagen">
-                <i class="fa-solid fa-xmark"></i>
-              </button>
+              <a th:href="@{/perfil}" id="backToProfile" >
+                <button class="boton_subir_imagen">
+                  <i class="fa-solid fa-xmark"></i>
+                </button>
+              </a>
             </div>
             <div class="boton_contenedor">
               <input th:field="*{imagenPerfil}" type="file" name="image" accept="image/*" class="form-control-file">
@@ -87,19 +89,23 @@
 </main>
 </body>
 <script>
-  function previewImage(event) {
-    const imagenInput = event.target;
-    if (imagenInput.files && imagenInput.files[0]) {
-      const reader = new FileReader();
-      reader.onload = function (e) {
-        const imagenPerfil = document.getElementById('imagenPerfil');
-        const imagenNueva = document.getElementById('imagenNueva');
-        imagenPerfil.style.display = 'none';
-        imagenNueva.style.display = 'block';
-        imagenNueva.src = e.target.result;
-      };
-      reader.readAsDataURL(imagenInput.files[0]);
-    }
-  }
+  // function previewImage(event) {
+  //   const imagenInput = event.target;
+  //   if (imagenInput.files && imagenInput.files[0]) {
+  //     const reader = new FileReader();
+  //     reader.onload = function (e) {
+  //       const imagenPerfil = document.getElementById('imagenPerfil');
+  //       const imagenNueva = document.getElementById('imagenNueva');
+  //       imagenPerfil.style.display = 'none';
+  //       imagenNueva.style.display = 'block';
+  //       imagenNueva.src = e.target.result;
+  //     };
+  //     reader.readAsDataURL(imagenInput.files[0]);
+  //   }
+  // }
+      document.getElementById('backToProfile').addEventListener('click', function(event) {
+      event.preventDefault();
+      window.location.href = this.href;
+    });
 </script>
 </html>

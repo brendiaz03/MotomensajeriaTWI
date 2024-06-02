@@ -1,12 +1,15 @@
 package com.tallerwebi.dominio.conductor;
 
+import com.tallerwebi.dominio.enums.TipoUsuario;
+import com.tallerwebi.dominio.usuario.UsuarioDuplicadoException;
+import com.tallerwebi.dominio.usuario.UsuarioNoEncontradoException;
 import com.tallerwebi.dominio.vehiculo.Vehiculo;
+import com.tallerwebi.presentacion.Datos.DatosRegistro;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.NoResultException;
-import java.awt.desktop.SystemSleepEvent;
 import java.io.IOException;
 import java.util.Base64;
 
@@ -21,60 +24,76 @@ public class ConductorServicioImpl implements ConductorServicio {
     }
 
     @Override
-    public Conductor registrarConductorNoDuplicado(Conductor nuevoConductor) throws  ConductorDuplicadoException {
+    public Conductor registrarConductorNoDuplicado(DatosRegistro nuevoConductor) throws UsuarioDuplicadoException {
+        Conductor conductorARegistrar = mapearUsuarioAConductor(nuevoConductor);
         try{
             this.conductorRepositorio.buscarDuplicados(nuevoConductor.getEmail(),nuevoConductor.getNombreUsuario());
-            throw new ConductorDuplicadoException("E-mail o Usuario Duplicado");
+            throw new UsuarioDuplicadoException("E-mail o Usuario Duplicado");
         }catch(NoResultException e){
-           return this.conductorRepositorio.guardar(nuevoConductor);
+           return this.conductorRepositorio.guardar(conductorARegistrar);
         }
 }
 
+    private Conductor mapearUsuarioAConductor(DatosRegistro nuevoConductor) {
+        return new Conductor(nuevoConductor.getNombre(), nuevoConductor.getApellido(), nuevoConductor.getNumeroDeDni(), nuevoConductor.getEmail(), nuevoConductor.getNumeroDeTelefono(), nuevoConductor.getNombreUsuario(), nuevoConductor.getPassword(), nuevoConductor.getDomicilio(), TipoUsuario.CONDUCTOR);
+    }
+
     @Override
-    public Conductor obtenerConductorPorId(Integer id) throws ConductorNoEncontradoException {
+    public Conductor obtenerConductorPorId(Integer id) throws UsuarioNoEncontradoException {
         try{
             return this.conductorRepositorio.buscarConductorPorId(id);
         }catch(NoResultException e){
-            throw new ConductorNoEncontradoException("Usuario no Encontrado");
+            throw new UsuarioNoEncontradoException("Conductor no Encontrado");
         }
     }
 
     @Override
-    public void editarConductor(Conductor conductorEditado) throws ConductorNoEncontradoException {
-        Conductor conductor = this.conductorRepositorio.buscarConductorPorId(conductorEditado.getId());
-        conductorEditado.setVehiculo(conductor.getVehiculo());
-        if(conductorEditado.getImagenPerfil()==null){
-            conductorEditado.setImagenPerfil(conductor.getImagenPerfil());
+    public void editarConductor(Conductor conductorEditado) throws UsuarioNoEncontradoException {
+        try{
+            Conductor conductor = this.conductorRepositorio.buscarConductorPorId(conductorEditado.getId());
+            conductorEditado.setVehiculo(conductor.getVehiculo());
+            if(conductorEditado.getImagenPerfil()==null){
+                conductorEditado.setImagenPerfil(conductor.getImagenPerfil());
+            }
+            this.conductorRepositorio.editarConductor(conductorEditado);
+        }catch (NoResultException e){
+            throw new UsuarioNoEncontradoException("No se pudo editar al conductor ya que el mismo no existe.");
         }
-        this.conductorRepositorio.editarConductor(conductorEditado);
     }
 
     @Override
-    public void borrarConductor(Integer idusuario) {
-        Conductor conductorABorrar= this.conductorRepositorio.buscarConductorPorId(idusuario);
-        this.conductorRepositorio.borrarConductor(conductorABorrar);
+    public void borrarConductor(Integer idusuario) throws UsuarioNoEncontradoException {
+        try{
+            Conductor conductorABorrar= this.conductorRepositorio.buscarConductorPorId(idusuario);
+            this.conductorRepositorio.borrarConductor(conductorABorrar);
+        }catch (NoResultException e){
+            throw new UsuarioNoEncontradoException("No se pudo borrar al conductor ya que el mismo no existe.");
+        }
     }
 
     @Override
-    public void ingresarImagen(MultipartFile imagen, Integer idUsuario) throws IOException, ConductorNoEncontradoException {
-
-        Conductor conductor = this.conductorRepositorio.buscarConductorPorId(idUsuario);
-        if (conductor!=null){
+    public void ingresarImagen(MultipartFile imagen, Integer idUsuario) throws IOException, UsuarioNoEncontradoException {
+        try{
+            Conductor conductor = this.conductorRepositorio.buscarConductorPorId(idUsuario);
             conductor.setImagenPerfil(Base64.getEncoder().encode(imagen.getBytes()));
             this.editarConductor(conductor);
-        }else{
-//            System.out.println("Error");
-        }
+
+        }catch (NoResultException e){
+            throw new UsuarioNoEncontradoException("No se pudo ingresar la imagen ya que el Conductor no existe.");
+        } catch (IOException e) {
+        throw new RuntimeException("Error al ingresar la imagen", e);
+    }
     }
 
     @Override
-    public Boolean RelacionarVehiculoAConductor(Integer idConductor, Vehiculo vehiculo) {
+    public Boolean RelacionarVehiculoAConductor(Integer idConductor, Vehiculo vehiculo) throws UsuarioNoEncontradoException {
         try{
             conductorRepositorio.agregarVehiculoAConductor(idConductor,vehiculo);
             return true;
         }catch(NoResultException e){
-            return false;
+            throw new UsuarioNoEncontradoException("No se pudo realizar la relación entre el Vehiculo y el Conductor ya que el Conductor no existe.");
         }
     }
+
 
 }

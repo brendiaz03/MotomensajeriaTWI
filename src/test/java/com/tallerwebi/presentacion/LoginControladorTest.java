@@ -1,7 +1,9 @@
 package com.tallerwebi.presentacion;
 
+import com.tallerwebi.dominio.cliente.ClienteServicio;
 import com.tallerwebi.dominio.conductor.Conductor;
 import com.tallerwebi.dominio.conductor.ConductorServicio;
+import com.tallerwebi.dominio.imagen.ImagenServicio;
 import com.tallerwebi.presentacion.Datos.DatosLoginConductor;
 import com.tallerwebi.dominio.login.LoginServicio;
 import com.tallerwebi.dominio.viaje.ViajeServicio;
@@ -21,10 +23,12 @@ public class LoginControladorTest {
 	private HttpSession sessionMock;
 	private LoginControlador controladorLogin;
 	private LoginServicio servicioLoginMock;
+	private ImagenServicio servicioImagenMock;
 	private ConductorServicio servicioConductorMock;
 	private Conductor usuarioMock;
 	private DatosLoginConductor datosLoginMock;
 	private ViajeServicio viajeServicio;
+	private ClienteServicio clienteServicio;
 
 
 	@BeforeEach
@@ -32,10 +36,12 @@ public class LoginControladorTest {
 		requestMock = mock(HttpServletRequest.class);
 		sessionMock = mock(HttpSession.class);
 		servicioLoginMock = mock(LoginServicio.class);
+		servicioImagenMock = mock(ImagenServicio.class);
 		servicioConductorMock = mock(ConductorServicio.class);
 		viajeServicio = mock(ViajeServicio.class);
+		clienteServicio = mock(ClienteServicio.class);
 		when(requestMock.getSession()).thenReturn(sessionMock);
-		controladorLogin = new LoginControlador(servicioLoginMock, servicioConductorMock, viajeServicio);
+		controladorLogin = new LoginControlador(servicioLoginMock, servicioImagenMock, servicioConductorMock, viajeServicio, clienteServicio);
 		usuarioMock = mock(Conductor.class);
 		when(usuarioMock.getNombreUsuario()).thenReturn("b");
 		when(usuarioMock.getPassword()).thenReturn("b");  // Establecer una contraseña válida

@@ -55,10 +55,10 @@
             <h1 class="text-center titulo-viajes">Historial de Viajes</h1>
             <h2 th:text="${sinViajes}" class="text-center titulo-viajes"></h2>
         </div>
-        <div class="card mt-3 contenedor-viajes" style="background-color: transparent;border:none;">
+        <div class="card mt-3 contenedor-viajes" style="background-color: transparent; border: none;">
             <div class="card-body" th:each="viaje : ${viajesObtenidos}">
-                <div class="card mt-3 ml-3 contenedor-datos-viajes-aceptados" >
-                    <div class="card-body viaje">
+                <div class="card mt-3 ml-3 contenedor-datos-viajes-aceptados">
+                    <div class="card-body viaje" th:data-viaje-id="${viaje.idViaje}">
                         <div class="viajes-proceso-img">
                             <div>
                                 <p class="card-text"><b>Salida:</b> <span th:text="${viaje.getDomicilioDeSalida()}"></span></p>
@@ -67,15 +67,17 @@
                                 <p class="card-text"><b>Precio:</b> <span th:text="${viaje.getPrecio()}"></span></p>
                                 <p class="card-text"><b>Codigo Postal:</b> <span th:text="${viaje.getCodigoPostal()}"></span></p>
                             </div>
-                            <section class="imagen-viaje-proceso">
-                                <div class="contenedor-imagen-viaje-proceso"></div>
-                            </section>
                         </div>
-                        <div class="contenedor-boton-cancelar" >
-                            <div th:if="${viaje.getTerminado()}" class="terminado">Terminado</div>
-                        </div>
-                        <div class="contenedor-boton-cancelar" >
-                            <div th:if="${viaje.getCancelado()}" class="cancelado">Cancelado</div>
+                        <div class="contenedor-boton-cancelar">
+                            <div th:with="TERMINADO=${T(com.tallerwebi.dominio.viaje.TipoEstado).TERMINADO}">
+                                <div th:if="${viaje.getEstado() == TERMINADO}" class="terminado">Terminado</div>
+                            </div>
+                            <div th:with="CANCELADO=${T(com.tallerwebi.dominio.viaje.TipoEstado).CANCELADO}">
+                                <div th:if="${viaje.getEstado() == CANCELADO}" class="cancelado">Cancelado</div>
+                            </div>
+                            <div>
+                                <a th:href="@{/detalle(idViaje=${viaje.getIdViaje()})}" class="boton-verde">Ver detalle</a>
+                            </div>
                         </div>
                     </div>
                 </div>

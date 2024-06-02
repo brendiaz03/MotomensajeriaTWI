@@ -58,9 +58,9 @@
             <h1 class="text-center titulo-viajes">Viajes en Proceso</h1>
             <h2 th:text="${sinViajes}" class="text-center titulo-viajes"></h2>
         </div>
-        <div th:if="${viajesObtenidos != null}" class="card mt-3 contenedor-viajes" style="background-color: transparent;border:none;">
-            <div class="card-body" th:each="viaje : ${viajesObtenidos}">
-                <div class="card mt-3 ml-3 contenedor-datos-viajes-aceptados">
+        <div th:if="${viajesObtenidos != null}" class="card mt-3 contenedor-viajes" style="background-color: transparent;border:none; padding:0; margin:0;">
+            <div class="card-body" th:each="viaje : ${viajesObtenidos}" style="background-color: transparent;border:none; padding:0; margin:0;">
+                <div class="card mt-3 ml-3 contenedor-datos-viajes-aceptados" style="background-color: transparent;border:none; padding:0; margin:0;">
                     <div class="card-body viaje">
                         <div class="card mt-3 ml-3 contenedor-viaje" th:data-latitud-salida="${viaje.latitudDeSalida}" th:data-longitud-salida="${viaje.longitudDeSalida}" th:data-latitud-llegada="${viaje.latitudDeLlegada}" th:data-longitud-llegada="${viaje.longitudDeLlegada}">
                             <div class="viajes-proceso-img">
@@ -83,7 +83,5 @@
     </div>
 </main>
 <script type="text/javascript" th:src="@{webjars/bootstrap/5.2.0/js/bootstrap.min.js}"></script>
-<script th:src="@{/js/googleMaps.js}"></script>
-<script async th:src="@{'https://maps.googleapis.com/maps/api/js?key=' + ${clave} + '&loading=async&libraries=places&callback=iniciarMap&libraries=marker'}" defer></script>
 </body>
 </html>

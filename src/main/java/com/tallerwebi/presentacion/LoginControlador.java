@@ -1,8 +1,11 @@
 package com.tallerwebi.presentacion;
 
+import com.tallerwebi.dominio.cliente.ClienteServicio;
 import com.tallerwebi.dominio.conductor.Conductor;
-import com.tallerwebi.dominio.conductor.ConductorNoEncontradoException;
+import com.tallerwebi.dominio.usuario.UsuarioNoEncontradoException;
 import com.tallerwebi.dominio.conductor.ConductorServicio;
+import com.tallerwebi.dominio.imagen.ImagenServicio;
+import com.tallerwebi.dominio.imagen.Imagen;
 import com.tallerwebi.dominio.viaje.ViajeServicio;
 import com.tallerwebi.presentacion.Datos.DatosLoginConductor;
 import com.tallerwebi.dominio.login.LoginServicio;
@@ -20,16 +23,21 @@ import java.util.List;
 public class LoginControlador {
 
     private static LoginServicio loginServicio;
+    private static ImagenServicio imagenServicio;
     private final ConductorServicio conductorServicio;
     private final ViajeServicio viajeServicio;
-    private Double distanciaAFiltrar;
+    private ClienteServicio clienteServicio;
+    private Double latitudActual = -34.668822; // VER
+    private Double longitudActual =  -58.532878; // VER
+
 
     @Autowired
-    public LoginControlador(LoginServicio _LoginServicio, ConductorServicio _conductorServicio, ViajeServicio viajeServicio){
-        this.loginServicio = _LoginServicio;
+    public LoginControlador(LoginServicio _LoginServicio, ImagenServicio _imagenServicio, ConductorServicio _conductorServicio, ViajeServicio viajeServicio, ClienteServicio clienteServicio){
+        loginServicio = _LoginServicio;
+        imagenServicio = _imagenServicio;
         this.conductorServicio = _conductorServicio;
         this.viajeServicio = viajeServicio;
-        this.distanciaAFiltrar = 100.0;
+        this.clienteServicio = clienteServicio;
     }
 
     @RequestMapping("/")
@@ -38,16 +46,18 @@ public class LoginControlador {
     }
 
     @RequestMapping("/home")
-    public ModelAndView mostrarHome(HttpServletRequest request) throws ConductorNoEncontradoException {
+    public ModelAndView mostrarHome(HttpServletRequest request) throws UsuarioNoEncontradoException {
         ModelMap model = new ModelMap();
         String viewName = "home";
 
-        Double latitudActual = -34.818787; // VER
-        Double longitudActual =  -58.646844; // VER
-
+        Imagen logo = imagenServicio.getImagenByName("logo");
+        Imagen user = imagenServicio.getImagenByName("user");
+        Imagen auto = imagenServicio.getImagenByName("auto");
+        Imagen fondo = imagenServicio.getImagenByName("fondo");
+        Imagen botonPS = imagenServicio.getImagenByName("botonPS");
         Boolean isUsuarioLogueado = (Boolean) request.getSession().getAttribute("isUsuarioLogueado");
-        List<DatosViaje> viajesCercanosPendientes = this.viajeServicio.filtrarViajesPorDistanciaDelConductor(latitudActual, longitudActual, distanciaAFiltrar);
         Conductor conductor;
+        Double distanciaAFiltrar = (Double) request.getSession().getAttribute("distancia");
 
         if(request.getSession().getAttribute("IDUSUARIO") != null){
             conductor = conductorServicio.obtenerConductorPorId((Integer) request.getSession().getAttribute("IDUSUARIO"));
@@ -55,8 +65,23 @@ public class LoginControlador {
             conductor = null;
         }
 
+        List<DatosViaje> viajesCercanosPendientes;
+
+        if (request.getSession().getAttribute("VEHICULO") != null) {
+            viajesCercanosPendientes = this.viajeServicio.filtrarViajesPorDistanciaDelConductor(latitudActual, longitudActual, distanciaAFiltrar);
+            model.put("noTieneVehiculo", false);
+        } else {
+            viajesCercanosPendientes = null;
+            model.put("noTieneVehiculo", true);
+        }
+
         request.getSession().setAttribute("isPenalizado", this.viajeServicio.estaPenalizado(conductor));
 
+        model.put("logo", logo);
+        model.put("user", user);
+        model.put("auto", auto);
+        model.put("fondo", fondo);
+        model.put("botonPS", botonPS);
         model.put("isUsuarioLogueado", isUsuarioLogueado);
         model.put("viajes", viajesCercanosPendientes);
         model.put("conductor", conductor);
@@ -67,8 +92,12 @@ public class LoginControlador {
     @RequestMapping(path = "/login")
     public ModelAndView mostrarLogin(){
         ModelMap model = new ModelMap();
-        String viewName= "login-conductor";
+        String viewName= "login";
+
+        Imagen logo = imagenServicio.getImagenByName("logo");
+
         model.put("datosLogin", new DatosLoginConductor());
+        model.put("logo", logo);
         return new ModelAndView(viewName, model);
     }
 
@@ -76,35 +105,97 @@ public class LoginControlador {
     public ModelAndView validarLogin(@ModelAttribute("datosLogin") DatosLoginConductor datosLoginnConductor, HttpServletRequest request) {
         ModelMap model = new ModelMap();
 
+        request.getSession().invalidate();
+
         Conductor conductorBuscado = loginServicio.consultarUsuario(datosLoginnConductor.getUsuario(), datosLoginnConductor.getPassword());
-            if (conductorBuscado != null) {
+
+            if (conductorBuscado != null ) {
                 request.getSession().setAttribute("NOMBRE", conductorBuscado.getNombre());
                 request.getSession().setAttribute("IDUSUARIO", conductorBuscado.getId());
                 request.getSession().setAttribute("APELLIDO", conductorBuscado.getApellido());
+                request.getSession().setAttribute("VEHICULO", conductorBuscado.getVehiculo());
                 request.getSession().setAttribute("isUsuarioLogueado", true);
                 request.getSession().setAttribute("isEditForm", false);
                 model.put("correcto", "Usuario o clave correcta");
                 return new ModelAndView("redirect:/home", model);
             }else{
-                request.getSession().setAttribute("isUsuarioLogueado", false);
+                //request.getSession().setAttribute("isUsuarioLogueado", false);
                 model.put("error", "Usuario o clave incorrecta");
                 return new ModelAndView("redirect:/login", model);
             }
     }
 
     @RequestMapping(path = "/cerrar-sesion")
-    public ModelAndView cerrarSesion(HttpServletRequest request) throws ConductorNoEncontradoException {
+    public ModelAndView cerrarSesion(HttpServletRequest request) throws UsuarioNoEncontradoException {
         request.getSession().invalidate();
         return mostrarHome(request);
     }
 
+    @RequestMapping ("/ayuda")
+    public ModelAndView mostrarVistaAyuda(HttpServletRequest request) throws UsuarioNoEncontradoException {
+        ModelMap model = new ModelMap();
+
+        String viewName= "ayuda";
+        Imagen logo = imagenServicio.getImagenByName("logo");
+        Imagen user = imagenServicio.getImagenByName("user");
+        Imagen auto = imagenServicio.getImagenByName("auto");
+        Imagen fondo = imagenServicio.getImagenByName("fondo");
+        Imagen botonPS = imagenServicio.getImagenByName("botonPS");
+        Boolean isUsuarioLogueado = (Boolean) request.getSession().getAttribute("isUsuarioLogueado");
+        Conductor conductor;
+
+        if(request.getSession().getAttribute("IDUSUARIO") != null){
+            conductor = conductorServicio.obtenerConductorPorId((Integer) request.getSession().getAttribute("IDUSUARIO"));
+        }else{
+            conductor = null;
+        }
+
+        model.put("logo", logo);
+        model.put("user", user);
+        model.put("auto", auto);
+        model.put("fondo", fondo);
+        model.put("botonPS", botonPS);
+        model.put("isUsuarioLogueado",isUsuarioLogueado);
+        model.put("conductor", conductor);
+        return new ModelAndView(viewName, model);
+    }
+
+    @RequestMapping("/compania")
+    public ModelAndView mostrarVistaCompania(HttpServletRequest request) throws UsuarioNoEncontradoException {
+        ModelMap model = new ModelMap();
+
+        String viewName = "compania";
+        Imagen logo = imagenServicio.getImagenByName("logo");
+        Imagen user = imagenServicio.getImagenByName("user");
+        Imagen auto = imagenServicio.getImagenByName("auto");
+        Imagen fondo = imagenServicio.getImagenByName("fondo");
+        Imagen botonPS = imagenServicio.getImagenByName("botonPS");
+        Boolean isUsuarioLogueado = (Boolean) request.getSession().getAttribute("isUsuarioLogueado");
+        Conductor conductor;
+
+        if(request.getSession().getAttribute("IDUSUARIO") != null){
+            conductor = conductorServicio.obtenerConductorPorId((Integer) request.getSession().getAttribute("IDUSUARIO"));
+        }else{
+            conductor = null;
+        }
+
+        model.put("logo", logo);
+        model.put("user", user);
+        model.put("auto", auto);
+        model.put("fondo", fondo);
+        model.put("botonPS", botonPS);
+        model.put("isUsuarioLogueado",isUsuarioLogueado);
+        model.put("conductor", conductor);
+        return new ModelAndView(viewName, model);
+    }
+
     @RequestMapping(value = "/filtrarPorDistancia", method = RequestMethod.POST)
-    public ModelAndView filtrarPorDistancia(@RequestParam String distancia){
-        if (distancia == null || distancia.isEmpty()) {
-            return new ModelAndView("redirect:/home?error=DistanciaNoSeleccionada");
+    public ModelAndView filtrarPorDistancia(HttpServletRequest request, @RequestParam Double distancia) throws UsuarioNoEncontradoException {
+        if (distancia == null) {
+            return new ModelAndView("redirect:/distanciaNoSeleccionada"); // Excepcion
         } else {
-            this.distanciaAFiltrar = Double.parseDouble(distancia);
-            return new ModelAndView("redirect:/home");
+            request.getSession().setAttribute("distancia", distancia);
+            return mostrarHome(request);
         }
     }
 }

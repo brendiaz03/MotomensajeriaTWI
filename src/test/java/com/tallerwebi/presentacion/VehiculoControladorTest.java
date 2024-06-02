@@ -1,7 +1,7 @@
 package com.tallerwebi.presentacion;
 
 import com.tallerwebi.dominio.conductor.Conductor;
-import com.tallerwebi.dominio.conductor.ConductorNoEncontradoException;
+import com.tallerwebi.dominio.usuario.UsuarioNoEncontradoException;
 import com.tallerwebi.dominio.conductor.ConductorServicio;
 import com.tallerwebi.dominio.vehiculo.Vehiculo;
 import com.tallerwebi.dominio.vehiculo.VehiculoServicio;
@@ -40,7 +40,7 @@ class VehiculoControladorTest {
     }
 
     @Test
-    public void queSePuedaVerElFormDelVehiculo() throws ConductorNoEncontradoException {
+    public void queSePuedaVerElFormularioDelVehiculo() throws UsuarioNoEncontradoException {
 
         Integer idUsuario = 1;
 
@@ -58,7 +58,7 @@ class VehiculoControladorTest {
     }
 
     @Test
-    public void queAlEditarUnVehiculoVayaAlPerfil() throws ConductorNoEncontradoException {
+    public void queAlEditarUnVehiculoVayaAlPerfil() throws UsuarioNoEncontradoException {
 
         Integer idUsuario = 1;
         Long idVehiculoA = 1L;
@@ -85,7 +85,7 @@ class VehiculoControladorTest {
     }
 
     @Test
-    public void queAlEditarUnVehiculoVayaAlHome() throws ConductorNoEncontradoException {
+    public void queAlEditarUnVehiculoVayaAlHome() throws UsuarioNoEncontradoException {
 
         Integer idUsuario = 1;
         Conductor conductorNuevo = new Conductor();
@@ -108,7 +108,7 @@ class VehiculoControladorTest {
     }
 
     @Test
-    public void queAlRegistrarseUnVehiculoMuestreError() throws ConductorNoEncontradoException {
+    public void queAlRegistrarUnVehiculoConPatenteRepetidaMuestreError() throws UsuarioNoEncontradoException {
 
         Integer idUsuario = 1;
         Conductor conductorNuevo = new Conductor();
@@ -129,5 +129,16 @@ class VehiculoControladorTest {
         assertNotNull(mav.getModel().get("error"));
         assertEquals("Patente Repetida", mav.getModel().get("error"));
     }
+
+    @Test
+    public void queAlMostrarEditarVehiculoSeEstablezcaIsEditFormYRedirijaAlaVistaVehiculo() {
+
+            String viewName = this.vehiculoControlador.mostrarEditarVehiculo(httpSession);
+
+            verify(httpSession).setAttribute("isEditForm", true);
+
+            assertThat(viewName, equalToIgnoringCase("redirect:/vehiculo"));
+        }
+
 
 }

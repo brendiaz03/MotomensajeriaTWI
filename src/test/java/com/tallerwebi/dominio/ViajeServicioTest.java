@@ -2,11 +2,9 @@ package com.tallerwebi.dominio;
 
 import com.tallerwebi.dominio.cliente.Cliente;
 import com.tallerwebi.dominio.conductor.Conductor;
-import com.tallerwebi.dominio.conductor.ConductorNoEncontradoException;
-import com.tallerwebi.dominio.viaje.Viaje;
-import com.tallerwebi.dominio.viaje.ViajeRepositorio;
-import com.tallerwebi.dominio.viaje.ViajeServicio;
-import com.tallerwebi.dominio.viaje.ViajeServicioImpl;
+import com.tallerwebi.dominio.enums.TipoEstado;
+import com.tallerwebi.dominio.usuario.UsuarioNoEncontradoException;
+import com.tallerwebi.dominio.viaje.*;
 import com.tallerwebi.presentacion.Datos.DatosViaje;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,7 +15,6 @@ import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 public class ViajeServicioTest {
@@ -35,7 +32,7 @@ public class ViajeServicioTest {
     public void queSePuedaObtenerUnViajeAceptadoPorSuId() {
         // Preparación
         Viaje viajeAceptado = dadoQueExisteUnViaje();
-        viajeAceptado.setAceptado(true);
+        viajeAceptado.setEstado(TipoEstado.ACEPTADO);
         when(this.viajeRepositorio.obtenerViajePorId(viajeAceptado.getId())).thenReturn(viajeAceptado);
 
         // Ejecución
@@ -46,12 +43,10 @@ public class ViajeServicioTest {
     }
 
     @Test
-    public void queSePuedanObtenerElHistorialDeViajesDelConductor() throws ConductorNoEncontradoException {
+    public void queSePuedanObtenerElHistorialDeViajesDelConductor() throws UsuarioNoEncontradoException {
         // Preparación
         Conductor conductor = new Conductor();
         List<Viaje> viajes = dadoQueExistenViajesConUnConductorAsignado(conductor);
-        viajes.get(0).setTerminado(true);
-        viajes.get(1).setCancelado(true);
         when(viajeRepositorio.obtenerViajesPorConductor(conductor)).thenReturn(viajes);
 
         // Ejecución
@@ -80,12 +75,12 @@ public class ViajeServicioTest {
         // Preparación
         Conductor conductor = new Conductor();
         List<Viaje> viajesEnProceso = dadoQueExistenViajesConUnConductorAsignado(conductor);
-        viajesEnProceso.get(0).setTerminado(true);
-        viajesEnProceso.get(0).setCancelado(true);
-        viajesEnProceso.get(0).setDescartado(true);
-        viajesEnProceso.get(1).setTerminado(true);
-        viajesEnProceso.get(1).setCancelado(true);
-        viajesEnProceso.get(1).setDescartado(true);
+        viajesEnProceso.get(0).setEstado(TipoEstado.TERMINADO);
+        viajesEnProceso.get(0).setEstado(TipoEstado.CANCELADO);
+        viajesEnProceso.get(0).setEstado(TipoEstado.DESCARTADO);
+        viajesEnProceso.get(1).setEstado(TipoEstado.TERMINADO);
+        viajesEnProceso.get(1).setEstado(TipoEstado.CANCELADO);
+        viajesEnProceso.get(1).setEstado(TipoEstado.DESCARTADO);
 
         when(viajeRepositorio.obtenerViajesPorConductor(conductor)).thenReturn(viajesEnProceso);
 
@@ -101,7 +96,7 @@ public class ViajeServicioTest {
         // Preparación
         Conductor conductor = new Conductor();
         Viaje viaje = dadoQueExisteUnViaje();
-        viaje.setDescartado(true);
+        viaje.setEstado(TipoEstado.DESCARTADO);
         viaje.setConductor(conductor);
         when(this.viajeRepositorio.obtenerViajePorId(viaje.getId())).thenReturn(viaje);
         doNothing().when(viajeRepositorio).editar(viaje);
@@ -111,7 +106,7 @@ public class ViajeServicioTest {
 
         //Validación
         verify(viajeRepositorio).obtenerViajePorId(viaje.getId());
-        assertEquals(true, viaje.getDescartado());
+        assertThat(viaje.getEstado(), equalTo(TipoEstado.DESCARTADO));
         verify(viajeRepositorio).editar(viaje);
     }
 
@@ -122,8 +117,8 @@ public class ViajeServicioTest {
         DatosViaje viaje = new DatosViaje();
         viaje.setIdViaje(1);
         when(viajeRepositorio.obtenerViajePorId(viaje.getIdViaje())).thenReturn(viajeEsperado);
-        viajeEsperado.setCancelado(true);
-        viajeEsperado.setFechaDeCancelacion(LocalDateTime.now());
+        viajeEsperado.setEstado(TipoEstado.CANCELADO);
+        viajeEsperado.setFecha(LocalDateTime.now());
         doNothing().when(viajeRepositorio).editar(viajeEsperado);
 
         // Ejecución
@@ -131,7 +126,7 @@ public class ViajeServicioTest {
 
         // Validación
         verify(viajeRepositorio).obtenerViajePorId(viaje.getIdViaje());
-        assertEquals(true, viajeEsperado.getCancelado());
+        assertThat(viajeEsperado.getEstado(), equalTo(TipoEstado.CANCELADO));
         verify(viajeRepositorio).editar(viajeEsperado);
     }
 
@@ -142,8 +137,8 @@ public class ViajeServicioTest {
         DatosViaje viaje = new DatosViaje();
         viaje.setIdViaje(1);
         when(viajeRepositorio.obtenerViajePorId(viaje.getIdViaje())).thenReturn(viajeEsperado);
-        viajeEsperado.setTerminado(true);
-        viajeEsperado.setFechaDeTerminacion(LocalDateTime.now());
+        viajeEsperado.setEstado(TipoEstado.TERMINADO);
+        viajeEsperado.setFecha(LocalDateTime.now());
         doNothing().when(viajeRepositorio).editar(viajeEsperado);
 
         // Ejecución
@@ -151,7 +146,7 @@ public class ViajeServicioTest {
 
         // Validación
         verify(viajeRepositorio).obtenerViajePorId(viaje.getIdViaje());
-        assertEquals(true, viajeEsperado.getTerminado());
+        assertThat(viajeEsperado.getEstado(), equalTo(TipoEstado.TERMINADO));
         verify(viajeRepositorio).editar(viajeEsperado);
     }
 
@@ -163,7 +158,7 @@ public class ViajeServicioTest {
         DatosViaje viaje = new DatosViaje();
         viaje.setIdViaje(1);
         when(viajeRepositorio.obtenerViajePorId(viaje.getIdViaje())).thenReturn(viajeEsperado);
-        viajeEsperado.setAceptado(true);
+        viajeEsperado.setEstado(TipoEstado.ACEPTADO);
         viajeEsperado.setConductor(conductor);
         doNothing().when(viajeRepositorio).editar(viajeEsperado);
 
@@ -172,7 +167,7 @@ public class ViajeServicioTest {
 
         // Validación
         verify(viajeRepositorio).obtenerViajePorId(viaje.getIdViaje());
-        assertEquals(true, viajeEsperado.getAceptado());
+        assertThat(viajeEsperado.getEstado(), equalTo(TipoEstado.ACEPTADO));
         verify(viajeRepositorio).editar(viajeEsperado);
     }
 
@@ -183,7 +178,7 @@ public class ViajeServicioTest {
         List<Viaje> viajesObtenidos = dadoQueExistenViajesConUnConductorAsignado(conductor);
 
         for (Viaje viaje : viajesObtenidos) {
-            viaje.setDescartado(true);
+            viaje.setEstado(TipoEstado.DESCARTADO);
         }
 
         when(viajeRepositorio.obtenerViajesPorConductor(conductor)).thenReturn(viajesObtenidos);
@@ -216,11 +211,11 @@ public class ViajeServicioTest {
         List<Viaje> viajesConUnConductorAsignado = new ArrayList<>();
         Cliente cliente = new Cliente();
         cliente.setNombre("Joaquin");
-        Viaje viaje1 = new Viaje("Acevedo 3000", "Sgto. Cabral 2815", cliente, "1000", "1763", -34.667289, -58.530597, -34.663944, -58.536186, 1.2, false, false, false, false);
-        Viaje viaje2 = new Viaje("Av. Gral. San Martín 3339", "Mariano Moreno 2842", cliente, "1000", "1763", -34.668074, -58.534727, -34.665153, -58.541068, 1.2, false, false, false, false);
-        Viaje viaje3 = new Viaje("Avend. Gral. San Martín 3339", "Marianooo Moreno 2842", cliente, "1000", "1763", -34.670465, -58.533708, -34.668612, -58.529116, 1.2, false, false, false, false);
-        Viaje viaje4 = new Viaje("San Justo", "Cañuelas", cliente, "1000", "1763", -34.670889, -58.528515, -34.665206, -58.531884, 1.2, false, false, false, false);
-        Viaje viaje5 = new Viaje("Marconi", "Villa 31", cliente, "1000", "1763", -34.675865, -58.537184, -34.666441, -58.539866, 1.2, false, false, false, false);
+        Viaje viaje1 = new Viaje("Acevedo 3000", "Sgto. Cabral 2815", cliente, "1000", "1763", -34.667289, -58.530597, -34.663944, -58.536186, 1.2, TipoEstado.TERMINADO);
+        Viaje viaje2 = new Viaje("Av. Gral. San Martín 3339", "Mariano Moreno 2842", cliente, "1000", "1763", -34.668074, -58.534727, -34.665153, -58.541068, 1.2, TipoEstado.CANCELADO);
+        Viaje viaje3 = new Viaje("Avend. Gral. San Martín 3339", "Marianooo Moreno 2842", cliente, "1000", "1763", -34.670465, -58.533708, -34.668612, -58.529116, 1.2, null);
+        Viaje viaje4 = new Viaje("San Justo", "Cañuelas", cliente, "1000", "1763", -34.670889, -58.528515, -34.665206, -58.531884, 1.2, null);
+        Viaje viaje5 = new Viaje("Marconi", "Villa 31", cliente, "1000", "1763", -34.675865, -58.537184, -34.666441, -58.539866, 1.2, null);
 
         viaje1.setConductor(conductor);
         viaje2.setConductor(conductor);
@@ -239,7 +234,7 @@ public class ViajeServicioTest {
     private static Viaje dadoQueExisteUnViaje(){
         Cliente cliente = new Cliente();
         cliente.setNombre("Joaquin");
-        Viaje viaje = new Viaje("Acevedo 3000", "Sgto. Cabral 2815", cliente, "1000", "1763", -34.667289, -58.530597, -34.663944, -58.536186, 1.2, false, false, false, false);
+        Viaje viaje = new Viaje("Acevedo 3000", "Sgto. Cabral 2815", cliente, "1000", "1763", -34.667289, -58.530597, -34.663944, -58.536186, 1.2, null);
         viaje.setId(1);
         return viaje;
     }

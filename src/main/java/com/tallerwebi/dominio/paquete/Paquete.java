@@ -1,5 +1,6 @@
 package com.tallerwebi.dominio.paquete;
 
+import com.tallerwebi.dominio.cliente.Cliente;
 import com.tallerwebi.dominio.conductor.Conductor;
 import com.tallerwebi.dominio.vehiculo.Vehiculo;
 import com.tallerwebi.dominio.viaje.Viaje;

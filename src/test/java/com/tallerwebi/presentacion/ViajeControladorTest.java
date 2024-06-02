@@ -1,8 +1,12 @@
 package com.tallerwebi.presentacion;
 
+import com.tallerwebi.dominio.cliente.ClienteServicio;
 import com.tallerwebi.dominio.conductor.Conductor;
-import com.tallerwebi.dominio.conductor.ConductorNoEncontradoException;
+import com.tallerwebi.dominio.usuario.UsuarioNoEncontradoException;
 import com.tallerwebi.dominio.conductor.ConductorServicio;
+import com.tallerwebi.dominio.imagen.Imagen;
+import com.tallerwebi.dominio.imagen.ImagenServicio;
+import com.tallerwebi.dominio.enums.TipoEstado;
 import com.tallerwebi.dominio.viaje.Viaje;
 import com.tallerwebi.dominio.viaje.ViajeServicio;
 import com.tallerwebi.presentacion.Datos.DatosViaje;
@@ -26,124 +30,183 @@ import java.util.List;
 public class ViajeControladorTest {
 
     private ViajeServicio viajeServicio;
+    private ImagenServicio imagenServicio;
     private ConductorServicio conductorServicio;
     private HttpSession httpSession;
     private ViajeControlador viajeControlador;
     private HttpServletRequest request;
+    private ClienteServicio clienteServicio;
 
     @BeforeEach
     public void init() {
         this.viajeServicio = mock(ViajeServicio.class);
+        this.imagenServicio = mock(ImagenServicio.class);
         this.conductorServicio = mock(ConductorServicio.class);
+        this.clienteServicio = mock(ClienteServicio.class);
         this.httpSession = mock(HttpSession.class);
         this.request = mock(HttpServletRequest.class);
-        this.viajeControlador = new ViajeControlador(this.viajeServicio, this.conductorServicio);
+        this.viajeControlador = new ViajeControlador(this.viajeServicio, this.conductorServicio, this.imagenServicio, this.clienteServicio);
     }
 
-//    @Test
-//    public void queSiElConductorApretaEnElBotonHistorialDeViajesSeLeMuestreLaVistaHistorialDeViajes() throws ConductorNoEncontradoException {
-//        // Preparación
-//        Conductor conductor = new Conductor();
-//        conductor.setId(1);
-//
-//        List<Viaje> historialViajes = Arrays.asList(new Viaje(), new Viaje());
-//
-//        when(request.getSession()).thenReturn(httpSession);
-//        when(httpSession.getAttribute("isUsuarioLogueado")).thenReturn(true);
-//        when(httpSession.getAttribute("IDUSUARIO")).thenReturn(conductor.getId());
-//        when(conductorServicio.obtenerConductorPorId(1)).thenReturn(conductor);
-//        when(viajeServicio.obtenerHistorialDeViajes(conductor)).thenReturn(historialViajes);
-//
-//        // Ejecución
-//        ModelAndView modelAndView = viajeControlador.mostrarHistorial(request);
-//
-//        // Validación
-//        assertEquals(modelAndView.getModel().get("isUsuarioLogueado"), true);
-//        assertEquals(conductor, modelAndView.getModel().get("conductor"));
-//
-//        assertEquals(historialViajes, modelAndView.getModel().get("viajesObtenidos"));
-//        assertThat(modelAndView.getViewName(), equalToIgnoringCase("historial-viajes"));
-//    }
-//
-//    @Test
-//    public void queCuandoElConductorAcepteElViajeLoLLeveAlViajeConElMapa() throws ConductorNoEncontradoException {
-//        // Preparación
-//        Conductor conductor = new Conductor();
-//        conductor.setId(1);
-//        DatosViaje viaje = new DatosViaje();
-//        Viaje viaje = new Viaje();
-//        viaje.setId(1);
-//
-//        when(request.getSession()).thenReturn(httpSession);
-//        when(httpSession.getAttribute("isUsuarioLogueado")).thenReturn(true);
-//        when(httpSession.getAttribute("IDUSUARIO")).thenReturn(conductor.getId());
-//        when(conductorServicio.obtenerConductorPorId(1)).thenReturn(conductor);
-//        when(viajeServicio.obtenerViajeAceptadoPorId(1)).thenReturn(viaje);
-//        doNothing().when(viajeServicio).aceptarViaje(viaje, conductor);
-//
-//        // Ejecución
-//        ModelAndView modelAndView = viajeControlador.AceptarViaje(request, viaje.getId());
-//
-//        // Validación
-//        assertEquals(modelAndView.getModel().get("isUsuarioLogueado"), true);
-//        assertEquals(conductor, modelAndView.getModel().get("conductor"));
-//        assertEquals(viaje, modelAndView.getModel().get("viaje"));
-//        assertEquals(viaje.getId(), modelAndView.getModel().get("idViaje"));
-//
-//        assertThat(modelAndView.getViewName(), equalToIgnoringCase("viaje"));
-//    }
-//
-//    @Test
-//    public void queElConductorAlApretarEnElBotonViajesEnProcesoLoLleveALaVistaViajesEnProceso() throws ConductorNoEncontradoException {
-//        // Preparación
-//        Conductor conductor = new Conductor();
-//        conductor.setId(1);
-//
-//        List<Viaje> viajesEnProceso = Arrays.asList(new Viaje(), new Viaje());
-//
-//        when(request.getSession()).thenReturn(httpSession);
-//        when(httpSession.getAttribute("isUsuarioLogueado")).thenReturn(true);
-//        when(httpSession.getAttribute("IDUSUARIO")).thenReturn(1);
-//        when(conductorServicio.obtenerConductorPorId(1)).thenReturn(conductor);
-//        when(viajeServicio.obtenerViajesEnProceso(conductor)).thenReturn(viajesEnProceso);
-//
-//        // Ejecución
-//        ModelAndView modelAndView = viajeControlador.verViajesEnProceso(request);
-//
-//        // Validación
-//        assertEquals(modelAndView.getModel().get("isUsuarioLogueado"), true);
-//        assertEquals(conductor, modelAndView.getModel().get("conductor"));
-//        assertEquals(viajesEnProceso, modelAndView.getModel().get("viajesObtenidos"));
-//        assertThat(modelAndView.getViewName(), equalToIgnoringCase("viajes-aceptados"));
-//    }
-//
-//    @Test
-//    public void queElConductorPuedaVerElViajeAceptadoDesdeLaVistaViaje() throws ConductorNoEncontradoException {
-//        // Preparación
-//        Conductor conductor = new Conductor();
-//        conductor.setId(1);
-//        Viaje viaje = new Viaje();
-//        viaje.setId(1);
-//        DatosViaje viaje = new DatosViaje();
-//        viaje.setCancelado(false);
-//        viaje.setTerminado(false);
-//        viaje.setDescartado(false);
-//        when(request.getSession()).thenReturn(httpSession);
-//        when(httpSession.getAttribute("isUsuarioLogueado")).thenReturn(true);
-//        when(httpSession.getAttribute("IDUSUARIO")).thenReturn(1);
-//        when(conductorServicio.obtenerConductorPorId(1)).thenReturn(conductor);
-//        when(viajeServicio.obtenerViajeAceptadoPorId(1)).thenReturn(viaje);
-//
-//        // Ejecución
-//        ModelAndView modelAndView = this.viajeControlador.verViaje(request, viaje.getId());
-//
-//        // Validación
-//        assertThat(modelAndView.getViewName(), equalToIgnoringCase("viaje"));
-//        assertEquals(modelAndView.getModel().get("isUsuarioLogueado"), true);
-//        assertEquals(conductor, modelAndView.getModel().get("conductor"));
-//        assertEquals(viaje, modelAndView.getModel().get("viaje"));
-//
-//    }
+    @Test
+    public void queSiElConductorApretaEnElBotonHistorialDeViajesSeLeMuestreLaVistaHistorialDeViajes() throws UsuarioNoEncontradoException {
+        // Preparación
+        Conductor conductor = new Conductor();
+        conductor.setId(1);
+        Imagen logo = new Imagen();
+        Imagen user = new Imagen();
+        Imagen auto = new Imagen();
+        Imagen fondo = new Imagen();
+        Imagen botonPS = new Imagen();
+        List<DatosViaje> historialViajes = Arrays.asList(new DatosViaje(), new DatosViaje());
+
+        when(request.getSession()).thenReturn(httpSession);
+        when(httpSession.getAttribute("isUsuarioLogueado")).thenReturn(true);
+        when(httpSession.getAttribute("IDUSUARIO")).thenReturn(conductor.getId());
+        when(conductorServicio.obtenerConductorPorId(1)).thenReturn(conductor);
+        when(imagenServicio.getImagenByName("logo")).thenReturn(logo);
+        when(imagenServicio.getImagenByName("user")).thenReturn(user);
+        when(imagenServicio.getImagenByName("auto")).thenReturn(auto);
+        when(imagenServicio.getImagenByName("fondo")).thenReturn(fondo);
+        when(imagenServicio.getImagenByName("botonPS")).thenReturn(botonPS);
+        when(viajeServicio.obtenerHistorialDeViajes(conductor)).thenReturn(historialViajes);
+
+        // Ejecución
+        ModelAndView modelAndView = viajeControlador.mostrarHistorial(request);
+
+        // Validación
+        assertEquals(modelAndView.getModel().get("isUsuarioLogueado"), true);
+        assertEquals(conductor, modelAndView.getModel().get("conductor"));
+        assertEquals(logo, modelAndView.getModel().get("logo"));
+        assertEquals(user, modelAndView.getModel().get("user"));
+        assertEquals(auto, modelAndView.getModel().get("auto"));
+        assertEquals(fondo, modelAndView.getModel().get("fondo"));
+        assertEquals(botonPS, modelAndView.getModel().get("botonPS"));
+        assertEquals(historialViajes, modelAndView.getModel().get("viajesObtenidos"));
+        assertThat(modelAndView.getViewName(), equalToIgnoringCase("historial-viajes"));
+    }
+
+    @Test
+    public void queCuandoElConductorAcepteElViajeLoLLeveAlViajeConElMapa() throws UsuarioNoEncontradoException {
+        // Preparación
+        Conductor conductor = new Conductor();
+        conductor.setId(1);
+        DatosViaje viaje = new DatosViaje();
+        viaje.setIdViaje(1);
+        //viaje.setAceptado(false);
+        Imagen logo = new Imagen();
+        Imagen user = new Imagen();
+        Imagen auto = new Imagen();
+        Imagen fondo = new Imagen();
+        Imagen botonPS = new Imagen();
+
+        when(request.getSession()).thenReturn(httpSession);
+        when(httpSession.getAttribute("isUsuarioLogueado")).thenReturn(true);
+        when(httpSession.getAttribute("IDUSUARIO")).thenReturn(conductor.getId());
+        when(conductorServicio.obtenerConductorPorId(1)).thenReturn(conductor);
+        when(viajeServicio.obtenerViajeAceptadoPorId(1)).thenReturn(viaje);
+        when(imagenServicio.getImagenByName("logo")).thenReturn(logo);
+        when(imagenServicio.getImagenByName("user")).thenReturn(user);
+        when(imagenServicio.getImagenByName("auto")).thenReturn(auto);
+        when(imagenServicio.getImagenByName("fondo")).thenReturn(fondo);
+        when(imagenServicio.getImagenByName("botonPS")).thenReturn(botonPS);
+        doNothing().when(viajeServicio).aceptarViaje(viaje, conductor);
+
+        // Ejecución
+        ModelAndView modelAndView = viajeControlador.AceptarViaje(request, viaje.getIdViaje());
+
+        // Validación
+        assertEquals(modelAndView.getModel().get("isUsuarioLogueado"), true);
+        assertEquals(conductor, modelAndView.getModel().get("conductor"));
+        assertEquals(viaje, modelAndView.getModel().get("viaje"));
+        assertEquals(viaje.getIdViaje(), modelAndView.getModel().get("idViaje"));
+        assertEquals(logo, modelAndView.getModel().get("logo"));
+        assertEquals(user, modelAndView.getModel().get("user"));
+        assertEquals(auto, modelAndView.getModel().get("auto"));
+        assertEquals(fondo, modelAndView.getModel().get("fondo"));
+        assertEquals(botonPS, modelAndView.getModel().get("botonPS"));
+        assertThat(modelAndView.getViewName(), equalToIgnoringCase("viaje"));
+    }
+
+    @Test
+    public void queElConductorAlApretarEnElBotonViajesEnProcesoLoLleveALaVistaViajesEnProceso() throws UsuarioNoEncontradoException {
+        // Preparación
+        Conductor conductor = new Conductor();
+        conductor.setId(1);
+        Imagen logo = new Imagen();
+        Imagen user = new Imagen();
+        Imagen auto = new Imagen();
+        Imagen fondo = new Imagen();
+        Imagen botonPS = new Imagen();
+        List<Viaje> viajesEnProceso = Arrays.asList(new Viaje(), new Viaje());
+
+        when(request.getSession()).thenReturn(httpSession);
+        when(httpSession.getAttribute("isUsuarioLogueado")).thenReturn(true);
+        when(httpSession.getAttribute("IDUSUARIO")).thenReturn(1);
+        when(conductorServicio.obtenerConductorPorId(1)).thenReturn(conductor);
+        when(viajeServicio.obtenerViajesEnProceso(conductor)).thenReturn(viajesEnProceso);
+        when(imagenServicio.getImagenByName("logo")).thenReturn(logo);
+        when(imagenServicio.getImagenByName("user")).thenReturn(user);
+        when(imagenServicio.getImagenByName("auto")).thenReturn(auto);
+        when(imagenServicio.getImagenByName("fondo")).thenReturn(fondo);
+        when(imagenServicio.getImagenByName("botonPS")).thenReturn(botonPS);
+
+        // Ejecución
+        ModelAndView modelAndView = viajeControlador.verViajesEnProceso(request);
+
+        // Validación
+        assertEquals(modelAndView.getModel().get("isUsuarioLogueado"), true);
+        assertEquals(conductor, modelAndView.getModel().get("conductor"));
+        assertEquals(viajesEnProceso, modelAndView.getModel().get("viajesObtenidos"));
+        assertEquals(logo, modelAndView.getModel().get("logo"));
+        assertEquals(user, modelAndView.getModel().get("user"));
+        assertEquals(auto, modelAndView.getModel().get("auto"));
+        assertEquals(fondo, modelAndView.getModel().get("fondo"));
+        assertEquals(botonPS, modelAndView.getModel().get("botonPS"));
+        assertThat(modelAndView.getViewName(), equalToIgnoringCase("viajes-aceptados"));
+    }
+
+    @Test
+    public void queElConductorPuedaVerElViajeAceptadoDesdeLaVistaViaje() throws UsuarioNoEncontradoException {
+        // Preparación
+        Conductor conductor = new Conductor();
+        conductor.setId(1);
+        DatosViaje viaje = new DatosViaje();
+        viaje.setIdViaje(1);
+        //viaje.setCancelado(false);
+        //viaje.setTerminado(false);
+        //viaje.setDescartado(false);
+        Imagen logo = new Imagen();
+        Imagen user = new Imagen();
+        Imagen auto = new Imagen();
+        Imagen fondo = new Imagen();
+        Imagen botonPS = new Imagen();
+
+        when(request.getSession()).thenReturn(httpSession);
+        when(httpSession.getAttribute("isUsuarioLogueado")).thenReturn(true);
+        when(httpSession.getAttribute("IDUSUARIO")).thenReturn(1);
+        when(conductorServicio.obtenerConductorPorId(1)).thenReturn(conductor);
+        when(viajeServicio.obtenerViajeAceptadoPorId(1)).thenReturn(viaje);
+        when(imagenServicio.getImagenByName("logo")).thenReturn(logo);
+        when(imagenServicio.getImagenByName("user")).thenReturn(user);
+        when(imagenServicio.getImagenByName("auto")).thenReturn(auto);
+        when(imagenServicio.getImagenByName("fondo")).thenReturn(fondo);
+        when(imagenServicio.getImagenByName("botonPS")).thenReturn(botonPS);
+
+        // Ejecución
+        ModelAndView modelAndView = this.viajeControlador.verViaje(request, viaje.getIdViaje());
+
+        // Validación
+        assertThat(modelAndView.getViewName(), equalToIgnoringCase("viaje"));
+        //assertEquals(modelAndView.getModel().get("isUsuarioLogueado"), true);
+        //assertEquals(conductor, modelAndView.getModel().get("conductor"));
+        //assertEquals(viaje, modelAndView.getModel().get("viaje"));
+        /*assertEquals(logo, modelAndView.getModel().get("logo"));
+        assertEquals(user, modelAndView.getModel().get("user"));
+        assertEquals(auto, modelAndView.getModel().get("auto"));
+        assertEquals(fondo, modelAndView.getModel().get("fondo"));
+        assertEquals(botonPS, modelAndView.getModel().get("botonPS"));*/
+    }
 
     @Test
     public void queSiElConductorCancelaElViajeLoRedirijaAlHome() {
@@ -151,7 +214,7 @@ public class ViajeControladorTest {
         Integer idViaje = 1;
         DatosViaje viaje = new DatosViaje();
         viaje.setIdViaje(idViaje);
-        viaje.setCancelado(true);
+        viaje.setEstado(TipoEstado.CANCELADO);
 
         when(viajeServicio.obtenerViajeAceptadoPorId(idViaje)).thenReturn(viaje);
 
@@ -168,7 +231,7 @@ public class ViajeControladorTest {
         Integer idViaje = 1;
         DatosViaje viaje = new DatosViaje();
         viaje.setIdViaje(idViaje);
-        viaje.setTerminado(true);
+        viaje.setEstado(TipoEstado.TERMINADO);
 
         when(viajeServicio.obtenerViajeAceptadoPorId(idViaje)).thenReturn(viaje);
         doNothing().when(viajeServicio).terminarViaje(viaje);
@@ -190,7 +253,7 @@ public class ViajeControladorTest {
     }
 
     @Test
-    public void queCuandoElConductorDescarteUnViajeLoRedirijaAlHome() throws ConductorNoEncontradoException {
+    public void queCuandoElConductorDescarteUnViajeLoRedirijaAlHome() throws UsuarioNoEncontradoException {
         // Preparación
         Integer idViaje = 1;
         Conductor conductor = new Conductor();
@@ -213,7 +276,7 @@ public class ViajeControladorTest {
     }
 
     @Test
-    public void queCuandoElConductorDescarteCincoViajesLoPenalize() throws ConductorNoEncontradoException {
+    public void queCuandoElConductorDescarteCincoViajesLoPenalize() throws UsuarioNoEncontradoException {
         // Preparación
         Conductor conductor = new Conductor();
         conductor.setId(1);
