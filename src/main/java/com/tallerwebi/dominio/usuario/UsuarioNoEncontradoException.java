@@ -1,9 +1,9 @@
-package com.tallerwebi.dominio.conductor;
+package com.tallerwebi.dominio.usuario;
 
-public class ConductorNoEncontradoException extends Exception {
+public class UsuarioNoEncontradoException extends Exception {
     private final String mensajeError;
 
-    public ConductorNoEncontradoException(String message) {
+    public UsuarioNoEncontradoException(String message) {
         this.mensajeError=message;
     }
     @Override

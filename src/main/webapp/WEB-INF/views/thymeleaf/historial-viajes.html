@@ -69,9 +69,15 @@
                             </div>
                         </div>
                         <div class="contenedor-boton-cancelar">
-                            <div th:if="${viaje.getTerminado()}" class="terminado">Terminado</div>
-                            <div th:if="${viaje.getCancelado()}" class="cancelado">Cancelado</div>
-                            <a th:href="@{/detalle(idViaje=${viaje.getIdViaje()})}" class="boton-verde">Ver detalle</a>
+                            <div th:with="TERMINADO=${T(com.tallerwebi.dominio.viaje.TipoEstado).TERMINADO}">
+                                <div th:if="${viaje.getEstado() == TERMINADO}" class="terminado">Terminado</div>
+                            </div>
+                            <div th:with="CANCELADO=${T(com.tallerwebi.dominio.viaje.TipoEstado).CANCELADO}">
+                                <div th:if="${viaje.getEstado() == CANCELADO}" class="cancelado">Cancelado</div>
+                            </div>
+                            <div>
+                                <a th:href="@{/detalle(idViaje=${viaje.getIdViaje()})}" class="boton-verde">Ver detalle</a>
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -1,7 +1,8 @@
 package com.tallerwebi.presentacion;
 
+import com.tallerwebi.dominio.cliente.ClienteServicio;
 import com.tallerwebi.dominio.conductor.Conductor;
-import com.tallerwebi.dominio.conductor.ConductorNoEncontradoException;
+import com.tallerwebi.dominio.usuario.UsuarioNoEncontradoException;
 import com.tallerwebi.dominio.conductor.ConductorServicio;
 import com.tallerwebi.dominio.imagen.ImagenServicio;
 import com.tallerwebi.dominio.imagen.Imagen;
@@ -15,7 +16,6 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -26,16 +26,18 @@ public class LoginControlador {
     private static ImagenServicio imagenServicio;
     private final ConductorServicio conductorServicio;
     private final ViajeServicio viajeServicio;
+    private ClienteServicio clienteServicio;
     private Double latitudActual = -34.668822; // VER
     private Double longitudActual =  -58.532878; // VER
 
 
     @Autowired
-    public LoginControlador(LoginServicio _LoginServicio, ImagenServicio _imagenServicio, ConductorServicio _conductorServicio, ViajeServicio viajeServicio){
+    public LoginControlador(LoginServicio _LoginServicio, ImagenServicio _imagenServicio, ConductorServicio _conductorServicio, ViajeServicio viajeServicio, ClienteServicio clienteServicio){
         loginServicio = _LoginServicio;
         imagenServicio = _imagenServicio;
         this.conductorServicio = _conductorServicio;
         this.viajeServicio = viajeServicio;
+        this.clienteServicio = clienteServicio;
     }
 
     @RequestMapping("/")
@@ -44,7 +46,7 @@ public class LoginControlador {
     }
 
     @RequestMapping("/home")
-    public ModelAndView mostrarHome(HttpServletRequest request) throws ConductorNoEncontradoException {
+    public ModelAndView mostrarHome(HttpServletRequest request) throws UsuarioNoEncontradoException {
         ModelMap model = new ModelMap();
         String viewName = "home";
 
@@ -90,7 +92,7 @@ public class LoginControlador {
     @RequestMapping(path = "/login")
     public ModelAndView mostrarLogin(){
         ModelMap model = new ModelMap();
-        String viewName= "login-conductor";
+        String viewName= "login";
 
         Imagen logo = imagenServicio.getImagenByName("logo");
 
@@ -104,8 +106,6 @@ public class LoginControlador {
         ModelMap model = new ModelMap();
 
         request.getSession().invalidate();
-
-        //HttpSession newSession = request.getSession(true);
 
         Conductor conductorBuscado = loginServicio.consultarUsuario(datosLoginnConductor.getUsuario(), datosLoginnConductor.getPassword());
 
@@ -126,13 +126,13 @@ public class LoginControlador {
     }
 
     @RequestMapping(path = "/cerrar-sesion")
-    public ModelAndView cerrarSesion(HttpServletRequest request) throws ConductorNoEncontradoException {
+    public ModelAndView cerrarSesion(HttpServletRequest request) throws UsuarioNoEncontradoException {
         request.getSession().invalidate();
         return mostrarHome(request);
     }
 
     @RequestMapping ("/ayuda")
-    public ModelAndView mostrarVistaAyuda(HttpServletRequest request) throws ConductorNoEncontradoException {
+    public ModelAndView mostrarVistaAyuda(HttpServletRequest request) throws UsuarioNoEncontradoException {
         ModelMap model = new ModelMap();
 
         String viewName= "ayuda";
@@ -161,7 +161,7 @@ public class LoginControlador {
     }
 
     @RequestMapping("/compania")
-    public ModelAndView mostrarVistaCompania(HttpServletRequest request) throws ConductorNoEncontradoException {
+    public ModelAndView mostrarVistaCompania(HttpServletRequest request) throws UsuarioNoEncontradoException {
         ModelMap model = new ModelMap();
 
         String viewName = "compania";
@@ -190,9 +190,9 @@ public class LoginControlador {
     }
 
     @RequestMapping(value = "/filtrarPorDistancia", method = RequestMethod.POST)
-    public ModelAndView filtrarPorDistancia(HttpServletRequest request, @RequestParam Double distancia) throws ConductorNoEncontradoException {
+    public ModelAndView filtrarPorDistancia(HttpServletRequest request, @RequestParam Double distancia) throws UsuarioNoEncontradoException {
         if (distancia == null) {
-            return new ModelAndView("redirect:/home?error=DistanciaNoSeleccionada");
+            return new ModelAndView("redirect:/distanciaNoSeleccionada"); // Excepcion
         } else {
             request.getSession().setAttribute("distancia", distancia);
             return mostrarHome(request);
