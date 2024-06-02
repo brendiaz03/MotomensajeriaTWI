@@ -9,4 +9,5 @@ public interface UsuarioServicio {
     Conductor registrarConductorNoDuplicado(DatosRegistro nuevoUsuario) throws UsuarioDuplicadoException;
 
     Cliente registrarClienteNoDuplicado(DatosRegistro nuevoUsuario) throws UsuarioDuplicadoException;
+
 }

@@ -1,10 +1,95 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrar Paquete</title>
+    <script src="https://kit.fontawesome.com/ca80211b53.js" crossorigin="anonymous"></script>
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.0/css/bootstrap.min.css}"/>
+
+    <!-- Custom style -->
+    <link rel="stylesheet" th:href="@{/css/registro-paquete.css}"/>
+    <link rel="stylesheet" th:href="@{/css/main.css}"/>
 </head>
+
 <body>
-<h1>Holaaaaaaaaaaaa</h1>
+<header>
+    <nav class="navbar navbar-expand-lg mx-4">
+        <div class="d-flex align-items-center bg-violet">
+            <a th:href="home" class="mx-2">
+                <img th:src="${logo.getImagenBase64()}" class="d-block w-100 bg-violet" alt="Logo" style="height: 50px;width: 50px">
+            </a>
+        </div>
+
+        <div class="collapse navbar-collapse justify-content-end">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active p-2">
+                    <a th:href="home" class="nav-link p-2 text-white" href="#">Inicio</a>
+                </li>
+                <li class="nav-item p-2">
+                    <a th:href="compania" class="nav-link p-2 text-white" href="#">Compañía</a>
+                </li>
+                <li class="nav-item p-2">
+                    <a th:href="ayuda" class="nav-link p-2 text-white" href="#">Ayuda</a>
+                </li>
+                <li class="nav-item p-2" th:if="${isUsuarioLogueado}">
+                    <a th:href="viajes" class="nav-link p-2 text-white" href="#">Mis Viajes</a>
+                </li>
+            </ul>
+            <a th:unless="${isUsuarioLogueado}" th:href="@{login}" class="btn-custom" style="text-decoration: none">Ingresar</a>
+            <a th:if="${isUsuarioLogueado}" th:href="perfil" class="btn mx-2" style="border:none;">
+                <div class="container d-flex justify-content-center align-items-center" th:if="${conductor.getImagenPerfil() != null}" style="border: none">
+                    <img alt="img" class="d-block rounded-circle" th:src="'data:image/jpg;charset=utf-8;base64,' + ${conductor.getImageDataBase64()}" style="width: 40px; height: 40px;"/>
+                </div>
+                <div th:if="${conductor.getImagenPerfil() == null}">
+                    <img th:src="${user.getImagenBase64()}" alt="Perfil" style="height: 20px;width: 20px">
+                </div>
+            </a>
+            <a th:if="${isUsuarioLogueado}" th:href="@{cerrar-sesion}">
+                <i class="fa-solid fa-arrow-right-from-bracket" style="border-radius:25px; padding:11px; background-color: white; color: #36054E; transition: color 0.3s;" onmouseover="this.style.color='white';this.style.backgroundColor='lightgray'" onmouseout="this.style.color='purple'; this.style.backgroundColor='white'"></i>
+            </a>
+        </div>
+    </nav>
+</header>
+
+<main>
+    <div class="formulario_fondo">
+        <h1 class="titulo_registroPaquete">Registrar Paquete</h1>
+        <form th:action="@{/guardar-paquete}" method="post" th:object="${paquete}">
+            <section class="formulario">
+                <div class="columna">
+                    <div>
+                        <label for="peso" class="nombre fuente_formulario_registro">Peso</label>
+                        <input type="number" step="0.01" class="form-control" id="peso" name="peso" th:field="*{peso}" required>
+                    </div>
+
+                    <div>
+                        <label for="dimension" class="nombre fuente_formulario_registro">Dimensión</label>
+                        <input type="number" step="0.01" class="form-control" id="dimension" name="dimension" th:field="*{dimension}" required>
+                    </div>
+
+                    <div>
+                        <label for="esFragil" class="nombre fuente_formulario_registro">¿Es Frágil?</label>
+                        <input type="checkbox" class="form-control" id="esFragil" name="esFragil" th:field="*{esFragil}">
+                    </div>
+                </div>
+            </section>
+
+            <section class="errores" th:if="${mensajeError != null && !mensajeError.isEmpty()}">
+                <p th:text="${mensajeError}">Mensaje de error predeterminado</p>
+            </section>
+
+            <section class="botones">
+                <a th:href="home"><button id="boton_cancelar" type="button" class="boton_cancelar">Cancelar</button></a>
+                <button type="submit" class="boton_submit">Registrar</button>
+            </section>
+        </form>
+    </div>
+</main>
+
+<footer>
+</footer>
 </body>
 </html>

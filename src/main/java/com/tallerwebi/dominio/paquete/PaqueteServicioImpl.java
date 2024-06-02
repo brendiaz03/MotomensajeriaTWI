@@ -14,7 +14,19 @@ public class PaqueteServicioImpl implements PaqueteServicio {
     }
 
     @Override
-    public void guardarPaquete(Paquete paquete) {
-        this.paqueteRepositorio.guardarPaquete(paquete);
+    public Paquete guardarPaquete(Paquete paquete) {
+        return this.paqueteRepositorio.guardarPaquete(paquete);
     }
+
+    @Override
+    public void editarPaquete(Paquete paquete) {
+        this.paqueteRepositorio.editarPaquete(paquete);
+    }
+
+    @Override
+    public Paquete obtenerPaquetePorId(Integer paqueteId) {
+        return this.paqueteRepositorio.obtenerPaquetePorId(paqueteId);
+    }
+
+
 }
