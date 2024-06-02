@@ -23,6 +23,7 @@ public class PaqueteServicioImpl implements PaqueteServicio {
         this.paqueteRepositorio.editarPaquete(paquete);
     }
 
+    //Agregar excepción de que no se encontró el paquete por Id. Agregar Try - Catch.
     @Override
     public Paquete obtenerPaquetePorId(Integer paqueteId) {
         return this.paqueteRepositorio.obtenerPaquetePorId(paqueteId);

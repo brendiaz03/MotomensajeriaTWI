@@ -6,6 +6,7 @@ import com.tallerwebi.dominio.paquete.PaqueteServicio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -23,7 +24,7 @@ public class PaqueteControlador {
         this.paqueteServicio = paqueteServicio;
     }
 
-    @RequestMapping(value = "/guardar-paquete", method = RequestMethod.POST)
+    @RequestMapping(value = "/crear-paquete", method = RequestMethod.POST)
     public ModelAndView guardarPaquete(@ModelAttribute("paquete") Paquete paquete) {
 
         this.paqueteServicio.guardarPaquete(paquete);
@@ -31,14 +32,48 @@ public class PaqueteControlador {
         return new ModelAndView("redirect:/home");
     }
 
-    @RequestMapping(value = "/editar-paquete", method = RequestMethod.GET)
-    public ModelAndView mostrarEditarPaquete(HttpSession session, @ModelAttribute("paqueteId") Integer paqueteId) {
-        Paquete paquete = paqueteServicio.obtenerPaquetePorId(paqueteId);
-        ModelAndView modelAndView = new ModelAndView("form-paquete");
-        modelAndView.addObject("paquete", paquete);
-        modelAndView.addObject("isEditForm", true);
-        return modelAndView;
+    @RequestMapping(value = "/editar-paquete", method = RequestMethod.POST)
+    public ModelAndView editarPaquete(@ModelAttribute("paquete") Paquete paquete, HttpSession session) {
+
+        this.paqueteServicio.editarPaquete(paquete);
+
+        session.setAttribute("isEditPackage", false);
+
+        return new ModelAndView("redirect:/home");
     }
+
+    @RequestMapping(value = "/mostrar-form-paquete", method = RequestMethod.GET)
+    public ModelAndView mostrarFormPaquete(HttpSession session, @ModelAttribute("paqueteId") Integer paqueteId) {
+
+        ModelMap model = new ModelMap();
+
+        Boolean isEditPackage = (session.getAttribute("isEditPackage") != null) ? (Boolean) session.getAttribute("isEditPackage") : false;
+
+        model.put("isEditPackage", isEditPackage);
+
+        if(isEditPackage){
+
+            Paquete paquete = this.paqueteServicio.obtenerPaquetePorId(paqueteId);
+
+            model.put("paquete", paquete);
+
+        } else{
+            model.put("paquete", new Paquete());
+        }
+
+        return new ModelAndView("form-paquete");
+
+    }
+
+    @RequestMapping(value = "/mostrar-editar-paquete", method = RequestMethod.GET)
+    public ModelAndView mostrarEditarPaquete(HttpSession session, @ModelAttribute("paqueteId") Integer paqueteId) {
+
+        session.setAttribute("isEditPackage", true);
+
+        return new ModelAndView("redirect:/mostrar-form-paquete");
+
+    }
+
 
 
 }

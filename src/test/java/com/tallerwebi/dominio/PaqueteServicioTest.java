@@ -49,6 +49,7 @@ public class PaqueteServicioTest {
         verify(paqueteRepositorio).editarPaquete(paquete);
     }
 
+    //Agregar excepción y Try - Catch. Ver Throws.
     @Test
     public void queSeObtengaUnPaquetePorSuId(){
 

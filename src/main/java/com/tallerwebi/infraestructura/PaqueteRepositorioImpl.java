@@ -26,7 +26,7 @@ public class PaqueteRepositorioImpl implements PaqueteRepositorio {
     }
 
     @Override
-    public Paquete obtenerPaquetePorId(Integer paqueteId){
+    public Paquete obtenerPaquetePorId(Integer paqueteId) {
         return this.sessionFactory.getCurrentSession().get(Paquete.class, paqueteId);
     }
 }
