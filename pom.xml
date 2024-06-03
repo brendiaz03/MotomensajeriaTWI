@@ -183,7 +183,7 @@
                 <configuration>
                     <scanIntervalSeconds>2</scanIntervalSeconds>
                     <webApp>
-                        <contextPath>/spring</contextPath>
+                        <contextPath>/</contextPath>
                     </webApp>
                 </configuration>
             </plugin>
