@@ -1,7 +1,6 @@
 package com.tallerwebi.presentacion;
 
 import com.tallerwebi.dominio.conductor.Conductor;
-import com.tallerwebi.dominio.conductor.ConductorNoEncontradoException;
 import com.tallerwebi.dominio.conductor.ConductorServicio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,7 +22,7 @@ public class AyudaControlador {
     }
 
     @RequestMapping("/ayuda")
-    public ModelAndView mostrarVistaAyuda(HttpServletRequest request) throws ConductorNoEncontradoException {
+    public ModelAndView mostrarVistaAyuda(HttpServletRequest request) {
         ModelMap model = new ModelMap();
 
         Boolean isUsuarioLogueado = (Boolean) request.getSession().getAttribute("isUsuarioLogueado");
@@ -32,11 +31,11 @@ public class AyudaControlador {
 
         model.put("isUsuarioLogueado",isUsuarioLogueado);
         if(request.getSession().getAttribute("IDUSUARIO") != null){
-            conductor = conductorServicio.obtenerConductorPorId((Integer) request.getSession().getAttribute("IDUSUARIO"));
+            //conductor = conductorServicio.obtenerConductorPorId((Integer) request.getSession().getAttribute("IDUSUARIO"));
         }else{
             conductor = null;
         }
-        model.put("conductor", conductor);
+        //model.put("conductor", conductor);
         return new ModelAndView("ayuda", model);
     }
 

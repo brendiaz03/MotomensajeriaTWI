@@ -1,4 +1,4 @@
-package com.tallerwebi.dominio.usuario;
+package com.tallerwebi.dominio.exceptions;
 
 public class UsuarioDuplicadoException extends Exception{
     private final String mensajeError;

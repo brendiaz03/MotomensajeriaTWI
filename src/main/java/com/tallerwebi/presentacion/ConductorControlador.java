@@ -1,9 +1,7 @@
 package com.tallerwebi.presentacion;
 
 import com.tallerwebi.dominio.conductor.*;
-import com.tallerwebi.dominio.imagen.ImagenServicio;
-import com.tallerwebi.dominio.imagen.Imagen;
-import com.tallerwebi.dominio.usuario.UsuarioNoEncontradoException;
+import com.tallerwebi.dominio.exceptions.UsuarioNoEncontradoException;
 import com.tallerwebi.dominio.vehiculo.Vehiculo;
 import com.tallerwebi.dominio.vehiculo.VehiculoServicio;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,14 +17,12 @@ import javax.servlet.http.HttpSession;
 @MultipartConfig
 public class ConductorControlador {
     private ConductorServicio conductorServicio;
-    private ImagenServicio iimageService;
     private VehiculoServicio vehiculoService;
 
 
     @Autowired
-    public ConductorControlador(ConductorServicio conductorServicio, ImagenServicio imageService, VehiculoServicio _vehiculoService) {
+    public ConductorControlador(ConductorServicio conductorServicio, VehiculoServicio _vehiculoService) {
         this.conductorServicio = conductorServicio;
-        this.iimageService = imageService;
         this.vehiculoService = _vehiculoService;
     }
 
@@ -40,12 +36,7 @@ public class ConductorControlador {
             return new ModelAndView("redirect:/login");
         }
         Integer idUsuario = (Integer) session.getAttribute("IDUSUARIO");
-        Imagen logo = iimageService.getImagenByName("logo");
-        Imagen user = iimageService.getImagenByName("user");
-
         model.put("isUsuarioLogueado", isUsuarioLogueado);
-        model.put("logo", logo);
-        model.put("user", user);
 
         try {
             Conductor conductor = conductorServicio.obtenerConductorPorId(idUsuario);
@@ -76,11 +67,7 @@ public class ConductorControlador {
             return new ModelAndView("redirect:/login");
         }
         Integer idUsuario = (Integer) session.getAttribute("IDUSUARIO");
-        Imagen logo = iimageService.getImagenByName("logo");
-        Imagen user = iimageService.getImagenByName("user");
 
-        model.put("logo", logo);
-        model.put("user", user);
         model.put("isUsuarioLogueado", isUsuarioLogueado);
 
         try {

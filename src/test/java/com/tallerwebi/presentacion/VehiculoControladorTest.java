@@ -1,7 +1,7 @@
 package com.tallerwebi.presentacion;
 
 import com.tallerwebi.dominio.conductor.Conductor;
-import com.tallerwebi.dominio.usuario.UsuarioNoEncontradoException;
+import com.tallerwebi.dominio.exceptions.UsuarioNoEncontradoException;
 import com.tallerwebi.dominio.conductor.ConductorServicio;
 import com.tallerwebi.dominio.vehiculo.Vehiculo;
 import com.tallerwebi.dominio.vehiculo.VehiculoServicio;
@@ -16,7 +16,6 @@ import static org.hamcrest.Matchers.equalToIgnoringCase;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
 class VehiculoControladorTest {

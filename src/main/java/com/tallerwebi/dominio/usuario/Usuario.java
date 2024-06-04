@@ -56,22 +56,6 @@ public abstract class Usuario {
 
     }
 
-    public Usuario(Integer id, String nombre, String apellido, Integer numeroDeDni, String email, String numeroDeTelefono, String nombreUsuario, String password, String domicilio, String codigoPostal, TipoUsuario tipoUsuario, byte[] imagenPerfil, List<Viaje> viajes) {
-        this.id = id;
-        this.nombre = nombre;
-        this.apellido = apellido;
-        this.numeroDeDni = numeroDeDni;
-        this.email = email;
-        this.numeroDeTelefono = numeroDeTelefono;
-        this.nombreUsuario = nombreUsuario;
-        this.password = password;
-        this.domicilio = domicilio;
-        this.codigoPostal = codigoPostal;
-        this.tipoUsuario = tipoUsuario;
-        this.imagenPerfil = imagenPerfil;
-        this.viajes = viajes;
-    }
-
     public Usuario(String nombre, String apellido, Integer numeroDeDni, String email, String numeroDeTelefono, String nombreUsuario, String password, String domicilio, TipoUsuario tipoUsuario) {
         this.nombre = nombre;
         this.apellido = apellido;

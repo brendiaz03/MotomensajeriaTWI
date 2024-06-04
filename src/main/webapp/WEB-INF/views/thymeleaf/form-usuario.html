@@ -105,8 +105,8 @@
             <div>
                 <label for="tipoUsuario">Tipo de Usuario:</label>
                 <select id="tipoUsuario" name="tipoUsuario" class="form-control" th:field="*{tipoUsuario}">
-                    <option th:each="tipo : ${T(com.tallerwebi.dominio.usuario.TipoUsuario).values()}" th:value="${tipo}" th:text="${tipo}">
-                        {tipo}
+                    <option th:each="tipo : ${T(com.tallerwebi.dominio.enums.TipoUsuario).values()}"
+                            th:value="${tipo}" th:text="${tipo}">
                     </option>
                 </select>
             </div>

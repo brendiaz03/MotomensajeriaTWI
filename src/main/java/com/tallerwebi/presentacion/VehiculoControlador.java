@@ -1,6 +1,6 @@
 package com.tallerwebi.presentacion;
 import com.tallerwebi.dominio.conductor.Conductor;
-import com.tallerwebi.dominio.usuario.UsuarioNoEncontradoException;
+import com.tallerwebi.dominio.exceptions.UsuarioNoEncontradoException;
 import com.tallerwebi.dominio.conductor.ConductorServicio;
 import com.tallerwebi.dominio.vehiculo.VehiculoServicio;
 import com.tallerwebi.dominio.vehiculo.Vehiculo;
