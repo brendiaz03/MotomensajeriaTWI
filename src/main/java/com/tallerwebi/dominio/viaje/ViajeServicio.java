@@ -36,5 +36,6 @@ public interface ViajeServicio {
 
     DatosViaje mapearViajeADatosViaje(Viaje viaje);
 
-    void crearViaje(Cliente cliente, DatosViaje viaje, Paquete paquete);
+    void crearViaje(Cliente cliente, Viaje viaje, Paquete paquete);
+     Viaje buscarViaje(Integer idViaje);
 }

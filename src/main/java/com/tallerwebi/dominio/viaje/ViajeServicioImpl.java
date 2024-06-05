@@ -169,11 +169,15 @@ public class ViajeServicioImpl implements ViajeServicio {
     }
 
     @Override
-    public void crearViaje(Cliente cliente, DatosViaje viaje, Paquete paquete) {
-        Viaje viajeMapeado = viaje.toViaje(viaje);
-        viajeMapeado.setCliente(cliente);
-        viajeMapeado.setPaquete(paquete);
-        viajeMapeado.setEstado(TipoEstado.PENDIENTE);
-        this.viajeRepositorio.guardarViaje(viajeMapeado);
+    public void crearViaje(Cliente cliente, Viaje viaje, Paquete paquete) {
+        viaje.setCliente(cliente);
+        viaje.setPaquete(paquete);
+        viaje.setEstado(TipoEstado.PENDIENTE);
+        this.viajeRepositorio.guardarViaje(viaje);
+    }
+
+    @Override
+    public Viaje buscarViaje(Integer idViaje){
+        return this.viajeRepositorio.obtenerViajePorId(idViaje);
     }
 }

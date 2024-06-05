@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 @Controller
 public class ViajeControlador {
@@ -35,7 +36,59 @@ public class ViajeControlador {
         this.imagenServicio = imagenServicio;
         this.clienteServicio = clienteServicio;
     }
+    @RequestMapping("/form-viaje")
+    public ModelAndView mostrarFormViaje(HttpSession session, @ModelAttribute Viaje viaje){
+        ModelMap model = new ModelMap();
+        String viewName = "form-viaje";
+        String claveGoogleMaps = "AIzaSyDcPeOyMBqG_1mZgjpei_R2ficRigdkINg";
+        Imagen logo = imagenServicio.getImagenByName("logo");
+        Imagen user = imagenServicio.getImagenByName("user");
+        Imagen auto = imagenServicio.getImagenByName("auto");
+        Imagen fondo = imagenServicio.getImagenByName("fondo");
+        Imagen botonPS = imagenServicio.getImagenByName("botonPS");
 
+        boolean isEditViaje = (session.getAttribute("isEditViaje") != null) ? (boolean) session.getAttribute("isEditViaje") : false;
+
+        model.put("logo", logo);
+        model.put("user", user);
+        model.put("auto", auto);
+        model.put("fondo", fondo);
+        model.put("botonPS", botonPS);
+        model.put("viaje", new DatosViaje());
+        model.put("clave", claveGoogleMaps);
+        model.put("isEditViaje", isEditViaje);
+
+
+
+        if (isEditViaje){
+            Viaje viajeEdit= this.viajeServicio.buscarViaje(viaje.getId());
+            model.put("viajeEdit", viajeEdit);
+        }
+        return new ModelAndView(viewName, model);
+    }
+
+    @RequestMapping("/form-viaje-editor")
+    public ModelAndView mostrarFormEditorViaje(HttpSession session){
+
+        session.setAttribute("isEditViaje", true);
+        return new ModelAndView("redirect:/form-viaje");
+    }
+
+
+    @RequestMapping(value = "/crear-viaje", method = RequestMethod.POST, consumes = "application/x-www-form-urlencoded")
+    public ModelAndView crearViajeConPaqueteYCliente(@ModelAttribute("viaje") Viaje viaje){
+
+        this.viajeServicio.crearViaje(null, viaje, null);
+
+        return new ModelAndView("redirect:/form-viaje");
+    }
+
+    @RequestMapping(value = "/editar-viaje", method = RequestMethod.POST)
+    public ModelAndView editarViaje(@ModelAttribute("viaje") Viaje viaje, HttpServletRequest request){
+
+        this.viajeServicio.actualizarViaje(viaje);
+        return new ModelAndView("redirect:/form-viaje");
+    }
     @RequestMapping("/historial")
     public ModelAndView mostrarHistorial(HttpServletRequest request) throws UsuarioNoEncontradoException {
         ModelMap model = new ModelMap();
@@ -283,33 +336,4 @@ public class ViajeControlador {
         return new ModelAndView("redirect:/historial");
     }
 
-    @RequestMapping("/form-viaje")
-    public ModelAndView mostrarFormViaje(){
-        ModelMap model = new ModelMap();
-
-        String viewName = "form-viaje";
-        Imagen logo = imagenServicio.getImagenByName("logo");
-        Imagen user = imagenServicio.getImagenByName("user");
-        Imagen auto = imagenServicio.getImagenByName("auto");
-        Imagen fondo = imagenServicio.getImagenByName("fondo");
-        Imagen botonPS = imagenServicio.getImagenByName("botonPS");
-
-        model.put("logo", logo);
-        model.put("user", user);
-        model.put("auto", auto);
-        model.put("fondo", fondo);
-        model.put("botonPS", botonPS);
-        model.put("viaje", new DatosViaje());
-        return new ModelAndView(viewName, model);
-    }
-
-    @RequestMapping(value = "/crear-viaje", method = RequestMethod.POST)
-    public ModelAndView crearViajeConPaqueteYCliente(@ModelAttribute("viaje") DatosViaje viaje, HttpServletRequest request){
-        Cliente cliente = this.clienteServicio.obtenerClientePorId((Integer) request.getSession().getAttribute("IDUSUARIO"));
-        Paquete paquete = new Paquete(); // Ver como obtener el paquete
-
-        this.viajeServicio.crearViaje(cliente, viaje, paquete);
-
-        return new ModelAndView("redirect:/home");
-    }
 }
