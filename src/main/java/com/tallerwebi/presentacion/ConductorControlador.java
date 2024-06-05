@@ -34,37 +34,25 @@ public class ConductorControlador {
         this.viajeServicio = _viajeServicio;
     }
 
-    @RequestMapping("/homeCONDUCTOR")
-    public ModelAndView mostrarHomeConductor(HttpServletRequest request) throws UsuarioNoEncontradoException {
+    @RequestMapping("/homeConductor")
+    public ModelAndView mostrarHomeConductor(HttpSession session) throws UsuarioNoEncontradoException {
         ModelMap model = new ModelMap();
         String viewName = "home-conductor";
+        Conductor conductor = conductorServicio.obtenerConductorPorId( (Integer) session.getAttribute("IDUSUARIO"));
+        model.put("conductor", conductor);
+//        List<DatosViaje> viajesCercanosPendientes;
+//        Double distanciaAFiltrar = (Double) request.getSession().getAttribute("distancia");
+//        if (conductor.getVehiculo() != null) {
+//            viajesCercanosPendientes = this.viajeServicio.filtrarViajesPorDistanciaDelConductor(latitudActual, longitudActual, distanciaAFiltrar);
+//            model.put("tieneVehiculo", false);
+//        } else {
+//            viajesCercanosPendientes = null;
+//            model.put("tieneVehiculo", true);
+//        }
+//
+//        request.getSession().setAttribute("isPenalizado", this.viajeServicio.estaPenalizado(conductor));
 
-        Boolean isUsuarioLogueado = (Boolean) request.getSession().getAttribute("isUsuarioLogueado");
-        Conductor conductor;
-        Double distanciaAFiltrar = (Double) request.getSession().getAttribute("distancia");
-
-        if(request.getSession().getAttribute("IDUSUARIO") != null){
-            // conductor = conductorServicio.obtenerConductorPorId((Integer) request.getSession().getAttribute("IDUSUARIO"));
-        }else{
-            conductor = null;
-        }
-
-        List<DatosViaje> viajesCercanosPendientes;
-
-        if (request.getSession().getAttribute("VEHICULO") != null) {
-            viajesCercanosPendientes = this.viajeServicio.filtrarViajesPorDistanciaDelConductor(latitudActual, longitudActual, distanciaAFiltrar);
-            model.put("noTieneVehiculo", false);
-        } else {
-            viajesCercanosPendientes = null;
-            model.put("noTieneVehiculo", true);
-        }
-
-        // request.getSession().setAttribute("isPenalizado", this.viajeServicio.estaPenalizado(conductor));
-
-        model.put("isUsuarioLogueado", isUsuarioLogueado);
-        model.put("viajes", viajesCercanosPendientes);
-        // model.put("conductor", conductor);
-        model.put("isPenalizado", request.getSession().getAttribute("isPenalizado"));
+//        model.put("viajes", viajesCercanosPendientes);
         return new ModelAndView(viewName, model);
     }
 

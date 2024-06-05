@@ -3,6 +3,7 @@ package com.tallerwebi.dominio.conductor;
 import com.tallerwebi.dominio.enums.TipoUsuario;
 import com.tallerwebi.dominio.exceptions.UsuarioDuplicadoException;
 import com.tallerwebi.dominio.exceptions.UsuarioNoEncontradoException;
+import com.tallerwebi.dominio.usuario.Usuario;
 import com.tallerwebi.dominio.vehiculo.Vehiculo;
 import com.tallerwebi.presentacion.Datos.DatosUsuario;
 import org.springframework.beans.factory.annotation.Autowired;

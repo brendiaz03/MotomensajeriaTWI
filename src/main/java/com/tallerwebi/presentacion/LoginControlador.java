@@ -78,45 +78,8 @@ public class LoginControlador {
     @RequestMapping(path = "/cerrar-sesion")
     public ModelAndView cerrarSesion(HttpServletRequest request) throws UsuarioNoEncontradoException {
         request.getSession().invalidate();
-        return new ModelAndView("redirect:/home");
+        return mostrarHome(request);
     }
-
-//    @RequestMapping ("/ayuda")
-//    public ModelAndView mostrarVistaAyuda(HttpServletRequest request) throws UsuarioNoEncontradoException {
-//        ModelMap model = new ModelMap();
-//
-//        String viewName= "ayuda";
-//        Boolean isUsuarioLogueado = (Boolean) request.getSession().getAttribute("isUsuarioLogueado");
-//        Conductor conductor;
-//
-//        if(request.getSession().getAttribute("IDUSUARIO") != null){
-//            conductor = conductorServicio.obtenerConductorPorId((Integer) request.getSession().getAttribute("IDUSUARIO"));
-//        }else{
-//            conductor = null;
-//        }
-//        model.put("isUsuarioLogueado",isUsuarioLogueado);
-//        model.put("conductor", conductor);
-//        return new ModelAndView(viewName, model);
-//    }
-//
-//    @RequestMapping("/compania")
-//    public ModelAndView mostrarVistaCompania(HttpServletRequest request) throws UsuarioNoEncontradoException {
-//        ModelMap model = new ModelMap();
-//
-//        String viewName = "compania";
-//        Boolean isUsuarioLogueado = (Boolean) request.getSession().getAttribute("isUsuarioLogueado");
-//        Conductor conductor;
-//
-//        if(request.getSession().getAttribute("IDUSUARIO") != null){
-//            conductor = conductorServicio.obtenerConductorPorId((Integer) request.getSession().getAttribute("IDUSUARIO"));
-//        }else{
-//            conductor = null;
-//        }
-//
-//        model.put("isUsuarioLogueado",isUsuarioLogueado);
-//        model.put("conductor", conductor);
-//        return new ModelAndView(viewName, model);
-//    }
 
 //    @RequestMapping(value = "/filtrarPorDistancia", method = RequestMethod.POST)
 //    public ModelAndView filtrarPorDistancia(HttpServletRequest request, @RequestParam Double distancia) throws UsuarioNoEncontradoException {
