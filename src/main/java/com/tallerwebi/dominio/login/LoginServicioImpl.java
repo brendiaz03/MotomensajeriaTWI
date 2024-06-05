@@ -1,6 +1,7 @@
 package com.tallerwebi.dominio.login;
 
 import com.tallerwebi.dominio.conductor.Conductor;
+import com.tallerwebi.dominio.usuario.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,10 +18,10 @@ public class LoginServicioImpl implements LoginServicio {
     }
 
     @Override
-    public Conductor consultarUsuario(String user, String pass) {
+    public Usuario consultarUsuario(String user, String pass) {
         try{
-            Conductor conductor= loginRepositorio.buscarConductorPorUsernameYPassword(user, pass);
-            return conductor;
+            Usuario usuario= loginRepositorio.buscarUsuarioPorUsernameYPassword(user, pass);
+            return usuario;
         }catch(Exception e){
             throw new RuntimeException(e);
         }

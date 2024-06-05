@@ -1,7 +1,6 @@
 package com.tallerwebi.dominio.login;
-
-import com.tallerwebi.dominio.conductor.Conductor;
+import com.tallerwebi.dominio.usuario.Usuario;
 
 public interface LoginRepositorio {
-    Conductor buscarConductorPorUsernameYPassword(String username, String password);
+    Usuario buscarUsuarioPorUsernameYPassword(String username, String password);
 }

@@ -1,15 +1,15 @@
 package com.tallerwebi.dominio.conductor;
 
-import com.tallerwebi.dominio.usuario.UsuarioNoEncontradoException;
+import com.tallerwebi.dominio.exceptions.UsuarioNoEncontradoException;
 import com.tallerwebi.dominio.vehiculo.Vehiculo;
-import com.tallerwebi.presentacion.Datos.DatosRegistro;
+import com.tallerwebi.presentacion.Datos.DatosUsuario;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 
 public interface ConductorServicio {
 
-    Conductor registrarConductorNoDuplicado(DatosRegistro nuevoConductor) throws Exception;
+    Conductor registrarConductorNoDuplicado(DatosUsuario nuevoConductor) throws Exception;
 
     Conductor obtenerConductorPorId(Integer id) throws UsuarioNoEncontradoException;
 

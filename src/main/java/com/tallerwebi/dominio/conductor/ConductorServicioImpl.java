@@ -1,10 +1,10 @@
 package com.tallerwebi.dominio.conductor;
 
 import com.tallerwebi.dominio.enums.TipoUsuario;
-import com.tallerwebi.dominio.usuario.UsuarioDuplicadoException;
-import com.tallerwebi.dominio.usuario.UsuarioNoEncontradoException;
+import com.tallerwebi.dominio.exceptions.UsuarioDuplicadoException;
+import com.tallerwebi.dominio.exceptions.UsuarioNoEncontradoException;
 import com.tallerwebi.dominio.vehiculo.Vehiculo;
-import com.tallerwebi.presentacion.Datos.DatosRegistro;
+import com.tallerwebi.presentacion.Datos.DatosUsuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -24,7 +24,7 @@ public class ConductorServicioImpl implements ConductorServicio {
     }
 
     @Override
-    public Conductor registrarConductorNoDuplicado(DatosRegistro nuevoConductor) throws UsuarioDuplicadoException {
+    public Conductor registrarConductorNoDuplicado(DatosUsuario nuevoConductor) throws UsuarioDuplicadoException {
         Conductor conductorARegistrar = mapearUsuarioAConductor(nuevoConductor);
         try{
             this.conductorRepositorio.buscarDuplicados(nuevoConductor.getEmail(),nuevoConductor.getNombreUsuario());
@@ -34,8 +34,8 @@ public class ConductorServicioImpl implements ConductorServicio {
         }
 }
 
-    private Conductor mapearUsuarioAConductor(DatosRegistro nuevoConductor) {
-        return new Conductor(nuevoConductor.getNombre(), nuevoConductor.getApellido(), nuevoConductor.getNumeroDeDni(), nuevoConductor.getEmail(), nuevoConductor.getNumeroDeTelefono(), nuevoConductor.getNombreUsuario(), nuevoConductor.getPassword(), nuevoConductor.getDomicilio(), TipoUsuario.CONDUCTOR);
+    private Conductor mapearUsuarioAConductor(DatosUsuario nuevoConductor) {
+        return new Conductor(nuevoConductor.getNombre(), nuevoConductor.getApellido(), nuevoConductor.getNumeroDeDni(), nuevoConductor.getEmail(), nuevoConductor.getNumeroDeTelefono(), nuevoConductor.getNombreUsuario(), nuevoConductor.getPassword(), nuevoConductor.getDomicilio(), TipoUsuario.Conductor);
     }
 
     @Override

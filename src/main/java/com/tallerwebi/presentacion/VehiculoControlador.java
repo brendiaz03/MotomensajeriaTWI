@@ -1,9 +1,7 @@
 package com.tallerwebi.presentacion;
 import com.tallerwebi.dominio.conductor.Conductor;
-import com.tallerwebi.dominio.usuario.UsuarioNoEncontradoException;
+import com.tallerwebi.dominio.exceptions.UsuarioNoEncontradoException;
 import com.tallerwebi.dominio.conductor.ConductorServicio;
-import com.tallerwebi.dominio.imagen.ImagenServicio;
-import com.tallerwebi.dominio.imagen.Imagen;
 import com.tallerwebi.dominio.vehiculo.VehiculoServicio;
 import com.tallerwebi.dominio.vehiculo.Vehiculo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,19 +15,14 @@ import javax.servlet.http.HttpSession;
 @Controller
 public class VehiculoControlador {
 
-    private ImagenServicio imagenServicio;
-
     private VehiculoServicio vehiculoServicio;
 
     private ConductorServicio conductorServicio;
 
     @Autowired
-    public VehiculoControlador(VehiculoServicio vehiculoServicio, ImagenServicio _imagenServicio, ConductorServicio _conductorServicio) {
+    public VehiculoControlador(VehiculoServicio vehiculoServicio, ConductorServicio _conductorServicio) {
 
         this.vehiculoServicio = vehiculoServicio;
-
-        this.imagenServicio = _imagenServicio;
-
         this.conductorServicio = _conductorServicio;
 
     }
@@ -38,10 +31,6 @@ public class VehiculoControlador {
     public ModelAndView mostrarRegistroDelVehiculo(HttpSession session) throws UsuarioNoEncontradoException {
 
         ModelMap model = new ModelMap();
-        Imagen logo = imagenServicio.getImagenByName("logo");
-        model.put("logo", logo);
-        Imagen user = imagenServicio.getImagenByName("user");
-        model.put("user", user);
 
         String viewName = "form-vehiculo";
 

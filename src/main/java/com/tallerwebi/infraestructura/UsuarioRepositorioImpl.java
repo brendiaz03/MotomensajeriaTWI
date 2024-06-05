@@ -2,9 +2,11 @@ package com.tallerwebi.infraestructura;
 
 import com.tallerwebi.dominio.cliente.Cliente;
 import com.tallerwebi.dominio.conductor.Conductor;
+import com.tallerwebi.dominio.usuario.Usuario;
 import com.tallerwebi.dominio.usuario.UsuarioRepositorio;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,12 +23,11 @@ public class UsuarioRepositorioImpl implements UsuarioRepositorio {
 
     @Override
     @Transactional
-    public Conductor buscarDuplicados(String email, String nombreUsuario) {
-        String hql = "FROM Usuario WHERE email=: email OR nombreUsuario=: nombreUsuario";
-        Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
-        query.setParameter("email", email);
-        query.setParameter("nombreUsuario", nombreUsuario);
-        return (Conductor) query.getSingleResult();
+    public Usuario buscarDuplicados(String email, String nombreUsuario) {
+        return (Usuario) sessionFactory.getCurrentSession().createCriteria(Usuario.class)
+                .add(Restrictions.eq("email", email))
+                .add(Restrictions.eq("nombreUsuario", nombreUsuario))
+                .uniqueResult();
     }
 
     @Override
