@@ -1,6 +1,7 @@
 package com.tallerwebi.dominio.conductor;
 
 import com.tallerwebi.dominio.exceptions.UsuarioNoEncontradoException;
+import com.tallerwebi.dominio.usuario.Usuario;
 import com.tallerwebi.dominio.vehiculo.Vehiculo;
 import com.tallerwebi.presentacion.Datos.DatosUsuario;
 import org.springframework.web.multipart.MultipartFile;

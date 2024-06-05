@@ -4,6 +4,7 @@ import com.tallerwebi.dominio.enums.TipoUsuario;
 import com.tallerwebi.dominio.viaje.Viaje;
 
 import javax.persistence.*;
+import java.util.Base64;
 import java.util.List;
 
 @Entity
@@ -69,7 +70,7 @@ public abstract class Usuario {
     }
 
     public Integer getId() {
-        return id;
+        return this.id;
     }
 
     public void setId(Integer id) {
@@ -164,6 +165,9 @@ public abstract class Usuario {
         this.imagenPerfil = imagenPerfil;
     }
 
+    public String getImageDataBase64(){
+        return Base64.getEncoder().encodeToString(Base64.getDecoder().decode(this.imagenPerfil));
+    }
     public List<Viaje> getViajes() {
         return viajes;
     }
