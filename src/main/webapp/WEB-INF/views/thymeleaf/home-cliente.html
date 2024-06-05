@@ -15,23 +15,8 @@
 <header>
   <nav class="navbar navbar-expand-lg mx-4">
     <div class="d-flex align-items-center bg-violet">
-      <a th:href="home" class="mx-2">
+      <a th:href="homeCliente" class="mx-2">
         <img th:src="@{/imagenes/logo.png}" class="d-block w-100 bg-violet" alt=",,," style="height: 50px;width: 50px">
-      </a>
-    </div>
-    <div class="collapse navbar-collapse justify-content-end">
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item active  p-2">
-          <a th:href="home" class="nav-link p-2 text-white" href="#">Inicio</a>
-        </li>
-        <li class="nav-item p-2">
-          <a th:href="compania" class="nav-link p-2 text-white" href="#">Compañía</a>
-        </li>
-        <li class="nav-item p-2">
-          <a th:href="ayuda" class="nav-link p-2 text-white" href="#">Ayuda</a>
-        </li>
-      </ul>
-      <a th:href="@{login}" class="btn-custom" style="text-decoration: none">Ingresar</a>
       </a>
     </div>
   </nav>
@@ -42,18 +27,11 @@
       <div class="col-md-6">
         <div class="contenido d-flex justify-content-center align-items-center mt-lg-3">
           <div class="texto text-center text-white" id="letrasHome">
-            <h2 class="m-0">¡Tus paquetes a tiempo siempre!</h2>
-            <h2 class="m-0">Te ofrecemos envíos en el acto.</h2>
-            <p class="m-0">Confía en nosotros.</p>
+            <h2 class="m-0">Home cliente clean</h2>
           </div>
         </div>
       </div>
       <div class="col-md-6">
-        <div class="contenido d-flex justify-content-center align-items-center">
-          <div class="imagen text-center">
-            <img th:src="@{/imagenes/auto-home.svg}" class="d-block mx-auto" alt="Imagen de Auto" style="width: 180%; height: 200%;">
-          </div>
-        </div>
       </div>
     </div>
   </div>

@@ -21,43 +21,7 @@ public class ClienteRepositorioImpl implements ClienteRepositorio {
     }
 
     @Override
-    @Transactional
-    public void crearViaje(Viaje viaje) {
-        this.sessionFactory.getCurrentSession().save(viaje);
-    }
-
-    @Override
-    @Transactional
-    public Viaje buscarViajePorId(Integer id) {
-        return this.sessionFactory.getCurrentSession().get(Viaje.class, id);
-    }
-
-    @Override
-    @Transactional
-    public Cliente registrarCliente(Cliente cliente) {
-        Session session = this.sessionFactory.getCurrentSession();
-        session.save(cliente);
-        Integer idConductorGuardado = (Integer) session.getIdentifier(cliente);
-        return session.get(Cliente.class, idConductorGuardado);
-    }
-
-    @Override
-    @Transactional
-    public Cliente buscarDuplicados(String email, String nombreUsuario) {
-        Session session = this.sessionFactory.getCurrentSession();
-        Query query = session.createQuery("FROM Cliente cliente WHERE cliente.email = :email OR cliente.nombreUsuario = :nombreUsuario");
-        query.setParameter("email", email);
-        query.setParameter("nombreUsuario", nombreUsuario);
-        return (Cliente) query.uniqueResult();
-    }
-
-    @Override
     public Cliente obtenerClientePorId(Integer idusuario) {
         return this.sessionFactory.getCurrentSession().get(Cliente.class, idusuario);
-    }
-
-    @Override
-    public void guardarPaquete(Paquete paquete) {
-        this.sessionFactory.getCurrentSession().save(paquete);
     }
 }

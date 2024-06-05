@@ -3,7 +3,7 @@ package com.tallerwebi.dominio;
 import com.tallerwebi.dominio.cliente.Cliente;
 import com.tallerwebi.dominio.conductor.Conductor;
 import com.tallerwebi.dominio.enums.TipoEstado;
-import com.tallerwebi.dominio.usuario.UsuarioNoEncontradoException;
+import com.tallerwebi.dominio.exceptions.UsuarioNoEncontradoException;
 import com.tallerwebi.dominio.viaje.*;
 import com.tallerwebi.presentacion.Datos.DatosViaje;
 import org.junit.jupiter.api.BeforeEach;

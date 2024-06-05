@@ -4,10 +4,8 @@ import com.tallerwebi.dominio.cliente.Cliente;
 import com.tallerwebi.dominio.cliente.ClienteServicio;
 import com.tallerwebi.dominio.conductor.Conductor;
 import com.tallerwebi.dominio.paquete.Paquete;
-import com.tallerwebi.dominio.usuario.UsuarioNoEncontradoException;
+import com.tallerwebi.dominio.exceptions.UsuarioNoEncontradoException;
 import com.tallerwebi.dominio.conductor.ConductorServicio;
-import com.tallerwebi.dominio.imagen.Imagen;
-import com.tallerwebi.dominio.imagen.ImagenServicio;
 import com.tallerwebi.dominio.enums.TipoEstado;
 import com.tallerwebi.dominio.viaje.Viaje;
 import com.tallerwebi.dominio.viaje.ViajeServicio;
@@ -25,15 +23,13 @@ import javax.servlet.http.HttpSession;
 public class ViajeControlador {
 
     private final ViajeServicio viajeServicio;
-    private final ImagenServicio imagenServicio;
     private final ConductorServicio conductorServicio;
     private final ClienteServicio clienteServicio;
 
     @Autowired
-    public ViajeControlador(ViajeServicio viajeServicio, ConductorServicio conductorServicio, ImagenServicio imagenServicio, ClienteServicio clienteServicio){
+    public ViajeControlador(ViajeServicio viajeServicio, ConductorServicio conductorServicio, ClienteServicio clienteServicio){
         this.viajeServicio = viajeServicio;
         this.conductorServicio = conductorServicio;
-        this.imagenServicio = imagenServicio;
         this.clienteServicio = clienteServicio;
     }
     @RequestMapping("/form-viaje")
@@ -41,19 +37,10 @@ public class ViajeControlador {
         ModelMap model = new ModelMap();
         String viewName = "form-viaje";
         String claveGoogleMaps = "AIzaSyDcPeOyMBqG_1mZgjpei_R2ficRigdkINg";
-        Imagen logo = imagenServicio.getImagenByName("logo");
-        Imagen user = imagenServicio.getImagenByName("user");
-        Imagen auto = imagenServicio.getImagenByName("auto");
-        Imagen fondo = imagenServicio.getImagenByName("fondo");
-        Imagen botonPS = imagenServicio.getImagenByName("botonPS");
+
 
         boolean isEditViaje = (session.getAttribute("isEditViaje") != null) ? (boolean) session.getAttribute("isEditViaje") : false;
 
-        model.put("logo", logo);
-        model.put("user", user);
-        model.put("auto", auto);
-        model.put("fondo", fondo);
-        model.put("botonPS", botonPS);
         model.put("viaje", new DatosViaje());
         model.put("clave", claveGoogleMaps);
         model.put("isEditViaje", isEditViaje);
@@ -95,11 +82,6 @@ public class ViajeControlador {
 
         String viewName = "historial-viajes";
         String claveGoogleMaps = "AIzaSyDcPeOyMBqG_1mZgjpei_R2ficRigdkINg";
-        Imagen logo = imagenServicio.getImagenByName("logo");
-        Imagen user = imagenServicio.getImagenByName("user");
-        Imagen auto = imagenServicio.getImagenByName("auto");
-        Imagen fondo = imagenServicio.getImagenByName("fondo");
-        Imagen botonPS = imagenServicio.getImagenByName("botonPS");
         Boolean isUsuarioLogueado = (Boolean) request.getSession().getAttribute("isUsuarioLogueado");
 
         Conductor conductor;
@@ -122,11 +104,6 @@ public class ViajeControlador {
         }
 
         model.put("clave", claveGoogleMaps);
-        model.put("logo", logo);
-        model.put("user", user);
-        model.put("auto", auto);
-        model.put("fondo", fondo);
-        model.put("botonPS", botonPS);
         model.put("isUsuarioLogueado",isUsuarioLogueado);
         model.put("conductor", conductor);
         model.put("viajesObtenidos", historialViajes);
@@ -139,11 +116,7 @@ public class ViajeControlador {
 
         String viewName = "viaje";
         String claveGoogleMaps = "AIzaSyDcPeOyMBqG_1mZgjpei_R2ficRigdkINg";
-        Imagen logo = imagenServicio.getImagenByName("logo");
-        Imagen user = imagenServicio.getImagenByName("user");
-        Imagen auto = imagenServicio.getImagenByName("auto");
-        Imagen fondo = imagenServicio.getImagenByName("fondo");
-        Imagen botonPS = imagenServicio.getImagenByName("botonPS");
+
         Boolean isUsuarioLogueado = (Boolean) request.getSession().getAttribute("isUsuarioLogueado");
         Conductor conductor = conductorServicio.obtenerConductorPorId((Integer) request.getSession().getAttribute("IDUSUARIO"));
 
@@ -172,11 +145,6 @@ public class ViajeControlador {
         }
 
         model.put("clave", claveGoogleMaps);
-        model.put("logo", logo);
-        model.put("user", user);
-        model.put("auto", auto);
-        model.put("fondo", fondo);
-        model.put("botonPS", botonPS);
         model.put("isUsuarioLogueado",isUsuarioLogueado);
         model.put("conductor", conductor);
         model.put("idViaje", viaje.getIdViaje());
@@ -189,11 +157,6 @@ public class ViajeControlador {
         ModelMap model = new ModelMap();
 
         String viewName = "viajes-aceptados";
-        Imagen logo = imagenServicio.getImagenByName("logo");
-        Imagen user = imagenServicio.getImagenByName("user");
-        Imagen auto = imagenServicio.getImagenByName("auto");
-        Imagen fondo = imagenServicio.getImagenByName("fondo");
-        Imagen botonPS = imagenServicio.getImagenByName("botonPS");
         Boolean isUsuarioLogueado = (Boolean) request.getSession().getAttribute("isUsuarioLogueado");
         Conductor conductor;
 
@@ -214,11 +177,6 @@ public class ViajeControlador {
             model.put("sinViajes", "No hay viajes en proceso");
         }
 
-        model.put("logo", logo);
-        model.put("user", user);
-        model.put("auto", auto);
-        model.put("fondo", fondo);
-        model.put("botonPS", botonPS);
         model.put("isUsuarioLogueado",isUsuarioLogueado);
         model.put("conductor", conductor);
         model.put("viajesObtenidos", viajesObtenidos);
@@ -231,11 +189,6 @@ public class ViajeControlador {
 
         String viewName = "viaje";
         String claveGoogleMaps = "AIzaSyDcPeOyMBqG_1mZgjpei_R2ficRigdkINg";
-        Imagen logo = imagenServicio.getImagenByName("logo");
-        Imagen user = imagenServicio.getImagenByName("user");
-        Imagen auto = imagenServicio.getImagenByName("auto");
-        Imagen fondo = imagenServicio.getImagenByName("fondo");
-        Imagen botonPS = imagenServicio.getImagenByName("botonPS");
         Boolean isUsuarioLogueado = (Boolean) request.getSession().getAttribute("isUsuarioLogueado");
         Conductor conductor = conductorServicio.obtenerConductorPorId((Integer) request.getSession().getAttribute("IDUSUARIO"));
 
@@ -257,11 +210,6 @@ public class ViajeControlador {
         }*/
 
         model.put("clave", claveGoogleMaps);
-        model.put("logo", logo);
-        model.put("user", user);
-        model.put("auto", auto);
-        model.put("fondo", fondo);
-        model.put("botonPS", botonPS);
         model.put("isUsuarioLogueado", isUsuarioLogueado);
         model.put("conductor", conductor);
         model.put("viaje", viaje);
@@ -308,22 +256,12 @@ public class ViajeControlador {
 
         String viewName = "detalle-viaje";
         String claveGoogleMaps = "AIzaSyDcPeOyMBqG_1mZgjpei_R2ficRigdkINg";
-        Imagen logo = imagenServicio.getImagenByName("logo");
-        Imagen user = imagenServicio.getImagenByName("user");
-        Imagen auto = imagenServicio.getImagenByName("auto");
-        Imagen fondo = imagenServicio.getImagenByName("fondo");
-        Imagen botonPS = imagenServicio.getImagenByName("botonPS");
         Boolean isUsuarioLogueado = (Boolean) request.getSession().getAttribute("isUsuarioLogueado");
         Conductor conductor = conductorServicio.obtenerConductorPorId((Integer) request.getSession().getAttribute("IDUSUARIO"));
 
         DatosViaje viaje = viajeServicio.obtenerViajeAceptadoPorId(idViaje);
 
         model.put("clave", claveGoogleMaps);
-        model.put("logo", logo);
-        model.put("user", user);
-        model.put("auto", auto);
-        model.put("fondo", fondo);
-        model.put("botonPS", botonPS);
         model.put("isUsuarioLogueado",isUsuarioLogueado);
         model.put("conductor", conductor);
         model.put("idViaje", viaje.getIdViaje());
@@ -336,4 +274,22 @@ public class ViajeControlador {
         return new ModelAndView("redirect:/historial");
     }
 
+    @RequestMapping("/form-viaje")
+    public ModelAndView mostrarFormViaje(){
+        ModelMap model = new ModelMap();
+
+        String viewName = "form-viaje";
+        model.put("viaje", new DatosViaje());
+        return new ModelAndView(viewName, model);
+    }
+
+    @RequestMapping(value = "/crear-viaje", method = RequestMethod.POST)
+    public ModelAndView crearViajeConPaqueteYCliente(@ModelAttribute("viaje") DatosViaje viaje, HttpServletRequest request){
+        Cliente cliente = this.clienteServicio.obtenerClientePorId((Integer) request.getSession().getAttribute("IDUSUARIO"));
+        Paquete paquete = new Paquete(); // Ver como obtener el paquete
+
+        this.viajeServicio.crearViaje(cliente, viaje, paquete);
+
+        return new ModelAndView("redirect:/home");
+    }
 }
