@@ -12,6 +12,8 @@
     <!-- Custom style -->
     <link rel="stylesheet" th:href="@{/css/registro-paquete.css}"/>
     <link rel="stylesheet" th:href="@{/css/main.css}"/>
+    <link rel="stylesheet" th:href="@{/css/registro-vehiculo.css}"/>
+
 </head>
 
 <body>
@@ -56,8 +58,8 @@
 
 <main>
     <div class="formulario_fondo">
-        <h1 class="titulo_registroPaquete">Registrar Paquete</h1>
-        <form th:action="@{/guardar-paquete}" method="post" th:object="${paquete}">
+        <h1 class="titulo_registroConductor">Registrar Paquete</h1>
+        <form class="fuente_formulario_registro" th:action="@{/guardar-paquete}" method="post" th:object="${paquete}">
             <section class="formulario">
                 <div class="columna">
                     <div>
@@ -69,11 +71,23 @@
                         <label for="dimension" class="nombre fuente_formulario_registro">Dimensión</label>
                         <input type="number" step="0.01" class="form-control" id="dimension" name="dimension" th:field="*{dimension}" required>
                     </div>
-
                     <div>
-                        <label for="esFragil" class="nombre fuente_formulario_registro">¿Es Frágil?</label>
-                        <input type="checkbox" class="form-control" id="esFragil" name="esFragil" th:field="*{esFragil}">
+                        <label class="nombre fuente_formulario_registro">¿Es Frágil?</label>
+                        <br>
+                        <br>
+
+                        <div>
+                            <input type="radio" id="esFragilSi" name="esFragil" value="true" th:checked="${paquete.esFragil == true}">
+                            <label for="esFragilSi">Sí</label>
+                        </div>
+                        <br>
+                        <div>
+                            <input type="radio" id="esFragilNo" name="esFragil" value="false" th:checked="${paquete.esFragil == false}">
+                            <label for="esFragilNo">No</label>
+                        </div>
+                        <input type="hidden" th:field="*{esFragil}">
                     </div>
+
                 </div>
             </section>
 

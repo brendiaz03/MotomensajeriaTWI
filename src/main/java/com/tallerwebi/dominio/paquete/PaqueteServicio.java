@@ -5,5 +5,5 @@ public interface PaqueteServicio {
 
     void editarPaquete(Paquete paquete);
 
-    Paquete obtenerPaquetePorId(Integer paqueteId);
+    Paquete obtenerPaquetePorId(Integer paqueteId) throws PaqueteNoEncontradoException;
 }

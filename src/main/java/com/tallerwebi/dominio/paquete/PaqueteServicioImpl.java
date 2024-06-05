@@ -25,8 +25,14 @@ public class PaqueteServicioImpl implements PaqueteServicio {
 
     //Agregar excepción de que no se encontró el paquete por Id. Agregar Try - Catch.
     @Override
-    public Paquete obtenerPaquetePorId(Integer paqueteId) {
-        return this.paqueteRepositorio.obtenerPaquetePorId(paqueteId);
+    public Paquete obtenerPaquetePorId(Integer paqueteId) throws PaqueteNoEncontradoException{
+
+        try {
+            return this.paqueteRepositorio.obtenerPaquetePorId(paqueteId);
+
+        } catch (PaqueteNoEncontradoException e) {
+            throw new PaqueteNoEncontradoException();
+        }
     }
 
 
