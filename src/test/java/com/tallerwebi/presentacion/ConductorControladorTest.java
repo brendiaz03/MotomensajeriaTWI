@@ -2,6 +2,7 @@ package com.tallerwebi.presentacion;
 
 import com.tallerwebi.dominio.conductor.ConductorServicio;
 import com.tallerwebi.dominio.vehiculo.VehiculoServicio;
+import com.tallerwebi.dominio.viaje.ViajeServicio;
 import org.junit.jupiter.api.BeforeEach;
 
 import javax.servlet.http.HttpSession;
@@ -13,7 +14,7 @@ public class ConductorControladorTest {
 
    private ConductorControlador conductorControlador;
    private ConductorServicio conductorServicio;
-
+   private ViajeServicio viajeServicio;
    private VehiculoServicio vehiculoServicio;
    private HttpSession session;
 
@@ -22,8 +23,9 @@ public class ConductorControladorTest {
    public void init() throws Exception {
        this.conductorServicio = mock(ConductorServicio.class);
        this.vehiculoServicio=mock(VehiculoServicio.class);
+       this.viajeServicio=mock(ViajeServicio.class);
        this.session = mock(HttpSession.class);
-       this.conductorControlador = new ConductorControlador(this.conductorServicio, this.vehiculoServicio);
+       this.conductorControlador = new ConductorControlador(this.conductorServicio, this.vehiculoServicio, this.viajeServicio);
 
    }
 

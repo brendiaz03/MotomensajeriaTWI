@@ -24,7 +24,7 @@ public class UsuarioServicioImpl implements UsuarioServicio {
     public Usuario registrarUsuario(DatosUsuario usuario) throws UsuarioDuplicadoException {
         try{
             verificarDuplicados(usuario.getEmail(), usuario.getNombreUsuario());
-            if(usuario.getTipoUsuario() == TipoUsuario.CONDUCTOR){
+            if(usuario.getTipoUsuario() == TipoUsuario.Conductor){
                 Conductor conductor = usuario.toConductor();
                 return usuarioRepositorio.registrarConductor(conductor);
             }else{

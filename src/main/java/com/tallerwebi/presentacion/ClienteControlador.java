@@ -18,11 +18,9 @@ public class ClienteControlador {
         this.clienteServicio = clienteServicio;
     }
 
-    @RequestMapping("/realizar-paquete")
-    public ModelAndView mostrarFormArmarPaquete() {
-        ModelMap model = new ModelMap();
-        String viewName = "form-paquete";
-        model.put("paquete", new Paquete());
-        return new ModelAndView(viewName, model);
+    @RequestMapping("/homeCliente")
+    public ModelAndView mostrarHomeCliente() {
+        String viewName = "home-cliente";
+        return new ModelAndView(viewName);
     }
 }

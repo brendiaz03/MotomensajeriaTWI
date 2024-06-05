@@ -4,13 +4,17 @@ import com.tallerwebi.dominio.conductor.*;
 import com.tallerwebi.dominio.exceptions.UsuarioNoEncontradoException;
 import com.tallerwebi.dominio.vehiculo.Vehiculo;
 import com.tallerwebi.dominio.vehiculo.VehiculoServicio;
+import com.tallerwebi.dominio.viaje.ViajeServicio;
+import com.tallerwebi.presentacion.Datos.DatosViaje;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.annotation.MultipartConfig;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 @Controller
 @SessionAttributes("isUsuarioLogueado")
@@ -18,12 +22,50 @@ import javax.servlet.http.HttpSession;
 public class ConductorControlador {
     private ConductorServicio conductorServicio;
     private VehiculoServicio vehiculoService;
+    private ViajeServicio viajeServicio;
+    private Double latitudActual = -34.668822; // VER
+    private Double longitudActual =  -58.532878; // VER
 
 
     @Autowired
-    public ConductorControlador(ConductorServicio conductorServicio, VehiculoServicio _vehiculoService) {
+    public ConductorControlador(ConductorServicio conductorServicio, VehiculoServicio _vehiculoService, ViajeServicio _viajeServicio) {
         this.conductorServicio = conductorServicio;
         this.vehiculoService = _vehiculoService;
+        this.viajeServicio = _viajeServicio;
+    }
+
+    @RequestMapping("/homeCONDUCTOR")
+    public ModelAndView mostrarHomeConductor(HttpServletRequest request) throws UsuarioNoEncontradoException {
+        ModelMap model = new ModelMap();
+        String viewName = "home-conductor";
+
+        Boolean isUsuarioLogueado = (Boolean) request.getSession().getAttribute("isUsuarioLogueado");
+        Conductor conductor;
+        Double distanciaAFiltrar = (Double) request.getSession().getAttribute("distancia");
+
+        if(request.getSession().getAttribute("IDUSUARIO") != null){
+            // conductor = conductorServicio.obtenerConductorPorId((Integer) request.getSession().getAttribute("IDUSUARIO"));
+        }else{
+            conductor = null;
+        }
+
+        List<DatosViaje> viajesCercanosPendientes;
+
+        if (request.getSession().getAttribute("VEHICULO") != null) {
+            viajesCercanosPendientes = this.viajeServicio.filtrarViajesPorDistanciaDelConductor(latitudActual, longitudActual, distanciaAFiltrar);
+            model.put("noTieneVehiculo", false);
+        } else {
+            viajesCercanosPendientes = null;
+            model.put("noTieneVehiculo", true);
+        }
+
+        // request.getSession().setAttribute("isPenalizado", this.viajeServicio.estaPenalizado(conductor));
+
+        model.put("isUsuarioLogueado", isUsuarioLogueado);
+        model.put("viajes", viajesCercanosPendientes);
+        // model.put("conductor", conductor);
+        model.put("isPenalizado", request.getSession().getAttribute("isPenalizado"));
+        return new ModelAndView(viewName, model);
     }
 
     @RequestMapping(path = "/perfil", method = RequestMethod.GET)

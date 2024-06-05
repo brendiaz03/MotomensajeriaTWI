@@ -35,7 +35,7 @@ public class ConductorServicioImpl implements ConductorServicio {
 }
 
     private Conductor mapearUsuarioAConductor(DatosUsuario nuevoConductor) {
-        return new Conductor(nuevoConductor.getNombre(), nuevoConductor.getApellido(), nuevoConductor.getNumeroDeDni(), nuevoConductor.getEmail(), nuevoConductor.getNumeroDeTelefono(), nuevoConductor.getNombreUsuario(), nuevoConductor.getPassword(), nuevoConductor.getDomicilio(), TipoUsuario.CONDUCTOR);
+        return new Conductor(nuevoConductor.getNombre(), nuevoConductor.getApellido(), nuevoConductor.getNumeroDeDni(), nuevoConductor.getEmail(), nuevoConductor.getNumeroDeTelefono(), nuevoConductor.getNombreUsuario(), nuevoConductor.getPassword(), nuevoConductor.getDomicilio(), TipoUsuario.Conductor);
     }
 
     @Override

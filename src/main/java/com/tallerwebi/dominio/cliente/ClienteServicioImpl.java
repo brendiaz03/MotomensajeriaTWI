@@ -16,19 +16,8 @@ public class ClienteServicioImpl implements ClienteServicio {
     }
 
     @Override
-    public void crearViaje(Cliente cliente, Viaje viaje) {
-        viaje.setCliente(cliente);
-        this.clienteRepositorio.crearViaje(viaje);
-    }
-
-    @Override
     public Cliente obtenerClientePorId(Integer idusuario) {
         return this.clienteRepositorio.obtenerClientePorId(idusuario);
-    }
-
-    @Override
-    public void guardarPaquete(Paquete paquete) {
-        this.clienteRepositorio.guardarPaquete(paquete);
     }
 
 }

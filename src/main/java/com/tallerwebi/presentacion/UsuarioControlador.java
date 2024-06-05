@@ -36,20 +36,8 @@ public class UsuarioControlador {
         ModelMap model = new ModelMap();
         model.put("usuario", new DatosUsuario());
 
-       // boolean isEditForm = (session.getAttribute("isEditForm") != null) ? (boolean) session.getAttribute("isEditForm") : false;
+        model.put("isEditForm", false);
 
-        Boolean isEditForm = false;
-        model.put("isEditForm", isEditForm);
-
-//        if(!isEditForm) {
-//            if(mensajeError != ""){
-//                model.put("mensajeError", mensajeError);
-//            }
-//        } else {
-//            Integer idUsuario = (Integer) session.getAttribute("IDUSUARIO");
-//            Conductor conductor = conductorServicio.obtenerConductorPorId(idUsuario);
-//            model.put("conductor", conductor );
-//        }
         return new ModelAndView(viewName, model);
     }
 
@@ -64,7 +52,7 @@ public class UsuarioControlador {
             }else{
                 Cliente cliente = (Cliente)usuario;
                 session.setAttribute("IDUSUARIO", cliente.getId());
-                return new ModelAndView("redirect:/home");
+                return new ModelAndView("redirect:/homeCliente");
             }
         }catch(Exception e){
             e.printStackTrace();
