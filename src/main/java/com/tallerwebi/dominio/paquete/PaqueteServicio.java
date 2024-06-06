@@ -1,5 +1,9 @@
 package com.tallerwebi.dominio.paquete;
 
 public interface PaqueteServicio {
-    void guardarPaquete(Paquete paquete);
+    Paquete guardarPaquete(Paquete paquete);
+
+    void editarPaquete(Paquete paquete);
+
+    Paquete obtenerPaquetePorId(Integer paqueteId) throws PaqueteNoEncontradoException;
 }

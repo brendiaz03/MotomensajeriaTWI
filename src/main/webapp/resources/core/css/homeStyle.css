@@ -3,7 +3,6 @@
     font-family: 'Codec Pro';
     src: url('CodecPro-Bold.ttf') format('truetype');
 }
-
 body {
     font-family: "Codec Pro",sans-serif;
     background-image: url('imagenes/fondo.jpg'); /* Ruta de la imagen de fondo */
