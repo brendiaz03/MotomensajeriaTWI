@@ -19,15 +19,24 @@ public class PaqueteServicioTest {
     }
 
     @Test
-    public void queSePuedaGuardarUnPaqueteYMeDevuelvaUnPaquete(){
+    public void queSePuedaGuardarUnPaqueteYMeDevuelvaUnPaquete() throws PaqueteNoEncontradoException {
 
         Paquete paquete = new Paquete();
 
-        paquete.setId(22);
+        Paquete paqueteEsperado = new Paquete();
+        try{
 
-        when(this.paqueteServicio.guardarPaquete(paquete)).thenReturn(paquete);
+            paquete.setId(22);
 
-        Paquete paqueteEsperado = this.paqueteServicio.guardarPaquete(paquete);
+            when(this.paqueteServicio.guardarPaquete(paquete)).thenReturn(paquete);
+
+            paqueteEsperado = this.paqueteServicio.guardarPaquete(paquete);
+
+        }catch (PaqueteNoEncontradoException e){
+
+            throw new PaqueteNoEncontradoException();
+
+        }
 
         assertThat(paqueteEsperado, equalTo(paquete));
         assertThat(paqueteEsperado.getId(), equalTo(paquete.getId()));
@@ -46,21 +55,28 @@ public class PaqueteServicioTest {
         verify(paqueteRepositorio).editarPaquete(paquete);
     }
 
-    //
-    //Agregar excepción y Try - Catch. Ver Throws.
     @Test
     public void queSeObtengaUnPaquetePorSuId() throws PaqueteNoEncontradoException {
 
         Paquete paquete = new Paquete();
 
-        paquete.setId(29);
+        Paquete paqueteEsperado = new Paquete();
 
-        when(paqueteRepositorio.obtenerPaquetePorId(paquete.getId())).thenReturn(paquete);
+        try{
 
-        Paquete paqueteEsperado = this.paqueteServicio.obtenerPaquetePorId(paquete.getId());
+            paquete.setId(29);
+
+            when(paqueteRepositorio.obtenerPaquetePorId(paquete.getId())).thenReturn(paquete);
+
+            paqueteEsperado = this.paqueteServicio.obtenerPaquetePorId(paquete.getId());
+
+        }catch (PaqueteNoEncontradoException e){
+            throw new PaqueteNoEncontradoException();
+        }
 
         assertThat(paqueteEsperado, equalTo(paquete));
         assertThat(paquete.getId(), equalTo(paqueteEsperado.getId()));
+
     }
 
 }

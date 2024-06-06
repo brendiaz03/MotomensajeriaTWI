@@ -14,7 +14,14 @@ public class PaqueteServicioImpl implements PaqueteServicio {
     }
 
     @Override
-    public Paquete guardarPaquete(Paquete paquete) {
+    public Paquete guardarPaquete(Paquete paquete) throws PaqueteNoEncontradoException {
+
+        if(paquete==null){
+
+            throw new PaqueteNoEncontradoException();
+
+        }
+
         return this.paqueteRepositorio.guardarPaquete(paquete);
     }
 
@@ -23,16 +30,15 @@ public class PaqueteServicioImpl implements PaqueteServicio {
         this.paqueteRepositorio.editarPaquete(paquete);
     }
 
-    //Agregar excepción de que no se encontró el paquete por Id. Agregar Try - Catch.
     @Override
     public Paquete obtenerPaquetePorId(Integer paqueteId) throws PaqueteNoEncontradoException{
 
-  //      try {
+        try {
             return this.paqueteRepositorio.obtenerPaquetePorId(paqueteId);
-/*
         } catch (PaqueteNoEncontradoException e) {
             throw new PaqueteNoEncontradoException();
-        }*/
+        }
+
     }
 
 

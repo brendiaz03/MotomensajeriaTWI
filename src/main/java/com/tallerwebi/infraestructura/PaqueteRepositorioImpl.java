@@ -1,6 +1,7 @@
 package com.tallerwebi.infraestructura;
 
 import com.tallerwebi.dominio.paquete.Paquete;
+import com.tallerwebi.dominio.paquete.PaqueteNoEncontradoException;
 import com.tallerwebi.dominio.paquete.PaqueteRepositorio;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
@@ -15,8 +16,16 @@ public class PaqueteRepositorioImpl implements PaqueteRepositorio {
     }
 
     @Override
-    public Paquete guardarPaquete(Paquete paquete) {
+    public Paquete guardarPaquete(Paquete paquete) throws PaqueteNoEncontradoException {
+
+        if(paquete==null){
+
+            throw new PaqueteNoEncontradoException();
+
+        }
+
         this.sessionFactory.getCurrentSession().save(paquete);
+
         return paquete;
     }
 
@@ -26,7 +35,16 @@ public class PaqueteRepositorioImpl implements PaqueteRepositorio {
     }
 
     @Override
-    public Paquete obtenerPaquetePorId(Integer paqueteId) {
-        return this.sessionFactory.getCurrentSession().get(Paquete.class, paqueteId);
+    public Paquete obtenerPaquetePorId(Integer paqueteId) throws PaqueteNoEncontradoException {
+
+        Paquete paqueteBuscado = this.sessionFactory.getCurrentSession().get(Paquete.class, paqueteId);
+
+        if (paqueteBuscado == null) {
+            throw new PaqueteNoEncontradoException();
+        }
+
+        return paqueteBuscado;
+
     }
+
 }

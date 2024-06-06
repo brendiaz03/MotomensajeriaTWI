@@ -1,12 +1,8 @@
 package com.tallerwebi.infraestructura;
 
-import com.tallerwebi.dominio.enums.Color;
-import com.tallerwebi.dominio.enums.ModeloVehiculo;
-import com.tallerwebi.dominio.enums.TipoVehiculo;
 import com.tallerwebi.dominio.paquete.Paquete;
+import com.tallerwebi.dominio.paquete.PaqueteNoEncontradoException;
 import com.tallerwebi.dominio.paquete.PaqueteRepositorio;
-import com.tallerwebi.dominio.vehiculo.Vehiculo;
-import com.tallerwebi.dominio.vehiculo.VehiculoRepositorio;
 import com.tallerwebi.dominio.viaje.Viaje;
 import com.tallerwebi.infraestructura.config.HibernateInfraestructuraTestConfig;
 import org.hibernate.SessionFactory;
@@ -22,7 +18,6 @@ import javax.transaction.Transactional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
-import static org.mockito.Mockito.verify;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = HibernateInfraestructuraTestConfig.class)
@@ -43,37 +38,57 @@ public class PaqueteRepositorioTest {
     @Test
     @Rollback
     @Transactional
-    public void queSePuedaGuardarUnPaquete(){
+    public void queSePuedaGuardarUnPaquete() throws PaqueteNoEncontradoException {
 
         Paquete paquete = new Paquete(10.0, 5.0, true, new Viaje());
 
-        paquete.setId(1);
+        Paquete paqueteObtenido = null;
 
-        this.paqueteRepositorio.guardarPaquete(paquete);
+        try {
 
-        Paquete paqueteObtenido = this.paqueteRepositorio.obtenerPaquetePorId(1);
+            paquete.setId(100);
+
+            this.paqueteRepositorio.guardarPaquete(paquete);
+
+            paqueteObtenido = this.paqueteRepositorio.obtenerPaquetePorId(paquete.getId());
+
+        } catch(PaqueteNoEncontradoException e) {
+
+            throw new PaqueteNoEncontradoException();
+
+        }
 
         assertThat(paquete.getId(), equalTo(paqueteObtenido.getId()));
         assertThat(paquete, equalTo(paqueteObtenido));
 
     }
 
+
     @Test
     @Rollback
     @Transactional
-    public void queSePuedaEditarUnPaquete(){
+    public void queSePuedaEditarUnPaquete() throws PaqueteNoEncontradoException {
 
         Paquete paquete = new Paquete(10.0, 5.0, true, new Viaje());
 
-        paquete.setId(1);
+        Paquete paqueteObtenido = null;
 
-        paqueteRepositorio.guardarPaquete(paquete);
+        try {
+            paquete.setId(1);
 
-        paquete.setPeso(25.25);
+            paqueteRepositorio.guardarPaquete(paquete);
 
-        paqueteRepositorio.editarPaquete(paquete);
+            paquete.setPeso(25.25);
 
-        Paquete paqueteObtenido = this.paqueteRepositorio.obtenerPaquetePorId(paquete.getId());
+            paqueteRepositorio.editarPaquete(paquete);
+
+            paqueteObtenido = this.paqueteRepositorio.obtenerPaquetePorId(paquete.getId());
+
+        } catch(PaqueteNoEncontradoException e) {
+
+            throw new PaqueteNoEncontradoException();
+
+        }
 
         assertThat(paqueteObtenido.getPeso(), equalTo(25.25));
         assertThat(paqueteObtenido.getPeso(), equalTo(paquete.getPeso()));
@@ -83,15 +98,24 @@ public class PaqueteRepositorioTest {
     @Test
     @Rollback
     @Transactional
-    public void queSePuedaObtenerUnPaquetePorSuIdYMeDevuelvaElPaquete(){
+    public void queSePuedaObtenerUnPaquetePorSuIdYMeDevuelvaElPaquete() throws PaqueteNoEncontradoException {
 
         Paquete paquete = new Paquete(10.0, 5.0, true, new Viaje());
 
         paquete.setId(30);
 
-        paqueteRepositorio.guardarPaquete(paquete);
+        Paquete paqueteObtenido = null;
 
-        Paquete paqueteObtenido = this.paqueteRepositorio.obtenerPaquetePorId(paquete.getId());
+        try {
+            paqueteRepositorio.guardarPaquete(paquete);
+
+            paqueteObtenido = this.paqueteRepositorio.obtenerPaquetePorId(paquete.getId());
+
+        } catch(PaqueteNoEncontradoException e) {
+
+            throw new PaqueteNoEncontradoException();
+
+        }
 
         assertThat(paqueteObtenido.getId(), equalTo(paquete.getId()));
 
