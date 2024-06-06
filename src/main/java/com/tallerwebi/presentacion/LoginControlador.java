@@ -65,6 +65,7 @@ public class LoginControlador {
 
             if (usuario != null) {
                 request.getSession().setAttribute("IDUSUARIO", usuario.getId());
+                request.getSession().setAttribute("tipoUsuario", usuario.getTipoUsuario());
                 request.getSession().setAttribute("isUsuarioLogueado", true);
                 request.getSession().setAttribute("isEditForm", false);
                 model.put("correcto", "Usuario o clave correcta");

@@ -1,7 +1,9 @@
 package com.tallerwebi.presentacion;
 
 import com.tallerwebi.dominio.cliente.Cliente;
+import com.tallerwebi.dominio.cliente.ClienteServicio;
 import com.tallerwebi.dominio.conductor.Conductor;
+import com.tallerwebi.dominio.enums.TipoUsuario;
 import com.tallerwebi.dominio.exceptions.UsuarioNoEncontradoException;
 import com.tallerwebi.dominio.conductor.ConductorServicio;
 import com.tallerwebi.dominio.usuario.Usuario;
@@ -23,11 +25,13 @@ public class UsuarioControlador {
 
     private UsuarioServicio usuarioServicio;
     private ConductorServicio conductorServicio;
+    private ClienteServicio clienteServicio;
 
     @Autowired
-    public UsuarioControlador(UsuarioServicio usuarioServicio, ConductorServicio conductorServicio) {
+    public UsuarioControlador(UsuarioServicio usuarioServicio, ConductorServicio conductorServicio, ClienteServicio clienteServicio) {
         this.usuarioServicio = usuarioServicio;
         this.conductorServicio = conductorServicio;
+        this.clienteServicio = clienteServicio;
     }
 
     @RequestMapping(value = "/nuevo-usuario", method = RequestMethod.GET)
@@ -58,6 +62,26 @@ public class UsuarioControlador {
             e.printStackTrace();
             return this.mostrarForm("Se ha producido un error en el servidor.",session);
         }
+    }
+
+    @RequestMapping(path = "/perfil", method = RequestMethod.GET)
+    public ModelAndView irAPerfil(HttpSession session) {
+        ModelMap model = new ModelMap();
+        try {
+            if(session.getAttribute("tipoUsuario").equals(TipoUsuario.Conductor)){
+                Conductor usuario = conductorServicio.obtenerConductorPorId((Integer)session.getAttribute("IDUSUARIO"));
+                model.put("usuario", usuario);
+            }else{
+               Cliente usuario = clienteServicio.obtenerClientePorId((Integer)session.getAttribute("IDUSUARIO"));
+               model.put("usuario", usuario);
+            }
+        } catch (UsuarioNoEncontradoException e) {
+            model.put("mensajeError", e.getMessage());
+        }
+
+        Boolean isUsuarioLogueado = (Boolean) session.getAttribute("isUsuarioLogueado");
+        model.put("isUsuarioLogueado", isUsuarioLogueado);
+        return new ModelAndView("perfil", model);
     }
 
 }

@@ -11,7 +11,6 @@
     <link rel="stylesheet" th:href="@{css/login.css}"/>
     <link rel="stylesheet" th:href="@{css/main.css}"/>
     <link rel="stylesheet" th:href="@{css/homeStyle.css}"/>
-
 </head>
 <body>
 <header>
@@ -33,29 +32,27 @@
                 <li class="nav-item p-2">
                     <a th:href="ayuda" class="nav-link p-2 text-white" href="#">Ayuda</a>
                 </li>
-                <li class="nav-item p-2" th:if="${isUsuarioLogueado}">
+                <li class="nav-item p-2">
                     <a th:href="viajes-en-proceso" class="nav-link p-2 text-white">Viajes en Proceso</a>
                 </li>
-                <li class="nav-item p-2" th:if="${isUsuarioLogueado}">
+                <li class="nav-item p-2">
                     <a th:href="historial" class="nav-link p-2 text-white" href="#">Historial de Viajes</a>
                 </li>
             </ul>
-            <a th:unless="${isUsuarioLogueado}" th:href="@{login}" class="btn-custom" style="text-decoration: none">Ingresar</a>
             <!-- Muestra el botón de usuario solo si el usuario está logueado -->
-            <a th:if="${isUsuarioLogueado}" th:href="perfil" class="btn mx-2" style="border:none;">
-                <div class="container d-flex justify-content-center align-items-center"  th:if="${conductor.getImagenPerfil() != null}" style="border: none">
-                    <img alt="img" class="d-block rounded-circle" th:src="'data:image/jpg;charset=utf-8;base64,' + ${conductor.getImageDataBase64()}" style=" width: 40px; height: 40px;"/>
+            <a th:href="perfil" class="btn mx-2" style="border:none;">
+                <div class="container d-flex justify-content-center align-items-center"  th:if="${usuario.getImagenPerfil() != null}" style="border: none">
+                    <img alt="img" class="d-block rounded-circle" th:src="'data:image/jpg;charset=utf-8;base64,' + ${usuario.getImageDataBase64()}" style=" width: 40px; height: 40px;"/>
                 </div>
-                <div th:if="${conductor.getImagenPerfil() == null}">
+                <div th:if="${usuario.getImagenPerfil() == null}">
                     <img th:src="@{/imagenes/user.png}" alt=",,," style="height: 20px;width: 20px">
                 </div>
             </a>
-            <a th:if="${isUsuarioLogueado}" th:href="@{cerrar-sesion}"><i class="fa-solid fa-arrow-right-from-bracket" style=" border-radius:25px; padding:11px; background-color: white; color: #36054E; transition: color 0.3s;" onmouseover="this.style.color='white';this.style.backgroundColor='lightgray'" onmouseout="this.style.color='purple'; this.style.backgroundColor='white'" ></i></a>
+            <a th:href="@{cerrar-sesion}"><i class="fa-solid fa-arrow-right-from-bracket" style=" border-radius:25px; padding:11px; background-color: white; color: #36054E; transition: color 0.3s;" onmouseover="this.style.color='white';this.style.backgroundColor='lightgray'" onmouseout="this.style.color='purple'; this.style.backgroundColor='white'" ></i></a>
 
         </div>
     </nav>
 </header>
-
 <main>
     <div class="container d-flex justify-content-center">
     <!-- TARJETA IZQUIERDA -->
@@ -64,24 +61,24 @@
             <div class="container d-flex justify-content-center align-items-center">
                 <div class="rounded-circle bg-secondary d-flex justify-content-center align-items-center" style="width: 100px; height: 100px;">
                     <a th:href="foto-perfil" style="display: flex; justify-content: center; align-items: center;">
-                        <div class="container d-flex justify-content-center align-items-center"  th:if="${conductor.getImagenPerfil() != null}">
-                            <img alt="img" class="d-block rounded-circle" th:src="'data:image/jpg;charset=utf-8;base64,' + ${conductor.getImageDataBase64()}" style="width: 100px; height: 100px;"/>
+                        <div class="container d-flex justify-content-center align-items-center"  th:if="${usuario.getImagenPerfil() != null}">
+                            <img alt="img" class="d-block rounded-circle" th:src="'data:image/jpg;charset=utf-8;base64,' + ${usuario.getImageDataBase64()}" style="width: 100px; height: 100px;"/>
                         </div>
 
-                        <div th:if="${conductor.getImagenPerfil() == null}">
+                        <div th:if="${usuario.getImagenPerfil() == null}">
                             <img th:src="@{/imagenes/user.png}" alt=",,," style="height: 80px;width: 80px">
                         </div>
                     </a>
                 </div>
             </div>
             <div class="card-body" style="align-content: center; justify-content: center; text-align: center;align-items: center">
-                <h5 class="card-title text-center"><span th:text="${conductor.getNombreUsuario()}"></span></h5>
-                <p class="card-title text-center"><span th:text="${conductor.getEmail()}"></span></p>
+                <h5 class="card-title text-center"><span th:text="${usuario.getNombreUsuario()}"></span></h5>
+                <p class="card-title text-center"><span th:text="${usuario.getEmail()}"></span></p>
 
             </div>
             <div class="card-body">
                 <p class="card-text option active" data-target="perfil"><i class="fa-solid fa-id-card" ></i> Perfil</p>
-                <p class="card-text option" data-target="vehiculo"><i class="fa-solid fa-car-side" ></i> Vehiculo</p>
+<!--                <p th:if="usuario instanceof Conductor" class="card-text option" data-target="vehiculo"><i class="fa-solid fa-car-side" ></i> Vehiculo</p>-->
                 <p class="card-text option" data-target="seguridad"><i class="fa-solid fa-shield-halved" ></i> Seguridad</p>
             </div>
         </div>
@@ -97,38 +94,38 @@
                 </div>
             </div>
             <div class="card-body">
-                <p><span th:text="${conductor.getNombre() + ' ' + conductor.getApellido()}"></span></p>
-                <p>Dirección: <span th:text="${conductor.getDomicilio()}"></span></p>
-                <p>Teléfono: <span th:text="${conductor.getNroTelefono()}"></span></p>
-                <p>E-mail: <span th:text="${conductor.getEmail()}"></span></p>
+                <p><span th:text="${usuario.getNombre() + ' ' + usuario.getApellido()}"></span></p>
+                <p>Dirección: <span th:text="${usuario.getDomicilio()}"></span></p>
+                <p>Teléfono: <span th:text="${usuario.getNumeroDeTelefono()}"></span></p>
+                <p>E-mail: <span th:text="${usuario.getEmail()}"></span></p>
             </div>
         </div>
 
     <!-- TARJETA DERECHA 2 DE 3 (VEHICULO) -->
-        <div id="vehiculo" class="card mx-3 p-3" style="width: 30rem;height: 35rem; background-color: #D9D9D9;  border-radius: 50px;">
-            <div th:if="${vehiculo!=null}">
-                <div class="card-body">
-                    <h5 class="card-title text-center p-2"><strong>Vehículo</strong></h5>
-                    <div class="d-flex justify-content-between pt-3">
-                        <p class="card-text"><strong>Información del Vehículo</strong></p>
-                        <a th:href="@{editar-vehiculo}"><i class="fa-solid fa-pen-to-square" style="color: #36054E; transition: color 0.3s;" onmouseover="this.style.color='purple'" onmouseout="this.style.color='#36054E'"></i></a>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <p>Patente: <strong th:text="${vehiculo.getPatente()}"></strong></p>
-                    <p>Modelo: <strong th:text="${vehiculo.getModelo()}"></strong></p>
-                    <p>Color: <strong th:text="${vehiculo.getColor()}"></strong></p>
-                </div>
-            </div>
-            <div th:if="${vehiculo==null}">
-                <div class="card-body">
-                <h5 class="card-title text-center p-2"><strong>Vehículo</strong></h5>
-                    <div class="noVehiculo">
-                        <a th:href="vehiculo" class="btn_registro">Registrar Nuevo Vehículo</a>
-                    </div>
-            </div>
-        </div>
-        </div>
+<!--        <div id="vehiculo" class="card mx-3 p-3" style="width: 30rem;height: 35rem; background-color: #D9D9D9;  border-radius: 50px;">-->
+<!--            <div th:if="${vehiculo!=null}">-->
+<!--                <div class="card-body">-->
+<!--                    <h5 class="card-title text-center p-2"><strong>Vehículo</strong></h5>-->
+<!--                    <div class="d-flex justify-content-between pt-3">-->
+<!--                        <p class="card-text"><strong>Información del Vehículo</strong></p>-->
+<!--                        <a th:href="@{editar-vehiculo}"><i class="fa-solid fa-pen-to-square" style="color: #36054E; transition: color 0.3s;" onmouseover="this.style.color='purple'" onmouseout="this.style.color='#36054E'"></i></a>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                <div class="card-body">-->
+<!--                    <p>Patente: <strong th:text="${vehiculo.getPatente()}"></strong></p>-->
+<!--                    <p>Modelo: <strong th:text="${vehiculo.getModelo()}"></strong></p>-->
+<!--                    <p>Color: <strong th:text="${vehiculo.getColor()}"></strong></p>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div th:if="${vehiculo==null}">-->
+<!--                <div class="card-body">-->
+<!--                <h5 class="card-title text-center p-2"><strong>Vehículo</strong></h5>-->
+<!--                    <div class="noVehiculo">-->
+<!--                        <a th:href="vehiculo" class="btn_registro">Registrar Nuevo Vehículo</a>-->
+<!--                    </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        </div>-->
 
         <!-- TARJETA DERECHA 3 DE 3 (SOPORTE EN LÍNEA) -->
         <div id="seguridad" class="card mx-3 p-3" style="width: 30rem;height: 35rem; background-color: #D9D9D9;  border-radius: 50px;">
@@ -148,6 +145,4 @@
     </div>
 </main>
 </body>
-
-
 </html>

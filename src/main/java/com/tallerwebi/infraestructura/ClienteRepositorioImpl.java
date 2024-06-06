@@ -9,7 +9,8 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
+
+import javax.transaction.Transactional;
 
 @Repository
 public class ClienteRepositorioImpl implements ClienteRepositorio {
@@ -21,6 +22,7 @@ public class ClienteRepositorioImpl implements ClienteRepositorio {
     }
 
     @Override
+    @Transactional
     public Cliente obtenerClientePorId(Integer idusuario) {
         return this.sessionFactory.getCurrentSession().get(Cliente.class, idusuario);
     }
