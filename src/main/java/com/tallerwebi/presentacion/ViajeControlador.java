@@ -38,7 +38,6 @@ public class ViajeControlador {
         String viewName = "form-viaje";
         String claveGoogleMaps = "AIzaSyDcPeOyMBqG_1mZgjpei_R2ficRigdkINg";
 
-
         boolean isEditViaje = (session.getAttribute("isEditViaje") != null) ? (boolean) session.getAttribute("isEditViaje") : false;
 
         model.put("viaje", new DatosViaje());
@@ -274,22 +273,4 @@ public class ViajeControlador {
         return new ModelAndView("redirect:/historial");
     }
 
-    @RequestMapping("/form-viaje")
-    public ModelAndView mostrarFormViaje(){
-        ModelMap model = new ModelMap();
-
-        String viewName = "form-viaje";
-        model.put("viaje", new DatosViaje());
-        return new ModelAndView(viewName, model);
-    }
-
-    @RequestMapping(value = "/crear-viaje", method = RequestMethod.POST)
-    public ModelAndView crearViajeConPaqueteYCliente(@ModelAttribute("viaje") DatosViaje viaje, HttpServletRequest request){
-        Cliente cliente = this.clienteServicio.obtenerClientePorId((Integer) request.getSession().getAttribute("IDUSUARIO"));
-        Paquete paquete = new Paquete(); // Ver como obtener el paquete
-
-        this.viajeServicio.crearViaje(cliente, viaje, paquete);
-
-        return new ModelAndView("redirect:/home");
-    }
 }
