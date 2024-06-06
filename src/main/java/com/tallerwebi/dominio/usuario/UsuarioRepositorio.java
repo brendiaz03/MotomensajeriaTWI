@@ -9,4 +9,5 @@ public interface UsuarioRepositorio {
     Conductor registrarConductor(Conductor conductorARegistrar);
 
     Cliente registrarCliente(Cliente clienteARegistrar);
+
 }

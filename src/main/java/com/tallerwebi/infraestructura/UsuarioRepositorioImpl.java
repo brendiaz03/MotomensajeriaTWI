@@ -47,4 +47,5 @@ public class UsuarioRepositorioImpl implements UsuarioRepositorio {
         Integer idClienteGuardado = (Integer) session.getIdentifier(clienteARegistrar);
         return session.get(Cliente.class, idClienteGuardado);
     }
+
 }
