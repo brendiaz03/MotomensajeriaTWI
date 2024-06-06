@@ -1,8 +1,5 @@
 package com.tallerwebi.dominio.paquete;
 
-import com.tallerwebi.dominio.cliente.Cliente;
-import com.tallerwebi.dominio.conductor.Conductor;
-import com.tallerwebi.dominio.vehiculo.Vehiculo;
 import com.tallerwebi.dominio.viaje.Viaje;
 
 import javax.persistence.*;
@@ -27,16 +24,16 @@ public class Paquete {
     @OneToOne(mappedBy = "paquete", cascade = CascadeType.ALL)
     private Viaje viaje;
 
-    public Paquete(Double peso, Double dimension, Boolean esFragil) {
+    public Paquete(Double peso, Double dimension, Boolean esFragil, Viaje viaje) {
         this.peso = peso;
         this.dimension = dimension;
         this.esFragil = esFragil;
+        this.viaje = viaje;
     }
 
     public Paquete() {
 
     }
-
 
     public Integer getId() {
         return id;
@@ -56,6 +53,10 @@ public class Paquete {
 
     public Double getDimension() {
         return dimension;
+    }
+
+    public Double getDimensionAlCubo(){
+        return dimension*dimension*dimension;
     }
 
     public void setDimension(Double dimension) {
