@@ -1,8 +1,9 @@
 package com.tallerwebi.dominio.login;
 
 import com.tallerwebi.dominio.conductor.Conductor;
+import com.tallerwebi.dominio.usuario.Usuario;
 
 public interface LoginServicio {
 
-    Conductor consultarUsuario(String user, String pass);
+    Usuario consultarUsuario(String user, String pass);
 }

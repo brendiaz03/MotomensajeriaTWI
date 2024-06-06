@@ -1,5 +1,5 @@
 package com.tallerwebi.dominio;
-import com.tallerwebi.dominio.usuario.UsuarioNoEncontradoException;
+import com.tallerwebi.dominio.exceptions.UsuarioNoEncontradoException;
 import com.tallerwebi.dominio.enums.Color;
 import com.tallerwebi.dominio.enums.ModeloVehiculo;
 import com.tallerwebi.dominio.enums.TipoVehiculo;

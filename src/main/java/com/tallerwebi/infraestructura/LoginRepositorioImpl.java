@@ -2,7 +2,9 @@ package com.tallerwebi.infraestructura;
 
 import com.tallerwebi.dominio.conductor.Conductor;
 import com.tallerwebi.dominio.login.LoginRepositorio;
+import com.tallerwebi.dominio.usuario.Usuario;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.NoResultException;
@@ -16,16 +18,11 @@ public class LoginRepositorioImpl implements LoginRepositorio {
     }
 
     @Override
-    public Conductor buscarConductorPorUsernameYPassword(String username, String password) {
-        String hql= "FROM Conductor WHERE nombreUsuario = :nombreUsuario AND password = :password";
-        Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
-        query.setParameter("nombreUsuario", username);
-        query.setParameter("password", password);
-        try {
-            return (Conductor) query.getSingleResult();
-        } catch (NoResultException e) {
-            return null;
-        }
 
+    public Usuario buscarUsuarioPorUsernameYPassword(String username, String password) {
+        return (Usuario) sessionFactory.getCurrentSession().createCriteria(Usuario.class)
+                .add(Restrictions.eq("nombreUsuario", username))
+                .add(Restrictions.eq("password", password))
+                .uniqueResult();
     }
 }

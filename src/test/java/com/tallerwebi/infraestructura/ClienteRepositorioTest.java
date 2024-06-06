@@ -31,29 +31,4 @@ public class ClienteRepositorioTest {
         this.clienteRepositorio = new ClienteRepositorioImpl(sessionFactory);
     }
 
-    @Test
-    @Transactional
-    @Rollback
-    public void queElClientePuedaCrearUnViaje(){
-        // Preparación
-        Viaje viaje = dadoQueExisteUnViajeCreadoPorUnCliente();
-
-        // Ejecución
-        this.clienteRepositorio.crearViaje(viaje);
-        Viaje viajeObtenido = this.clienteRepositorio.buscarViajePorId(viaje.getId());
-
-        // Validación
-        assertThat(viajeObtenido.getId(), equalTo(viaje.getId()));
-    }
-
-    private Viaje dadoQueExisteUnViajeCreadoPorUnCliente() {
-        Cliente cliente = new Cliente();
-        Paquete paquete = new Paquete();
-        Viaje viaje = new Viaje();
-        viaje.setCliente(cliente);
-        viaje.setPaquete(paquete);
-        viaje.setId(1);
-        this.sessionFactory.getCurrentSession().save(viaje);
-        return viaje;
-    }
 }

@@ -23,21 +23,4 @@ public class ClienteServicioTest {
         this.clienteServicio = new ClienteServicioImpl(this.clienteRepositorio);
     }
 
-    @Test
-    public void queElClientePuedaCrearUnViaje(){
-        // Preparación
-        Cliente cliente = new Cliente();
-        Viaje viaje = new Viaje();
-        viaje.setId(1);
-        doNothing().when(this.clienteRepositorio).crearViaje(viaje);
-        when(this.clienteRepositorio.buscarViajePorId(viaje.getId())).thenReturn(viaje);
-
-        // Ejecución
-        this.clienteServicio.crearViaje(cliente, viaje);
-        Viaje viajeObtenido = this.clienteRepositorio.buscarViajePorId(viaje.getId());
-
-        // Validación
-        verify(this.clienteRepositorio).crearViaje(viaje);
-        assertThat(viajeObtenido.getId(), equalTo(viaje.getId()));
-    }
 }

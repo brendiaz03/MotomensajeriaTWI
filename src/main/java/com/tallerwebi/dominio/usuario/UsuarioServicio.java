@@ -1,13 +1,9 @@
 package com.tallerwebi.dominio.usuario;
 
-import com.tallerwebi.dominio.cliente.Cliente;
-import com.tallerwebi.dominio.conductor.Conductor;
-import com.tallerwebi.presentacion.Datos.DatosRegistro;
+import com.tallerwebi.dominio.exceptions.UsuarioDuplicadoException;
+import com.tallerwebi.presentacion.Datos.DatosUsuario;
 
 public interface UsuarioServicio {
 
-    Conductor registrarConductorNoDuplicado(DatosRegistro nuevoUsuario) throws UsuarioDuplicadoException;
-
-    Cliente registrarClienteNoDuplicado(DatosRegistro nuevoUsuario) throws UsuarioDuplicadoException;
-
+    Usuario registrarUsuario(DatosUsuario usuario) throws UsuarioDuplicadoException;
 }
