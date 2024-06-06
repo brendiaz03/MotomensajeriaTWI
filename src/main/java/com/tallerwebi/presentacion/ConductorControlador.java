@@ -56,32 +56,6 @@ public class ConductorControlador {
         return new ModelAndView(viewName, model);
     }
 
-    @RequestMapping(path = "/perfil", method = RequestMethod.GET)
-    public ModelAndView irAPerfil(HttpSession session) {
-
-
-        ModelMap model = new ModelMap();
-        Boolean isUsuarioLogueado = (Boolean) session.getAttribute("isUsuarioLogueado");
-        if(isUsuarioLogueado == null) {
-            return new ModelAndView("redirect:/login");
-        }
-        Integer idUsuario = (Integer) session.getAttribute("IDUSUARIO");
-        model.put("isUsuarioLogueado", isUsuarioLogueado);
-
-        try {
-            Conductor conductor = conductorServicio.obtenerConductorPorId(idUsuario);
-            Vehiculo vehiculo = conductor.getVehiculo();
-            if (vehiculo!=null){
-            session.setAttribute("idVehiculo", vehiculo.getId());
-            model.put("vehiculo", vehiculo);
-            }
-            model.put("conductor", conductor);
-        } catch (UsuarioNoEncontradoException e) {
-            model.put("mensajeError", e.getMessage());
-        }
-
-        return new ModelAndView("perfil-conductor", model);
-    }
 
     @RequestMapping(value = "/editar", method = RequestMethod.GET)
     public ModelAndView mostrarEditarConductor(HttpSession session) {
