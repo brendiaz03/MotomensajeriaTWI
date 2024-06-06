@@ -26,4 +26,10 @@ public class ClienteRepositorioImpl implements ClienteRepositorio {
     public Cliente obtenerClientePorId(Integer idusuario) {
         return this.sessionFactory.getCurrentSession().get(Cliente.class, idusuario);
     }
+
+    @Override
+    @Transactional
+    public void editarCliente(Cliente cliente) {
+        sessionFactory.getCurrentSession().update(cliente);
+    }
 }

@@ -12,10 +12,7 @@ import com.tallerwebi.presentacion.Datos.DatosUsuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
@@ -84,4 +81,57 @@ public class UsuarioControlador {
         return new ModelAndView("perfil", model);
     }
 
+    @RequestMapping(value = "/form-editar", method = RequestMethod.GET)
+    public ModelAndView mostrarEditarFormulario(HttpSession session) {
+        String viewName= "form-usuario";
+        ModelMap model = new ModelMap();
+        try {
+            if(session.getAttribute("tipoUsuario").equals(TipoUsuario.Conductor)){
+                Conductor usuario = conductorServicio.obtenerConductorPorId((Integer)session.getAttribute("IDUSUARIO"));
+                DatosUsuario datosUsuario = new DatosUsuario();
+                model.put("usuario", datosUsuario.usuarioToDTO(usuario));
+            }else{
+                Cliente usuario = clienteServicio.obtenerClientePorId((Integer)session.getAttribute("IDUSUARIO"));
+                DatosUsuario datosUsuario = new DatosUsuario();
+                model.put("usuario", datosUsuario.usuarioToDTO(usuario));
+            }
+        } catch (UsuarioNoEncontradoException e) {
+            model.put("mensajeError", e.getMessage());
+        }
+        model.put("isEditForm", true);
+        return new ModelAndView(viewName, model);
+    }
+
+     @PostMapping("/editar-usuario")
+    public ModelAndView editarConductor(HttpSession session, @ModelAttribute("usuario") DatosUsuario usuarioEditado) {
+         ModelMap model = new ModelMap();
+         usuarioEditado.setId((Integer) session.getAttribute("IDUSUARIO"));
+        try {
+            if(session.getAttribute("tipoUsuario").equals(TipoUsuario.Conductor)){
+                Conductor conductor = usuarioEditado.toConductor();
+                conductorServicio.editarConductor(conductor);
+                session.setAttribute("isEditForm", false);
+            }else{
+                Cliente cliente = usuarioEditado.toCliente();
+                clienteServicio.editarCliente(cliente);
+                session.setAttribute("isEditForm", false);
+            }
+        } catch (UsuarioNoEncontradoException e) {
+            model.put("mensajeError", e.getMessage());
+        }
+        return new ModelAndView("redirect:/perfil");
+    }
+
+    @RequestMapping(path = "/foto-perfil", method = RequestMethod.GET)
+    public ModelAndView irAEditarFotoPerfil(HttpSession session) {
+        ModelMap model = new ModelMap();
+        model.put("isUsuarioLogueado", (Boolean) session.getAttribute("isUsuarioLogueado"));
+        try {
+            Conductor conductor = conductorServicio.obtenerConductorPorId( (Integer) session.getAttribute("IDUSUARIO"));
+            model.put("conductor", conductor);
+        } catch (UsuarioNoEncontradoException e) {
+            model.put("mensajeError", e.getMessage());
+        }
+        return new ModelAndView("foto-perfil", model);
+    }
 }
