@@ -3,6 +3,7 @@ package com.tallerwebi.presentacion;
 import com.tallerwebi.dominio.imagen.Imagen;
 import com.tallerwebi.dominio.imagen.ImagenServicio;
 import com.tallerwebi.dominio.paquete.Paquete;
+import com.tallerwebi.dominio.paquete.PaqueteNoEncontradoException;
 import com.tallerwebi.dominio.paquete.PaqueteServicio;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,7 +51,7 @@ public class PaqueteControlador {
     }
 
     @RequestMapping(value = "/mostrar-form-paquete", method = RequestMethod.GET)
-    public ModelAndView mostrarFormPaquete(HttpSession session, @RequestParam(value = "paqueteId", required = false) Integer paqueteId) {
+    public ModelAndView mostrarFormPaquete(HttpSession session, @RequestParam(value = "paqueteId", required = false) Integer paqueteId) throws PaqueteNoEncontradoException {
 
         ModelMap model = new ModelMap();
 

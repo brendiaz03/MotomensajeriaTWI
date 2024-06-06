@@ -1,8 +1,5 @@
 package com.tallerwebi.dominio;
-import com.tallerwebi.dominio.paquete.Paquete;
-import com.tallerwebi.dominio.paquete.PaqueteRepositorio;
-import com.tallerwebi.dominio.paquete.PaqueteServicio;
-import com.tallerwebi.dominio.paquete.PaqueteServicioImpl;
+import com.tallerwebi.dominio.paquete.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -51,7 +48,7 @@ public class PaqueteServicioTest {
 
     //Agregar excepción y Try - Catch. Ver Throws.
     @Test
-    public void queSeObtengaUnPaquetePorSuId(){
+    public void queSeObtengaUnPaquetePorSuId() throws PaqueteNoEncontradoException {
 
         Paquete paquete = new Paquete();
 

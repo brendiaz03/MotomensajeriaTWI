@@ -27,12 +27,12 @@ public class PaqueteServicioImpl implements PaqueteServicio {
     @Override
     public Paquete obtenerPaquetePorId(Integer paqueteId) throws PaqueteNoEncontradoException{
 
-        try {
+  //      try {
             return this.paqueteRepositorio.obtenerPaquetePorId(paqueteId);
-
+/*
         } catch (PaqueteNoEncontradoException e) {
             throw new PaqueteNoEncontradoException();
-        }
+        }*/
     }
 
 
