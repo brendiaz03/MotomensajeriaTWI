@@ -7,6 +7,7 @@ import com.tallerwebi.dominio.paquete.Paquete;
 import com.tallerwebi.dominio.exceptions.UsuarioNoEncontradoException;
 import com.tallerwebi.dominio.conductor.ConductorServicio;
 import com.tallerwebi.dominio.enums.TipoEstado;
+import com.tallerwebi.dominio.paquete.PaqueteServicio;
 import com.tallerwebi.dominio.viaje.Viaje;
 import com.tallerwebi.dominio.viaje.ViajeServicio;
 import com.tallerwebi.presentacion.Datos.DatosViaje;
@@ -25,80 +26,84 @@ public class ViajeControlador {
     private final ViajeServicio viajeServicio;
     private final ConductorServicio conductorServicio;
     private final ClienteServicio clienteServicio;
+    private final PaqueteServicio paqueteServicio;
+
 
     @Autowired
-    public ViajeControlador(ViajeServicio viajeServicio, ConductorServicio conductorServicio, ClienteServicio clienteServicio){
+    public ViajeControlador(ViajeServicio viajeServicio, ConductorServicio conductorServicio, ClienteServicio clienteServicio, PaqueteServicio paqueteServicio){
         this.viajeServicio = viajeServicio;
         this.conductorServicio = conductorServicio;
         this.clienteServicio = clienteServicio;
+        this.paqueteServicio = paqueteServicio;
     }
     @RequestMapping("/form-viaje")
-    public ModelAndView mostrarFormViaje(HttpSession session, @ModelAttribute Viaje viaje){
+    public ModelAndView mostrarFormViaje(HttpSession session) {
         ModelMap model = new ModelMap();
         String viewName = "form-viaje";
         String claveGoogleMaps = "AIzaSyDcPeOyMBqG_1mZgjpei_R2ficRigdkINg";
-
         boolean isEditViaje = (session.getAttribute("isEditViaje") != null) ? (boolean) session.getAttribute("isEditViaje") : false;
         boolean isEditPackage = (session.getAttribute("isEditPackage") != null) ? (boolean) session.getAttribute("isEditPackage") : false;
+        Viaje viajeEnSession = (session.getAttribute("viajeActual") != null) ? (Viaje) session.getAttribute("viajeActual") : null;
+        Paquete paqueteEnSession = (session.getAttribute("paqueteActual") != null) ? (Paquete) session.getAttribute("paqueteActual") : null;
 
-        Viaje viajeEnSession = (session.getAttribute("viajeActual")!=null) ? (Viaje) session.getAttribute("viajeActual") : null;
-        Paquete paqueteEnSession = (session.getAttribute("paqueteActual")!=null) ? (Paquete) session.getAttribute("paqueteActual") : null;
-
-        if (viajeEnSession==null){
-            model.put("viaje", new Viaje());
-        }else{
-            model.put("viaje", viajeEnSession);
-        }
-
-        if (paqueteEnSession==null){
-            model.put("paquete", new Paquete());
-        }else{
-            model.put("paquete",paqueteEnSession);
-        }
-
-        model.put("clave", claveGoogleMaps);
         model.put("isEditViaje", isEditViaje);
         model.put("isEditPackage", isEditPackage);
-
-
-        if (isEditViaje){
-            Viaje viajeEdit= this.viajeServicio.buscarViaje(viaje.getId());
-            model.put("viajeEdit", viajeEdit);
+        model.put("clave", claveGoogleMaps);
+        if (viajeEnSession == null && !isEditViaje) {
+            model.put("viaje", new Viaje());
+        } else {
+            model.put("viaje", viajeEnSession);
+            session.setAttribute("isEditViaje", false);
         }
-        if (isEditPackage){
-            Paquete paqueteEdit= this.viajeServicio.buscarViaje(viaje.getId()).getPaquete();
-            model.put("paqueteEdit", paqueteEdit);
+
+        if (paqueteEnSession == null && !isEditPackage) {
+            model.put("paquete", new Paquete());
+        } else {
+            model.put("paquete", paqueteEnSession);
+            session.setAttribute("isEditPackage", false);
         }
+
         return new ModelAndView(viewName, model);
     }
 
-    @RequestMapping("/form-viaje-editor")
+    @RequestMapping("/form-editar-viaje")
     public ModelAndView mostrarFormEditorViaje(HttpSession session){
-
         session.setAttribute("isEditViaje", true);
         return new ModelAndView("redirect:/form-viaje");
     }
 
-
-    @RequestMapping(value = "/crear-viaje", method = RequestMethod.POST, consumes = "application/x-www-form-urlencoded")
-    public ModelAndView crearViajeConPaqueteYCliente(@ModelAttribute("viaje") Viaje viaje, HttpSession session){
-
-        Paquete paquete= (Paquete) session.getAttribute("paqueteActual");
-//        Integer idUsuario = (Integer) session.getAttribute("IDUSUARIO");
-//        Cliente cliente=this.clienteServicio.obtenerClientePorId(idUsuario);
-        Viaje viajeActual=this.viajeServicio.crearViaje(null, viaje, paquete);
-
-        session.setAttribute("viajeActual", viajeActual);
-
-        return new ModelAndView("redirect:/form-viaje");
-    }
-
     @RequestMapping(value = "/editar-viaje", method = RequestMethod.POST)
-    public ModelAndView editarViaje(@ModelAttribute("viaje") Viaje viaje, HttpServletRequest request){
-
+    public ModelAndView editarViaje(@ModelAttribute("viaje") Viaje viaje){
         this.viajeServicio.actualizarViaje(viaje);
+        return new ModelAndView("redirect:/crear-viaje");
+    }
+    @RequestMapping(value = "/crear-viaje", method = RequestMethod.POST, consumes = "application/x-www-form-urlencoded")
+    public ModelAndView crearViajeLocalmente(@ModelAttribute("viaje") Viaje viaje, HttpSession session){
+        session.setAttribute("viajeActual", viaje);
         return new ModelAndView("redirect:/form-viaje");
     }
+
+    @RequestMapping(value = "/crear-envio")
+    public ModelAndView crearViajeConPaqueteYCliente(HttpSession session){
+
+        //CLIENTE//
+        //Integer idUsuario = (Integer) session.getAttribute("IDUSUARIO");
+        //Cliente cliente=this.clienteServicio.obtenerClientePorId(idUsuario);
+
+        //PAQUETE//
+        Paquete paqueteActual = (Paquete)session.getAttribute("paqueteActual");
+        this.paqueteServicio.guardarPaquete(paqueteActual);
+
+        Viaje viajeActual = (Viaje)session.getAttribute("viajeActual");
+        this.viajeServicio.crearViaje(null,viajeActual,paqueteActual);
+        session.setAttribute("paqueteActual", null);    //HACERLO POST PAGAR
+        session.setAttribute("viajeActual", null);
+
+        return new ModelAndView("redirect:/home");
+    }
+
+
+
     @RequestMapping("/historial")
     public ModelAndView mostrarHistorial(HttpServletRequest request) throws UsuarioNoEncontradoException {
         ModelMap model = new ModelMap();

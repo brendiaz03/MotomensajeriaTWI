@@ -28,58 +28,23 @@ public class PaqueteControlador {
         this.paqueteServicio = paqueteServicio;
     }
 
+
+    @RequestMapping(value = "/form-editar-paquete")
+    public ModelAndView mostrarFormEditorPaquete(HttpSession session) {
+        session.setAttribute("isEditPackage", true);
+        return new ModelAndView("redirect:/form-viaje");
+    }
     @RequestMapping(value = "/crear-paquete", method = RequestMethod.POST)
-    public ModelAndView guardarPaquete(@ModelAttribute("paquete") Paquete paquete, HttpSession session) {
-
-        Paquete paqueteActual=this.paqueteServicio.guardarPaquete(paquete);
-        session.setAttribute("paqueteActual", paqueteActual);
-
+    public ModelAndView guardarPaqueteLocalmente(@ModelAttribute("paquete") Paquete paquete, HttpSession session) {
+        session.setAttribute("paqueteActual", paquete);
         return new ModelAndView("redirect:/form-viaje");
     }
 
     @RequestMapping(value = "/editar-paquete")
-    public ModelAndView editarPaquete(HttpSession session) {
-        session.setAttribute("isEditPackage", true);
-        return new ModelAndView("redirect:/form-viaje");
+    public ModelAndView editarPaquete(@ModelAttribute("paquete") Paquete paquete) {
+    this.paqueteServicio.editarPaquete(paquete);
+    return new ModelAndView("redirect:/crear-paquete");
     }
-
-    @RequestMapping(value = "/mostrar-form-paquete", method = RequestMethod.GET)
-    public ModelAndView mostrarFormPaquete(HttpSession session, @RequestParam(value = "paqueteId", required = false) Integer paqueteId) throws PaqueteNoEncontradoException {
-
-        ModelMap model = new ModelMap();
-
-        String view = "form-paquete";
-
-        Boolean isEditPackage = (session.getAttribute("isEditPackage") != null) ? (Boolean) session.getAttribute("isEditPackage") : false;
-
-
-
-        model.put("isEditPackage", isEditPackage);
-
-
-        if(isEditPackage){
-
-            Paquete paquete = this.paqueteServicio.obtenerPaquetePorId(paqueteId);
-
-            model.put("paquete", paquete);
-
-        } else{
-            model.put("paquete", new Paquete());
-        }
-
-        return new ModelAndView(view, model);
-
-    }
-
-    @RequestMapping(value = "/mostrar-editar-paquete", method = RequestMethod.GET)
-    public ModelAndView mostrarEditarPaquete(HttpSession session) {
-
-        session.setAttribute("isEditPackage", true);
-
-        return new ModelAndView("redirect:/mostrar-form-paquete");
-
-    }
-
 
 
 }
