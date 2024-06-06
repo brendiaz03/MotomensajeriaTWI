@@ -7,5 +7,4 @@ import com.tallerwebi.presentacion.Datos.DatosUsuario;
 public interface UsuarioServicio {
 
     Usuario registrarUsuario(DatosUsuario usuario) throws UsuarioDuplicadoException;
-
 }
