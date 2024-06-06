@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Crear Viaje</title>
+    <script src="https://kit.fontawesome.com/ca80211b53.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.0/css/bootstrap.min.css}"/>
     <link rel="stylesheet" th:href="@{/css/main.css}"/>
     <link rel="stylesheet" th:href="@{/css/form-envio.css}"/>
@@ -75,8 +76,9 @@
     <!---------------------------------------------->
     <article class="step paso_paquete" id="step1">
         <div class="formulario_fondo">
-            <h1 class="titulo_registroConductor">Registrar Paquete</h1>
-            <form class="fuente_formulario_registro" th:action="@{/guardar-paquete}" method="post" th:object="${paquete}">
+            <h1 th:if="${isEditPackage}" class="titulo_registroViaje">Editar Paquete</h1>
+            <h1 th:unless="${isEditPackage}" class="titulo_registroViaje">Crear Paquete</h1>
+            <form class="fuente_formulario_registro" th:action="${isEditViaje ? 'editar-paquete': 'crear-paquete'}" method="post" th:object="${paquete}">
                 <section class="formulario">
                     <div class="columna">
                         <div>
@@ -104,7 +106,6 @@
                             </div>
                             <input type="hidden" th:field="*{esFragil}">
                         </div>
-
                     </div>
                 </section>
 
@@ -119,7 +120,6 @@
             </form>
         </div>
     </article>
-
     <!---------------------------------------------->
     <!-------- PASO 2 DE 4, CREAR VIAJE ------------>
     <!---------------------------------------------->
@@ -130,11 +130,11 @@
         <section class="formulario">
             <div class="columna">
                 <label for="direccionSalida" class="direccionSalida fuente_formulario_viaje">Dirección de Salida</label>
-                <input type="text" class="form-control" id="direccionSalida" name="direccionSalida" th:field="*{domicilioDeSalida}" th:value="${isEditViaje? viaje.domicilioDeSalida : ''}" required>
+                <input type="text" class="form-control" id="direccionSalida" name="direccionSalida" th:field="*{domicilioDeSalida}" th:value="${isEditViaje? viajeEdit.domicilioDeSalida : ''}" required>
             </div>
             <div class="columna">
                 <label for="direccionLlegada" class="direccionLlegada fuente_formulario_viaje">Dirección de Llegada</label>
-                <input type="text" class="form-control" id="direccionLlegada" name="direccionLlegada" th:field="*{domicilioDeLlegada}" th:value="${isEditViaje ? viaje.domicilioDeLlegada : ''}" required>
+                <input type="text" class="form-control" id="direccionLlegada" name="direccionLlegada" th:field="*{domicilioDeLlegada}" th:value="${isEditViaje ? viajeEdit.domicilioDeLlegada : ''}" required>
             </div>
             <input type="hidden" id="latitudSalida" name="latitudSalida" th:field="*{latitudDeSalida}">
             <input type="hidden" id="longitudSalida" name="longitudSalida" th:field="*{longitudDeSalida}">
@@ -159,14 +159,16 @@
             <h1 class="titulo_registroViaje">Detalles del Envío</h1>
             <div>
                 <p class="card-text"><strong>Paquete</strong></p>
-                <a  th:href="@{editar-paquete}"><i class="fa-solid fa-pen-to-square"  style="color: #36054E; transition: color 0.3s;" onmouseover="this.style.color='purple'" onmouseout="this.style.color='#36054E'"></i></a><!-- redirect al controller de registro conductor-->
-            </div>
+                <a  th:href="@{mostrar-editar-paquete}"><i class="fa-solid fa-pen-to-square"  style="color: #36054E; transition: color 0.3s;" onmouseover="this.style.color='purple'" onmouseout="this.style.color='#36054E'"></i></a><!-- redirect al controller de registro conductor-->
+           </div>
+               <p>Peso del Paquete: <strong th:text="${paquete.getPeso()}"></strong></p>
+               <p>Dimesion del Paquete: <strong th:text="${paquete.getDimension()}"></strong></p>
             <div>
                 <p class="card-text"><strong>Viaje</strong></p>
-                <a  th:href="@{editar-viaje}"><i class="fa-solid fa-pen-to-square"  style="color: #36054E; transition: color 0.3s;" onmouseover="this.style.color='purple'" onmouseout="this.style.color='#36054E'"></i></a><!-- redirect al controller de registro conductor-->
+                <a  th:href="@{form-viaje-editor}"><i class="fa-solid fa-pen-to-square"  style="color: #36054E; transition: color 0.3s;" onmouseover="this.style.color='purple'" onmouseout="this.style.color='#36054E'"></i></a><!-- redirect al controller de registro conductor-->
             </div>
-            <p>Dirección de Salida: <strong th:text="${viaje.domicilioDeSalida}"></strong></p>
-            <p>Dirección de Llegada: <strong th:text="${viaje.domicilioDeLlegada}"></strong></p>
+            <p>Dirección de Salida: <strong th:text="${viaje.getDomicilioDeSalida()}"></strong></p>
+            <p>Dirección de Llegada: <strong th:text="${viaje.getDomicilioDeLlegada()}"></strong></p>
         </div>
     </article>
 

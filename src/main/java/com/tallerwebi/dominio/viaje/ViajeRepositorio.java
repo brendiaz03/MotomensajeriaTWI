@@ -16,5 +16,5 @@ public interface ViajeRepositorio {
 
     List<Viaje> traerTodosLosViajesQueNoEstenAceptados();
 
-    void guardarViaje(Viaje viaje);
+    Viaje guardarViaje(Viaje viaje);
 }

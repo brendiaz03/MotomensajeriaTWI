@@ -39,16 +39,35 @@ public class ViajeControlador {
         String claveGoogleMaps = "AIzaSyDcPeOyMBqG_1mZgjpei_R2ficRigdkINg";
 
         boolean isEditViaje = (session.getAttribute("isEditViaje") != null) ? (boolean) session.getAttribute("isEditViaje") : false;
+        boolean isEditPackage = (session.getAttribute("isEditPackage") != null) ? (boolean) session.getAttribute("isEditPackage") : false;
 
-        model.put("viaje", new DatosViaje());
+        Viaje viajeEnSession = (session.getAttribute("viajeActual")!=null) ? (Viaje) session.getAttribute("viajeActual") : null;
+        Paquete paqueteEnSession = (session.getAttribute("paqueteActual")!=null) ? (Paquete) session.getAttribute("paqueteActual") : null;
+
+        if (viajeEnSession==null){
+            model.put("viaje", new Viaje());
+        }else{
+            model.put("viaje", viajeEnSession);
+        }
+
+        if (paqueteEnSession==null){
+            model.put("paquete", new Paquete());
+        }else{
+            model.put("paquete",paqueteEnSession);
+        }
+
         model.put("clave", claveGoogleMaps);
         model.put("isEditViaje", isEditViaje);
-
+        model.put("isEditPackage", isEditPackage);
 
 
         if (isEditViaje){
             Viaje viajeEdit= this.viajeServicio.buscarViaje(viaje.getId());
             model.put("viajeEdit", viajeEdit);
+        }
+        if (isEditPackage){
+            Paquete paqueteEdit= this.viajeServicio.buscarViaje(viaje.getId()).getPaquete();
+            model.put("paqueteEdit", paqueteEdit);
         }
         return new ModelAndView(viewName, model);
     }
@@ -62,9 +81,14 @@ public class ViajeControlador {
 
 
     @RequestMapping(value = "/crear-viaje", method = RequestMethod.POST, consumes = "application/x-www-form-urlencoded")
-    public ModelAndView crearViajeConPaqueteYCliente(@ModelAttribute("viaje") Viaje viaje){
+    public ModelAndView crearViajeConPaqueteYCliente(@ModelAttribute("viaje") Viaje viaje, HttpSession session){
 
-        this.viajeServicio.crearViaje(null, viaje, null);
+        Paquete paquete= (Paquete) session.getAttribute("paqueteActual");
+//        Integer idUsuario = (Integer) session.getAttribute("IDUSUARIO");
+//        Cliente cliente=this.clienteServicio.obtenerClientePorId(idUsuario);
+        Viaje viajeActual=this.viajeServicio.crearViaje(null, viaje, paquete);
+
+        session.setAttribute("viajeActual", viajeActual);
 
         return new ModelAndView("redirect:/form-viaje");
     }

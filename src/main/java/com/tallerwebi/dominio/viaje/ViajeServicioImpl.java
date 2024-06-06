@@ -191,11 +191,11 @@ public class ViajeServicioImpl implements ViajeServicio {
     }
 
     @Override
-    public void crearViaje(Cliente cliente, Viaje viaje, Paquete paquete) {
+    public Viaje crearViaje(Cliente cliente, Viaje viaje, Paquete paquete) {
         viaje.setCliente(cliente);
         viaje.setPaquete(paquete);
         viaje.setEstado(TipoEstado.PENDIENTE);
-        this.viajeRepositorio.guardarViaje(viaje);
+       return this.viajeRepositorio.guardarViaje(viaje);
     }
 
     @Override

@@ -45,7 +45,7 @@ public class PaqueteRepositorioTest {
     @Transactional
     public void queSePuedaGuardarUnPaquete(){
 
-        Paquete paquete = new Paquete(10.0, 5.0, true, new Viaje());
+        Paquete paquete = new Paquete(10.0, 5.0, true);
 
         paquete.setId(1);
 
@@ -63,7 +63,7 @@ public class PaqueteRepositorioTest {
     @Transactional
     public void queSePuedaEditarUnPaquete(){
 
-        Paquete paquete = new Paquete(10.0, 5.0, true, new Viaje());
+        Paquete paquete = new Paquete(10.0, 5.0, true);
 
         paquete.setId(1);
 
@@ -85,7 +85,7 @@ public class PaqueteRepositorioTest {
     @Transactional
     public void queSePuedaObtenerUnPaquetePorSuIdYMeDevuelvaElPaquete(){
 
-        Paquete paquete = new Paquete(10.0, 5.0, true, new Viaje());
+        Paquete paquete = new Paquete(10.0, 5.0, true);
 
         paquete.setId(30);
 
