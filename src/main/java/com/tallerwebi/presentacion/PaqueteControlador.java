@@ -1,7 +1,5 @@
 package com.tallerwebi.presentacion;
 
-import com.tallerwebi.dominio.imagen.Imagen;
-import com.tallerwebi.dominio.imagen.ImagenServicio;
 import com.tallerwebi.dominio.paquete.Paquete;
 import com.tallerwebi.dominio.paquete.PaqueteNoEncontradoException;
 import com.tallerwebi.dominio.paquete.PaqueteServicio;
@@ -23,73 +21,28 @@ public class PaqueteControlador {
 
     private PaqueteServicio paqueteServicio;
 
-    private ImagenServicio imagenServicio;
-
-
     @Autowired
-    public PaqueteControlador(PaqueteServicio paqueteServicio, ImagenServicio imagenServicio) {
+    public PaqueteControlador(PaqueteServicio paqueteServicio) {
         this.paqueteServicio = paqueteServicio;
-        this.imagenServicio = imagenServicio;
     }
 
-    @RequestMapping(value = "/crear-paquete", method = RequestMethod.POST)
-    public ModelAndView guardarPaquete(@ModelAttribute("paquete") Paquete paquete) {
 
-        this.paqueteServicio.guardarPaquete(paquete);
-
-        return new ModelAndView("redirect:/home");
-    }
-
-    @RequestMapping(value = "/editar-paquete", method = RequestMethod.POST)
-    public ModelAndView editarPaquete(@ModelAttribute("paquete") Paquete paquete, HttpSession session) {
-
-        this.paqueteServicio.editarPaquete(paquete);
-
-        session.setAttribute("isEditPackage", false);
-
-        return new ModelAndView("redirect:/home");
-    }
-
-    @RequestMapping(value = "/mostrar-form-paquete", method = RequestMethod.GET)
-    public ModelAndView mostrarFormPaquete(HttpSession session, @RequestParam(value = "paqueteId", required = false) Integer paqueteId) throws PaqueteNoEncontradoException {
-
-        ModelMap model = new ModelMap();
-
-        String view = "form-paquete";
-
-        Boolean isEditPackage = (session.getAttribute("isEditPackage") != null) ? (Boolean) session.getAttribute("isEditPackage") : false;
-
-        Imagen logo = imagenServicio.getImagenByName("logo");
-
-        Imagen fondo = imagenServicio.getImagenByName("fondo");
-
-        model.put("isEditPackage", isEditPackage);
-        model.put("logo", logo);
-        model.put("fondo", fondo);
-
-        if(isEditPackage){
-
-            Paquete paquete = this.paqueteServicio.obtenerPaquetePorId(paqueteId);
-
-            model.put("paquete", paquete);
-
-        } else{
-            model.put("paquete", new Paquete());
-        }
-
-        return new ModelAndView(view, model);
-
-    }
-
-    @RequestMapping(value = "/mostrar-editar-paquete", method = RequestMethod.GET)
-    public ModelAndView mostrarEditarPaquete(HttpSession session,  @RequestParam(value = "paqueteId", required = false) Integer paqueteId) {
-
+    @RequestMapping(value = "/form-editar-paquete")
+    public ModelAndView mostrarFormEditorPaquete(HttpSession session) {
         session.setAttribute("isEditPackage", true);
-
-        return new ModelAndView("redirect:/mostrar-form-paquete");
-
+        return new ModelAndView("redirect:/form-viaje");
+    }
+    @RequestMapping(value = "/crear-paquete", method = RequestMethod.POST)
+    public ModelAndView guardarPaqueteLocalmente(@ModelAttribute("paquete") Paquete paquete, HttpSession session) {
+        session.setAttribute("paqueteActual", paquete);
+        return new ModelAndView("redirect:/form-viaje");
     }
 
+    @RequestMapping(value = "/editar-paquete")
+    public ModelAndView editarPaquete(@ModelAttribute("paquete") Paquete paquete) {
+    this.paqueteServicio.editarPaquete(paquete);
+    return new ModelAndView("redirect:/crear-paquete");
+    }
 
 
 }

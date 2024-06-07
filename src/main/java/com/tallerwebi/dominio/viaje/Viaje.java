@@ -34,8 +34,6 @@ public class Viaje {
     @Column(name = "longitudDeLlegada")
     private Double longitudDeLlegada;
 
-    @Column(name = "codigoPostal")
-    private String codigoPostal;
 
     @Column(name = "precio")
     private String precio;
@@ -68,12 +66,11 @@ public class Viaje {
 
     }
 
-    public Viaje(String domicilioDeSalida, String domicilioDeLlegada, Cliente cliente, String precio, String codigoPostal, Double latitudDeSalida, Double longitudDeSalida, Double latitudDeLlegada, Double longitudDeLlegada, Double distanciaDelViaje, TipoEstado estado) {
+    public Viaje(String domicilioDeSalida, String domicilioDeLlegada, Cliente cliente, String precio, Double latitudDeSalida, Double longitudDeSalida, Double latitudDeLlegada, Double longitudDeLlegada, Double distanciaDelViaje, TipoEstado estado) {
         this.domicilioDeSalida = domicilioDeSalida;
         this.domicilioDeLlegada = domicilioDeLlegada;
         this.cliente = cliente;
         this.precio = precio;
-        this.codigoPostal = codigoPostal;
         this.latitudDeSalida = latitudDeSalida;
         this.longitudDeSalida = longitudDeSalida;
         this.latitudDeLlegada = latitudDeLlegada;
@@ -136,14 +133,6 @@ public class Viaje {
 
     public void setLongitudDeLlegada(Double longitudDeLlegada) {
         this.longitudDeLlegada = longitudDeLlegada;
-    }
-
-    public String getCodigoPostal() {
-        return codigoPostal;
-    }
-
-    public void setCodigoPostal(String codigoPostal) {
-        this.codigoPostal = codigoPostal;
     }
 
     public String getPrecio() {

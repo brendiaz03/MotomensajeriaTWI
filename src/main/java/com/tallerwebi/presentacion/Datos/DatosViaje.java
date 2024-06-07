@@ -10,7 +10,6 @@ public class DatosViaje {
     private String domicilioDeLlegada;
     private String nombreDelCliente;
     private String precio;
-    private String codigoPostal;
     private Double latitudDeSalida;
     private Double longitudDeSalida;
     private Double latitudDeLlegada;
@@ -18,13 +17,12 @@ public class DatosViaje {
     private Double distanciaDelViaje;
     private TipoEstado estado;
 
-    public DatosViaje(Integer idViaje, String domicilioDeSalida, String domicilioDeLlegada, String nombreDelCliente, String precio, String codigoPostal, Double latitudDeSalida, Double longitudDeSalida, Double latitudDeLlegada, Double longitudDeLlegada, Double distanciaDelViaje, TipoEstado estado) {
+    public DatosViaje(Integer idViaje, String domicilioDeSalida, String domicilioDeLlegada, String nombreDelCliente, String precio, Double latitudDeSalida, Double longitudDeSalida, Double latitudDeLlegada, Double longitudDeLlegada, Double distanciaDelViaje, TipoEstado estado) {
         this.idViaje = idViaje;
         this.domicilioDeSalida = domicilioDeSalida;
         this.domicilioDeLlegada = domicilioDeLlegada;
         this.nombreDelCliente = nombreDelCliente;
         this.precio = precio;
-        this.codigoPostal = codigoPostal;
         this.latitudDeSalida = latitudDeSalida;
         this.longitudDeSalida = longitudDeSalida;
         this.latitudDeLlegada = latitudDeLlegada;
@@ -33,13 +31,12 @@ public class DatosViaje {
         this.estado = estado;
     }
 
-    public DatosViaje(Integer idViaje, String domicilioDeSalida, String domicilioDeLlegada, String nombreDelCliente, String precio, String codigoPostal, TipoEstado estado) {
+    public DatosViaje(Integer idViaje, String domicilioDeSalida, String domicilioDeLlegada, String nombreDelCliente, String precio, TipoEstado estado) {
         this.idViaje = idViaje;
         this.domicilioDeSalida = domicilioDeSalida;
         this.domicilioDeLlegada = domicilioDeLlegada;
         this.nombreDelCliente = nombreDelCliente;
         this.precio = precio;
-        this.codigoPostal = codigoPostal;
         this.estado = estado;
     }
 
@@ -77,14 +74,6 @@ public class DatosViaje {
 
     public void setPrecio(String precio) {
         this.precio = precio;
-    }
-
-    public String getCodigoPostal() {
-        return codigoPostal;
-    }
-
-    public void setCodigoPostal(String codigoPostal) {
-        this.codigoPostal = codigoPostal;
     }
 
     public Double getLatitudDeSalida() {
@@ -148,7 +137,6 @@ public class DatosViaje {
         viaje.setDomicilioDeSalida(viajeActual.getDomicilioDeSalida());
         viaje.setDomicilioDeLlegada(viajeActual.getDomicilioDeLlegada());
 
-        viaje.setCodigoPostal(viajeActual.getCodigoPostal());
         return viaje;
     }
 }
