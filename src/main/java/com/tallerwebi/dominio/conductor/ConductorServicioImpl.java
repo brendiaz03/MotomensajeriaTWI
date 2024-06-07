@@ -53,6 +53,7 @@ public class ConductorServicioImpl implements ConductorServicio {
         try{
             Conductor conductor = this.conductorRepositorio.buscarConductorPorId(conductorEditado.getId());
             conductorEditado.setVehiculo(conductor.getVehiculo());
+            conductorEditado.setTipoUsuario(conductor.getTipoUsuario());
             if(conductorEditado.getImagenPerfil()==null){
                 conductorEditado.setImagenPerfil(conductor.getImagenPerfil());
             }

@@ -12,7 +12,6 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.annotation.MultipartConfig;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
@@ -23,8 +22,8 @@ public class ConductorControlador {
     private ConductorServicio conductorServicio;
     private VehiculoServicio vehiculoService;
     private ViajeServicio viajeServicio;
-    private Double latitudActual = -34.668822; // VER
-    private Double longitudActual =  -58.532878; // VER
+//    private Double latitudActual = -34.668822; // VER
+//    private Double longitudActual =  -58.532878; // VER
 
 
     @Autowired
@@ -55,99 +54,6 @@ public class ConductorControlador {
 //        model.put("viajes", viajesCercanosPendientes);
         return new ModelAndView(viewName, model);
     }
-
-    @RequestMapping(path = "/perfil", method = RequestMethod.GET)
-    public ModelAndView irAPerfil(HttpSession session) {
-
-
-        ModelMap model = new ModelMap();
-        Boolean isUsuarioLogueado = (Boolean) session.getAttribute("isUsuarioLogueado");
-        if(isUsuarioLogueado == null) {
-            return new ModelAndView("redirect:/login");
-        }
-        Integer idUsuario = (Integer) session.getAttribute("IDUSUARIO");
-        model.put("isUsuarioLogueado", isUsuarioLogueado);
-
-        try {
-            Conductor conductor = conductorServicio.obtenerConductorPorId(idUsuario);
-            Vehiculo vehiculo = conductor.getVehiculo();
-            if (vehiculo!=null){
-            session.setAttribute("idVehiculo", vehiculo.getId());
-            model.put("vehiculo", vehiculo);
-            }
-            model.put("conductor", conductor);
-        } catch (UsuarioNoEncontradoException e) {
-            model.put("mensajeError", e.getMessage());
-        }
-
-        return new ModelAndView("perfil-conductor", model);
-    }
-
-    @RequestMapping(value = "/editar", method = RequestMethod.GET)
-    public ModelAndView mostrarEditarConductor(HttpSession session) {
-        session.setAttribute("isEditForm", true);
-        return new ModelAndView("redirect:/registro-conductor");
-    }
-
-    @RequestMapping(path = "/foto-perfil", method = RequestMethod.GET)
-    public ModelAndView irAEditarFotoPerfil(HttpSession session) {
-        ModelMap model = new ModelMap();
-        Boolean isUsuarioLogueado = (Boolean) session.getAttribute("isUsuarioLogueado");
-        if(isUsuarioLogueado == null) {
-            return new ModelAndView("redirect:/login");
-        }
-        Integer idUsuario = (Integer) session.getAttribute("IDUSUARIO");
-
-        model.put("isUsuarioLogueado", isUsuarioLogueado);
-
-        try {
-            Conductor conductor = conductorServicio.obtenerConductorPorId(idUsuario);
-            model.put("conductor", conductor);
-        } catch (UsuarioNoEncontradoException e) {
-            model.put("mensajeError", e.getMessage());
-        }
-
-
-        return new ModelAndView("foto-perfil", model);
-    }
-
-
-
-    /*@PostMapping("/editar-conductor")
-    public ModelAndView editarConductor(HttpSession session, @ModelAttribute("conductor") Conductor conductorEditado) {
-        Integer idUsuario = (Integer) session.getAttribute("IDUSUARIO");
-        conductorEditado.setId(idUsuario);
-        try {
-            conductorServicio.editarConductor(conductorEditado);
-            session.setAttribute("isEditForm", false);
-        } catch (UsuarioNoEncontradoException e) {
-            return this.mostrarFormConductor(e.getMessage(), session);
-        }
-        return new ModelAndView("redirect:/perfil");
-    }
-
-    @PostMapping("/subir-foto")
-    public ModelAndView subirFoto(@RequestParam("imagenPerfil") MultipartFile imagen, HttpSession session) {
-        Integer idUsuario = (Integer) session.getAttribute("IDUSUARIO");
-        try {
-            this.conductorServicio.ingresarImagen(imagen, idUsuario);
-            return new ModelAndView("redirect:/perfil");
-        } catch (UsuarioNoEncontradoException e) {
-            return this.mostrarFormConductor(e.getMessage(), session);
-        } catch (IOException e) {
-            return this.mostrarFormConductor("Error al subir la imagen", session);
-        }
-    }
-
-    @RequestMapping(value = "/borrar-cuenta", method = RequestMethod.GET)
-    public ModelAndView borrarCuenta(HttpSession session) {
-        try {
-            conductorServicio.borrarConductor((Integer) session.getAttribute("IDUSUARIO"));
-        } catch (UsuarioNoEncontradoException e) {
-            return this.mostrarFormConductor(e.getMessage(), session);
-        }
-        return new ModelAndView("redirect:/cerrar-sesion");
-    }*/
 
 
 }

@@ -81,7 +81,10 @@ public class ViajeRepositorioImpl implements ViajeRepositorio {
     }
 
     @Override
-    public void guardarViaje(Viaje viajeMapeado) {
-        this.sessionFactory.getCurrentSession().saveOrUpdate(viajeMapeado);
+    @Transactional
+    public Viaje guardarViaje(Viaje viaje) {
+        this.sessionFactory.getCurrentSession().saveOrUpdate(viaje);
+        return this.obtenerViajePorId(viaje.getId());
     }
+
 }

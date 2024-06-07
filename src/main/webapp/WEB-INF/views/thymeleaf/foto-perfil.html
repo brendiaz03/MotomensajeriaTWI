@@ -30,38 +30,43 @@
         <li class="nav-item p-2">
           <a th:href="ayuda" class="nav-link p-2 text-white" href="#">Ayuda</a>
         </li>
-        <li class="nav-item p-2" th:if="${isUsuarioLogueado}">
+        <li class="nav-item p-2" th:if="${usuario.getTipoUsuario() == T(com.tallerwebi.dominio.enums.TipoUsuario).Conductor}">
           <a th:href="viajes-en-proceso" class="nav-link p-2 text-white">Viajes en Proceso</a>
         </li>
-        <li class="nav-item p-2" th:if="${isUsuarioLogueado}">
+        <li class="nav-item p-2" th:if="${usuario.getTipoUsuario() == T(com.tallerwebi.dominio.enums.TipoUsuario).Conductor}">
           <a th:href="historial" class="nav-link p-2 text-white" href="#">Historial de Viajes</a>
         </li>
+        <li class="nav-item p-2" th:if="${usuario.getTipoUsuario() == T(com.tallerwebi.dominio.enums.TipoUsuario).Cliente}">
+          <a th:href="viajes-en-proceso" class="nav-link p-2 text-white">Envios en Proceso</a>
+        </li>
+        <li class="nav-item p-2" th:if="${usuario.getTipoUsuario() == T(com.tallerwebi.dominio.enums.TipoUsuario).Cliente}">
+          <a th:href="historial" class="nav-link p-2 text-white" href="#">Historial de Envios</a>
+        </li>
       </ul>
-      <a th:unless="${isUsuarioLogueado}" th:href="@{login}" class="btn-custom" style="text-decoration: none">Ingresar</a>
       <!-- Muestra el botón de usuario solo si el usuario está logueado -->
-      <a th:if="${isUsuarioLogueado}" th:href="perfil" class="btn mx-2" style="border:none;">
-        <div class="container d-flex justify-content-center align-items-center"  th:if="${conductor.getImagenPerfil() != null}" style="border: none">
-          <img alt="img" class="d-block rounded-circle" th:src="'data:image/jpg;charset=utf-8;base64,' + ${conductor.getImageDataBase64()}" style=" width: 40px; height: 40px;"/>
+      <a th:href="perfil" class="btn mx-2" style="border:none;">
+        <div class="container d-flex justify-content-center align-items-center"  th:if="${usuario.getImagenPerfil() != null}" style="border: none">
+          <img alt="img" class="d-block rounded-circle" th:src="'data:image/jpg;charset=utf-8;base64,' + ${usuario.getImageDataBase64()}" style=" width: 40px; height: 40px;"/>
         </div>
-        <div th:if="${conductor.getImagenPerfil() == null}">
+        <div th:if="${usuario.getImagenPerfil() == null}">
           <img th:src="@{/imagenes/user.png}" alt=",,," style="height: 20px;width: 20px">
         </div>
       </a>
-      <a th:if="${isUsuarioLogueado}" th:href="@{cerrar-sesion}"><i class="fa-solid fa-arrow-right-from-bracket" style=" border-radius:25px; padding:11px; background-color: white; color: #36054E; transition: color 0.3s;" onmouseover="this.style.color='white';this.style.backgroundColor='lightgray'" onmouseout="this.style.color='purple'; this.style.backgroundColor='white'" ></i></a>
+      <a th:href="@{cerrar-sesion}"><i class="fa-solid fa-arrow-right-from-bracket" style=" border-radius:25px; padding:11px; background-color: white; color: #36054E; transition: color 0.3s;" onmouseover="this.style.color='white';this.style.backgroundColor='lightgray'" onmouseout="this.style.color='purple'; this.style.backgroundColor='white'" ></i></a>
     </div>
   </nav>
 </header>
 <main class="main_registro">
   <div class="formulario_fondo">
     <h1 class="titulo_registroConductor">Foto de Perfil</h1>
-    <form id="conductorForm" th:action="@{/subir-foto}" th:object="${conductor}" method="POST" enctype="multipart/form-data">
+    <form id="conductorForm" th:action="@{/subir-foto}" th:object="${usuario}" method="POST" enctype="multipart/form-data">
       <section class="formulario">
         <div class="columna">
-          <div class="imagen_contenedor"  th:if="${conductor.getImagenPerfil() != null}">
-            <img alt="img"  th:src="'data:image/jpg;charset=utf-8;base64,' + ${conductor.getImageDataBase64()}"/>
+          <div class="imagen_contenedor"  th:if="${usuario.getImagenPerfil() != null}">
+            <img alt="img"  th:src="'data:image/jpg;charset=utf-8;base64,' + ${usuario.getImageDataBase64()}"/>
           </div>
 
-          <div th:if="${conductor.getImagenPerfil() == null}">
+          <div th:if="${usuario.getImagenPerfil() == null}">
             <img th:src="@{/imagenes/user.png}" alt=",,," style="height: 80px;width: 80px">
           </div>
 

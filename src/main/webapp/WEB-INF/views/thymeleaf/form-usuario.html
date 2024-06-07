@@ -61,52 +61,56 @@
     <h1 th:if="${isEditForm}" class="titulo_registroConductor">Editar Datos Personales</h1>
     <h1 th:unless="${isEditForm}" class="titulo_registroConductor">Registrarme</h1>
 
-    <form id="conductorForm" th:action="${isEditForm ? 'editar-conductor' : 'registrar-usuario'}" method="POST" th:object="${usuario}"> <!--th:method="${isEditForm ? 'PUT' : 'POST'}"-->
+    <form id="conductorForm" th:action="${isEditForm ? 'editar-usuario' : 'registrar-usuario'}" method="POST" th:object="${usuario}"> <!--th:method="${isEditForm ? 'PUT' : 'POST'}"-->
       <section class="formulario">
         <div class="columna">
             <div>
                 <label for="nombre" class="nombre fuente_formulario_registro">Nombre</label>
-                <input type="text" class="form-control" id="nombre" name="nombre" th:field="*{nombre}" th:value="${isEditForm ? conductor.nombre : ''}" required>
+                <input type="text" class="form-control" id="nombre" name="nombre" th:field="*{nombre}" th:value="${isEditForm ? usuario.getNombre() : ''}" required>
             </div>
             <div>
                 <label for="apellido" class="apellido fuente_formulario_registro">Apellido</label>
-                <input type="text" class="form-control" id="apellido" name="apellido" th:field="*{apellido}" th:value="${isEditForm ? conductor.apellido : ''}"required>
+                <input type="text" class="form-control" id="apellido" name="apellido" th:field="*{apellido}" th:value="${isEditForm ? usuario.getApellido() : ''}"required>
             </div>
             <div >
                 <label for="domicilio" class="domicilio fuente_formulario_registro">Domicilio</label>
-                <input type="text" class="form-control" id="domicilio" name="domicilio" th:field="*{domicilio}" th:value="${isEditForm ? conductor.domicilio : ''}" required>
+                <input type="text" class="form-control" id="domicilio" name="domicilio" th:field="*{domicilio}" th:value="${isEditForm ? usuario.getDomicilio() : ''}" required>
             </div>
             <div>
                 <label for="nroTelefono" class="telefono fuente_formulario_registro">Número de Teléfono</label>
-                <input type="text" class="form-control" id="nroTelefono" name="nroTelefono" th:field="*{numeroDeTelefono}" th:value="${isEditForm ? conductor.nroTelefono : ''}" required>
+                <input type="text" class="form-control" id="nroTelefono" name="nroTelefono" th:field="*{numeroDeTelefono}" th:value="${isEditForm ? usuario.getNumeroDeTelefono() : ''}" required>
             </div>
             <div>
                 <label for="numeroDeDni" class="dni fuente_formulario_registro">Número de DNI</label>
-                <input type="number" class="form-control" id="numeroDeDni" name="numeroDeDni" th:field="*{numeroDeDni}" th:value="${isEditForm ? conductor.numeroDeDni : ''}" required>
+                <input type="number" class="form-control" id="numeroDeDni" name="numeroDeDni" th:field="*{numeroDeDni}" th:value="${isEditForm ? usuario.getNumeroDeDni() : ''}" required>
             </div>
         </div>
         <div class="columna">
             <div>
                 <label for="nombreUsuario" class="nombreUsuario fuente_formulario_registro">Nombre de Usuario</label>
-                <input type="text" class="form-control" id="nombreUsuario" name="nombreUsuario" th:field="*{nombreUsuario}" th:value="${isEditForm ? conductor.nombreUsuario : ''}" th:readonly="${isEditForm}" required>
+                <input type="text" class="form-control" id="nombreUsuario" name="nombreUsuario" th:field="*{nombreUsuario}" th:value="${isEditForm ? usuario.getNombreUsuario() : ''}" th:readonly="${isEditForm}" required>
             </div>
             <div>
                 <label for="email" class="email fuente_formulario_registro">Email</label>
-                <input type="email" class="form-control" id="email" name="email" th:field="*{email}" th:value="${isEditForm ? conductor.email : ''}" th:readonly="${isEditForm}" required>
+                <input type="email" class="form-control" id="email" name="email" th:field="*{email}" th:value="${isEditForm ? usuario.getEmail() : ''}" th:readonly="${isEditForm}" required>
             </div>
             <div>
                 <label for="password" class="password fuente_formulario_registro">Contraseña</label>
-                <input type="password" class="form-control" id="password" name="password" th:field="*{password}" th:value="${isEditForm ? conductor.password : ''}" required>
+                <input type="password" class="form-control" id="password" name="password" th:field="*{password}" th:value="${isEditForm ? usuario.getPassword() : ''}" required>
             </div>
             <div >
                 <label for="confirmarPassword" class="confirmarPassword fuente_formulario_registro">Confirmar Contraseña</label>
-                <input type="password" class="form-control" id="confirmarPassword" name="confirmarPassword"  th:value="${isEditForm ? conductor.password : ''}" th:readonly="${isEditForm}" required>
+                <input type="password" class="form-control" id="confirmarPassword" name="confirmarPassword"  th:value="${isEditForm ? usuario.getPassword() : ''}" th:readonly="${isEditForm}" required>
             </div>
             <div>
                 <label for="tipoUsuario">Tipo de Usuario:</label>
-                <select id="tipoUsuario" name="tipoUsuario" class="form-control" th:field="*{tipoUsuario}">
+                <select id="tipoUsuario" name="tipoUsuario" class="form-control" th:field="*{tipoUsuario}"  th:disabled="${isEditForm}">
+                    <!-- Opción predeterminada para cuando el tipoUsuario es null -->
+                    <option th:if="${usuario.getTipoUsuario() == null}" value="" th:text="'Seleccione un tipo de usuario'"></option>
                     <option th:each="tipo : ${T(com.tallerwebi.dominio.enums.TipoUsuario).values()}"
-                            th:value="${tipo}" th:text="${tipo}">
+                            th:value="${tipo}"
+                            th:selected="${usuario.getTipoUsuario() != null and tipo.name() == usuario.getTipoUsuario().name()}"
+                            th:text="${tipo}">
                     </option>
                 </select>
             </div>
