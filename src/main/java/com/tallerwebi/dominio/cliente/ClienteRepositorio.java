@@ -7,4 +7,5 @@ public interface ClienteRepositorio {
 
     Cliente obtenerClientePorId(Integer idusuario);
 
+    void editarCliente(Cliente cliente);
 }

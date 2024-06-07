@@ -21,14 +21,10 @@ public class Paquete {
     @Column(name = "esFragil")
     private Boolean esFragil;
 
-    @OneToOne(mappedBy = "paquete", cascade = CascadeType.ALL)
-    private Viaje viaje;
-
-    public Paquete(Double peso, Double dimension, Boolean esFragil, Viaje viaje) {
+    public Paquete(Double peso, Double dimension, Boolean esFragil) {
         this.peso = peso;
         this.dimension = dimension;
         this.esFragil = esFragil;
-        this.viaje = viaje;
     }
 
     public Paquete() {
@@ -71,11 +67,4 @@ public class Paquete {
         this.esFragil = esFragil;
     }
 
-    public Viaje getViaje() {
-        return viaje;
-    }
-
-    public void setViaje(Viaje viaje) {
-        this.viaje = viaje;
-    }
 }

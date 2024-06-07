@@ -19,6 +19,36 @@
         <img th:src="@{/imagenes/logo.png}" class="d-block w-100 bg-violet" alt=",,," style="height: 50px;width: 50px">
       </a>
     </div>
+    <div class="collapse navbar-collapse justify-content-end">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active  p-2">
+          <a th:href="home" class="nav-link p-2 text-white" href="#">Inicio</a>
+        </li>
+        <li class="nav-item p-2">
+          <a th:href="compania" class="nav-link p-2 text-white" href="#">Compañía</a>
+        </li>
+        <li class="nav-item p-2">
+          <a th:href="ayuda" class="nav-link p-2 text-white" href="#">Ayuda</a>
+        </li>
+        <li class="nav-item p-2">
+          <a th:href="viajes-en-proceso" class="nav-link p-2 text-white">Envios en Proceso</a>
+        </li>
+        <li class="nav-item p-2">
+          <a th:href="historial" class="nav-link p-2 text-white" href="#">Historial de Envios</a>
+        </li>
+      </ul>
+      <a th:href="perfil" class="btn mx-2" style="border:none;">
+        <div class="container d-flex justify-content-center align-items-center"  th:if="${cliente.getImagenPerfil() != null}" style="border: none">
+          <img alt="img" class="d-block rounded-circle" th:src="'data:image/jpg;charset=utf-8;base64,' + ${cliente.getImageDataBase64()}" style=" width: 40px; height: 40px;"/>
+        </div>
+        <div th:if="${cliente.getImagenPerfil() == null}">
+          <img th:src="@{/imagenes/user.png}" alt=",,," style="height: 20px;width: 20px">
+        </div>
+      </a>
+      <a th:href="@{cerrar-sesion}">
+        <i class="fa-solid fa-arrow-right-from-bracket" style="border-radius:25px; padding:11px; background-color: white; color: #36054E; transition: color 0.3s;" onmouseover="this.style.color='white';this.style.backgroundColor='lightgray'" onmouseout="this.style.color='#36054E'; this.style.backgroundColor='white'"></i>
+      </a>
+    </div>
   </nav>
 </header>
 <main role="main" class="container">
@@ -28,6 +58,9 @@
         <div class="contenido d-flex justify-content-center align-items-center mt-lg-3">
           <div class="texto text-center text-white" id="letrasHome">
             <h2 class="m-0">Home cliente clean</h2>
+          </div>
+          <div>
+            <a th:href="@{form-viaje}">Crear Envio</a>
           </div>
         </div>
       </div>

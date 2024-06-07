@@ -3,9 +3,11 @@ package com.tallerwebi.presentacion.Datos;
 import com.tallerwebi.dominio.cliente.Cliente;
 import com.tallerwebi.dominio.conductor.Conductor;
 import com.tallerwebi.dominio.enums.TipoUsuario;
+import com.tallerwebi.dominio.usuario.Usuario;
 
 public class DatosUsuario {
 
+    private Integer id;
     private String nombre;
     private String apellido;
     private Integer numeroDeDni;
@@ -29,6 +31,14 @@ public class DatosUsuario {
     }
 
     public DatosUsuario() {
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getNombre() {
@@ -105,6 +115,7 @@ public class DatosUsuario {
 
     public Conductor toConductor() {
         Conductor conductor = new Conductor();
+        conductor.setId(this.id);
         conductor.setNombre(this.getNombre());
         conductor.setApellido(this.getApellido());
         conductor.setNumeroDeDni(this.getNumeroDeDni());
@@ -120,6 +131,7 @@ public class DatosUsuario {
 
     public Cliente toCliente() {
         Cliente cliente = new Cliente();
+        cliente.setId(this.id);
         cliente.setNombre(this.getNombre());
         cliente.setApellido(this.getApellido());
         cliente.setNumeroDeDni(this.getNumeroDeDni());
@@ -130,5 +142,19 @@ public class DatosUsuario {
         cliente.setDomicilio(this.getDomicilio());
         cliente.setTipoUsuario(this.getTipoUsuario());
         return cliente;
+    }
+
+    public DatosUsuario usuarioToDTO(Usuario usuario){
+        DatosUsuario datosUsuario = new DatosUsuario();
+        datosUsuario.setNombre(usuario.getNombre());
+        datosUsuario.setApellido(usuario.getApellido());
+        datosUsuario.setNumeroDeDni(usuario.getNumeroDeDni());
+        datosUsuario.setEmail(usuario.getEmail());
+        datosUsuario.setNumeroDeTelefono(usuario.getNumeroDeTelefono());
+        datosUsuario.setNombreUsuario(usuario.getNombreUsuario());
+        datosUsuario.setPassword(usuario.getPassword());
+        datosUsuario.setDomicilio(usuario.getDomicilio());
+        datosUsuario.setTipoUsuario(usuario.getTipoUsuario());
+        return datosUsuario;
     }
 }

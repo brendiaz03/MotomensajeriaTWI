@@ -1,7 +1,7 @@
 package com.tallerwebi.dominio.paquete;
 
 public interface PaqueteServicio {
-    Paquete guardarPaquete(Paquete paquete);
+    Paquete guardarPaquete(Paquete paquete) throws PaqueteNoEncontradoException;
 
     void editarPaquete(Paquete paquete);
 

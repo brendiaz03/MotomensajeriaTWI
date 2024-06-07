@@ -133,4 +133,6 @@ function iniciarMapa(latitudActual, longitudActual){
             console.error('Solicitud de direcciones fallida debido a: ' + statusRuta2);
         }
     });
+
+
 }

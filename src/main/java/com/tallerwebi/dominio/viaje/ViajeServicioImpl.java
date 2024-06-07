@@ -98,7 +98,7 @@ public class ViajeServicioImpl implements ViajeServicio {
             List<Viaje> viajes = this.viajeRepositorio.traerTodosLosViajesQueNoEstenAceptados();
             List<Viaje> viajesAMostrar = calcularLaDistanciaDelViajeEntreLaSalidaYElDestino(viajes);
             return viajesAMostrar.stream().limit(5)
-                    .map(viaje -> new DatosViaje(viaje.getId(), viaje.getDomicilioDeSalida(), viaje.getDomicilioDeLlegada(), viaje.getCliente().getNombre(), viaje.getPrecio(), viaje.getCodigoPostal(), viaje.getLatitudDeSalida(), viaje.getLongitudDeSalida(), viaje.getLatitudDeLlegada(), viaje.getLongitudDeLlegada(), viaje.getDistanciaDelViaje(), viaje.getEstado()))
+                    .map(viaje -> new DatosViaje(viaje.getId(), viaje.getDomicilioDeSalida(), viaje.getDomicilioDeLlegada(), viaje.getCliente().getNombre(), viaje.getPrecio(), viaje.getLatitudDeSalida(), viaje.getLongitudDeSalida(), viaje.getLatitudDeLlegada(), viaje.getLongitudDeLlegada(), viaje.getDistanciaDelViaje(), viaje.getEstado()))
                     .collect(Collectors.toList());
         }
 
@@ -107,7 +107,7 @@ public class ViajeServicioImpl implements ViajeServicio {
         List<Viaje> viajesAMostrar = calcularLaDistanciaDelViajeEntreLaSalidaYElDestino(viajesCercanos);
 
         return viajesAMostrar.stream().limit(5)
-                .map(viaje -> new DatosViaje(viaje.getId(), viaje.getDomicilioDeSalida(), viaje.getDomicilioDeLlegada(), viaje.getCliente().getNombre(), viaje.getPrecio(), viaje.getCodigoPostal(), viaje.getLatitudDeSalida(), viaje.getLongitudDeSalida(), viaje.getLatitudDeLlegada(), viaje.getLongitudDeLlegada(), viaje.getDistanciaDelViaje(), viaje.getEstado()))
+                .map(viaje -> new DatosViaje(viaje.getId(), viaje.getDomicilioDeSalida(), viaje.getDomicilioDeLlegada(), viaje.getCliente().getNombre(), viaje.getPrecio(), viaje.getLatitudDeSalida(), viaje.getLongitudDeSalida(), viaje.getLatitudDeLlegada(), viaje.getLongitudDeLlegada(), viaje.getDistanciaDelViaje(), viaje.getEstado()))
                 .collect(Collectors.toList());
     }
 
@@ -160,20 +160,46 @@ public class ViajeServicioImpl implements ViajeServicio {
         return viajesConDistanciaCalculada;
     }
 
+    public Viaje calcularLaDistanciaDeUnViaje(Viaje viaje) {
+        final double RADIO_TIERRA = 6371;
+        double diferenciaDeLatitud;
+        double diferenciaDeLongitud;
+
+            diferenciaDeLatitud = Math.toRadians(viaje.getLatitudDeLlegada()) - Math.toRadians(viaje.getLatitudDeSalida());
+            diferenciaDeLongitud = Math.toRadians(viaje.getLongitudDeLlegada()) - Math.toRadians(viaje.getLongitudDeSalida());
+
+            double a = Math.sin(diferenciaDeLatitud / 2) * Math.sin(diferenciaDeLatitud / 2) +
+                    Math.cos(Math.toRadians(viaje.getLatitudDeSalida())) *
+                            Math.cos(Math.toRadians(viaje.getLatitudDeLlegada())) *
+                            Math.sin(diferenciaDeLongitud / 2) * Math.sin(diferenciaDeLongitud / 2);
+
+            double distanciaFinal = 2 * RADIO_TIERRA * Math.asin(Math.sqrt(a));
+
+            double kilometrosDeDistancia = Math.round(distanciaFinal * 10) / 10.0;
+
+        viaje.setDistanciaDelViaje(kilometrosDeDistancia);
+
+        return viaje;
+    }
+
     public DatosViaje mapearViajeADatosViajeHistorial(Viaje viaje) {
-        return new DatosViaje(viaje.getId(), viaje.getDomicilioDeSalida(), viaje.getDomicilioDeLlegada(), viaje.getCliente().getNombre(), viaje.getPrecio(), viaje.getCodigoPostal(),viaje.getEstado());
+        return new DatosViaje(viaje.getId(), viaje.getDomicilioDeSalida(), viaje.getDomicilioDeLlegada(), viaje.getCliente().getNombre(), viaje.getPrecio(), viaje.getEstado());
     }
 
     public DatosViaje mapearViajeADatosViaje(Viaje viaje){
-        return new DatosViaje(viaje.getId(), viaje.getDomicilioDeSalida(), viaje.getDomicilioDeLlegada(), viaje.getCliente().getNombre(), viaje.getPrecio(), viaje.getCodigoPostal(), viaje.getLatitudDeSalida(), viaje.getLongitudDeSalida(), viaje.getLatitudDeLlegada(), viaje.getLongitudDeLlegada(), viaje.getDistanciaDelViaje(), viaje.getEstado());
+        return new DatosViaje(viaje.getId(), viaje.getDomicilioDeSalida(), viaje.getDomicilioDeLlegada(), viaje.getCliente().getNombre(), viaje.getPrecio(), viaje.getLatitudDeSalida(), viaje.getLongitudDeSalida(), viaje.getLatitudDeLlegada(), viaje.getLongitudDeLlegada(), viaje.getDistanciaDelViaje(), viaje.getEstado());
     }
 
     @Override
-    public void crearViaje(Cliente cliente, DatosViaje viaje, Paquete paquete) {
-        Viaje viajeMapeado = viaje.toViaje(viaje);
-        viajeMapeado.setCliente(cliente);
-        viajeMapeado.setPaquete(paquete);
-        viajeMapeado.setEstado(TipoEstado.PENDIENTE);
-        this.viajeRepositorio.guardarViaje(viajeMapeado);
+    public Viaje crearViaje(Cliente cliente, Viaje viaje, Paquete paquete) {
+        viaje.setCliente(cliente);
+        viaje.setPaquete(paquete);
+        viaje.setEstado(TipoEstado.PENDIENTE);
+       return this.viajeRepositorio.guardarViaje(viaje);
+    }
+
+    @Override
+    public Viaje buscarViaje(Integer idViaje){
+        return this.viajeRepositorio.obtenerViajePorId(idViaje);
     }
 }
