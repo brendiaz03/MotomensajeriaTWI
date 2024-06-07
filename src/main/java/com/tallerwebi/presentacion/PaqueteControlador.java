@@ -26,7 +26,6 @@ public class PaqueteControlador {
         this.paqueteServicio = paqueteServicio;
     }
 
-
     @RequestMapping(value = "/form-editar-paquete")
     public ModelAndView mostrarFormEditorPaquete(HttpSession session) {
         session.setAttribute("isEditPackage", true);
@@ -37,22 +36,6 @@ public class PaqueteControlador {
         session.setAttribute("paqueteActual", paquete);
         return new ModelAndView("redirect:/form-viaje");
     }
-
-    /*@RequestMapping(value = "/crear-paquete", method = RequestMethod.POST)
-    public ModelAndView guardarPaquete(@ModelAttribute("paquete") Paquete paquete) throws PaqueteNoEncontradoException {
-
-        try{
-
-            this.paqueteServicio.guardarPaquete(paquete);
-
-        } catch (PaqueteNoEncontradoException e) {
-
-            throw new PaqueteNoEncontradoException();
-
-        }
-
-        return new ModelAndView("redirect:/home");
-    }*/
 
     @RequestMapping(value = "/editar-paquete")
     public ModelAndView editarPaquete(@ModelAttribute("paquete") Paquete paquete) {
