@@ -13,9 +13,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import org.thymeleaf.model.IModel;
 
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 
 @Controller
 public class UsuarioControlador {
@@ -108,11 +111,11 @@ public class UsuarioControlador {
          usuarioEditado.setId((Integer) session.getAttribute("IDUSUARIO"));
         try {
             if(session.getAttribute("tipoUsuario").equals(TipoUsuario.Conductor)){
-                Conductor conductor = usuarioEditado.toConductor();
+                Conductor conductor = usuarioEditado.toConductor();//pasar a service
                 conductorServicio.editarConductor(conductor);
                 session.setAttribute("isEditForm", false);
             }else{
-                Cliente cliente = usuarioEditado.toCliente();
+                Cliente cliente = usuarioEditado.toCliente();//pasar a service
                 clienteServicio.editarCliente(cliente);
                 session.setAttribute("isEditForm", false);
             }
@@ -125,13 +128,46 @@ public class UsuarioControlador {
     @RequestMapping(path = "/foto-perfil", method = RequestMethod.GET)
     public ModelAndView irAEditarFotoPerfil(HttpSession session) {
         ModelMap model = new ModelMap();
-        model.put("isUsuarioLogueado", (Boolean) session.getAttribute("isUsuarioLogueado"));
         try {
-            Conductor conductor = conductorServicio.obtenerConductorPorId( (Integer) session.getAttribute("IDUSUARIO"));
-            model.put("conductor", conductor);
+            if(session.getAttribute("tipoUsuario").equals(TipoUsuario.Conductor)){
+                Conductor usuario = conductorServicio.obtenerConductorPorId((Integer)session.getAttribute("IDUSUARIO"));
+                model.put("usuario", usuario);
+            }else{
+                Cliente usuario = clienteServicio.obtenerClientePorId((Integer)session.getAttribute("IDUSUARIO"));
+                model.put("usuario", usuario);
+            }
         } catch (UsuarioNoEncontradoException e) {
             model.put("mensajeError", e.getMessage());
         }
         return new ModelAndView("foto-perfil", model);
     }
+
+    @PostMapping("/subir-foto")
+    public ModelAndView subirFoto(@RequestParam("imagenPerfil") MultipartFile imagen, HttpSession session) {
+        ModelMap model = new ModelMap();
+        try {
+            if(session.getAttribute("tipoUsuario").equals(TipoUsuario.Conductor)){
+                this.conductorServicio.ingresarImagen(imagen, (Integer) session.getAttribute("IDUSUARIO"));
+                return new ModelAndView("redirect:/perfil");
+            }else{
+                this.clienteServicio.ingresarImagen(imagen, (Integer) session.getAttribute("IDUSUARIO"));
+                return new ModelAndView("redirect:/perfil");            }
+        } catch (UsuarioNoEncontradoException e) {
+            model.put("mensajeError", e.getMessage());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return null;
+    }
+
+//    @RequestMapping(value = "/borrar-cuenta", method = RequestMethod.GET)
+//    public ModelAndView borrarCuenta(HttpSession session) {
+//        try {
+//            conductorServicio.borrarConductor((Integer) session.getAttribute("IDUSUARIO"));
+//        } catch (UsuarioNoEncontradoException e) {
+//            return this.mostrarFormConductor(e.getMessage(), session);
+//        }
+//        return new ModelAndView("redirect:/cerrar-sesion");
+//    }
+
 }
