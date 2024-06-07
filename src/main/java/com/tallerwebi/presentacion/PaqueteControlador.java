@@ -1,7 +1,5 @@
 package com.tallerwebi.presentacion;
 
-import com.tallerwebi.dominio.imagen.Imagen;
-import com.tallerwebi.dominio.imagen.ImagenServicio;
 import com.tallerwebi.dominio.paquete.Paquete;
 import com.tallerwebi.dominio.paquete.PaqueteNoEncontradoException;
 import com.tallerwebi.dominio.paquete.PaqueteServicio;
@@ -23,13 +21,10 @@ public class PaqueteControlador {
 
     private PaqueteServicio paqueteServicio;
 
-    private ImagenServicio imagenServicio;
-
 
     @Autowired
-    public PaqueteControlador(PaqueteServicio paqueteServicio, ImagenServicio imagenServicio) {
+    public PaqueteControlador(PaqueteServicio paqueteServicio) {
         this.paqueteServicio = paqueteServicio;
-        this.imagenServicio = imagenServicio;
     }
 
     @RequestMapping(value = "/crear-paquete", method = RequestMethod.POST)
@@ -59,13 +54,9 @@ public class PaqueteControlador {
 
         Boolean isEditPackage = (session.getAttribute("isEditPackage") != null) ? (Boolean) session.getAttribute("isEditPackage") : false;
 
-        Imagen logo = imagenServicio.getImagenByName("logo");
 
-        Imagen fondo = imagenServicio.getImagenByName("fondo");
 
         model.put("isEditPackage", isEditPackage);
-        model.put("logo", logo);
-        model.put("fondo", fondo);
 
         if(isEditPackage){
 

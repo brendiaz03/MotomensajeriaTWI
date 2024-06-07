@@ -3,10 +3,10 @@ package com.tallerwebi.presentacion;
 import com.tallerwebi.dominio.cliente.Cliente;
 import com.tallerwebi.dominio.cliente.ClienteServicio;
 import com.tallerwebi.dominio.conductor.Conductor;
+import com.tallerwebi.dominio.enums.TipoEstado;
 import com.tallerwebi.dominio.paquete.Paquete;
 import com.tallerwebi.dominio.exceptions.UsuarioNoEncontradoException;
 import com.tallerwebi.dominio.conductor.ConductorServicio;
-import com.tallerwebi.dominio.enums.TipoEstado;
 import com.tallerwebi.dominio.viaje.Viaje;
 import com.tallerwebi.dominio.viaje.ViajeServicio;
 import com.tallerwebi.presentacion.Datos.DatosViaje;
@@ -203,7 +203,7 @@ public class ViajeControlador {
         Boolean isPenalizado = this.viajeServicio.estaPenalizado(conductor);
         request.getSession().setAttribute("isPenalizado", isPenalizado);
 
-        return new ModelAndView("redirect:/home");
+        return new ModelAndView("redirect:/homeConductor");
     }
 
     @RequestMapping("/detalle")
