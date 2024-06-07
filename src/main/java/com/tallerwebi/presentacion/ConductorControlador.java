@@ -22,8 +22,8 @@ public class ConductorControlador {
     private ConductorServicio conductorServicio;
     private VehiculoServicio vehiculoService;
     private ViajeServicio viajeServicio;
-    private Double latitudActual = -34.668822; // VER
-    private Double longitudActual =  -58.532878; // VER
+//    private Double latitudActual = -34.668822; // VER
+//    private Double longitudActual =  -58.532878; // VER
 
 
     @Autowired
@@ -54,31 +54,6 @@ public class ConductorControlador {
 //        model.put("viajes", viajesCercanosPendientes);
         return new ModelAndView(viewName, model);
     }
-
-   /*
-
-    @PostMapping("/subir-foto")
-    public ModelAndView subirFoto(@RequestParam("imagenPerfil") MultipartFile imagen, HttpSession session) {
-        Integer idUsuario = (Integer) session.getAttribute("IDUSUARIO");
-        try {
-            this.conductorServicio.ingresarImagen(imagen, idUsuario);
-            return new ModelAndView("redirect:/perfil");
-        } catch (UsuarioNoEncontradoException e) {
-            return this.mostrarFormConductor(e.getMessage(), session);
-        } catch (IOException e) {
-            return this.mostrarFormConductor("Error al subir la imagen", session);
-        }
-    }
-
-    @RequestMapping(value = "/borrar-cuenta", method = RequestMethod.GET)
-    public ModelAndView borrarCuenta(HttpSession session) {
-        try {
-            conductorServicio.borrarConductor((Integer) session.getAttribute("IDUSUARIO"));
-        } catch (UsuarioNoEncontradoException e) {
-            return this.mostrarFormConductor(e.getMessage(), session);
-        }
-        return new ModelAndView("redirect:/cerrar-sesion");
-    }*/
 
 
 }
