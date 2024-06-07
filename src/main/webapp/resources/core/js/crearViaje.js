@@ -9,7 +9,9 @@ function iniciarAutocompletado() {
     const autocompleteSalida = new google.maps.places.Autocomplete(inputSalida, options);
     const autocompleteLlegada = new google.maps.places.Autocomplete(inputLlegada, options);
 
+
     autocompleteSalida.addListener('place_changed', function () {
+
         const place = autocompleteSalida.getPlace();
         if (!place.geometry) {
             console.error('No se encontró información para la dirección de salida:', place);
@@ -18,6 +20,7 @@ function iniciarAutocompletado() {
         }
         document.getElementById('latitudSalida').value = place.geometry.location.lat();
         document.getElementById('longitudSalida').value = place.geometry.location.lng();
+
     });
 
     autocompleteLlegada.addListener('place_changed', function () {

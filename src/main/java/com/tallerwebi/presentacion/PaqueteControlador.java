@@ -21,8 +21,6 @@ public class PaqueteControlador {
 
     private PaqueteServicio paqueteServicio;
 
-
-
     @Autowired
     public PaqueteControlador(PaqueteServicio paqueteServicio) {
         this.paqueteServicio = paqueteServicio;
