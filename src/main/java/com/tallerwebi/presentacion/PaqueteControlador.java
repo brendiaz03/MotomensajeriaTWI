@@ -26,7 +26,6 @@ public class PaqueteControlador {
         this.paqueteServicio = paqueteServicio;
     }
 
-
     @RequestMapping(value = "/form-editar-paquete")
     public ModelAndView mostrarFormEditorPaquete(HttpSession session) {
         session.setAttribute("isEditPackage", true);

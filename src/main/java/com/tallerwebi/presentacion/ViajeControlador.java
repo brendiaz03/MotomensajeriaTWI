@@ -7,6 +7,7 @@ import com.tallerwebi.dominio.paquete.Paquete;
 import com.tallerwebi.dominio.exceptions.UsuarioNoEncontradoException;
 import com.tallerwebi.dominio.conductor.ConductorServicio;
 import com.tallerwebi.dominio.enums.TipoEstado;
+import com.tallerwebi.dominio.paquete.PaqueteNoEncontradoException;
 import com.tallerwebi.dominio.paquete.PaqueteServicio;
 import com.tallerwebi.dominio.viaje.Viaje;
 import com.tallerwebi.dominio.viaje.ViajeServicio;
@@ -84,7 +85,7 @@ public class ViajeControlador {
     }
 
     @RequestMapping(value = "/crear-envio")
-    public ModelAndView crearViajeConPaqueteYCliente(HttpSession session){
+    public ModelAndView crearViajeConPaqueteYCliente(HttpSession session) throws PaqueteNoEncontradoException {
 
         //CLIENTE//
         //Integer idUsuario = (Integer) session.getAttribute("IDUSUARIO");
@@ -92,7 +93,16 @@ public class ViajeControlador {
 
         //PAQUETE//
         Paquete paqueteActual = (Paquete)session.getAttribute("paqueteActual");
-        this.paqueteServicio.guardarPaquete(paqueteActual);
+
+        try{
+
+            this.paqueteServicio.guardarPaquete(paqueteActual);
+
+        } catch (PaqueteNoEncontradoException e) {
+
+            throw new PaqueteNoEncontradoException();
+
+        }
 
         Viaje viajeActual = (Viaje)session.getAttribute("viajeActual");
         this.viajeServicio.crearViaje(null,viajeActual,paqueteActual);
