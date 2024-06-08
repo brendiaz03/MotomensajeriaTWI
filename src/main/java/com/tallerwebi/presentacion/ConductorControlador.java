@@ -43,7 +43,7 @@ public class ConductorControlador {
         List<DatosViaje> viajesCercanosPendientes;
         //Double distanciaAFiltrar = (Double) session.getAttribute("distancia");
         //if (conductor.getVehiculo() != null) {
-            viajesCercanosPendientes = this.viajeServicio.filtrarViajesPorDistanciaDelConductor(latitudActual, longitudActual, 100.0);
+            //viajesCercanosPendientes = this.viajeServicio.filtrarViajesPorDistanciaDelConductor(latitudActual, longitudActual, 100.0);
             //model.put("tieneVehiculo", false);
         //} else {
             //viajesCercanosPendientes = null;
@@ -53,7 +53,7 @@ public class ConductorControlador {
         //session.setAttribute("isPenalizado", this.viajeServicio.estaPenalizado(conductor));
 
         model.put("clave", claveGoogleMaps);
-        model.put("viajes", viajesCercanosPendientes);
+        //model.put("viajes", viajesCercanosPendientes);
         return new ModelAndView(viewName, model);
     }
 
