@@ -44,24 +44,28 @@ public class ViajeControlador {
         String claveGoogleMaps = "AIzaSyDcPeOyMBqG_1mZgjpei_R2ficRigdkINg";
         boolean isEditViaje = (session.getAttribute("isEditViaje") != null) ? (boolean) session.getAttribute("isEditViaje") : false;
         boolean isEditPackage = (session.getAttribute("isEditPackage") != null) ? (boolean) session.getAttribute("isEditPackage") : false;
+
+
         Viaje viajeEnSession = (session.getAttribute("viajeActual") != null) ? (Viaje) session.getAttribute("viajeActual") : null;
         Paquete paqueteEnSession = (session.getAttribute("paqueteActual") != null) ? (Paquete) session.getAttribute("paqueteActual") : null;
+        Integer pasoActual = (session.getAttribute("pasoActual") != null) ? (Integer) session.getAttribute("pasoActual") : 1;
+
 
         model.put("isEditViaje", isEditViaje);
         model.put("isEditPackage", isEditPackage);
         model.put("clave", claveGoogleMaps);
+        model.put("pasoActual", pasoActual);
+
         if (viajeEnSession == null && !isEditViaje) {
             model.put("viaje", new Viaje());
         } else {
             model.put("viaje", viajeEnSession);
-            session.setAttribute("isEditViaje", false);
         }
 
         if (paqueteEnSession == null && !isEditPackage) {
             model.put("paquete", new Paquete());
         } else {
             model.put("paquete", paqueteEnSession);
-            session.setAttribute("isEditPackage", false);
         }
 
         return new ModelAndView(viewName, model);
@@ -70,17 +74,23 @@ public class ViajeControlador {
     @RequestMapping("/form-editar-viaje")
     public ModelAndView mostrarFormEditorViaje(HttpSession session){
         session.setAttribute("isEditViaje", true);
+        session.setAttribute("pasoActual", 2);
         return new ModelAndView("redirect:/form-viaje");
     }
 
     @RequestMapping(value = "/editar-viaje", method = RequestMethod.POST)
-    public ModelAndView editarViaje(@ModelAttribute("viaje") Viaje viaje){
+    public ModelAndView editarViaje(@ModelAttribute("viaje") Viaje viaje, HttpSession session){
         this.viajeServicio.actualizarViaje(viaje);
-        return new ModelAndView("redirect:/crear-viaje");
+        session.setAttribute("isEditViaje", false);
+        session.setAttribute("viajeActual", viaje);
+        session.setAttribute("pasoActual", 3);
+        return new ModelAndView("redirect:/form-viaje");
     }
     @RequestMapping(value = "/crear-viaje", method = RequestMethod.POST, consumes = "application/x-www-form-urlencoded")
     public ModelAndView crearViajeLocalmente(@ModelAttribute("viaje") Viaje viaje, HttpSession session){
         session.setAttribute("viajeActual", viaje);
+        session.setAttribute("pasoActual", 3);
+
         return new ModelAndView("redirect:/form-viaje");
     }
 
@@ -106,10 +116,11 @@ public class ViajeControlador {
 
         Viaje viajeActual = (Viaje)session.getAttribute("viajeActual");
         this.viajeServicio.crearViaje(null,viajeActual,paqueteActual);
-        session.setAttribute("paqueteActual", null);    //HACERLO POST PAGAR
+        session.setAttribute("paqueteActual", null);    //HACERLO POST PAGAR --> Paso Actual=1
         session.setAttribute("viajeActual", null);
+        session.setAttribute("pasoActual", 4);
 
-        return new ModelAndView("redirect:/home");
+        return new ModelAndView("redirect:/homeCliente");
     }
 
 
