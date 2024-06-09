@@ -6,7 +6,7 @@
   <script src="https://kit.fontawesome.com/ca80211b53.js" crossorigin="anonymous"></script>
   <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.0/css/bootstrap.min.css}"/>
   <link rel="stylesheet" th:href="@{css/main.css}"/>
-  <link rel="stylesheet" th:href="@{css/homeStyle.css}"/>
+  <link rel="stylesheet" th:href="@{css/homeCliente.css}"/>
   <link rel="stylesheet" th:href="@{css/viajes.css}"/>
 
   <title>Motomensajeria</title>
@@ -51,24 +51,68 @@
     </div>
   </nav>
 </header>
-<main role="main" class="container">
-  <div class="container">
-    <div class="row">
-      <div class="col-md-6">
-        <div class="contenido d-flex justify-content-center align-items-center mt-lg-3">
-          <div class="texto text-center text-white" id="letrasHome">
-            <h2 class="m-0">Home cliente clean</h2>
-          </div>
-          <div>
-            <a th:href="@{form-viaje}">Crear Envio</a>
-          </div>
-        </div>
+<main class="homeCliente_main">
+  <section class="titulos">
+    <h2>¡Bienvenido <span th:text="${cliente.nombre}"></span>!</h2>
+    <h4>¿Que vas a hacer hoy?</h4>
+  </section>
+  <a th:href="@{form-viaje}" class="crearEnvio">
+    <i class="fa-solid fa-square-plus"></i>
+    <p>Crear Envío</p>
+  </a>
+
+  <section class="acordeon">
+    <h2>¿Necesitas Ayuda?</h2>
+    <article class="item_acordeon">
+      <div class="pregunta_acordeon">
+        <p>¿Cómo funcionan nuestros envíos?</p>
+        <i class="fa-solid fa-sort-down"></i>
       </div>
-      <div class="col-md-6">
+      <div class="respuesta_acordeon">
+        <p>Nuestros envíos funcionan de manera rápida y eficiente. Simplemente ingresas la dirección de recogida y entrega en nuestra aplicación, y uno de nuestros conductores recogerá tu paquete en minutos. Puedes seguir el progreso del envío en tiempo real a través de la app y recibirás notificaciones en cada etapa del proceso.</p>
       </div>
-    </div>
-  </div>
+    </article>
+    <article class="item_acordeon">
+      <div class="pregunta_acordeon">
+        <p>¿Qué pasa cuando cancelo un envío?</p>
+        <i class="fa-solid fa-sort-down"></i>
+      </div>
+      <div class="respuesta_acordeon">
+        <p>Si necesitas cancelar un envío, puedes hacerlo directamente desde la aplicación antes de que el conductor recoja el paquete. En este caso, no se te cobrará ningún cargo. Si el conductor ya ha recogido el paquete, se aplicará una tarifa de cancelación mínima para compensar el tiempo y el esfuerzo del conductor.</p>
+      </div>
+    </article>
+    <article class="item_acordeon">
+      <div class="pregunta_acordeon">
+        <p>¿Por qué podría estar demorando mi envío?</p>
+        <i class="fa-solid fa-sort-down"></i>
+      </div>
+      <div class="respuesta_acordeon">
+        <p>Las demoras en los envíos pueden deberse a varios factores, como tráfico intenso, condiciones climáticas adversas o problemas imprevistos en el punto de recogida o entrega. Te recomendamos seguir el envío en tiempo real a través de nuestra aplicación y contactar a soporte si experimentas una demora significativa.</p>
+      </div>
+    </article>
+  </section>
+
+
 </main>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const items = document.querySelectorAll('.item_acordeon');
+
+    items.forEach(item => {
+      const pregunta = item.querySelector('.pregunta_acordeon');
+
+      pregunta.addEventListener('click', () => {
+        const currentlyActive = document.querySelector('.item_acordeon.active');
+        if (currentlyActive && currentlyActive !== item) {
+          currentlyActive.classList.remove('active');
+        }
+        item.classList.toggle('active');
+      });
+    });
+  });
+</script>
+
 <script type="text/javascript" th:src="@{webjars/bootstrap/5.2.0/js/bootstrap.min.js}"></script>
 </body>
 </html>

@@ -36,7 +36,7 @@ public class Viaje {
 
 
     @Column(name = "precio")
-    private String precio;
+    private Double precio;
 
     @Column(name = "medioDePago")
     private String medioDePago;
@@ -66,7 +66,7 @@ public class Viaje {
 
     }
 
-    public Viaje(String domicilioDeSalida, String domicilioDeLlegada, Cliente cliente, String precio, Double latitudDeSalida, Double longitudDeSalida, Double latitudDeLlegada, Double longitudDeLlegada, Double distanciaDelViaje, TipoEstado estado) {
+    public Viaje(String domicilioDeSalida, String domicilioDeLlegada, Cliente cliente, Double precio, Double latitudDeSalida, Double longitudDeSalida, Double latitudDeLlegada, Double longitudDeLlegada, Double distanciaDelViaje, TipoEstado estado) {
         this.domicilioDeSalida = domicilioDeSalida;
         this.domicilioDeLlegada = domicilioDeLlegada;
         this.cliente = cliente;
@@ -135,11 +135,11 @@ public class Viaje {
         this.longitudDeLlegada = longitudDeLlegada;
     }
 
-    public String getPrecio() {
+    public Double getPrecio() {
         return precio;
     }
 
-    public void setPrecio(String precio) {
+    public void setPrecio(Double precio) {
         this.precio = precio;
     }
 

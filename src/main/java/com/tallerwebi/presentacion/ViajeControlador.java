@@ -105,13 +105,9 @@ public class ViajeControlador {
         Paquete paqueteActual = (Paquete)session.getAttribute("paqueteActual");
 
         try{
-
             this.paqueteServicio.guardarPaquete(paqueteActual);
-
         } catch (PaqueteNoEncontradoException e) {
-
             throw new PaqueteNoEncontradoException();
-
         }
 
         Viaje viajeActual = (Viaje)session.getAttribute("viajeActual");
