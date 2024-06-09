@@ -9,7 +9,7 @@ public class DatosViaje {
     private String domicilioDeSalida;
     private String domicilioDeLlegada;
     private String nombreDelCliente;
-    private String precio;
+    private Double precio;
     private Double latitudDeSalida;
     private Double longitudDeSalida;
     private Double latitudDeLlegada;
@@ -17,7 +17,7 @@ public class DatosViaje {
     private Double distanciaDelViaje;
     private TipoEstado estado;
 
-    public DatosViaje(Integer idViaje, String domicilioDeSalida, String domicilioDeLlegada, String nombreDelCliente, String precio, Double latitudDeSalida, Double longitudDeSalida, Double latitudDeLlegada, Double longitudDeLlegada, Double distanciaDelViaje, TipoEstado estado) {
+    public DatosViaje(Integer idViaje, String domicilioDeSalida, String domicilioDeLlegada, String nombreDelCliente, Double precio, Double latitudDeSalida, Double longitudDeSalida, Double latitudDeLlegada, Double longitudDeLlegada, Double distanciaDelViaje, TipoEstado estado) {
         this.idViaje = idViaje;
         this.domicilioDeSalida = domicilioDeSalida;
         this.domicilioDeLlegada = domicilioDeLlegada;
@@ -31,7 +31,7 @@ public class DatosViaje {
         this.estado = estado;
     }
 
-    public DatosViaje(Integer idViaje, String domicilioDeSalida, String domicilioDeLlegada, String nombreDelCliente, String precio, TipoEstado estado) {
+    public DatosViaje(Integer idViaje, String domicilioDeSalida, String domicilioDeLlegada, String nombreDelCliente, Double precio, TipoEstado estado) {
         this.idViaje = idViaje;
         this.domicilioDeSalida = domicilioDeSalida;
         this.domicilioDeLlegada = domicilioDeLlegada;
@@ -68,11 +68,11 @@ public class DatosViaje {
         this.domicilioDeLlegada = domicilioDeLlegada;
     }
 
-    public String getPrecio() {
+    public Double getPrecio() {
         return precio;
     }
 
-    public void setPrecio(String precio) {
+    public void setPrecio(Double precio) {
         this.precio = precio;
     }
 

@@ -28,6 +28,15 @@ public class ClienteControlador {
         Cliente cliente = clienteServicio.obtenerClientePorId((Integer) session.getAttribute("IDUSUARIO"));
         model.put("cliente", cliente);
         String viewName = "home-cliente";
+        this.reiniciarVariables(session);
         return new ModelAndView(viewName, model);
+    }
+
+    public void reiniciarVariables(HttpSession session){
+        session.setAttribute("isEditViaje", false);
+        session.setAttribute("isEditPackage", false);
+        session.setAttribute("viajeActual", null);
+        session.setAttribute("paqueteActual", null);
+        session.setAttribute("pasoActual", 1);
     }
 }

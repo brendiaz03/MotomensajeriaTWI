@@ -29,19 +29,23 @@ public class PaqueteControlador {
     @RequestMapping(value = "/form-editar-paquete")
     public ModelAndView mostrarFormEditorPaquete(HttpSession session) {
         session.setAttribute("isEditPackage", true);
+        session.setAttribute("pasoActual", 1);
         return new ModelAndView("redirect:/form-viaje");
     }
+
     @RequestMapping(value = "/crear-paquete", method = RequestMethod.POST)
     public ModelAndView guardarPaqueteLocalmente(@ModelAttribute("paquete") Paquete paquete, HttpSession session) {
         session.setAttribute("paqueteActual", paquete);
+        session.setAttribute("pasoActual", 2); // Actualizar pasoActual a 2
         return new ModelAndView("redirect:/form-viaje");
     }
 
     @RequestMapping(value = "/editar-paquete")
-    public ModelAndView editarPaquete(@ModelAttribute("paquete") Paquete paquete) {
-    this.paqueteServicio.editarPaquete(paquete);
-    return new ModelAndView("redirect:/crear-paquete");
+    public ModelAndView editarPaquete(@ModelAttribute("paquete") Paquete paquete, HttpSession session) {
+        this.paqueteServicio.editarPaquete(paquete);
+        session.setAttribute("isEditPackage", false);
+        session.setAttribute("paqueteActual", paquete);
+        session.setAttribute("pasoActual", 3);
+        return new ModelAndView("redirect:/form-viaje");
     }
-
-
 }
