@@ -47,12 +47,14 @@ public class UsuarioControlador {
 
     @PostMapping("/registrar-usuario")
     public ModelAndView registrarConductor(@ModelAttribute("usuario") DatosUsuario nuevoUsuario, HttpSession session) throws Exception {
+        ModelMap model = new ModelMap();
         try{
             Usuario usuario = usuarioServicio.registrarUsuario(nuevoUsuario);
             if(usuario instanceof Conductor){
                 Conductor conductor = (Conductor)usuario;
                 session.setAttribute("IDUSUARIO", conductor.getId());
-                return new ModelAndView("redirect:/vehiculo");
+                session.setAttribute("isEditForm", false);
+                return new ModelAndView("redirect:/form-vehiculo", model);
             }else{
                 Cliente cliente = (Cliente)usuario;
                 session.setAttribute("IDUSUARIO", cliente.getId());
@@ -68,19 +70,11 @@ public class UsuarioControlador {
     public ModelAndView irAPerfil(HttpSession session) {
         ModelMap model = new ModelMap();
         try {
-            if(session.getAttribute("tipoUsuario").equals(TipoUsuario.Conductor)){
-                Conductor usuario = conductorServicio.obtenerConductorPorId((Integer)session.getAttribute("IDUSUARIO"));
-                model.put("usuario", usuario);
-            }else{
-               Cliente usuario = clienteServicio.obtenerClientePorId((Integer)session.getAttribute("IDUSUARIO"));
-               model.put("usuario", usuario);
-            }
-        } catch (UsuarioNoEncontradoException e) {
+          Usuario usuario = usuarioServicio.obtenerUsuarioPorId((Integer)session.getAttribute("IDUSUARIO"));
+          model.put("usuario", usuario);
+        } catch (Exception e) {
             model.put("mensajeError", e.getMessage());
         }
-
-        Boolean isUsuarioLogueado = (Boolean) session.getAttribute("isUsuarioLogueado");
-        model.put("isUsuarioLogueado", isUsuarioLogueado);
         return new ModelAndView("perfil", model);
     }
 
@@ -89,75 +83,52 @@ public class UsuarioControlador {
         String viewName= "form-usuario";
         ModelMap model = new ModelMap();
         try {
-            if(session.getAttribute("tipoUsuario").equals(TipoUsuario.Conductor)){
-                Conductor usuario = conductorServicio.obtenerConductorPorId((Integer)session.getAttribute("IDUSUARIO"));
-                DatosUsuario datosUsuario = new DatosUsuario();
-                model.put("usuario", datosUsuario.usuarioToDTO(usuario));
-            }else{
-                Cliente usuario = clienteServicio.obtenerClientePorId((Integer)session.getAttribute("IDUSUARIO"));
-                DatosUsuario datosUsuario = new DatosUsuario();
-                model.put("usuario", datosUsuario.usuarioToDTO(usuario));
-            }
-        } catch (UsuarioNoEncontradoException e) {
+            Usuario usuario = usuarioServicio.obtenerUsuarioPorId((Integer)session.getAttribute("IDUSUARIO"));
+            DatosUsuario datosUsuario = new DatosUsuario();
+            model.put("usuario", datosUsuario.usuarioToDTO(usuario));
+            model.put("isEditForm", true);
+        } catch (Exception e) {
             model.put("mensajeError", e.getMessage());
         }
-        model.put("isEditForm", true);
         return new ModelAndView(viewName, model);
     }
 
      @PostMapping("/editar-usuario")
     public ModelAndView editarConductor(HttpSession session, @ModelAttribute("usuario") DatosUsuario usuarioEditado) {
-         ModelMap model = new ModelMap();
          usuarioEditado.setId((Integer) session.getAttribute("IDUSUARIO"));
-        try {
-            if(session.getAttribute("tipoUsuario").equals(TipoUsuario.Conductor)){
-                Conductor conductor = usuarioEditado.toConductor();//pasar a service
-                conductorServicio.editarConductor(conductor);
-                session.setAttribute("isEditForm", false);
-            }else{
-                Cliente cliente = usuarioEditado.toCliente();//pasar a service
-                clienteServicio.editarCliente(cliente);
-                session.setAttribute("isEditForm", false);
-            }
-        } catch (UsuarioNoEncontradoException e) {
-            model.put("mensajeError", e.getMessage());
-        }
-        return new ModelAndView("redirect:/perfil");
+         try{
+             usuarioServicio.actualizarUsuario(usuarioEditado, (TipoUsuario) session.getAttribute("tipoUsuario"));
+             session.setAttribute("isEditForm", false);
+             return new ModelAndView("redirect:/perfil");
+         }catch(Exception e){
+             e.printStackTrace();
+             return this.mostrarEditarFormulario(session);
+         }
     }
 
     @RequestMapping(path = "/foto-perfil", method = RequestMethod.GET)
     public ModelAndView irAEditarFotoPerfil(HttpSession session) {
+        String viewName= "foto-perfil";
         ModelMap model = new ModelMap();
         try {
-            if(session.getAttribute("tipoUsuario").equals(TipoUsuario.Conductor)){
-                Conductor usuario = conductorServicio.obtenerConductorPorId((Integer)session.getAttribute("IDUSUARIO"));
-                model.put("usuario", usuario);
-            }else{
-                Cliente usuario = clienteServicio.obtenerClientePorId((Integer)session.getAttribute("IDUSUARIO"));
-                model.put("usuario", usuario);
-            }
-        } catch (UsuarioNoEncontradoException e) {
+            Usuario usuario = usuarioServicio.obtenerUsuarioPorId((Integer)session.getAttribute("IDUSUARIO"));
+            model.put("usuario", usuario);
+        } catch (Exception e) {
             model.put("mensajeError", e.getMessage());
         }
-        return new ModelAndView("foto-perfil", model);
+        return new ModelAndView(viewName, model);
     }
 
     @PostMapping("/subir-foto")
     public ModelAndView subirFoto(@RequestParam("imagenPerfil") MultipartFile imagen, HttpSession session) {
         ModelMap model = new ModelMap();
         try {
-            if(session.getAttribute("tipoUsuario").equals(TipoUsuario.Conductor)){
-                this.conductorServicio.ingresarImagen(imagen, (Integer) session.getAttribute("IDUSUARIO"));
-                return new ModelAndView("redirect:/perfil");
-            }else{
-                this.clienteServicio.ingresarImagen(imagen, (Integer) session.getAttribute("IDUSUARIO"));
-                return new ModelAndView("redirect:/perfil");            }
+            usuarioServicio.ingresarImagen(imagen, (Integer) session.getAttribute("IDUSUARIO"));
+            return new ModelAndView("redirect:/perfil");
         } catch (UsuarioNoEncontradoException e) {
             model.put("mensajeError", e.getMessage());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+            return new ModelAndView("redirect:/foto-perfil");
         }
-        return null;
     }
 
 //    @RequestMapping(value = "/borrar-cuenta", method = RequestMethod.GET)

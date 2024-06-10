@@ -39,10 +39,10 @@
                     <a th:href="historial" class="nav-link p-2 text-white" href="#">Historial de Viajes</a>
                 </li>
                 <li class="nav-item p-2" th:if="${usuario.getTipoUsuario() == T(com.tallerwebi.dominio.enums.TipoUsuario).Cliente}">
-                    <a th:href="viajes-en-proceso" class="nav-link p-2 text-white">Envios en Proceso</a>
+                    <a th:href="homeCliente" class="nav-link p-2 text-white">Envios en Proceso</a>
                 </li>
                 <li class="nav-item p-2" th:if="${usuario.getTipoUsuario() == T(com.tallerwebi.dominio.enums.TipoUsuario).Cliente}">
-                    <a th:href="historial" class="nav-link p-2 text-white" href="#">Historial de Envios</a>
+                    <a th:href="homeCliente" class="nav-link p-2 text-white" href="#">Historial de Envios</a>
                 </li>
             </ul>
             <!-- Muestra el botón de usuario solo si el usuario está logueado -->
@@ -114,7 +114,7 @@
                 <div th:if="${usuario.getVehiculo()!=null}">
                     <div class="d-flex justify-content-between pt-3">
                         <p class="card-text"><strong>Información del Vehículo</strong></p>
-                        <a th:href="@{editar-vehiculo}"><i class="fa-solid fa-pen-to-square" style="color: #36054E; transition: color 0.3s;" onmouseover="this.style.color='purple'" onmouseout="this.style.color='#36054E'"></i></a>
+                        <a th:href="@{form-vehiculo-editar}"><i class="fa-solid fa-pen-to-square" style="color: #36054E; transition: color 0.3s;" onmouseover="this.style.color='purple'" onmouseout="this.style.color='#36054E'"></i></a>
                     </div>
                 <div class="card-body">
                     <p>Patente: <strong th:text="${usuario.getVehiculo().getPatente()}"></strong></p>

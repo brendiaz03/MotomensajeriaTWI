@@ -6,8 +6,9 @@ import com.tallerwebi.dominio.conductor.Conductor;
 public interface UsuarioRepositorio {
     Usuario buscarDuplicados(String email, String nombreUsuario);
 
-    Conductor registrarConductor(Conductor conductorARegistrar);
+    Usuario guardarUsuario(Usuario usuario);
 
-    Cliente registrarCliente(Cliente clienteARegistrar);
+    void editarUsuario(Usuario usuario);
 
+    Usuario getUsuarioById(Integer id);
 }

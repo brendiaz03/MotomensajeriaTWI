@@ -20,14 +20,6 @@ public class ConductorRepositorioImpl implements ConductorRepositorio {
 
         this.sessionFactory=sessionFactory;
     }
-    @Override
-    @Transactional
-    public Conductor guardar(Conductor nuevoConductor) {
-        Session session = this.sessionFactory.getCurrentSession();
-        session.save(nuevoConductor);
-        Integer idConductorGuardado = (Integer) session.getIdentifier(nuevoConductor);
-        return session.get(Conductor.class, idConductorGuardado);
-    }
 
     @Override
     @Transactional
@@ -40,36 +32,7 @@ public class ConductorRepositorioImpl implements ConductorRepositorio {
 
     @Override
     @Transactional
-    public void editarConductor(Conductor conductorEditado) {
-        sessionFactory.getCurrentSession().update(conductorEditado);
-    }
-
-    @Override
-    @Transactional
-    public Conductor buscarDuplicados(String email, String nombreUsuario)  {
-        String hql= "FROM Conductor WHERE email=: email OR nombreUsuario=: nombreUsuario";
-        Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
-        query.setParameter("email", email);
-        query.setParameter("nombreUsuario", nombreUsuario);
-
-        return (Conductor) query.getSingleResult();
-    }
-
-    @Override
-    @Transactional
-    public void borrarConductor(Conductor conductorABorrar) {
-           this.sessionFactory.getCurrentSession().delete(conductorABorrar);
-    }
-
-    @Override
-    @Transactional
-    public void agregarVehiculoAConductor(Integer conductorId, Vehiculo vehiculo) {
-        Conductor conductor = sessionFactory.getCurrentSession().get(Conductor.class, conductorId);
-        if (conductor != null) {
-            conductor.setVehiculo(vehiculo);
+    public void editarConductor(Conductor conductor) {
             sessionFactory.getCurrentSession().saveOrUpdate(conductor);
-        } else {
-            throw new IllegalArgumentException("Conductor no encontrado con el ID: " + conductorId);
-        }
     }
 }
