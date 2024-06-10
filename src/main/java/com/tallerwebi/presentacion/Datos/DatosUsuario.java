@@ -5,6 +5,8 @@ import com.tallerwebi.dominio.conductor.Conductor;
 import com.tallerwebi.dominio.enums.TipoUsuario;
 import com.tallerwebi.dominio.usuario.Usuario;
 
+import javax.persistence.Lob;
+
 public class DatosUsuario {
 
     private Integer id;
@@ -18,14 +20,14 @@ public class DatosUsuario {
     private String domicilio;
     private TipoUsuario tipoUsuario;
 
-    public DatosUsuario(String nombre, String apellido, Integer numeroDeDni, String email, String numeroDeTelefono, String nombreUsuario, String password, String domicilio, TipoUsuario tipoUsuario) {
+    public DatosUsuario(String nombre, String apellido, Integer numeroDeDni, String email, String password, String nombreUsuario, String numeroDeTelefono, String domicilio, TipoUsuario tipoUsuario) {
         this.nombre = nombre;
         this.apellido = apellido;
         this.numeroDeDni = numeroDeDni;
         this.email = email;
-        this.numeroDeTelefono = numeroDeTelefono;
-        this.nombreUsuario = nombreUsuario;
         this.password = password;
+        this.nombreUsuario = nombreUsuario;
+        this.numeroDeTelefono = numeroDeTelefono;
         this.domicilio = domicilio;
         this.tipoUsuario = tipoUsuario;
     }
@@ -112,6 +114,7 @@ public class DatosUsuario {
     public void setTipoUsuario(TipoUsuario tipoUsuario) {
         this.tipoUsuario = tipoUsuario;
     }
+
 
     public Conductor toConductor() {
         Conductor conductor = new Conductor();

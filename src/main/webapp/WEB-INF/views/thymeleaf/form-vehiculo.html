@@ -58,15 +58,18 @@
 
     <div class="formulario_fondo">
         <h1 class="titulo_registroConductor">Registrar Vehículo</h1>
-        <form  th:action="@{/registro-vehiculo}" method="post" th:object="${vehiculo}">
+        <form th:action="${isEditForm ? 'editar-vehiculo' : 'registrar-vehiculo'}" method="post" th:object="${vehiculo}">
             <section class="formulario">
                 <div class="columna">
                     <div>
-                        <label for="tipoDeVehiculo" class="nombre fuente_formulario_registro">Tipo de Vehículo</label><br>
-                        <br>
-                        <select id="tipoDeVehiculo" class="form-control" th:field="*{tipoDeVehiculo}">
+                        <label for="tipoVehiculo">Tipo de Vehiculo:</label>
+                        <select id="tipoVehiculo" name="tipoVehiculo" class="form-control" th:field="*{tipoDeVehiculo}">
+                            <!-- Opción predeterminada para cuando el tipoUsuario es null -->
+                            <option th:if="${vehiculo.getTipoDeVehiculo() == null}" value="" th:text="'Seleccione un tipo de vehiculo'"></option>
                             <option th:each="tipo : ${T(com.tallerwebi.dominio.enums.TipoVehiculo).values()}"
-                                    th:value="${tipo}" th:text="${tipo}">
+                                    th:value="${tipo}"
+                                    th:selected="${vehiculo.getTipoDeVehiculo() != null and tipo.name() == vehiculo.getTipoDeVehiculo().name()}"
+                                    th:text="${tipo}">
                             </option>
                         </select>
                     </div>
@@ -110,9 +113,12 @@
                 <p th:text="${mensajeError}">Mensaje de error predeterminado</p>
             </section>
             <section class="botones">
-                <a th:href="home"><button id="boton_cancelar_ingresar" type="button" class="boton_cancelar">Cancelar</button></a>
                 <!-- Botón Ingresar / Editar -->
-                <button type="submit" class="boton_submit">Registrar</button>
+                <a th:if="${isEditForm}" th:href="perfil"><button type="button" class="boton_cancelar">Cancelar</button></a>
+                <a th:unless="${isEditForm}" th:href="home"><button type="button" class="boton_cancelar">Cancelar</button></a>
+                <button th:if="${isEditForm}" type="submit" class="boton_submit">Editar</button>
+                <button th:unless="${isEditForm}" type="submit" class="boton_submit">Registrar</button>
+                <!-- Botón Ingresar / Editar -->
             </section>
         </form>
 

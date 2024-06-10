@@ -9,9 +9,4 @@ import java.io.IOException;
 
 public interface ClienteServicio {
     Cliente obtenerClientePorId(Integer idusuario);
-
-    void editarCliente(Cliente cliente) throws UsuarioNoEncontradoException;
-
-    void ingresarImagen (MultipartFile imagen, Integer id) throws IOException, UsuarioNoEncontradoException;
-
 }
