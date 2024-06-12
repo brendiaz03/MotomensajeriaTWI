@@ -8,7 +8,6 @@
   <link rel="stylesheet" th:href="@{css/main.css}"/>
   <link rel="stylesheet" th:href="@{css/homeStyle.css}"/>
   <link rel="stylesheet" th:href="@{css/viajes.css}"/>
-
   <title>Motomensajeria</title>
 </head>
 <body>
@@ -101,7 +100,10 @@
 <!--&lt;!&ndash;  <div th:unless="${isUsuarioLogueado}">&ndash;&gt;-->
 <!--&lt;!&ndash;    <p id="driverLocation" style="background-color: white; border-radius: 10px; padding: 3%">Ubicacion del conductor:</p>&ndash;&gt;-->
 <!--&lt;!&ndash;  </div>&ndash;&gt;-->
-<!--</main>-->
+<main>
+ <div th:text="${latitud}"></div>
+  <div th:text="${longitud}"></div>
+</main>
 <script type="text/javascript" th:src="@{webjars/bootstrap/5.2.0/js/bootstrap.min.js}"></script>
 </body>
 </html>

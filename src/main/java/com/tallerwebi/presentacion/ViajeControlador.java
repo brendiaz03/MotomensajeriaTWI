@@ -86,6 +86,7 @@ public class ViajeControlador {
         session.setAttribute("pasoActual", 3);
         return new ModelAndView("redirect:/form-viaje");
     }
+
     @RequestMapping(value = "/crear-viaje", method = RequestMethod.POST, consumes = "application/x-www-form-urlencoded")
     public ModelAndView crearViajeLocalmente(@ModelAttribute("viaje") Viaje viaje, HttpSession session){
         session.setAttribute("viajeActual", viaje);
@@ -118,8 +119,6 @@ public class ViajeControlador {
 
         return new ModelAndView("redirect:/homeCliente");
     }
-
-
 
     @RequestMapping("/historial")
     public ModelAndView mostrarHistorial(HttpServletRequest request) throws UsuarioNoEncontradoException {

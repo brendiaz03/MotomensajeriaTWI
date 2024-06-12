@@ -24,14 +24,10 @@ import java.io.IOException;
 public class UsuarioControlador {
 
     private UsuarioServicio usuarioServicio;
-    private ConductorServicio conductorServicio;
-    private ClienteServicio clienteServicio;
 
     @Autowired
-    public UsuarioControlador(UsuarioServicio usuarioServicio, ConductorServicio conductorServicio, ClienteServicio clienteServicio) {
+    public UsuarioControlador(UsuarioServicio usuarioServicio) {
         this.usuarioServicio = usuarioServicio;
-        this.conductorServicio = conductorServicio;
-        this.clienteServicio = clienteServicio;
     }
 
     @RequestMapping(value = "/nuevo-usuario", method = RequestMethod.GET)

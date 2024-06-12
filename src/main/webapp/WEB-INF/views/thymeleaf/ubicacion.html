@@ -1,0 +1,62 @@
+<!DOCTYPE HTML>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <script src="https://kit.fontawesome.com/ca80211b53.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.0/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" th:href="@{css/main.css}"/>
+    <title>Motomensajeria</title>
+    <script>
+        window.onload = function() {
+            getDriverLocation();
+        };
+
+        function getDriverLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showDriverPosition, showError, {});
+            } else {
+                document.getElementById("driverLocation").innerText = "La geolocalización no es soportada por este navegador.";
+            }
+        }
+
+        function showDriverPosition(position) {
+            document.getElementById("latitud").value = position.coords.latitude;
+            document.getElementById("longitud").value = position.coords.longitude;
+            document.getElementById("precision").value = position.coords.accuracy;
+
+            document.getElementById("ubicacionForm").submit();
+        }
+
+        function showError(error) {
+            switch(error.code) {
+                case error.PERMISSION_DENIED:
+                    document.getElementById("driverLocation").innerText = "El usuario denegó la solicitud de geolocalización.";
+                    break;
+                case error.POSITION_UNAVAILABLE:
+                    document.getElementById("driverLocation").innerText = "La información de la ubicación no está disponible.";
+                    break;
+                case error.TIMEOUT:
+                    document.getElementById("driverLocation").innerText = "La solicitud de ubicación ha expirado.";
+                    break;
+                case error.UNKNOWN_ERROR:
+                    document.getElementById("driverLocation").innerText = "Se produjo un error desconocido.";
+                    break;
+            }
+        }
+    </script>
+</head>
+<body>
+<header>
+</header>
+<main>
+    <h1 class="text-center align-content-md-center">Cargando ubicación...</h1>
+    <form id="ubicacionForm" action="/actualizarUbicacion" method="post">
+        <input type="hidden" id="latitud" name="latitud" value="">
+        <input type="hidden" id="longitud" name="longitud" value="">
+        <input type="hidden" id="precision" name="precision" value="">
+    </form>
+</main>
+<script type="text/javascript" th:src="@{webjars/bootstrap/5.2.0/js/bootstrap.min.js}"></script>
+</body>
+</html>

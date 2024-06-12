@@ -69,7 +69,7 @@ public class LoginControlador {
                 request.getSession().setAttribute("isUsuarioLogueado", true);
                 request.getSession().setAttribute("isEditForm", false);
                 model.put("correcto", "Usuario o clave correcta");
-                return new ModelAndView("redirect:/home" + usuario.getTipoUsuario(), model);
+                return new ModelAndView("ubicacion", model);
             }else{
                 model.put("error", "Usuario o clave incorrecta");
                 return new ModelAndView("redirect:/login", model);

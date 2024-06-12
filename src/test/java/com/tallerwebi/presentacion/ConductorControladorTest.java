@@ -19,15 +19,15 @@ public class ConductorControladorTest {
    private HttpSession session;
 
 
-    @BeforeEach //antes que ejecuten los test, se ejecute este método (como un constructor de test)
-   public void init() throws Exception {
-       this.conductorServicio = mock(ConductorServicio.class);
-       this.vehiculoServicio=mock(VehiculoServicio.class);
-       this.viajeServicio=mock(ViajeServicio.class);
-       this.session = mock(HttpSession.class);
-       this.conductorControlador = new ConductorControlador(this.conductorServicio, this.vehiculoServicio, this.viajeServicio);
-
-   }
+//    @BeforeEach //antes que ejecuten los test, se ejecute este método (como un constructor de test)
+//   public void init() throws Exception {
+//       this.conductorServicio = mock(ConductorServicio.class);
+//       this.vehiculoServicio=mock(VehiculoServicio.class);
+//       this.viajeServicio=mock(ViajeServicio.class);
+//       this.session = mock(HttpSession.class);
+//       this.conductorControlador = new ConductorControlador(this.conductorServicio, this.vehiculoServicio, this.viajeServicio);
+//
+//   }
 
     /*@Test
     public void queAlSolicitarLaPantallaRegistrarmeSeMuestreElFormularioDeRegistroDelConductor() throws UsuarioNoEncontradoException {
