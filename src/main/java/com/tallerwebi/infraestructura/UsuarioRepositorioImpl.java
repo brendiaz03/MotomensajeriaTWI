@@ -32,20 +32,27 @@ public class UsuarioRepositorioImpl implements UsuarioRepositorio {
 
     @Override
     @Transactional
-    public Conductor registrarConductor(Conductor conductorARegistrar) {
+    public Usuario guardarUsuario(Usuario nuevoUsuario) {
         Session session = this.sessionFactory.getCurrentSession();
-        session.save(conductorARegistrar);
-        Integer idConductorGuardado = (Integer) session.getIdentifier(conductorARegistrar);
-        return session.get(Conductor.class, idConductorGuardado);
+        session.save(nuevoUsuario);
+        Integer idClienteGuardado = (Integer) session.getIdentifier(nuevoUsuario);
+        return session.get(Usuario.class, idClienteGuardado);
     }
 
     @Override
     @Transactional
-    public Cliente registrarCliente(Cliente clienteARegistrar) {
-        Session session = this.sessionFactory.getCurrentSession();
-        session.save(clienteARegistrar);
-        Integer idClienteGuardado = (Integer) session.getIdentifier(clienteARegistrar);
-        return session.get(Cliente.class, idClienteGuardado);
+    public void editarUsuario(Usuario usuario) {
+            Session session = this.sessionFactory.getCurrentSession();
+            session.update(usuario);
+    }
+
+    @Override
+    @Transactional
+    public Usuario getUsuarioById(Integer id) {
+        Usuario usuario= (Usuario) sessionFactory.getCurrentSession().createCriteria(Usuario.class)
+                .add(Restrictions.eq("id", id))
+                .uniqueResult();
+    return usuario;
     }
 
 }

@@ -30,7 +30,7 @@ public class VehiculoRepositorioImpl implements VehiculoRepositorio {
     public Vehiculo guardarVehiculo(Vehiculo vehiculo) {
         Session session = this.sessionFactory.getCurrentSession();
         session.save(vehiculo);
-        Long idVehiculoGuardado = (Long) session.getIdentifier(vehiculo);
+        Integer idVehiculoGuardado = (Integer) session.getIdentifier(vehiculo);
         return session.get(Vehiculo.class, idVehiculoGuardado);
     }
 
