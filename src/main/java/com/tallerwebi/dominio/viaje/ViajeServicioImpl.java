@@ -174,6 +174,7 @@ public class ViajeServicioImpl implements ViajeServicio {
         viaje.setPaquete(paquete);
         viaje.setEstado(TipoEstado.PENDIENTE);
         viaje.setPrecio(this.calcularPrecio(viaje));
+        viaje.setFecha(LocalDateTime.now());
        return this.viajeRepositorio.guardarViaje(viaje);
     }
 
@@ -183,7 +184,32 @@ public class ViajeServicioImpl implements ViajeServicio {
 
     }
 
-public Double calcularPrecio (Viaje viaje){
+    @Override
+    public List<Viaje> obtenerViajesEnProcesoDelCliente(Integer idusuario) {
+        List<Viaje> viajes = this.viajeRepositorio.obtenerViajesPorCliente(idusuario);
+
+        System.out.println("Precio del viaje:"+viajes.get(0).getPrecio());
+        List<Viaje> viajesFiltrados = new ArrayList<>();
+            if(viajes.isEmpty()){
+                return viajesFiltrados; // Excepcion no hay viajes, si existe la excepcion entonces que se muestre un mensaje en pantalla que diga que esta vacio
+            }else{
+            for (Viaje viaje : viajes) {
+                if (viaje.getEstado().equals(TipoEstado.PENDIENTE)) {
+                viajesFiltrados.add(viaje);
+                }
+            }
+            return viajesFiltrados;
+            }
+    }
+
+    @Override
+    public void cancelarEnvío(Viaje viaje) {
+        viaje.setFecha(LocalDateTime.now());
+        viaje.setEstado(TipoEstado.CANCELADO);
+        this.viajeRepositorio.editar(viaje);
+    }
+
+    private Double calcularPrecio (Viaje viaje){
 
     List<Viaje> viajeACalcularDistancia = new ArrayList<>();
     viajeACalcularDistancia.add(viaje);

@@ -21,10 +21,18 @@ public class Paquete {
     @Column(name = "esFragil")
     private Boolean esFragil;
 
-    public Paquete(Double peso, Double dimension, Boolean esFragil) {
+    @Column(name = "descripcion")
+    private String descripcion;
+
+    @Column(name = "destinatario")
+    private String destinatario;
+
+    public Paquete(Double peso, Double dimension, Boolean esFragil, String descripcion, String destinatario) {
         this.peso = peso;
         this.dimension = dimension;
         this.esFragil = esFragil;
+        this.descripcion=descripcion;
+        this.destinatario=destinatario;
     }
 
     public Paquete() {
@@ -67,4 +75,19 @@ public class Paquete {
         this.esFragil = esFragil;
     }
 
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    public String getDestinatario() {
+        return destinatario;
+    }
+
+    public void setDestinatario(String destinatario) {
+        this.destinatario = destinatario;
+    }
 }

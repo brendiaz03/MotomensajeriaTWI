@@ -6,6 +6,7 @@ import com.tallerwebi.dominio.paquete.Paquete;
 import com.tallerwebi.dominio.exceptions.UsuarioNoEncontradoException;
 import com.tallerwebi.presentacion.Datos.DatosViaje;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public interface ViajeServicio {
@@ -38,4 +39,8 @@ public interface ViajeServicio {
 
     Viaje crearViaje(Cliente cliente, Viaje viaje, Paquete paquete);
      Viaje buscarViaje(Integer idViaje);
+
+    List<Viaje> obtenerViajesEnProcesoDelCliente(Integer idusuario);
+
+    void cancelarEnvío(Viaje viaje);
 }

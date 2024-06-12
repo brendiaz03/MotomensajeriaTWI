@@ -17,4 +17,6 @@ public interface ViajeRepositorio {
     List<Viaje> traerTodosLosViajesQueNoEstenAceptados();
 
     Viaje guardarViaje(Viaje viaje);
+
+    List<Viaje> obtenerViajesPorCliente(Integer idusuario);
 }

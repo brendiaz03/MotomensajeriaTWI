@@ -2,11 +2,10 @@
     display:flex;
     flex-direction: column;
     gap:2em;
-
     align-items: center;
 }
 
-.titulos{
+.titulo-envios{
     text-align: center;
     color:white;
 }

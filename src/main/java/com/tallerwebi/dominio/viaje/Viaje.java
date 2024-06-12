@@ -198,4 +198,9 @@ public class Viaje {
     public void setEstado(TipoEstado estado) {
         this.estado = estado;
     }
+    public String getNombreEstado() {
+        return TipoEstado.values()[estado.ordinal()].name();
+    }
 }
+
+

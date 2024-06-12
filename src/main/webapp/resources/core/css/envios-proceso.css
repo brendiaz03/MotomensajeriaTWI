@@ -1,0 +1,89 @@
+.titulos h1 h2 {
+    text-align: center;
+    color: white;
+}
+
+.main-envios-proceso {
+    display: flex;
+    flex-direction: column;
+    gap: 2em;
+    align-items: center;
+    width: 100%;
+}
+
+.tarjeta-viaje-proceso {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    margin-bottom: 20px; /* Espacio entre las iteraciones */
+    gap:5px;
+}
+
+.info-basica-envio {
+    background-color: #D9D9D9;
+    border-radius: 20px;
+    padding: 3%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 90%; /* Ancho fijo del 80% */
+}
+
+.info-botones {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    background-color: #D9D9D9;
+    border-radius: 20px;
+    font-size: 40px;
+    width: 10%; /* Ancho fijo del 20% */
+}
+.info-botones a{
+color:black;
+}
+
+.info-botones i:hover{
+    color: blueviolet;
+}
+
+.toggle-info i {
+    transition: transform 0.2s;
+}
+
+.toggle-info.active i {
+    transform: rotate(180deg);
+}
+
+.toggle-info.active {
+    background-color: #D9D9D9;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+.info-extra-envio {
+    background-color: #D9D9D9;
+    overflow: hidden; /* Oculta el contenido que excede la altura máxima */
+    max-height: 0; /* Inicialmente, la altura es cero para ocultar la información */
+    transition: max-height 1s ease; /* Transición suave */
+}
+
+.info-extra-envio.active {
+    max-height: 1000px; /* Altura suficientemente grande para mostrar toda la información */
+}
+
+.icon-button {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    outline: none;
+}
+
+.icon-button i {
+    color: black;
+}
+
+.icon-button:hover i {
+    color: blueviolet;
+}

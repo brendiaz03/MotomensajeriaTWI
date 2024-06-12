@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Envios en Proceso</title>
+    <script src="https://kit.fontawesome.com/ca80211b53.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.0/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" th:href="@{/css/main.css}"/>
+    <link rel="stylesheet" th:href="@{/css/envios-proceso.css}"/>
+
+</head>
+<body>
+<header>
+    <nav class="navbar navbar-expand-lg mx-4">
+        <div class="d-flex align-items-center bg-violet">
+            <a th:href="homeCliente" class="mx-2">
+                <img th:src="@{/imagenes/logo.png}" class="d-block w-100 bg-violet" alt=",,," style="height: 50px;width: 50px">
+            </a>
+        </div>
+        <div class="collapse navbar-collapse justify-content-end">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active  p-2">
+                    <a th:href="home" class="nav-link p-2 text-white" href="#">Inicio</a>
+                </li>
+                <li class="nav-item p-2">
+                    <a th:href="compania" class="nav-link p-2 text-white" href="#">Compañía</a>
+                </li>
+                <li class="nav-item p-2">
+                    <a th:href="ayuda" class="nav-link p-2 text-white" href="#">Ayuda</a>
+                </li>
+                <li class="nav-item p-2">
+                    <a th:href="envios-en-proceso" class="nav-link p-2 text-white">Envios en Proceso</a>
+                </li>
+                <li class="nav-item p-2">
+                    <a th:href="historial" class="nav-link p-2 text-white" href="#">Historial de Envios</a>
+                </li>
+            </ul>
+            <a th:href="perfil" class="btn mx-2" style="border:none;">
+                <div class="container d-flex justify-content-center align-items-center"  th:if="${cliente.getImagenPerfil() != null}" style="border: none">
+                    <img alt="img" class="d-block rounded-circle" th:src="'data:image/jpg;charset=utf-8;base64,' + ${cliente.getImageDataBase64()}" style=" width: 40px; height: 40px;"/>
+                </div>
+                <div th:if="${cliente.getImagenPerfil() == null}">
+                    <img th:src="@{/imagenes/user.png}" alt=",,," style="height: 20px;width: 20px">
+                </div>
+            </a>
+            <a th:href="@{cerrar-sesion}">
+                <i class="fa-solid fa-arrow-right-from-bracket" style="border-radius:25px; padding:11px; background-color: white; color: #36054E; transition: color 0.3s;" onmouseover="this.style.color='white';this.style.backgroundColor='lightgray'" onmouseout="this.style.color='#36054E'; this.style.backgroundColor='white'"></i>
+            </a>
+        </div>
+    </nav>
+</header>
+<main class="main-envios-proceso">
+        <section class="titulo-envios">
+            <h1>Envíos en Proceso</h1>
+            <h2 th:if="${viajesEnProceso == null || #lists.isEmpty(viajesEnProceso)}">No hay envíos en proceso.</h2>
+        </section>
+    <section th:if="${viajesEnProceso != null && !#lists.isEmpty(viajesEnProceso)}" style="background-color: transparent; border:none; padding:0; margin:0;">
+        <article class="tarjeta-viaje-proceso" th:each="viaje : ${viajesEnProceso}" style="background-color: transparent; border:none; padding:0; margin-bottom: 20px;">
+            <div class="info-basica-envio ">
+                <div>
+                    <p>Destinatario: <span th:text="${viaje.getPaquete().getDestinatario()}"></span></p>
+                    <p>Dirección del destinatario: <span th:text="${viaje.getDomicilioDeLlegada()}"></span></p>
+                    <p>Precio del envío: $<span th:text="${viaje.getPrecio()}"></span></p>
+                    <p>Estado del envío: <span th:text="${viaje.getNombreEstado()}"></span></p>
+                </div>
+                <div class="info-extra-envio">
+                    <p>Remitente: <span th:text="${cliente.getNombre()}"></span></p>
+                    <p>Dirección del remitente: <span th:text="${viaje.getDomicilioDeSalida()}"></span></p>
+                    <p>Peso del paquete: <span th:text="${viaje.getPaquete().getPeso()}"></span>kg.</p>
+                    <p>Dimensión del paquete: <span th:text="${viaje.getPaquete().getDimension()}"></span>cm³.</p>
+                    <p>Paquete frágil: <span th:text="${viaje.getPaquete().getEsFragil() ? 'Si' : 'No'}"></span></p>
+                    <p>Fecha de solicitud del envío: <span th:text="${viaje.getFecha()}"></span></p>
+                </div>
+            </div>
+            <div class="info-botones">
+                <i class="fa-solid fa-circle-info toggle-info"></i>
+                <form th:action="@{cancelar-envio}" method="post">
+                    <input type="hidden" id="idViaje" name="idViaje" th:value="${viaje.getId()}">
+                    <button type="submit" class="icon-button">
+                        <i class="fa-solid fa-trash-can"></i>
+                    </button>
+                </form>
+
+            </div>
+        </article>
+    </section>
+
+
+</main>
+
+</body>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const items = document.querySelectorAll('.tarjeta-viaje-proceso');
+
+        items.forEach(item => {
+            const toggleButton = item.querySelector('.toggle-info');
+            const extraInfo = item.querySelector('.info-extra-envio');
+
+            toggleButton.addEventListener('click', () => {
+                if (extraInfo.classList.contains('active')) {
+                    extraInfo.classList.remove('active');
+                    toggleButton.classList.remove('active');
+                } else {
+                    extraInfo.classList.add('active');
+                    toggleButton.classList.add('active');
+                }
+            });
+        });
+    });
+
+
+</script>
+</html>
