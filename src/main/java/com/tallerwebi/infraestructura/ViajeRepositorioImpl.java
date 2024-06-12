@@ -87,4 +87,12 @@ public class ViajeRepositorioImpl implements ViajeRepositorio {
         return this.obtenerViajePorId(viaje.getId());
     }
 
+    @Override
+    @Transactional
+    public List<Viaje> obtenerViajesPorCliente(Integer idusuario) {
+        Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Viaje.class, "viaje");
+        criteria.createAlias("viaje.cliente", "cliente");
+        criteria.add(Restrictions.eq("cliente.id", idusuario));
+        return (List<Viaje>) criteria.list();
+    }
 }

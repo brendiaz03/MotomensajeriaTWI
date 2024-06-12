@@ -80,7 +80,6 @@ public class ViajeControlador {
 
     @RequestMapping(value = "/editar-viaje", method = RequestMethod.POST)
     public ModelAndView editarViaje(@ModelAttribute("viaje") Viaje viaje, HttpSession session){
-        this.viajeServicio.actualizarViaje(viaje);
         session.setAttribute("isEditViaje", false);
         session.setAttribute("viajeActual", viaje);
         session.setAttribute("pasoActual", 3);
@@ -98,8 +97,8 @@ public class ViajeControlador {
     public ModelAndView crearViajeConPaqueteYCliente(HttpSession session) throws PaqueteNoEncontradoException {
 
         //CLIENTE//
-        //Integer idUsuario = (Integer) session.getAttribute("IDUSUARIO");
-        //Cliente cliente=this.clienteServicio.obtenerClientePorId(idUsuario);
+        Integer idUsuario = (Integer) session.getAttribute("IDUSUARIO");
+        Cliente cliente=this.clienteServicio.obtenerClientePorId(idUsuario);
 
         //PAQUETE//
         Paquete paqueteActual = (Paquete)session.getAttribute("paqueteActual");
@@ -111,7 +110,7 @@ public class ViajeControlador {
         }
 
         Viaje viajeActual = (Viaje)session.getAttribute("viajeActual");
-        this.viajeServicio.crearViaje(null,viajeActual,paqueteActual);
+        this.viajeServicio.crearViaje(cliente,viajeActual,paqueteActual);
         session.setAttribute("paqueteActual", null);    //HACERLO POST PAGAR --> Paso Actual=1
         session.setAttribute("viajeActual", null);
         session.setAttribute("pasoActual", 4);
