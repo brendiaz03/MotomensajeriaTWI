@@ -1,4 +1,4 @@
-package com.tallerwebi.dominio.vehiculo;
+package com.tallerwebi.dominio.exceptions;
 
 
 public class VehiculoDuplicadoException extends Exception{

@@ -160,28 +160,6 @@ public class ViajeServicioImpl implements ViajeServicio {
         return viajesConDistanciaCalculada;
     }
 
-    public Viaje calcularLaDistanciaDeUnViaje(Viaje viaje) {
-        final double RADIO_TIERRA = 6371;
-        double diferenciaDeLatitud;
-        double diferenciaDeLongitud;
-
-            diferenciaDeLatitud = Math.toRadians(viaje.getLatitudDeLlegada()) - Math.toRadians(viaje.getLatitudDeSalida());
-            diferenciaDeLongitud = Math.toRadians(viaje.getLongitudDeLlegada()) - Math.toRadians(viaje.getLongitudDeSalida());
-
-            double a = Math.sin(diferenciaDeLatitud / 2) * Math.sin(diferenciaDeLatitud / 2) +
-                    Math.cos(Math.toRadians(viaje.getLatitudDeSalida())) *
-                            Math.cos(Math.toRadians(viaje.getLatitudDeLlegada())) *
-                            Math.sin(diferenciaDeLongitud / 2) * Math.sin(diferenciaDeLongitud / 2);
-
-            double distanciaFinal = 2 * RADIO_TIERRA * Math.asin(Math.sqrt(a));
-
-            double kilometrosDeDistancia = Math.round(distanciaFinal * 10) / 10.0;
-
-        viaje.setDistanciaDelViaje(kilometrosDeDistancia);
-
-        return viaje;
-    }
-
     public DatosViaje mapearViajeADatosViajeHistorial(Viaje viaje) {
         return new DatosViaje(viaje.getId(), viaje.getDomicilioDeSalida(), viaje.getDomicilioDeLlegada(), viaje.getCliente().getNombre(), viaje.getPrecio(), viaje.getEstado());
     }
@@ -195,11 +173,70 @@ public class ViajeServicioImpl implements ViajeServicio {
         viaje.setCliente(cliente);
         viaje.setPaquete(paquete);
         viaje.setEstado(TipoEstado.PENDIENTE);
+        viaje.setPrecio(this.calcularPrecio(viaje));
+        viaje.setFecha(LocalDateTime.now());
        return this.viajeRepositorio.guardarViaje(viaje);
     }
 
     @Override
     public Viaje buscarViaje(Integer idViaje){
         return this.viajeRepositorio.obtenerViajePorId(idViaje);
+
     }
+
+    @Override
+    public List<Viaje> obtenerViajesEnProcesoDelCliente(Integer idusuario) {
+        List<Viaje> viajes = this.viajeRepositorio.obtenerViajesPorCliente(idusuario);
+
+        System.out.println("Precio del viaje:"+viajes.get(0).getPrecio());
+        List<Viaje> viajesFiltrados = new ArrayList<>();
+            if(viajes.isEmpty()){
+                return viajesFiltrados; // Excepcion no hay viajes, si existe la excepcion entonces que se muestre un mensaje en pantalla que diga que esta vacio
+            }else{
+            for (Viaje viaje : viajes) {
+                if (viaje.getEstado().equals(TipoEstado.PENDIENTE)) {
+                viajesFiltrados.add(viaje);
+                }
+            }
+            return viajesFiltrados;
+            }
+    }
+
+    @Override
+    public void cancelarEnvío(Viaje viaje) {
+        viaje.setFecha(LocalDateTime.now());
+        viaje.setEstado(TipoEstado.CANCELADO);
+        this.viajeRepositorio.editar(viaje);
+    }
+
+    private Double calcularPrecio (Viaje viaje){
+
+    List<Viaje> viajeACalcularDistancia = new ArrayList<>();
+    viajeACalcularDistancia.add(viaje);
+
+    Double distancia =(this.calcularLaDistanciaDelViajeEntreLaSalidaYElDestino(viajeACalcularDistancia)).get(0).getDistanciaDelViaje();
+    Double peso= viaje.getPaquete().getPeso();
+    Double dimension= viaje.getPaquete().getDimension();
+
+    Double precioBaseEnvio=1800.0;
+    Double precioxKm=400.0;
+    Double precioxKg=200.0;
+    Double precioxCm =30.0;
+
+
+    if(distancia>3.0){
+        precioBaseEnvio+=(precioxKm*(Math.round(distancia))-3.0);
+    }
+
+    if(peso>2.0){
+        precioBaseEnvio+=(precioxKg*(Math.round(peso))-2.0);
+    }
+
+    if(dimension>30.0) {
+        precioBaseEnvio+=(precioxCm*(Math.round(dimension))-30.0);
+    }
+
+    return precioBaseEnvio;
+}
+
 }

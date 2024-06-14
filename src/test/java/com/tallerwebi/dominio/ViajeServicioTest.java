@@ -211,11 +211,11 @@ public class ViajeServicioTest {
         List<Viaje> viajesConUnConductorAsignado = new ArrayList<>();
         Cliente cliente = new Cliente();
         cliente.setNombre("Joaquin");
-        Viaje viaje1 = new Viaje("Acevedo 3000", "Sgto. Cabral 2815", cliente, "1000",  -34.667289, -58.530597, -34.663944, -58.536186, 1.2, TipoEstado.TERMINADO);
-        Viaje viaje2 = new Viaje("Av. Gral. San Martín 3339", "Mariano Moreno 2842", cliente, "1000",  -34.668074, -58.534727, -34.665153, -58.541068, 1.2, TipoEstado.CANCELADO);
-        Viaje viaje3 = new Viaje("Avend. Gral. San Martín 3339", "Marianooo Moreno 2842", cliente, "1000",  -34.670465, -58.533708, -34.668612, -58.529116, 1.2, null);
-        Viaje viaje4 = new Viaje("San Justo", "Cañuelas", cliente, "1000",  -34.670889, -58.528515, -34.665206, -58.531884, 1.2, null);
-        Viaje viaje5 = new Viaje("Marconi", "Villa 31", cliente, "1000",  -34.675865, -58.537184, -34.666441, -58.539866, 1.2, null);
+        Viaje viaje1 = new Viaje("Acevedo 3000", "Sgto. Cabral 2815", cliente, 1000.0,  -34.667289, -58.530597, -34.663944, -58.536186, 1.2, TipoEstado.TERMINADO);
+        Viaje viaje2 = new Viaje("Av. Gral. San Martín 3339", "Mariano Moreno 2842", cliente, 1000.0,  -34.668074, -58.534727, -34.665153, -58.541068, 1.2, TipoEstado.CANCELADO);
+        Viaje viaje3 = new Viaje("Avend. Gral. San Martín 3339", "Marianooo Moreno 2842", cliente, 1000.0,  -34.670465, -58.533708, -34.668612, -58.529116, 1.2, null);
+        Viaje viaje4 = new Viaje("San Justo", "Cañuelas", cliente, 1000.0,  -34.670889, -58.528515, -34.665206, -58.531884, 1.2, null);
+        Viaje viaje5 = new Viaje("Marconi", "Villa 31", cliente, 1000.0,  -34.675865, -58.537184, -34.666441, -58.539866, 1.2, null);
 
         viaje1.setConductor(conductor);
         viaje2.setConductor(conductor);
@@ -234,7 +234,7 @@ public class ViajeServicioTest {
     private static Viaje dadoQueExisteUnViaje(){
         Cliente cliente = new Cliente();
         cliente.setNombre("Joaquin");
-        Viaje viaje = new Viaje("Acevedo 3000", "Sgto. Cabral 2815", cliente, "1000",  -34.667289, -58.530597, -34.663944, -58.536186, 1.2, null);
+        Viaje viaje = new Viaje("Acevedo 3000", "Sgto. Cabral 2815", cliente, 1000.0,  -34.667289, -58.530597, -34.663944, -58.536186, 1.2, null);
         viaje.setId(1);
         return viaje;
     }

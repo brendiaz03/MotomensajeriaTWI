@@ -40,7 +40,7 @@ public class PaqueteRepositorioTest {
     @Transactional
     public void queSePuedaGuardarUnPaquete() throws PaqueteNoEncontradoException {
 
-        Paquete paquete = new Paquete(10.0, 5.0, true);
+        Paquete paquete = new Paquete(10.0, 5.0, true,"","Facu");
 
         Paquete paqueteObtenido = null;
 
@@ -69,7 +69,7 @@ public class PaqueteRepositorioTest {
     @Transactional
     public void queSePuedaEditarUnPaquete() throws PaqueteNoEncontradoException {
 
-        Paquete paquete = new Paquete(10.0, 5.0, true);
+        Paquete paquete = new Paquete(10.0, 5.0, true,"","Facu");
 
         Paquete paqueteObtenido = null;
 
@@ -100,7 +100,7 @@ public class PaqueteRepositorioTest {
     @Transactional
     public void queSePuedaObtenerUnPaquetePorSuIdYMeDevuelvaElPaquete() throws PaqueteNoEncontradoException {
 
-        Paquete paquete = new Paquete(10.0, 5.0, true);
+        Paquete paquete = new Paquete(10.0, 5.0, true,"","Facu");
 
         paquete.setId(30);
 
