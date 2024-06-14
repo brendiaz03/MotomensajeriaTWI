@@ -3,6 +3,8 @@ package com.tallerwebi.presentacion;
 import com.tallerwebi.dominio.cliente.ClienteServicio;
 import com.tallerwebi.dominio.conductor.Conductor;
 import com.tallerwebi.dominio.conductor.ConductorServicio;
+import com.tallerwebi.dominio.enums.TipoUsuario;
+import com.tallerwebi.dominio.usuario.Usuario;
 import com.tallerwebi.presentacion.Datos.DatosLoginConductor;
 import com.tallerwebi.dominio.login.LoginServicio;
 import com.tallerwebi.dominio.viaje.ViajeServicio;
@@ -61,16 +63,17 @@ public class LoginControladorTest {
 	@Test
 	public void loginConUsuarioYPasswordCorrectosDeberiaLLevarAHome(){
 		// preparacion
-		Conductor usuarioEncontradoMock = mock(Conductor.class);
+		Usuario usuarioEncontrado = new Conductor();
+		usuarioEncontrado.setTipoUsuario(TipoUsuario.Conductor);
 
 		when(requestMock.getSession()).thenReturn(sessionMock);
-		when(servicioLoginMock.consultarUsuario(anyString(), anyString())).thenReturn(usuarioEncontradoMock);
+		when(servicioLoginMock.consultarUsuario(anyString(), anyString())).thenReturn(usuarioEncontrado);
 
 		// ejecucion
 		ModelAndView modelAndView = controladorLogin.validarLogin(datosLoginMock, requestMock);
 
 		// validacion
-		assertThat(modelAndView.getViewName(), equalToIgnoringCase("redirect:/home"));
+		assertThat(modelAndView.getViewName(), equalToIgnoringCase("redirect:/homeConductor"));
 	}
 
 }
