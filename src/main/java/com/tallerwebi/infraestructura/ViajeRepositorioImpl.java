@@ -72,11 +72,9 @@ public class ViajeRepositorioImpl implements ViajeRepositorio {
 
     @Override
     @Transactional
-    public List<Viaje> traerTodosLosViajesQueNoEstenAceptados() {
+    public List<Viaje> traerTodosLosViajesPendientes() {
         Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Viaje.class);
-
         criteria.add(Restrictions.eq("estado", TipoEstado.PENDIENTE));
-
         return (List<Viaje>) criteria.list();
     }
 

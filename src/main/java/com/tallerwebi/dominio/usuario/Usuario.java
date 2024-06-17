@@ -157,6 +157,7 @@ public abstract class Usuario {
     public String getImageDataBase64(){
         return Base64.getEncoder().encodeToString(Base64.getDecoder().decode(this.imagenPerfil));
     }
+
     public List<Viaje> getViajes() {
         return viajes;
     }

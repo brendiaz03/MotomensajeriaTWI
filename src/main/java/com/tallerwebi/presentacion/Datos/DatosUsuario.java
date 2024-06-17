@@ -20,21 +20,6 @@ public class DatosUsuario {
     private String domicilio;
     private TipoUsuario tipoUsuario;
 
-    public DatosUsuario(String nombre, String apellido, Integer numeroDeDni, String email, String password, String nombreUsuario, String numeroDeTelefono, String domicilio, TipoUsuario tipoUsuario) {
-        this.nombre = nombre;
-        this.apellido = apellido;
-        this.numeroDeDni = numeroDeDni;
-        this.email = email;
-        this.password = password;
-        this.nombreUsuario = nombreUsuario;
-        this.numeroDeTelefono = numeroDeTelefono;
-        this.domicilio = domicilio;
-        this.tipoUsuario = tipoUsuario;
-    }
-
-    public DatosUsuario() {
-    }
-
     public Integer getId() {
         return id;
     }
@@ -114,7 +99,6 @@ public class DatosUsuario {
     public void setTipoUsuario(TipoUsuario tipoUsuario) {
         this.tipoUsuario = tipoUsuario;
     }
-
 
     public Conductor toConductor() {
         Conductor conductor = new Conductor();

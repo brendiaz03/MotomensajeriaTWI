@@ -14,7 +14,7 @@ public interface ViajeRepositorio {
 
     List<Viaje> encontrarViajesCercanos(Double latitudConductor, Double longitudConductor, Double distanciaAFiltar);
 
-    List<Viaje> traerTodosLosViajesQueNoEstenAceptados();
+    List<Viaje> traerTodosLosViajesPendientes();
 
     Viaje guardarViaje(Viaje viaje);
 }

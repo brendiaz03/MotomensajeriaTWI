@@ -31,7 +31,7 @@ public class UsuarioControlador {
     }
 
     @RequestMapping(value = "/nuevo-usuario", method = RequestMethod.GET)
-    public ModelAndView mostrarForm(String mensajeError, HttpSession session) throws UsuarioNoEncontradoException {
+    public ModelAndView mostrarForm(String mensajeError, HttpSession session) {
         String viewName= "form-usuario";
         ModelMap model = new ModelMap();
         model.put("usuario", new DatosUsuario());

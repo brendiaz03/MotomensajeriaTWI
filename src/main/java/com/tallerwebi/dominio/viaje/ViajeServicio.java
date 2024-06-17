@@ -12,7 +12,7 @@ public interface ViajeServicio {
 
     DatosViaje obtenerViajeAceptadoPorId(Integer id);
 
-    List<DatosViaje> obtenerHistorialDeViajes(Conductor conductor) throws UsuarioNoEncontradoException;
+    List<DatosViaje> obtenerHistorialDeViajesConductor(Conductor conductor) throws UsuarioNoEncontradoException;
 
     Viaje actualizarViaje(Viaje viaje);
 
@@ -32,10 +32,7 @@ public interface ViajeServicio {
 
     void terminarViaje(DatosViaje viaje);
 
-    DatosViaje mapearViajeADatosViajeHistorial(Viaje viaje);
-
-    DatosViaje mapearViajeADatosViaje(Viaje viaje);
-
     Viaje crearViaje(Cliente cliente, Viaje viaje, Paquete paquete);
-     Viaje buscarViaje(Integer idViaje);
+
+    Viaje buscarViaje(Integer idViaje);
 }
