@@ -38,7 +38,7 @@ public class UsuarioControladorTest {
         this.clienteServicio=mock(ClienteServicio.class);
         this.conductorServicio=mock(ConductorServicio.class);
         this.usuarioServicio = mock(UsuarioServicio.class);
-        this.usuarioControlador = new UsuarioControlador(usuarioServicio,conductorServicio,clienteServicio);
+        this.usuarioControlador = new UsuarioControlador(usuarioServicio);
     }
 
 //MOSTRAR-FORM
