@@ -54,6 +54,7 @@ public class VehiculoControlador {
             return new ModelAndView("form-vehiculo");
         }
     }
+
     @PostMapping("/editar-vehiculo")
     public ModelAndView editarVehiculo(@ModelAttribute("vehiculo") Vehiculo nuevoVehiculo, HttpSession session) {
         try{

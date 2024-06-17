@@ -50,7 +50,7 @@ public class ViajeServicioTest {
         when(viajeRepositorio.obtenerViajesPorConductor(conductor)).thenReturn(viajes);
 
         // Ejecución
-        List<DatosViaje> viajesObtenidos = viajeServicio.obtenerHistorialDeViajes(conductor);
+        List<DatosViaje> viajesObtenidos = viajeServicio.obtenerHistorialDeViajesConductor(conductor);
 
         // Validación
         assertThat(viajesObtenidos.size(), equalTo(2));

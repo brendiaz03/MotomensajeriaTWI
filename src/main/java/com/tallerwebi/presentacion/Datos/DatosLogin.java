@@ -1,15 +1,15 @@
 package com.tallerwebi.presentacion.Datos;
 
-public class DatosLoginConductor {
+public class DatosLogin {
     private String usuario;
     private String password;
 
-    public DatosLoginConductor(String usuario, String password) {
+    public DatosLogin(String usuario, String password) {
         this.usuario = usuario;
         this.password = password;
     }
 
-    public DatosLoginConductor() {
+    public DatosLogin() {
     }
 
     public String getUsuario() {

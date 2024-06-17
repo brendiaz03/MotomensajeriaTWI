@@ -17,33 +17,6 @@ public class DatosViaje {
     private Double distanciaDelViaje;
     private TipoEstado estado;
 
-    public DatosViaje(Integer idViaje, String domicilioDeSalida, String domicilioDeLlegada, String nombreDelCliente, Double precio, Double latitudDeSalida, Double longitudDeSalida, Double latitudDeLlegada, Double longitudDeLlegada, Double distanciaDelViaje, TipoEstado estado) {
-        this.idViaje = idViaje;
-        this.domicilioDeSalida = domicilioDeSalida;
-        this.domicilioDeLlegada = domicilioDeLlegada;
-        this.nombreDelCliente = nombreDelCliente;
-        this.precio = precio;
-        this.latitudDeSalida = latitudDeSalida;
-        this.longitudDeSalida = longitudDeSalida;
-        this.latitudDeLlegada = latitudDeLlegada;
-        this.longitudDeLlegada = longitudDeLlegada;
-        this.distanciaDelViaje = distanciaDelViaje;
-        this.estado = estado;
-    }
-
-    public DatosViaje(Integer idViaje, String domicilioDeSalida, String domicilioDeLlegada, String nombreDelCliente, Double precio, TipoEstado estado) {
-        this.idViaje = idViaje;
-        this.domicilioDeSalida = domicilioDeSalida;
-        this.domicilioDeLlegada = domicilioDeLlegada;
-        this.nombreDelCliente = nombreDelCliente;
-        this.precio = precio;
-        this.estado = estado;
-    }
-
-    public DatosViaje() {
-
-    }
-
     public String getNombreDelCliente() {
         return nombreDelCliente;
     }
@@ -132,11 +105,29 @@ public class DatosViaje {
         this.estado = estado;
     }
 
-    public Viaje toViaje(DatosViaje viajeActual) {
-        Viaje viaje = new Viaje();
-        viaje.setDomicilioDeSalida(viajeActual.getDomicilioDeSalida());
-        viaje.setDomicilioDeLlegada(viajeActual.getDomicilioDeLlegada());
+    public DatosViaje toDatosViaje(Viaje viaje) {
+        DatosViaje datosViaje = new DatosViaje();
+        datosViaje.setIdViaje(viaje.getId());
+        datosViaje.setDomicilioDeSalida(viaje.getDomicilioDeSalida());
+        datosViaje.setDomicilioDeLlegada(viaje.getDomicilioDeLlegada());
+        datosViaje.setNombreDelCliente(viaje.getCliente().getNombre());
+        datosViaje.setPrecio(viaje.getPrecio());
+        datosViaje.setLatitudDeSalida(viaje.getLatitudDeSalida());
+        datosViaje.setLongitudDeSalida(viaje.getLongitudDeSalida());
+        datosViaje.setLatitudDeLlegada(viaje.getLatitudDeLlegada());
+        datosViaje.setLongitudDeLlegada(viaje.getLongitudDeLlegada());
+        datosViaje.setDistanciaDelViaje(viaje.getDistanciaDelViaje());
+        datosViaje.setEstado(viaje.getEstado());
+        return datosViaje;
+    }
 
-        return viaje;
+    public DatosViaje toDatosViajeHistorial(Viaje viaje) {
+        DatosViaje datosViaje = new DatosViaje();
+        datosViaje.setDomicilioDeSalida(viaje.getDomicilioDeSalida());
+        datosViaje.setDomicilioDeLlegada(viaje.getDomicilioDeLlegada());
+        datosViaje.setNombreDelCliente(viaje.getCliente().getNombre());
+        datosViaje.setPrecio(viaje.getPrecio());
+        datosViaje.setEstado(viaje.getEstado());
+        return datosViaje;
     }
 }
