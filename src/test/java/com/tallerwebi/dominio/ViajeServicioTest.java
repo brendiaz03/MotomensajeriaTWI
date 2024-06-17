@@ -32,7 +32,7 @@ public class ViajeServicioTest {
     public void queSePuedaObtenerUnViajeAceptadoPorSuId() {
         // Preparación
         Viaje viajeAceptado = dadoQueExisteUnViaje();
-        viajeAceptado.setEstado(TipoEstado.ACEPTADO);
+        viajeAceptado.setEstado(TipoEstado.PENDIENTE);
         when(this.viajeRepositorio.obtenerViajePorId(viajeAceptado.getId())).thenReturn(viajeAceptado);
 
         // Ejecución
@@ -50,7 +50,7 @@ public class ViajeServicioTest {
         when(viajeRepositorio.obtenerViajesPorConductor(conductor)).thenReturn(viajes);
 
         // Ejecución
-        List<DatosViaje> viajesObtenidos = viajeServicio.obtenerHistorialDeViajes(conductor);
+        List<DatosViaje> viajesObtenidos = viajeServicio.obtenerHistorialDeViajesConductor(conductor);
 
         // Validación
         assertThat(viajesObtenidos.size(), equalTo(2));
@@ -158,7 +158,7 @@ public class ViajeServicioTest {
         DatosViaje viaje = new DatosViaje();
         viaje.setIdViaje(1);
         when(viajeRepositorio.obtenerViajePorId(viaje.getIdViaje())).thenReturn(viajeEsperado);
-        viajeEsperado.setEstado(TipoEstado.ACEPTADO);
+        viajeEsperado.setEstado(TipoEstado.PENDIENTE);
         viajeEsperado.setConductor(conductor);
         doNothing().when(viajeRepositorio).editar(viajeEsperado);
 
@@ -167,7 +167,7 @@ public class ViajeServicioTest {
 
         // Validación
         verify(viajeRepositorio).obtenerViajePorId(viaje.getIdViaje());
-        assertThat(viajeEsperado.getEstado(), equalTo(TipoEstado.ACEPTADO));
+        assertThat(viajeEsperado.getEstado(), equalTo(TipoEstado.PENDIENTE));
         verify(viajeRepositorio).editar(viajeEsperado);
     }
 

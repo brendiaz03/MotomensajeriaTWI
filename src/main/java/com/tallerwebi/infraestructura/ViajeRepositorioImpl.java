@@ -72,11 +72,9 @@ public class ViajeRepositorioImpl implements ViajeRepositorio {
 
     @Override
     @Transactional
-    public List<Viaje> traerTodosLosViajesQueNoEstenAceptados() {
+    public List<Viaje> traerTodosLosViajesPendientes() {
         Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Viaje.class);
-
         criteria.add(Restrictions.eq("estado", TipoEstado.PENDIENTE));
-
         return (List<Viaje>) criteria.list();
     }
 
@@ -89,10 +87,16 @@ public class ViajeRepositorioImpl implements ViajeRepositorio {
 
     @Override
     @Transactional
-    public List<Viaje> obtenerViajesPorCliente(Integer idusuario) {
+    public List<Viaje> obtenerViajesPorCliente(Integer idUsuario) {
         Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Viaje.class, "viaje");
         criteria.createAlias("viaje.cliente", "cliente");
-        criteria.add(Restrictions.eq("cliente.id", idusuario));
+        criteria.add(Restrictions.eq("cliente.id", idUsuario));
         return (List<Viaje>) criteria.list();
+    }
+
+    @Override
+    @Transactional
+    public void guardarViajeDuplicado(Viaje viajeObtenido) {
+        this.sessionFactory.getCurrentSession().save(viajeObtenido);
     }
 }

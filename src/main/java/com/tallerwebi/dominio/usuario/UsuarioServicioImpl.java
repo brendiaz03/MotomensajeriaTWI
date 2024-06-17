@@ -13,7 +13,6 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.persistence.NoResultException;
 import java.io.IOException;
 import java.util.Base64;
-import java.util.Optional;
 
 @Service
 public class UsuarioServicioImpl implements UsuarioServicio {
@@ -85,7 +84,6 @@ public class UsuarioServicioImpl implements UsuarioServicio {
             throw new RuntimeException(e);
         }
     }
-
 
     private void verificarDuplicados(String email, String nombreUsuario) throws UsuarioDuplicadoException {
         Usuario duplicado = usuarioRepositorio.buscarDuplicados(email, nombreUsuario);

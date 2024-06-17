@@ -41,9 +41,6 @@ public abstract class Usuario {
     @Column(name = "domicilio")
     private String domicilio;
 
-    @Column(name = "codigoPostal")
-    private String codigoPostal;
-
     @Column(name = "tipoUsuario")
     private TipoUsuario tipoUsuario;
 
@@ -141,20 +138,12 @@ public abstract class Usuario {
         this.domicilio = domicilio;
     }
 
-    public String getCodigoPostal() {
-        return codigoPostal;
-    }
-
-    public void setCodigoPostal(String codigoPostal) {
-        this.codigoPostal = codigoPostal;
+    public void setTipoUsuario(TipoUsuario tipoUsuario) {
+        this.tipoUsuario = tipoUsuario;
     }
 
     public TipoUsuario getTipoUsuario() {
         return tipoUsuario;
-    }
-
-    public void setTipoUsuario(TipoUsuario tipoUsuario) {
-        this.tipoUsuario = tipoUsuario;
     }
 
     public byte[] getImagenPerfil() {
@@ -168,6 +157,7 @@ public abstract class Usuario {
     public String getImageDataBase64(){
         return Base64.getEncoder().encodeToString(Base64.getDecoder().decode(this.imagenPerfil));
     }
+
     public List<Viaje> getViajes() {
         return viajes;
     }

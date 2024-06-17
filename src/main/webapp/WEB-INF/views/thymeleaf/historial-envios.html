@@ -14,14 +14,14 @@
 <header>
     <nav class="navbar navbar-expand-lg mx-4">
         <div class="d-flex align-items-center bg-violet">
-            <a th:href="home" class="mx-2">
+            <a th:href="homeCliente" class="mx-2">
                 <img th:src="@{/imagenes/logo.png}" class="d-block w-100 bg-violet" alt=",,," style="height: 50px;width: 50px">
             </a>
         </div>
         <div class="collapse navbar-collapse justify-content-end">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item active  p-2">
-                    <a th:href="home" class="nav-link p-2 text-white" href="#">Inicio</a>
+                    <a th:href="homeCliente" class="nav-link p-2 text-white" href="#">Inicio</a>
                 </li>
                 <li class="nav-item p-2">
                     <a th:href="compania" class="nav-link p-2 text-white" href="#">Compañía</a>
@@ -29,43 +29,47 @@
                 <li class="nav-item p-2">
                     <a th:href="ayuda" class="nav-link p-2 text-white" href="#">Ayuda</a>
                 </li>
-                <li class="nav-item p-2" th:if="${isUsuarioLogueado}">
-                    <a th:href="viajes-en-proceso" class="nav-link p-2 text-white">Viajes en Proceso</a>
+                <li class="nav-item p-2">
+                    <a th:href="envios-en-proceso" class="nav-link p-2 text-white">Envios en Proceso</a>
                 </li>
-                <li class="nav-item p-2" th:if="${isUsuarioLogueado}">
-                    <a th:href="historial" class="nav-link p-2 text-white" href="#">Historial de Viajes</a>
+                <li class="nav-item p-2">
+                    <a th:href="historial-envios" class="nav-link p-2 text-white" href="#">Historial de Envios</a>
                 </li>
             </ul>
-            <a th:unless="${isUsuarioLogueado}" th:href="@{login}" class="btn-custom" style="text-decoration: none">Ingresar</a>
-            <a th:if="${isUsuarioLogueado}" th:href="perfil" class="btn mx-2" style="border:none;">
-                <div class="container d-flex justify-content-center align-items-center"  th:if="${conductor.getImagenPerfil() != null}" style="border: none">
-                    <img alt="img" class="d-block rounded-circle" th:src="'data:image/jpg;charset=utf-8;base64,' + ${conductor.getImageDataBase64()}" style=" width: 40px; height: 40px;"/>
+            <a th:href="perfil" class="btn mx-2" style="border:none;">
+                <div class="container d-flex justify-content-center align-items-center"  th:if="${cliente.getImagenPerfil() != null}" style="border: none">
+                    <img alt="img" class="d-block rounded-circle" th:src="'data:image/jpg;charset=utf-8;base64,' + ${cliente.getImageDataBase64()}" style=" width: 40px; height: 40px;"/>
                 </div>
-                <div th:if="${conductor.getImagenPerfil() == null}">
+                <div th:if="${cliente.getImagenPerfil() == null}">
                     <img th:src="@{/imagenes/user.png}" alt=",,," style="height: 20px;width: 20px">
                 </div>
             </a>
-            <a th:if="${isUsuarioLogueado}" th:href="@{cerrar-sesion}"><i class="fa-solid fa-arrow-right-from-bracket" style=" border-radius:25px; padding:11px; background-color: white; color: #36054E; transition: color 0.3s;" onmouseover="this.style.color='white';this.style.backgroundColor='lightgray'" onmouseout="this.style.color='purple'; this.style.backgroundColor='white'" ></i></a>
+            <a th:href="@{cerrar-sesion}">
+                <i class="fa-solid fa-arrow-right-from-bracket" style="border-radius:25px; padding:11px; background-color: white; color: #36054E; transition: color 0.3s;" onmouseover="this.style.color='white';this.style.backgroundColor='lightgray'" onmouseout="this.style.color='#36054E'; this.style.backgroundColor='white'"></i>
+            </a>
         </div>
     </nav>
 </header>
 <main role="main" class="container">
     <div class="container">
         <div class="card-header">
-            <h1 class="text-center titulo-viajes">Historial de Viajes</h1>
-            <h2 th:text="${sinViajes}" class="text-center titulo-viajes"></h2>
+            <h1 class="text-center titulo-viajes">Historial de Envíos</h1>
+            <h2 th:if="${#lists.isEmpty(viajesObtenidos)}">No hay envíos en proceso.</h2>
         </div>
-        <div class="card mt-3 contenedor-viajes" style="background-color: transparent; border: none;">
+        <div class="card mt-3 contenedor-viajes" style="background-color: transparent; border: none;" th:unless="${#lists.isEmpty(viajesObtenidos)}">
             <div class="card-body" th:each="viaje : ${viajesObtenidos}">
                 <div class="card mt-3 ml-3 contenedor-datos-viajes-aceptados">
-                    <div class="card-body viaje" th:data-viaje-id="${viaje.idViaje}">
+                    <div class="card-body viaje" th:data-viaje-id="${viaje.id}">
                         <div class="viajes-proceso-img">
                             <div>
                                 <p class="card-text"><b>Salida:</b> <span th:text="${viaje.getDomicilioDeSalida()}"></span></p>
                                 <p class="card-text"><b>Llegada:</b> <span th:text="${viaje.getDomicilioDeLlegada()}"></span></p>
-                                <p class="card-text"><b>Paquete de:</b> <span th:text="${viaje.getNombreDelCliente()}"></span></p>
                                 <p class="card-text"><b>Precio:</b> <span th:text="${viaje.getPrecio()}"></span></p>
-                                <p class="card-text"><b>Codigo Postal:</b> <span th:text="${viaje.getCodigoPostal()}"></span></p>
+                                <p class="card-text" th:if="${viaje.conductor != null}"><b>Nombre del Conductor:</b> <span th:text="${viaje.conductor.nombre}"></span></p>
+                                <p class="card-text" th:if="${viaje.conductor != null}"><b>Patente del Vehículo:</b> <span th:text="${viaje.conductor.vehiculo.patente}"></span></p>
+                                <p class="card-text" th:if="${viaje.conductor != null}"><b>Color del Vehículo:</b> <span th:text="${viaje.conductor.vehiculo.color}"></span></p>
+                                <p class="card-text" th:if="${viaje.conductor != null}"><b>Modelo del Vehículo:</b> <span th:text="${viaje.conductor.vehiculo.modelo}"></span></p>
+                                <p class="card-text" th:if="${viaje.conductor != null}"><b>Tipo de Vehículo:</b> <span th:text="${viaje.conductor.vehiculo.tipoDeVehiculo}"></span></p>
                             </div>
                         </div>
                         <div class="contenedor-boton-cancelar">
@@ -76,7 +80,7 @@
                                 <div th:if="${viaje.getEstado() == CANCELADO}" class="cancelado">Cancelado</div>
                             </div>
                             <div>
-                                <a th:href="@{/detalle(idViaje=${viaje.getIdViaje()})}" class="boton-verde">Ver detalle</a>
+                                <a th:href="@{/detalle-envio(idViaje=${viaje.getId()})}" class="boton-verde">Ver detalle</a>
                             </div>
                         </div>
                     </div>

@@ -35,4 +35,6 @@ public class ConductorRepositorioImpl implements ConductorRepositorio {
     public void editarConductor(Conductor conductor) {
             sessionFactory.getCurrentSession().saveOrUpdate(conductor);
     }
+
+
 }

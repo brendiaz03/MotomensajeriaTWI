@@ -13,5 +13,4 @@ public interface ConductorServicio {
     Conductor obtenerConductorPorId(Integer id) throws UsuarioNoEncontradoException;
 
     Boolean RelacionarVehiculoAConductor(Integer idConductor, Vehiculo vehiculo) throws UsuarioNoEncontradoException;
-
 }

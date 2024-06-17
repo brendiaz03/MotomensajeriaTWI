@@ -1,6 +1,6 @@
 package com.tallerwebi.presentacion.Datos;
 
-public class UbicacionDTO {
+public class DatosUbicacion {
 
     private double latitud;
     private double longitud;
