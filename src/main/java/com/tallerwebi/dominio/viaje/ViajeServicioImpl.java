@@ -94,35 +94,49 @@ public class ViajeServicioImpl implements ViajeServicio {
     }
 
     @Override
-    public List<DatosViaje> filtrarViajesPorDistanciaDelConductor(Double latitudConductor, Double longitudConductor, Double distanciaAFiltrar) {
+    public List<DatosViaje> filtrarViajesPorDistanciaDelConductor(Double latitudConductor, Double longitudConductor, Double distanciaAFiltrar, Conductor conductor) {
 
         if(distanciaAFiltrar == null){
             List<Viaje> viajes = this.viajeRepositorio.traerTodosLosViajesPendientes();
             List<Viaje> viajesAMostrar = calcularLaDistanciaDelViajeEntreLaSalidaYElDestino(viajes);
+            List<Viaje> viajesFiltradosDPD = this.compararPesosYDimesionesDeViajes(viajesAMostrar, conductor);
             DatosViaje datosViaje = new DatosViaje();
-            return viajesAMostrar.stream().limit(5)
+            return viajesFiltradosDPD.stream().limit(5)
                     .map(viaje -> datosViaje.toDatosViaje(viaje))
                     .collect(Collectors.toList());
         }
 
         List<Viaje> viajesCercanos = this.viajeRepositorio.encontrarViajesCercanos(latitudConductor, longitudConductor, distanciaAFiltrar);
-
         List<Viaje> viajesAMostrar = calcularLaDistanciaDelViajeEntreLaSalidaYElDestino(viajesCercanos);
-
+        List<Viaje> viajesFiltradosDPD = this.compararPesosYDimesionesDeViajes(viajesAMostrar, conductor);
         DatosViaje datosViaje = new DatosViaje();
 
-        return viajesAMostrar.stream().limit(5)
+        return viajesFiltradosDPD.stream().limit(5)
                 .map(viaje -> datosViaje.toDatosViaje(viaje))
                 .collect(Collectors.toList());
+    }
+
+    private List<Viaje> compararPesosYDimesionesDeViajes(List<Viaje> viajesAMostrar, Conductor conductor) {
+        List <Viaje> filtrados=new ArrayList<>();
+
+        for ( Viaje viaje :viajesAMostrar){
+             if(viaje.getPaquete().getPeso()<conductor.getVehiculo().getPesoSoportado()&&viaje.getPaquete().getDimension()<conductor.getVehiculo().getDimensionDisponible()){
+                 filtrados.add(viaje);
+             }
+        }
+        return filtrados;
     }
 
     @Override
     public void aceptarViaje(DatosViaje datosViaje, Conductor conductor) {
         Viaje viajeAceptadoActual = this.viajeRepositorio.obtenerViajePorId(datosViaje.getIdViaje());
-        viajeAceptadoActual.setConductor(conductor);
-        viajeAceptadoActual.setEstado(TipoEstado.ACEPTADO);
-        viajeRepositorio.editar(viajeAceptadoActual);
+
+            viajeAceptadoActual.setConductor(conductor);
+            viajeAceptadoActual.setEstado(TipoEstado.ACEPTADO);
+            viajeRepositorio.editar(viajeAceptadoActual);
     }
+
+
 
     @Override
     public void cancelarViaje(DatosViaje datosViaje) {

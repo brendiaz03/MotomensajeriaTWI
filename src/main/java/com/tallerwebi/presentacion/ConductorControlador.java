@@ -33,7 +33,8 @@ public class ConductorControlador {
         List<DatosViaje> viajesCercanosPendientes;
 
         Double distanciaAFiltrar = (Double) session.getAttribute("distancia");
-        viajesCercanosPendientes = this.viajeServicio.filtrarViajesPorDistanciaDelConductor((Double)session.getAttribute("latitud"), (Double)session.getAttribute("longitud"), distanciaAFiltrar);
+        viajesCercanosPendientes = this.viajeServicio.filtrarViajesPorDistanciaDelConductor((Double)session.getAttribute("latitud"),
+                (Double)session.getAttribute("longitud"), distanciaAFiltrar, conductor);
         session.setAttribute("isPenalizado", this.viajeServicio.estaPenalizado(conductor));
         model.put("viajes", viajesCercanosPendientes);
         return new ModelAndView(viewName, model);
@@ -76,6 +77,8 @@ public class ConductorControlador {
 //            model.put("error", "Viaje no disponible para ser aceptado");
 //            return new ModelAndView("viaje", model);
 //        }
+
+
 
         try {
             this.viajeServicio.aceptarViaje(viaje, conductor);
