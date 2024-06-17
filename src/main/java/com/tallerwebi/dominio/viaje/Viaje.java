@@ -34,7 +34,6 @@ public class Viaje {
     @Column(name = "longitudDeLlegada")
     private Double longitudDeLlegada;
 
-
     @Column(name = "precio")
     private Double precio;
 
@@ -58,6 +57,13 @@ public class Viaje {
 
     @Column(name = "fecha")
     private LocalDateTime fecha;
+
+    @Column(name = "canceladoPor")
+    private Integer canceladoPor;
+
+    @Column(name = "enviadoNuevamente")
+    private Boolean enviadoNuevamente;
+
 
     @Transient
     private Double distanciaDelViaje;
@@ -198,4 +204,26 @@ public class Viaje {
     public void setEstado(TipoEstado estado) {
         this.estado = estado;
     }
+
+    public String getNombreEstado() {
+        return TipoEstado.values()[estado.ordinal()].name();
+    }
+
+    public Integer getCanceladoPor() {
+        return canceladoPor;
+    }
+
+    public void setCanceladoPor(Integer canceladoPor) {
+        this.canceladoPor = canceladoPor;
+    }
+
+    public Boolean getEnviadoNuevamente() {
+        return enviadoNuevamente;
+    }
+
+    public void setEnviadoNuevamente(Boolean enviadoNuevamente) {
+        this.enviadoNuevamente = enviadoNuevamente;
+    }
 }
+
+

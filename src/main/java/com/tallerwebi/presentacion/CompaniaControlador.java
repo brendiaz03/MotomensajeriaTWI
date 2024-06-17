@@ -2,6 +2,7 @@ package com.tallerwebi.presentacion;
 import com.tallerwebi.dominio.conductor.Conductor;
 import com.tallerwebi.dominio.conductor.ConductorServicio;
 import com.tallerwebi.dominio.exceptions.ConductorNoEncontradoException;
+import com.tallerwebi.dominio.exceptions.UsuarioNoEncontradoException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -21,20 +22,19 @@ public class CompaniaControlador {
     }
 
     @RequestMapping("/compania")
-    public ModelAndView mostrarVistaCompania(HttpServletRequest request) throws ConductorNoEncontradoException {
+    public ModelAndView mostrarVistaCompania(HttpServletRequest request) throws UsuarioNoEncontradoException {
         ModelMap model = new ModelMap();
-
         Boolean isUsuarioLogueado = (Boolean) request.getSession().getAttribute("isUsuarioLogueado");
 
         Conductor conductor;
 
         model.put("isUsuarioLogueado",isUsuarioLogueado);
         if(request.getSession().getAttribute("IDUSUARIO") != null){
-            //conductor = conductorServicio.obtenerConductorPorId((Integer) request.getSession().getAttribute("IDUSUARIO"));
+            conductor = conductorServicio.obtenerConductorPorId((Integer) request.getSession().getAttribute("IDUSUARIO"));
         }else{
             conductor = null;
         }
-        //model.put("conductor", conductor);
+        model.put("conductor", conductor);
         return new ModelAndView("compania", model);
     }
 

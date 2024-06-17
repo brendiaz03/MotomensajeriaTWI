@@ -34,5 +34,21 @@ public interface ViajeServicio {
 
     Viaje crearViaje(Cliente cliente, Viaje viaje, Paquete paquete);
 
-    Viaje buscarViaje(Integer idViaje);
+     Viaje buscarViaje(Integer idViaje);
+
+    List<Viaje> obtenerViajesEnProcesoDelCliente(Integer idUsuario);
+
+    void cancelarEnvío(Viaje viaje);
+
+    List<Viaje> obtenerViajesCanceladosDelCliente(Integer id);
+
+    Viaje obtenerViajePorId(Integer idViaje);
+
+    void duplicarViajeCancelado(Viaje viajeObtenido);
+
+    void noDuplicarViaje(Viaje viajeObtenido);
+
+    void actualizarViajeCancelado(Viaje viajeObtenido);
+
+    List<Viaje> obtenerHistorialDeEnvios(Integer idCliente);
 }

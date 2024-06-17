@@ -171,6 +171,7 @@ public class ViajeServicioImpl implements ViajeServicio {
         viaje.setPaquete(paquete);
         viaje.setEstado(TipoEstado.PENDIENTE);
         viaje.setPrecio(this.calcularPrecio(viaje));
+        viaje.setFecha(LocalDateTime.now());
        return this.viajeRepositorio.guardarViaje(viaje);
     }
 
@@ -180,7 +181,85 @@ public class ViajeServicioImpl implements ViajeServicio {
 
     }
 
-private Double calcularPrecio (Viaje viaje){
+    @Override
+    public List<Viaje> obtenerViajesEnProcesoDelCliente(Integer idUsuario) {
+        List<Viaje> viajes = this.viajeRepositorio.obtenerViajesPorCliente(idUsuario);
+        List<Viaje> viajesVista = new ArrayList<>();
+
+
+        for (Viaje viajeObtenido : viajes) {
+            if(viajeObtenido.getEstado().equals(TipoEstado.PENDIENTE)){
+                viajesVista.add(viajeObtenido);
+            }
+        }
+
+        return viajesVista;
+    }
+
+    @Override
+    public void cancelarEnvío(Viaje viaje) {
+        viaje.setFecha(LocalDateTime.now());
+        viaje.setEstado(TipoEstado.CANCELADO);
+        this.viajeRepositorio.editar(viaje);
+    }
+
+    @Override
+    public List<Viaje> obtenerViajesCanceladosDelCliente(Integer idUsuario) {
+        List<Viaje> viajesObtenidos = this.viajeRepositorio.obtenerViajesPorCliente(idUsuario);
+        List<Viaje> viajesCancelados = new ArrayList<>();
+
+        for(Viaje viaje : viajesObtenidos){
+            if(viaje.getEstado().equals(TipoEstado.CANCELADO) && viaje.getCanceladoPor() != idUsuario && viaje.getEnviadoNuevamente() == null){
+                viajesCancelados.add(viaje);
+            }
+        }
+
+        return viajesCancelados;
+    }
+
+    @Override
+    public Viaje obtenerViajePorId(Integer idViaje) {
+        return this.viajeRepositorio.obtenerViajePorId(idViaje);
+    }
+
+    @Override
+    public void duplicarViajeCancelado(Viaje viajeObtenido) {
+        viajeObtenido.setFecha(LocalDateTime.now());
+        viajeObtenido.setEstado(TipoEstado.PENDIENTE);
+        viajeObtenido.setCanceladoPor(null);
+        viajeObtenido.setConductor(null);
+        viajeObtenido.setEnviadoNuevamente(false);
+        this.viajeRepositorio.guardarViajeDuplicado(viajeObtenido);
+    }
+
+    @Override
+    public void noDuplicarViaje(Viaje viajeObtenido) {
+        viajeObtenido.setEnviadoNuevamente(false);
+        this.viajeRepositorio.editar(viajeObtenido);
+    }
+
+    @Override
+    public void actualizarViajeCancelado(Viaje viajeObtenido) {
+        viajeObtenido.setEnviadoNuevamente(true);
+        this.viajeRepositorio.editar(viajeObtenido);
+    }
+
+    @Override
+    public List<Viaje> obtenerHistorialDeEnvios(Integer idCliente) {
+        List<Viaje> viajesObtenidos = this.viajeRepositorio.obtenerViajesPorCliente(idCliente);
+        List<Viaje> historialDeEnvios = new ArrayList<>();
+
+        for(Viaje viaje : viajesObtenidos){
+            if(!viaje.getEstado().equals(TipoEstado.PENDIENTE) && viaje.getEnviadoNuevamente() != null && !viaje.getEnviadoNuevamente()){
+                historialDeEnvios.add(viaje);
+            }
+        }
+
+        return historialDeEnvios;
+
+    }
+
+    private Double calcularPrecio (Viaje viaje){
 
     List<Viaje> viajeACalcularDistancia = new ArrayList<>();
     viajeACalcularDistancia.add(viaje);

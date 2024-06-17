@@ -42,7 +42,6 @@ public class PaqueteControlador {
 
     @RequestMapping(value = "/editar-paquete")
     public ModelAndView editarPaquete(@ModelAttribute("paquete") Paquete paquete, HttpSession session) {
-        this.paqueteServicio.editarPaquete(paquete);
         session.setAttribute("isEditPackage", false);
         session.setAttribute("paqueteActual", paquete);
         session.setAttribute("pasoActual", 3);

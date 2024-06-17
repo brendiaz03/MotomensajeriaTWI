@@ -2,23 +2,17 @@ package com.tallerwebi.presentacion;
 
 import com.tallerwebi.dominio.cliente.Cliente;
 import com.tallerwebi.dominio.cliente.ClienteServicio;
-import com.tallerwebi.dominio.conductor.Conductor;
 import com.tallerwebi.dominio.paquete.Paquete;
-import com.tallerwebi.dominio.exceptions.UsuarioNoEncontradoException;
 import com.tallerwebi.dominio.conductor.ConductorServicio;
-import com.tallerwebi.dominio.enums.TipoEstado;
 import com.tallerwebi.dominio.paquete.PaqueteNoEncontradoException;
 import com.tallerwebi.dominio.paquete.PaqueteServicio;
 import com.tallerwebi.dominio.viaje.Viaje;
 import com.tallerwebi.dominio.viaje.ViajeServicio;
-import com.tallerwebi.presentacion.Datos.DatosViaje;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import java.util.List;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 @Controller
@@ -80,13 +74,11 @@ public class ViajeControlador {
 
     @RequestMapping(value = "/editar-viaje", method = RequestMethod.POST)
     public ModelAndView editarViaje(@ModelAttribute("viaje") Viaje viaje, HttpSession session){
-        this.viajeServicio.actualizarViaje(viaje);
         session.setAttribute("isEditViaje", false);
         session.setAttribute("viajeActual", viaje);
         session.setAttribute("pasoActual", 3);
         return new ModelAndView("redirect:/form-viaje");
     }
-
     @RequestMapping(value = "/crear-viaje", method = RequestMethod.POST, consumes = "application/x-www-form-urlencoded")
     public ModelAndView crearViajeLocalmente(@ModelAttribute("viaje") Viaje viaje, HttpSession session){
         session.setAttribute("viajeActual", viaje);
@@ -99,8 +91,8 @@ public class ViajeControlador {
     public ModelAndView crearViajeConPaqueteYCliente(HttpSession session) throws PaqueteNoEncontradoException {
 
         //CLIENTE//
-        //Integer idUsuario = (Integer) session.getAttribute("IDUSUARIO");
-        //Cliente cliente=this.clienteServicio.obtenerClientePorId(idUsuario);
+        Integer idUsuario = (Integer) session.getAttribute("IDUSUARIO");
+        Cliente cliente=this.clienteServicio.obtenerClientePorId(idUsuario);
 
         //PAQUETE//
         Paquete paqueteActual = (Paquete)session.getAttribute("paqueteActual");
@@ -112,7 +104,7 @@ public class ViajeControlador {
         }
 
         Viaje viajeActual = (Viaje)session.getAttribute("viajeActual");
-        this.viajeServicio.crearViaje(null,viajeActual,paqueteActual);
+        this.viajeServicio.crearViaje(cliente,viajeActual,paqueteActual);
         session.setAttribute("paqueteActual", null);    //HACERLO POST PAGAR --> Paso Actual=1
         session.setAttribute("viajeActual", null);
         session.setAttribute("pasoActual", 4);
