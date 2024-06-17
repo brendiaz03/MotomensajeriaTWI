@@ -119,7 +119,7 @@
         <section class="botones">
                 <!-- Botón Ingresar / Editar -->
             <button th:if="${isEditViaje}" type="submit" class="boton_submit">Editar</button>
-            <button th:unless="${isEditViaje}" type="submit" class="boton_submit">Crear</button>
+            <button th:unless="${isEditViaje}" type="submit" class="boton_submit">Crear</button> <!-- js on click / y si no encuentra coord que no submitee-->
             </section>
         </form>
         <div id="error-message" style="color: red; display: none;"></div>

@@ -4,6 +4,7 @@ import com.tallerwebi.dominio.cliente.Cliente;
 import com.tallerwebi.dominio.conductor.Conductor;
 import com.tallerwebi.dominio.usuario.Usuario;
 import com.tallerwebi.dominio.usuario.UsuarioRepositorio;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
@@ -47,10 +48,11 @@ public class UsuarioRepositorioImpl implements UsuarioRepositorio {
     @Override
     @Transactional
     public Usuario getUsuarioById(Integer id) {
-        Usuario usuario= (Usuario) sessionFactory.getCurrentSession().createCriteria(Usuario.class)
-                .add(Restrictions.eq("id", id))
-                .uniqueResult();
-    return usuario;
+
+        String hql = "FROM Usuario WHERE id =:id";
+        Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
+        query.setParameter("id", id);
+        return (Usuario) query.getSingleResult();
     }
 
 }
