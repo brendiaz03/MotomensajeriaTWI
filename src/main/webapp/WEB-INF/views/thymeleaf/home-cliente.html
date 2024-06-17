@@ -8,7 +8,6 @@
   <link rel="stylesheet" th:href="@{css/main.css}"/>
   <link rel="stylesheet" th:href="@{css/homeCliente.css}"/>
   <link rel="stylesheet" th:href="@{css/viajes.css}"/>
-
   <title>Motomensajeria</title>
 </head>
 <body>
@@ -22,7 +21,7 @@
     <div class="collapse navbar-collapse justify-content-end">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item active  p-2">
-          <a th:href="home" class="nav-link p-2 text-white" href="#">Inicio</a>
+          <a th:href="homeCliente" class="nav-link p-2 text-white" href="#">Inicio</a>
         </li>
         <li class="nav-item p-2">
           <a th:href="compania" class="nav-link p-2 text-white" href="#">Compañía</a>
@@ -34,7 +33,7 @@
           <a th:href="envios-en-proceso" class="nav-link p-2 text-white">Envios en Proceso</a>
         </li>
         <li class="nav-item p-2">
-          <a th:href="historial" class="nav-link p-2 text-white" href="#">Historial de Envios</a>
+          <a th:href="historial-envios" class="nav-link p-2 text-white" href="#">Historial de Envios</a>
         </li>
       </ul>
       <a th:href="perfil" class="btn mx-2" style="border:none;">
@@ -60,6 +59,26 @@
     <i class="fa-solid fa-square-plus"></i>
     <p>Crear Envío</p>
   </a>
+
+
+  <div th:if="${hayViajesCancelados}">
+    <div id="viajeCanceladoModal" class="modal-overlay">
+      <div class="modal-viaje">
+        <div th:each="viaje : ${viajes}">
+          <h3>Su viaje con destino a <span th:text="${viaje.getDomicilioDeLlegada()}"></span> ha sido rechazado</h3>
+          <p>¿Desea volver a realizar el paquete con los mismos datos?</p>
+          <div class="modal-footer-viaje">
+            <a th:href="@{/duplicarViajeCancelado(idViaje=${viaje.getId()})}">Aceptar</a>
+            <a class="btn-secondary" th:href="@{/noDuplicarViaje(idViaje=${viaje.getId()})}">Rechazar</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
 
   <section class="acordeon">
     <h2>¿Necesitas Ayuda?</h2>
@@ -94,25 +113,7 @@
 
 
 </main>
-
-<script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const items = document.querySelectorAll('.item_acordeon');
-
-    items.forEach(item => {
-      const pregunta = item.querySelector('.pregunta_acordeon');
-
-      pregunta.addEventListener('click', () => {
-        const currentlyActive = document.querySelector('.item_acordeon.active');
-        if (currentlyActive && currentlyActive !== item) {
-          currentlyActive.classList.remove('active');
-        }
-        item.classList.toggle('active');
-      });
-    });
-  });
-</script>
-
+<script th:src="@{/js/home-cliente.js}"></script>
 <script type="text/javascript" th:src="@{webjars/bootstrap/5.2.0/js/bootstrap.min.js}"></script>
 </body>
 </html>

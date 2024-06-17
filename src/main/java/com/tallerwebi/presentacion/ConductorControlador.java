@@ -37,21 +37,23 @@ public class ConductorControlador {
     public ModelAndView mostrarHomeConductor(HttpSession session) throws UsuarioNoEncontradoException {
         ModelMap model = new ModelMap();
         String viewName = "home-conductor";
+        String claveGoogleMaps = "AIzaSyDcPeOyMBqG_1mZgjpei_R2ficRigdkINg";
         Conductor conductor = conductorServicio.obtenerConductorPorId( (Integer) session.getAttribute("IDUSUARIO"));
         model.put("conductor", conductor);
-//        List<DatosViaje> viajesCercanosPendientes;
-//        Double distanciaAFiltrar = (Double) request.getSession().getAttribute("distancia");
-//        if (conductor.getVehiculo() != null) {
-//            viajesCercanosPendientes = this.viajeServicio.filtrarViajesPorDistanciaDelConductor(latitudActual, longitudActual, distanciaAFiltrar);
-//            model.put("tieneVehiculo", false);
-//        } else {
-//            viajesCercanosPendientes = null;
-//            model.put("tieneVehiculo", true);
-//        }
-//
-//        request.getSession().setAttribute("isPenalizado", this.viajeServicio.estaPenalizado(conductor));
+        List<DatosViaje> viajesCercanosPendientes;
+        //Double distanciaAFiltrar = (Double) session.getAttribute("distancia");
+        //if (conductor.getVehiculo() != null) {
+            //viajesCercanosPendientes = this.viajeServicio.filtrarViajesPorDistanciaDelConductor(latitudActual, longitudActual, 100.0);
+            //model.put("tieneVehiculo", false);
+        //} else {
+            //viajesCercanosPendientes = null;
+            //model.put("tieneVehiculo", true);
+        //}
 
-//        model.put("viajes", viajesCercanosPendientes);
+        //session.setAttribute("isPenalizado", this.viajeServicio.estaPenalizado(conductor));
+
+        model.put("clave", claveGoogleMaps);
+        //model.put("viajes", viajesCercanosPendientes);
         return new ModelAndView(viewName, model);
     }
 

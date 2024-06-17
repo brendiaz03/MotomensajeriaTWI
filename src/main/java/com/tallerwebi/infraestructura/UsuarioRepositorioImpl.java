@@ -10,8 +10,6 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.Query;
-
 @Repository
 public class UsuarioRepositorioImpl implements UsuarioRepositorio {
 

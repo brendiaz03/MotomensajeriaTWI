@@ -176,7 +176,7 @@ public class ViajeControlador {
             return new ModelAndView("viaje", model);
         }
 
-        if(viaje.getEstado() == TipoEstado.ACEPTADO) { // Va al service
+        if(viaje.getEstado() == TipoEstado.PENDIENTE) { // Va al service
             model.put("error", "Viaje no disponible para ser aceptado");
             return new ModelAndView("viaje", model);
         }
@@ -317,5 +317,4 @@ public class ViajeControlador {
     public ModelAndView volverAlHistorial(){
         return new ModelAndView("redirect:/historial");
     }
-
 }

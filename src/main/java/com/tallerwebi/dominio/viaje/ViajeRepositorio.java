@@ -19,4 +19,6 @@ public interface ViajeRepositorio {
     Viaje guardarViaje(Viaje viaje);
 
     List<Viaje> obtenerViajesPorCliente(Integer idusuario);
+
+    void guardarViajeDuplicado(Viaje viajeObtenido);
 }
