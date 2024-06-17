@@ -87,7 +87,7 @@ public class UsuarioControlador {
             DatosUsuario datosUsuario = new DatosUsuario();
             model.put("usuario", datosUsuario.usuarioToDTO(usuario));
             model.put("isEditForm", true);
-        } catch (Exception e) {
+        } catch (UsuarioNoEncontradoException e) {
             model.put("mensajeError", e.getMessage());
         }
         return new ModelAndView(viewName, model);
@@ -100,7 +100,7 @@ public class UsuarioControlador {
              usuarioServicio.actualizarUsuario(usuarioEditado, (TipoUsuario) session.getAttribute("tipoUsuario"));
              session.setAttribute("isEditForm", false);
              return new ModelAndView("redirect:/perfil");
-         }catch(Exception e){
+         }catch(UsuarioNoEncontradoException e){
              e.printStackTrace();
              return this.mostrarEditarFormulario(session);
          }
@@ -113,7 +113,7 @@ public class UsuarioControlador {
         try {
             Usuario usuario = usuarioServicio.obtenerUsuarioPorId((Integer)session.getAttribute("IDUSUARIO"));
             model.put("usuario", usuario);
-        } catch (Exception e) {
+        } catch (UsuarioNoEncontradoException e) {
             model.put("mensajeError", e.getMessage());
         }
         return new ModelAndView(viewName, model);

@@ -12,7 +12,7 @@ public interface UsuarioServicio {
 
     void actualizarUsuario(DatosUsuario usuario, TipoUsuario tipoUsuario) throws UsuarioNoEncontradoException;
 
-    Usuario obtenerUsuarioPorId(Integer id);
+    Usuario obtenerUsuarioPorId(Integer id) throws UsuarioNoEncontradoException;
 
     void ingresarImagen(MultipartFile imagen, Integer idUsuario) throws UsuarioNoEncontradoException;
 }

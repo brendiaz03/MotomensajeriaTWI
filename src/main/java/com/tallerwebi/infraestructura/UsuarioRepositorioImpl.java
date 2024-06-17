@@ -49,10 +49,11 @@ public class UsuarioRepositorioImpl implements UsuarioRepositorio {
     @Override
     @Transactional
     public Usuario getUsuarioById(Integer id) {
-        Usuario usuario= (Usuario) sessionFactory.getCurrentSession().createCriteria(Usuario.class)
-                .add(Restrictions.eq("id", id))
-                .uniqueResult();
-    return usuario;
+
+        String hql = "FROM Usuario WHERE id =:id";
+        Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
+        query.setParameter("id", id);
+        return (Usuario) query.getSingleResult();
     }
 
 }

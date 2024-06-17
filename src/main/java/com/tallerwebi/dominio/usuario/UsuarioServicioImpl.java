@@ -64,8 +64,13 @@ public class UsuarioServicioImpl implements UsuarioServicio {
     }
 
     @Override
-    public Usuario obtenerUsuarioPorId(Integer id) {
-        return usuarioRepositorio.getUsuarioById(id);
+    public Usuario obtenerUsuarioPorId(Integer id) throws UsuarioNoEncontradoException {
+        try{
+            return usuarioRepositorio.getUsuarioById(id);
+        }catch(NoResultException e){
+            throw new UsuarioNoEncontradoException("No se encontro al usuario.");
+        }
+
     }
 
     @Override
