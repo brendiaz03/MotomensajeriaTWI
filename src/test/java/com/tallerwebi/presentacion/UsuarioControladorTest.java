@@ -46,11 +46,13 @@ public class UsuarioControladorTest {
     public void queAlSolicitarRegistrarUsuarioSeMuestreElFormularioDeRegistro() throws UsuarioNoEncontradoException {
         String viewName="form-usuario";
         Usuario usuario= mock(Usuario.class);
+        DatosUsuario usuarioDTO= mock(DatosUsuario.class);
+
         Boolean isEditForm= false;
 
 
         when(this.session.getAttribute("isEditForm")).thenReturn(false);
-        ModelAndView mav = usuarioControlador.mostrarForm("", session);
+        ModelAndView mav = usuarioControlador.mostrarForm(usuarioDTO,"", session);
 
         assertThat(mav.getViewName(), equalToIgnoringCase(viewName));
         assertThat(mav.getModel().get("usuario"), instanceOf(DatosUsuario.class));

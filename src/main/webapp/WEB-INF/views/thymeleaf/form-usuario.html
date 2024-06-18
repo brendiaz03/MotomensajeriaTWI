@@ -61,74 +61,84 @@
     <h1 th:if="${isEditForm}" class="titulo_registroConductor">Editar Datos Personales</h1>
     <h1 th:unless="${isEditForm}" class="titulo_registroConductor">Registrarme</h1>
 
-    <form id="conductorForm" th:action="${isEditForm ? 'editar-usuario' : 'registrar-usuario'}" method="POST" th:object="${usuario}"> <!--th:method="${isEditForm ? 'PUT' : 'POST'}"-->
-      <section class="formulario">
-        <div class="columna">
-            <div>
-                <label for="nombre" class="nombre fuente_formulario_registro">Nombre</label>
-                <input type="text" class="form-control" id="nombre" name="nombre" th:field="*{nombre}" th:value="${isEditForm ? usuario.getNombre() : ''}" required>
+    <form id="conductorForm" th:action="${isEditForm ? 'editar-usuario' : 'registrar-usuario'}" method="POST" th:object="${usuario}">
+        <section class="formulario">
+            <div class="columna">
+                <div>
+                    <label for="nombre" class="nombre fuente_formulario_registro">Nombre</label>
+                    <input type="text" class="form-control" id="nombre" name="nombre" th:field="*{nombre}" th:value="${isEditForm ? usuario.getNombre() : ''}" >
+                    <span class="error" id="nombreError"></span>
+                </div>
+                <div>
+                    <label for="apellido" class="apellido fuente_formulario_registro">Apellido</label>
+                    <input type="text" class="form-control" id="apellido" name="apellido" th:field="*{apellido}" th:value="${isEditForm ? usuario.getApellido() : ''}">
+                    <span class="error" id="apellidoError"></span>
+                </div>
+                <div >
+                    <label for="domicilio" class="domicilio fuente_formulario_registro">Domicilio</label>
+                    <input type="text" class="form-control" id="domicilio" name="domicilio" th:field="*{domicilio}" th:value="${isEditForm ? usuario.getDomicilio() : ''}" >
+                    <span class="error" id="domicilioError"></span>
+                </div>
+                <div>
+                    <label for="nroTelefono" class="telefono fuente_formulario_registro">Número de Teléfono</label>
+                    <input type="text" class="form-control" id="nroTelefono" name="nroTelefono" th:field="*{numeroDeTelefono}" th:value="${isEditForm ? usuario.getNumeroDeTelefono() : ''}" >
+                    <span class="error" id="nroTelefonoError"></span>
+                </div>
+                <div>
+                    <label for="numeroDeDni" class="dni fuente_formulario_registro">Número de DNI</label>
+                    <input type="number" class="form-control" id="numeroDeDni" name="numeroDeDni" th:field="*{numeroDeDni}" th:value="${isEditForm ? usuario.getNumeroDeDni() : ''}" >
+                    <span class="error" id="numeroDeDniError"></span>
+                </div>
             </div>
-            <div>
-                <label for="apellido" class="apellido fuente_formulario_registro">Apellido</label>
-                <input type="text" class="form-control" id="apellido" name="apellido" th:field="*{apellido}" th:value="${isEditForm ? usuario.getApellido() : ''}"required>
-            </div>
-            <div >
-                <label for="domicilio" class="domicilio fuente_formulario_registro">Domicilio</label>
-                <input type="text" class="form-control" id="domicilio" name="domicilio" th:field="*{domicilio}" th:value="${isEditForm ? usuario.getDomicilio() : ''}" required>
-            </div>
-            <div>
-                <label for="nroTelefono" class="telefono fuente_formulario_registro">Número de Teléfono</label>
-                <input type="text" class="form-control" id="nroTelefono" name="nroTelefono" th:field="*{numeroDeTelefono}" th:value="${isEditForm ? usuario.getNumeroDeTelefono() : ''}" required>
-            </div>
-            <div>
-                <label for="numeroDeDni" class="dni fuente_formulario_registro">Número de DNI</label>
-                <input type="number" class="form-control" id="numeroDeDni" name="numeroDeDni" th:field="*{numeroDeDni}" th:value="${isEditForm ? usuario.getNumeroDeDni() : ''}" required>
-            </div>
-        </div>
-        <div class="columna">
-            <div>
-                <label for="nombreUsuario" class="nombreUsuario fuente_formulario_registro">Nombre de Usuario</label>
-                <input type="text" class="form-control" id="nombreUsuario" name="nombreUsuario" th:field="*{nombreUsuario}" th:value="${isEditForm ? usuario.getNombreUsuario() : ''}" th:readonly="${isEditForm}" required>
-            </div>
-            <div>
-                <label for="email" class="email fuente_formulario_registro">Email</label>
-                <input type="email" class="form-control" id="email" name="email" th:field="*{email}" th:value="${isEditForm ? usuario.getEmail() : ''}" th:readonly="${isEditForm}" required>
-            </div>
-            <div>
-                <label for="password" class="password fuente_formulario_registro">Contraseña</label>
-                <input type="password" class="form-control" id="password" name="password" th:field="*{password}" th:value="${isEditForm ? usuario.getPassword() : ''}" required>
-            </div>
-            <div >
-                <label for="confirmarPassword" class="confirmarPassword fuente_formulario_registro">Confirmar Contraseña</label>
-                <input type="password" class="form-control" id="confirmarPassword" name="confirmarPassword"  th:value="${isEditForm ? usuario.getPassword() : ''}" th:readonly="${isEditForm}" required>
-            </div>
-            <div>
-                <label for="tipoUsuario">Tipo de Usuario:</label>
-                <select id="tipoUsuario" name="tipoUsuario" class="form-control" th:field="*{tipoUsuario}"  th:disabled="${isEditForm}">
-                    <!-- Opción predeterminada para cuando el tipoUsuario es null -->
-                    <option th:if="${usuario.getTipoUsuario() == null}" value="" th:text="'Seleccione un tipo de usuario'"></option>
-                    <option th:each="tipo : ${T(com.tallerwebi.dominio.enums.TipoUsuario).values()}"
-                            th:value="${tipo}"
-                            th:selected="${usuario.getTipoUsuario() != null and tipo.name() == usuario.getTipoUsuario().name()}"
-                            th:text="${tipo}">
-                    </option>
-                </select>
-            </div>
-        </div>
+            <div class="columna">
+                <div>
+                    <label for="nombreUsuario" class="nombreUsuario fuente_formulario_registro">Nombre de Usuario</label>
+                    <input type="text" class="form-control" id="nombreUsuario" name="nombreUsuario" th:field="*{nombreUsuario}" th:value="${isEditForm ? usuario.getNombreUsuario() : ''}" th:readonly="${isEditForm}" >
+                    <span class="error" id="nombreUsuarioError"></span>
+                    <span class="error" th:if="${mensajeError != null}"><p th:text="${mensajeError}"></p></span>
 
-      </section>
-        <section class="errores" th:if="${mensajeError != null and !mensajeError.isEmpty()}">
-                <p th:text="${mensajeError}">Mensaje de error predeterminado</p>
+                </div>
+                <div>
+                    <label for="email" class="email fuente_formulario_registro">Email</label>
+                    <input type="email" class="form-control" id="email" name="email" th:field="*{email}" th:value="${isEditForm ? usuario.getEmail() : ''}" th:readonly="${isEditForm}" >
+                    <span class="error" id="emailError"></span>
+                    <span class="error" th:if="${mensajeError != null}"><p th:text="${mensajeError}"></p></span>
+                </div>
+                <div>
+                    <label for="password" class="password fuente_formulario_registro">Contraseña</label>
+                    <input type="password" class="form-control" id="password" name="password" th:field="*{password}" th:value="${isEditForm ? usuario.getPassword() : ''}" >
+                    <span class="error" id="passwordError"></span>
+                </div>
+                <div >
+                    <label for="confirmarPassword" class="confirmarPassword fuente_formulario_registro">Confirmar Contraseña</label>
+                    <input type="password" class="form-control" id="confirmarPassword" name="confirmarPassword"  th:value="${isEditForm ? usuario.getPassword() : ''}" th:readonly="${isEditForm}" >
+                    <span class="error" id="confirmarPasswordError"></span>
+                </div>
+                <div>
+                    <label for="tipoUsuario">Tipo de Usuario:</label>
+                    <select id="tipoUsuario" name="tipoUsuario" class="form-control" th:field="*{tipoUsuario}"  th:disabled="${isEditForm}">
+                        <option th:if="${usuario.getTipoUsuario() == null}" value="" th:text="'Seleccione un tipo de usuario'"></option>
+                        <option th:each="tipo : ${T(com.tallerwebi.dominio.enums.TipoUsuario).values()}"
+                                th:value="${tipo}"
+                                th:selected="${usuario.getTipoUsuario() != null and tipo.name() == usuario.getTipoUsuario().name()}"
+                                th:text="${tipo}">
+                        </option>
+                    </select>
+                    <span class="error" id="tipoUsuarioError"></span>
+                </div>
+            </div>
         </section>
         <section class="botones">
             <a th:if="${isEditForm}" ><button th:href="perfil" id="boton_cancelar_edit" type="button" class="boton_cancelar">Cancelar</button></a>
             <a th:unless="${isEditForm}" ><button th:href="home" id="boton_cancelar_ingresar" type="button" class="boton_cancelar">Cancelar</button></a>
 
-            <!-- Botón Ingresar / Editar -->
             <button th:if="${isEditForm}" type="submit" class="boton_submit">Editar</button>
             <button th:unless="${isEditForm}" type="submit" class="boton_submit">Registrar</button>
         </section>
+
+
     </form>
+
 </div>
 
 </main>
@@ -137,7 +147,107 @@
 </footer>
 </body>
 
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var form = document.getElementById('conductorForm');
 
+        form.addEventListener('submit', function(event) {
+            // Reiniciar mensajes de error
+            var errors = document.querySelectorAll('.error');
+            errors.forEach(function(error) {
+                error.textContent = '';
+            });
 
+            var valid = true;
+
+            // Validar nombre
+            var nombre = document.getElementById('nombre').value;
+            if (!/^[a-zA-ZÀ-ÿ\s]+$/.test(nombre)) {
+                document.getElementById('nombreError').textContent = 'El nombre no puede contener números ni caracteres especiales.';
+                valid = false;
+            }
+
+            // Validar apellido
+            var apellido = document.getElementById('apellido').value;
+            if (!/^[a-zA-ZÀ-ÿ\s]+$/.test(apellido)) {
+                document.getElementById('apellidoError').textContent = 'El apellido no puede contener números ni caracteres especiales.';
+                valid = false;
+            }
+
+            // Validar domicilio
+            var domicilio = document.getElementById('domicilio').value;
+            if (!domicilio) {
+                document.getElementById('domicilioError').textContent = 'El domicilio es obligatorio.';
+                valid = false;
+            }
+
+            // Validar número de teléfono
+            var nroTelefono = document.getElementById('nroTelefono').value;
+            if (!/^\d+$/.test(nroTelefono)) {
+                document.getElementById('nroTelefonoError').textContent = 'El número de teléfono solo puede contener números.';
+                valid = false;
+            }
+
+            // Validar número de DNI
+            var numeroDeDni = document.getElementById('numeroDeDni').value;
+            if (!/^\d+$/.test(numeroDeDni) || numeroDeDni.length < 7 || numeroDeDni.length > 8) {
+                document.getElementById('numeroDeDniError').textContent = 'Ingrese un número de DNI válido (7 u 8 dígitos).';
+                valid = false;
+            }
+
+            // Validar nombre de usuario
+            var nombreUsuario = document.getElementById('nombreUsuario').value;
+            if (!nombreUsuario) {
+                document.getElementById('nombreUsuarioError').textContent = 'El nombre de usuario es obligatorio.';
+                valid = false;
+            }
+
+            // Validar email
+            var email = document.getElementById('email').value;
+            if (!email) {
+                document.getElementById('emailError').textContent = 'El email es obligatorio.';
+                valid = false;
+            }
+
+            // Validar contraseña y confirmación de contraseña
+            var password = document.getElementById('password').value;
+            var confirmarPassword = document.getElementById('confirmarPassword').value;
+            if (!password) {
+                document.getElementById('passwordError').textContent = 'La contraseña es obligatoria.';
+                valid = false;
+            }
+            if (password !== confirmarPassword) {
+                document.getElementById('confirmarPasswordError').textContent = 'La contraseña y la confirmación de la contraseña no coinciden.';
+                valid = false;
+            }
+
+            // Validar tipo de usuario
+            var tipoUsuario = document.getElementById('tipoUsuario').value;
+            if (!tipoUsuario) {
+                document.getElementById('tipoUsuarioError').textContent = 'Seleccione un tipo de usuario.';
+                valid = false;
+            }
+
+            if (!valid) {
+                event.preventDefault();
+            }
+        });
+
+        var botonCancelarEdit = document.getElementById('boton_cancelar_edit');
+        if (botonCancelarEdit) {
+            botonCancelarEdit.addEventListener('click', function(event) {
+                event.preventDefault();
+                window.location.href = botonCancelarEdit.getAttribute('href');
+            });
+        }
+        var botonCancelarIngresar = document.getElementById('boton_cancelar_ingresar');
+        if (botonCancelarIngresar) {
+            botonCancelarIngresar.addEventListener('click', function(event) {
+                event.preventDefault();
+                window.location.href = botonCancelarIngresar.getAttribute('href');
+            });
+        }
+    });
+</script>
 
 </html>

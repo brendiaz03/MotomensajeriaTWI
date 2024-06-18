@@ -4,6 +4,7 @@ import com.tallerwebi.dominio.cliente.Cliente;
 import com.tallerwebi.dominio.cliente.ClienteServicio;
 import com.tallerwebi.dominio.conductor.Conductor;
 import com.tallerwebi.dominio.enums.TipoUsuario;
+import com.tallerwebi.dominio.exceptions.UsuarioDuplicadoException;
 import com.tallerwebi.dominio.exceptions.UsuarioNoEncontradoException;
 import com.tallerwebi.dominio.conductor.ConductorServicio;
 import com.tallerwebi.dominio.usuario.Usuario;
@@ -31,18 +32,24 @@ public class UsuarioControlador {
     }
 
     @RequestMapping(value = "/nuevo-usuario", method = RequestMethod.GET)
-    public ModelAndView mostrarForm(String mensajeError, HttpSession session) {
+    public ModelAndView mostrarForm(DatosUsuario actual,String mensajeError, HttpSession session) {
         String viewName= "form-usuario";
         ModelMap model = new ModelMap();
-        model.put("usuario", new DatosUsuario());
-
         model.put("isEditForm", false);
+        if(mensajeError==null||mensajeError.isEmpty()){
+            model.put("usuario", new DatosUsuario());
+            model.put("mensajeError",null);
+        }else{
+            model.put("usuario", actual);
+            model.put("mensajeError",mensajeError);
+
+        }
 
         return new ModelAndView(viewName, model);
     }
 
     @PostMapping("/registrar-usuario")
-    public ModelAndView registrarConductor(@ModelAttribute("usuario") DatosUsuario nuevoUsuario, HttpSession session) throws Exception {
+    public ModelAndView registrarConductor(@ModelAttribute("usuario") DatosUsuario nuevoUsuario, HttpSession session){
         ModelMap model = new ModelMap();
         try{
             Usuario usuario = usuarioServicio.registrarUsuario(nuevoUsuario);
@@ -56,9 +63,8 @@ public class UsuarioControlador {
                 session.setAttribute("IDUSUARIO", cliente.getId());
                 return new ModelAndView("redirect:/homeCliente");
             }
-        }catch(Exception e){
-            e.printStackTrace();
-            return this.mostrarForm("Se ha producido un error en el servidor.",session);
+        }catch(UsuarioDuplicadoException e){
+            return this.mostrarForm(nuevoUsuario,e.getMessage(),session);
         }
     }
 

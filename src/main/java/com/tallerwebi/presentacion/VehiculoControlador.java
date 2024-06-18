@@ -29,9 +29,15 @@ public class VehiculoControlador {
     }
 
     @RequestMapping(path = "/form-vehiculo", method = RequestMethod.GET)
-    public ModelAndView mostrarRegistroDelVehiculo(HttpSession session) throws UsuarioNoEncontradoException {
+    public ModelAndView mostrarRegistroDelVehiculo(Vehiculo nuevoVehiculo,String mensajeError,HttpSession session) throws UsuarioNoEncontradoException {
         ModelMap model = new ModelMap();
         String viewName = "form-vehiculo";
+        if(mensajeError==null||mensajeError.isEmpty()){
+            model.put("mensajeError",null);
+        }else{
+            model.put("vehiculo",nuevoVehiculo);
+            model.put("mensajeError",mensajeError);
+        }
         if((Boolean)session.getAttribute("isEditForm")){
             model.put("isEditForm", true);
             Conductor conductor =conductorServicio.obtenerConductorPorId((Integer)session.getAttribute("IDUSUARIO"));
@@ -44,19 +50,18 @@ public class VehiculoControlador {
     }
 
     @PostMapping("/registrar-vehiculo")
-    public ModelAndView registrarVehiculo(@ModelAttribute("vehiculo") Vehiculo nuevoVehiculo, HttpSession session) {
+    public ModelAndView registrarVehiculo(@ModelAttribute("vehiculo") Vehiculo nuevoVehiculo, HttpSession session) throws UsuarioNoEncontradoException {
         try{
             Vehiculo vehiculo = vehiculoServicio.registrarVehiculo(nuevoVehiculo);
             conductorServicio.RelacionarVehiculoAConductor((Integer)session.getAttribute("IDUSUARIO"), vehiculo);
             return new ModelAndView("home");
         }catch(UsuarioNoEncontradoException | VehiculoDuplicadoException e){
-            ModelAndView mv = new ModelAndView("error");
-            return new ModelAndView("form-vehiculo");
+            return this.mostrarRegistroDelVehiculo(nuevoVehiculo,e.getMessage(),session);
         }
     }
 
     @PostMapping("/editar-vehiculo")
-    public ModelAndView editarVehiculo(@ModelAttribute("vehiculo") Vehiculo nuevoVehiculo, HttpSession session) {
+    public ModelAndView editarVehiculo(@ModelAttribute("vehiculo") Vehiculo nuevoVehiculo, HttpSession session) throws UsuarioNoEncontradoException {
         try{
             Conductor conductor =conductorServicio.obtenerConductorPorId((Integer)session.getAttribute("IDUSUARIO"));
             nuevoVehiculo.setId(conductor.getVehiculo().getId());
@@ -64,8 +69,7 @@ public class VehiculoControlador {
             session.setAttribute("isEditForm", false);
             return new ModelAndView("redirect:/perfil");
         }catch(UsuarioNoEncontradoException e){
-            ModelAndView mv = new ModelAndView("error");
-            return new ModelAndView("form-vehiculo");
+            return this.mostrarRegistroDelVehiculo(nuevoVehiculo,e.getMessage(),session);
         }
     }
 
