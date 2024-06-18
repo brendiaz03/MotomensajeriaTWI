@@ -201,7 +201,7 @@ public class ViajeServicioTest {
         when(viajeRepositorio.encontrarViajesCercanos(latitudConductor, longitudConductor, distanciaAFiltrar)).thenReturn(viajesCercanos);
 
         // Ejecución
-        List<DatosViaje> viajesFiltrados = viajeServicio.filtrarViajesPorDistanciaDelConductor(latitudConductor, longitudConductor, distanciaAFiltrar);
+        List<DatosViaje> viajesFiltrados = viajeServicio.filtrarViajesPorDistanciaDelConductor(latitudConductor, longitudConductor, distanciaAFiltrar, conductor);
 
         // Validación
         assertThat(viajesFiltrados.size(), equalTo(5));

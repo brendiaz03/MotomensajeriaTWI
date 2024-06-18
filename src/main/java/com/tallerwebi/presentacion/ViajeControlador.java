@@ -67,6 +67,7 @@ public class ViajeControlador {
 
     @RequestMapping("/form-editar-viaje")
     public ModelAndView mostrarFormEditorViaje(HttpSession session){
+        session.setAttribute("viaje", new Viaje());
         session.setAttribute("isEditViaje", true);
         session.setAttribute("pasoActual", 2);
         return new ModelAndView("redirect:/form-viaje");
@@ -74,6 +75,7 @@ public class ViajeControlador {
 
     @RequestMapping(value = "/editar-viaje", method = RequestMethod.POST)
     public ModelAndView editarViaje(@ModelAttribute("viaje") Viaje viaje, HttpSession session){
+
         session.setAttribute("isEditViaje", false);
         session.setAttribute("viajeActual", viaje);
         session.setAttribute("pasoActual", 3);

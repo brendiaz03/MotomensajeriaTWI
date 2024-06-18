@@ -4,6 +4,7 @@ import com.tallerwebi.dominio.cliente.Cliente;
 import com.tallerwebi.dominio.conductor.Conductor;
 import com.tallerwebi.dominio.usuario.Usuario;
 import com.tallerwebi.dominio.usuario.UsuarioRepositorio;
+import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -23,11 +24,14 @@ public class UsuarioRepositorioImpl implements UsuarioRepositorio {
     @Override
     @Transactional
     public Usuario buscarDuplicados(String email, String nombreUsuario) {
-        return (Usuario) sessionFactory.getCurrentSession().createCriteria(Usuario.class)
-                .add(Restrictions.eq("email", email))
-                .add(Restrictions.eq("nombreUsuario", nombreUsuario))
-                .uniqueResult();
+        Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Usuario.class);
+        criteria.add(Restrictions.or(
+                Restrictions.eq("email", email),
+                Restrictions.eq("nombreUsuario", nombreUsuario)
+        ));
+        return (Usuario) criteria.uniqueResult();
     }
+
 
     @Override
     @Transactional

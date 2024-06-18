@@ -35,8 +35,8 @@ public class UsuarioServicioImpl implements UsuarioServicio {
                 Cliente cliente = usuario.toCliente();
                 return usuarioRepositorio.guardarUsuario(cliente);
             }
-        }catch (Exception e){
-            throw new UsuarioDuplicadoException("Usuario duplicado");
+        }catch (UsuarioDuplicadoException e){
+            throw new UsuarioDuplicadoException(e.getMessage());
         }
     }
 

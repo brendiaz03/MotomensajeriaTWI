@@ -140,6 +140,11 @@
     background: lightgray;
     color:#FFFFFF;
 }
+.error {
+    color: red; /* Cambia el color del mensaje de error a rojo */
+    font-size: 0.9em; /* Tamaño de la fuente opcional */
+    margin-top: 5px; /* Espacio opcional arriba del mensaje de error */
+}
 
 
 
