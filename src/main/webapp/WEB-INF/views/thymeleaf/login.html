@@ -41,34 +41,74 @@
 <main class="main_login">
     <div class="formulario_fondo_login">
         <h1 style="text-align: center" class="titulo_loginConductor">Iniciar Sesión</h1>
-        <form action="#" th:action="@{/validar-login}" method="POST" th:object="${datosLogin}">
+        <form id="loginForm" action="#" th:action="@{/validar-login}" method="POST" th:object="${datosLogin}">
             <section class="formulario">
-             <div class="columna">
-                 <div>
-                    <label for="usuario" class="form-label">Usuario:</label>
-                    <input type="text" class="form-control" id="usuario" name="usuario" th:field="*{usuario}" required>
-                 </div>
-                 <div>
-                    <label for="password" class="form-label">Contraseña:</label>
-                    <input type="password" class="form-control" id="password" name="password" th:field="*{password}" required>
-                 </div>
-                 <section class="sub_columna">
-                     <div>
-                         <a href="/recuperar-contraseña">¿Olvidaste tu contraseña contraseña?</a>
-                     </div>
-                     <div>
-                         <button type="submit" class="boton_submit">Ingresar</button>
-                     </div>
-                     <div>
-                         <a th:href="nuevo-usuario" id="boton_Redireccion"><button type="button" class="boton_Redireccion">Registrarse</button></a>
-                         </a>
-                     </div>
-                 </section>
-             </div>
+                <div class="columna">
+                    <div>
+                        <label for="usuario" class="form-label">Usuario:</label>
+                        <input type="text" class="form-control" id="usuario" name="usuario" th:field="*{usuario}">
+                        <span id="usuarioError" class="error"></span>
+                    </div>
+                    <div>
+                        <label for="password" class="form-label">Contraseña:</label>
+                        <input type="password" class="form-control" id="password" name="password" th:field="*{password}">
+                        <span id="passwordError" class="error"></span>
+                    </div>
+                    <section class="sub_columna" th:if="${error}">
+                        <span class="error" th:text="${error}"></span>
+                    </section>
+                    <section class="sub_columna">
+                        <div>
+                            <a href="/recuperar-contraseña">¿Olvidaste tu contraseña?</a>
+                        </div>
+                        <div>
+                            <button type="submit" class="boton_submit">Ingresar</button>
+                        </div>
+                        <div>
+                            <a th:href="nuevo-usuario" id="boton_Redireccion">
+                                <button type="button" class="boton_Redireccion">Registrarse</button>
+                            </a>
+                        </div>
+                    </section>
+                </div>
             </section>
         </form>
+
     </div>
 </main>
-
 </body>
+<script>document.addEventListener('DOMContentLoaded', function() {
+    var form = document.getElementById('loginForm');
+
+    form.addEventListener('submit', function(event) {
+        var valid = true;
+
+        // Reiniciar mensajes de error
+        document.getElementById('usuarioError').textContent = '';
+        document.getElementById('passwordError').textContent = '';
+
+        var usuario = document.getElementById('usuario').value.trim();
+        var password = document.getElementById('password').value.trim();
+
+        if (!usuario) {
+            mostrarError('usuarioError', 'Es obligatorio ingresar el nombre de usuario.');
+            valid = false;
+        }
+
+        if (!password) {
+            mostrarError('passwordError', 'Es obligatorio ingresar la contraseña.');
+            valid = false;
+        }
+
+        if (!valid) {
+            event.preventDefault(); // Evita que se envíe el formulario si hay errores
+        }
+    });
+
+    function mostrarError(id, mensaje) {
+        var errorElement = document.getElementById(id);
+        errorElement.textContent = mensaje;
+    }
+});
+</script>
 </html>

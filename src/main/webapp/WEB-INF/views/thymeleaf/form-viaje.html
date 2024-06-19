@@ -20,15 +20,15 @@
 </header>
 
 <main class="form_viaje">
-    <section class="pasos_realizar_envio">
+    <section id="pasos_realizar_envio" class="pasos_realizar_envio">
     <div class="pasos">
         <i class="icono fa-solid fa-box" th:classappend="${pasoActual == 1} ? 'icono-actual' : ''"></i>
         <i class="icono fa-solid fa-road" th:classappend="${pasoActual == 2} ? 'icono-actual' : ''"></i>
         <i class="icono fa-solid fa-circle-info" th:classappend="${pasoActual == 3} ? 'icono-actual' : ''"></i>
-        <i class="icono fa-solid fa-receipt"th:classappend="${pasoActual == 4} ? 'icono-actual' : ''"></i>
+        <i class="icono fa-solid fa-receipt" th:classappend="${pasoActual == 4} ? 'icono-actual' : ''"></i>
     </div>
     </section>
-    <section class="formularios_envio">
+    <section id="formularios_envio" class="formularios_envio">
     <!---------------------------------------------->
     <!-------- PASO 1 DE 4, CREAR PAQUETE ---------->
     <!---------------------------------------------->
@@ -43,11 +43,12 @@
             <div style="display:flex; justify-content: center">
                 <img th:src="@{/imagenes/paquete.png}" class="foto" alt=",,,">
             </div>
+            <br><br>
             <form class="fuente_formulario_registro" th:action="${isEditPackage ? 'editar-paquete': 'crear-paquete'}" method="post" th:object="${paquete}" novalidate>
                 <section class="formulario">
                     <div class="columna">
                         <div>
-                            <label for="peso" class="nombre fuente_formulario_registro">Peso</label>
+                            <label for="peso" class="nombre fuente_formulario_registro">Peso (kg)</label>
                             <input type="number" step="0.01" class="form-control" id="peso" name="peso" th:field="*{peso}">
                             <span id="pesoError" class="error"></span>
                             <br><br>
@@ -73,7 +74,7 @@
                     </div>
                     <div class="columna">
                         <div>
-                            <label for="dimension" class="nombre fuente_formulario_registro">Dimensión</label>
+                            <label for="dimension" class="nombre fuente_formulario_registro">Dimensión (cm³)</label>
                             <input type="number" step="0.01" class="form-control" id="dimension" name="dimension" th:field="*{dimension}">
                             <span id="dimensionError" class="error"></span>
                             <br><br>
@@ -108,6 +109,7 @@
         <div style="display:flex; justify-content: center">
             <img th:src="@{/imagenes/camion-de-reparto.png}" class="foto" alt=",,,">
         </div>
+        <br><br>
         <form id="viajeForm" th:action="${isEditViaje ? 'editar-viaje': 'crear-viaje'}" method="post" th:object="${viaje}" accept-charset="UTF-8" novalidate>
         <section class="formulario">
             <div class="columna">
@@ -119,7 +121,6 @@
                 <label for="direccionLlegada" class="direccionLlegada fuente_formulario_viaje">Dirección de Llegada</label>
                 <input type="text" class="form-control" id="direccionLlegada" name=" direccionLlegada" th:field="*{domicilioDeLlegada}" th:value="${isEditViaje ? viaje.domicilioDeLlegada : ''}" >
                 <span id="direccionLlegadaError" class="error"></span>
-
             </div>
             <input type="hidden" id="latitudSalida" name="latitudSalida" th:field="*{latitudDeSalida}">
             <input type="hidden" id="longitudSalida" name="longitudSalida" th:field="*{longitudDeSalida}">
@@ -143,19 +144,23 @@
         <h1 class="titulo_registroViaje">Detalles del Envío</h1>
         <div style="display:flex; justify-content: center">
             <img th:src="@{/imagenes/lista-de-verificacion.png}" class="foto" alt=",,,">
-        </div> <br>
+        </div><br><br>
         <div class="detalles">
-            <div>
+            <div class="detalle-paq">
                 <div style="display: flex; flex-direction: row; gap:1em">
                         <p style="text-align: center;font-size: 20px" class="card-text" ><strong>Paquete</strong></p><br>
                         <a th:href="form-editar-paquete"><i class="fa-solid fa-pen-to-square"  style="color: #36054E; transition: color 0.3s;" onmouseover="this.style.color='purple'" onmouseout="this.style.color='#36054E'"></i></a>
                 </div>
                 <div>
-                    <p>Peso del Paquete: <strong th:text="${paquete.getPeso()}"></strong></p>
-                    <p>Dimesion del Paquete: <strong th:text="${paquete.getDimension()}"></strong></p>
+                    <p>Peso del Paquete: <strong th:text="${paquete.getPeso()}+'kg'"></strong></p>
+                    <p>Dimesion del Paquete: <strong th:text="${paquete.getDimension()}+'cm³'"></strong></p>
+                    <p>Nombre del Destinatario: <strong th:text="${paquete.getDestinatario()}"></strong></p>
+                    <span th:if="${paquete.getEsFragil()==true}"><p>Paquete frágil</p></span>
+
+
                 </div>
            </div>
-            <div>
+            <div class="detalle-via">
                 <div style="display: flex; flex-direction: row; gap:1em">
                     <p style="text-align: center;font-size: 20px" class="card-text"><strong>Viaje</strong></p><br>
                     <a th:href="form-editar-viaje"><i class="fa-solid fa-pen-to-square"  style="color: #36054E; transition: color 0.3s;" onmouseover="this.style.color='purple'" onmouseout="this.style.color='#36054E'"></i></a>
@@ -166,7 +171,6 @@
                 </div>
             </div>
         </div>
-        <br><br>
         <section class="botones">
             <a th:href="@{crear-envio}"><button class="boton_submit">Pagar</button></a>
         </section>
@@ -234,6 +238,7 @@
                 event.preventDefault(); // Evita que se envíe el formulario si hay errores
             }
         });
+
     });
 </script>
 <script th:src="@{/js/crearViaje.js}"></script>
