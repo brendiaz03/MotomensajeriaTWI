@@ -1,4 +1,4 @@
-    document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function() {
     var form = document.getElementById('conductorForm');
 
     form.addEventListener('submit', function(event) {
@@ -12,14 +12,14 @@
 
         // Validar nombre
         var nombre = document.getElementById('nombre').value;
-        if (!/^[a-zA-ZÀ-ÿ\s]+$/.test(nombre)) {
+        if (!/^[a-zA-Z\u00C0-\u017F\s]+$/.test(nombre)) {
             document.getElementById('nombreError').textContent = 'El nombre no puede contener números ni caracteres especiales.';
             valid = false;
         }
 
         // Validar apellido
         var apellido = document.getElementById('apellido').value;
-        if (!/^[a-zA-ZÀ-ÿ\s]+$/.test(apellido)) {
+        if (!/^[a-zA-Z\u00C0-\u017F\s]+$/.test(apellido)) {
             document.getElementById('apellidoError').textContent = 'El apellido no puede contener números ni caracteres especiales.';
             valid = false;
         }

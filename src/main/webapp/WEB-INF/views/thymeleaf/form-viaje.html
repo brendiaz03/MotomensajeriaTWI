@@ -90,8 +90,8 @@
                 </section>
 
                 <section class="botones">
-                    <button th:if="${isEditPackage}" type="submit" class="boton_submit">Editar</button>
-                    <button th:unless="${isEditPackage}" type="submit" class="boton_submit">Crear</button>
+                    <button th:if="${isEditPackage}" type="submit" class="boton_submit" id="boton_editar_paquete">Editar</button>
+                    <button th:unless="${isEditPackage}" type="submit" class="boton_submit" id="boton_crear_paquete">Crear</button>
                 </section>
             </form>
 
@@ -129,7 +129,7 @@
         </section>
         <section class="botones">
                 <!-- Botón Ingresar / Editar -->
-            <button type="submit" class="boton_submit">Crear</button> <!-- js on click / y si no encuentra coord que no submitee-->
+            <button type="submit" class="boton_submit" id="boton_crear_viaje">Crear</button> <!-- js on click / y si no encuentra coord que no submitee-->
             </section>
         </form>
     </article>
@@ -149,7 +149,7 @@
             <div class="detalle-paq">
                 <div style="display: flex; flex-direction: row; gap:1em">
                         <p style="text-align: center;font-size: 20px" class="card-text" ><strong>Paquete</strong></p><br>
-                        <a th:href="form-editar-paquete"><i class="fa-solid fa-pen-to-square"  style="color: #36054E; transition: color 0.3s;" onmouseover="this.style.color='purple'" onmouseout="this.style.color='#36054E'"></i></a>
+                        <a th:href="form-editar-paquete" id="boton_ir_editar_paquete"><i class="fa-solid fa-pen-to-square"  style="color: #36054E; transition: color 0.3s;" onmouseover="this.style.color='purple'" onmouseout="this.style.color='#36054E'"></i></a>
                 </div>
                 <div>
                     <p>Peso del Paquete: <strong th:text="${paquete.getPeso()}+'kg'"></strong></p>
@@ -163,7 +163,7 @@
             <div class="detalle-via">
                 <div style="display: flex; flex-direction: row; gap:1em">
                     <p style="text-align: center;font-size: 20px" class="card-text"><strong>Viaje</strong></p><br>
-                    <a th:href="form-editar-viaje"><i class="fa-solid fa-pen-to-square"  style="color: #36054E; transition: color 0.3s;" onmouseover="this.style.color='purple'" onmouseout="this.style.color='#36054E'"></i></a>
+                    <a th:href="form-editar-viaje" id="boton_ir_editar_viaje"><i class="fa-solid fa-pen-to-square"  style="color: #36054E; transition: color 0.3s;" onmouseover="this.style.color='purple'" onmouseout="this.style.color='#36054E'"></i></a>
                 </div>
                 <div>
                     <p>Dirección de Salida: <strong th:text="${viaje.getDomicilioDeSalida()}"></strong></p>
@@ -172,7 +172,7 @@
             </div>
         </div>
         <section class="botones">
-            <a th:href="@{crear-envio}"><button class="boton_submit">Pagar</button></a>
+            <a th:href="@{crear-envio}" ><button class="boton_submit" id="boton_pagar_envio">Pagar</button></a>
         </section>
     </article>
 

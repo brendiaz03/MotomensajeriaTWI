@@ -27,7 +27,9 @@ public class UsuarioServicioImpl implements UsuarioServicio {
     @Override
     public Usuario registrarUsuario(DatosUsuario usuario) throws UsuarioDuplicadoException {
         try{
-            verificarDuplicados(usuario.getEmail(), usuario.getNombreUsuario());
+            Usuario duplicado=this.usuarioRepositorio.buscarDuplicados(usuario.getEmail(), usuario.getNombreUsuario());
+            throw new UsuarioDuplicadoException("Usuario o Email ya existentes");
+        }catch (NoResultException e){
             if(usuario.getTipoUsuario() == TipoUsuario.Conductor){
                 Conductor conductor = usuario.toConductor();
                 return usuarioRepositorio.guardarUsuario(conductor);
@@ -35,8 +37,6 @@ public class UsuarioServicioImpl implements UsuarioServicio {
                 Cliente cliente = usuario.toCliente();
                 return usuarioRepositorio.guardarUsuario(cliente);
             }
-        }catch (UsuarioDuplicadoException e){
-            throw new UsuarioDuplicadoException(e.getMessage());
         }
     }
 
@@ -85,11 +85,5 @@ public class UsuarioServicioImpl implements UsuarioServicio {
         }
     }
 
-    private void verificarDuplicados(String email, String nombreUsuario) throws UsuarioDuplicadoException {
-        Usuario duplicado = usuarioRepositorio.buscarDuplicados(email, nombreUsuario);
-        if (duplicado != null) {
-            throw new UsuarioDuplicadoException("Email o nombre de usuario ya existe");
-        }
-    }
 
 }
