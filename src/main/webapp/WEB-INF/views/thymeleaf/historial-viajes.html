@@ -66,7 +66,6 @@
                                 <p class="card-text"><b>Llegada:</b> <span th:text="${viaje.getDomicilioDeLlegada()}"></span></p>
                                 <p class="card-text"><b>Paquete de:</b> <span th:text="${viaje.getNombreDelCliente()}"></span></p>
                                 <p class="card-text"><b>Precio:</b> <span th:text="${viaje.getPrecio()}"></span></p>
-                                <p class="card-text"><b>Codigo Postal:</b> <span th:text="${viaje.getCodigoPostal()}"></span></p>
                             </div>
                         </div>
                         <div class="contenedor-boton-cancelar">
@@ -76,9 +75,9 @@
                             <div th:with="CANCELADO=${T(com.tallerwebi.dominio.enums.TipoEstado).CANCELADO}">
                                 <div th:if="${viaje.getEstado() == CANCELADO}" class="cancelado">Cancelado</div>
                             </div>
-                            <div>
-                                <a th:href="@{/detalle(idViaje=${viaje.getIdViaje()})}" class="boton-verde">Ver detalle</a>
-                            </div>
+<!--                            <div>-->
+<!--                                <a th:href="@{/detalle(idViaje=${viaje.getIdViaje()})}" class="boton-verde">Ver detalle</a>-->
+<!--                            </div>-->
                         </div>
                     </div>
                 </div>
