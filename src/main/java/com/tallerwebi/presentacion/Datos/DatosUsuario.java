@@ -132,16 +132,15 @@ public class DatosUsuario {
     }
 
     public DatosUsuario usuarioToDTO(Usuario usuario){
-        DatosUsuario datosUsuario = new DatosUsuario();
-        datosUsuario.setNombre(usuario.getNombre());
-        datosUsuario.setApellido(usuario.getApellido());
-        datosUsuario.setNumeroDeDni(usuario.getNumeroDeDni());
-        datosUsuario.setEmail(usuario.getEmail());
-        datosUsuario.setNumeroDeTelefono(usuario.getNumeroDeTelefono());
-        datosUsuario.setNombreUsuario(usuario.getNombreUsuario());
-        datosUsuario.setPassword(usuario.getPassword());
-        datosUsuario.setDomicilio(usuario.getDomicilio());
-        datosUsuario.setTipoUsuario(usuario.getTipoUsuario());
-        return datosUsuario;
+        this.nombre = usuario.getNombre();
+        this.apellido = usuario.getApellido();
+        this.numeroDeDni=usuario.getNumeroDeDni();
+        this.email = usuario.getEmail();
+        this.numeroDeTelefono = usuario.getNumeroDeTelefono();
+        this.nombreUsuario=usuario.getNombreUsuario();
+        this.password = usuario.getPassword();
+        this.domicilio = usuario.getDomicilio();
+        this.tipoUsuario = usuario.getTipoUsuario();
+        return this;
     }
 }
