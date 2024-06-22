@@ -54,7 +54,7 @@ public class VehiculoControlador {
         try{
             Vehiculo vehiculo = vehiculoServicio.registrarVehiculo(nuevoVehiculo);
             conductorServicio.RelacionarVehiculoAConductor((Integer)session.getAttribute("IDUSUARIO"), vehiculo);
-            return new ModelAndView("home");
+            return new ModelAndView("redirect:/home");
         }catch(UsuarioNoEncontradoException | VehiculoDuplicadoException e){
             return this.mostrarRegistroDelVehiculo(nuevoVehiculo,e.getMessage(),session);
         }

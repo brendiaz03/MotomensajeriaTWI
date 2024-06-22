@@ -1,59 +1,72 @@
+
+.form_viaje {
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+    justify-content: center;
+    height: auto;
+}
+
+
+.pasos_realizar_envio div {
+    background-color: #D9D9D9;
+    border-radius: 50px;
+    padding: 20px;
+    justify-content: space-around;
+    height: 100%; /* Ajustar con JavaScript */
+    display: flex;
+    flex-direction: column;
+}
+
+
 .pasos {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-between; /* Distribuir espacio uniformemente */
-    height: 100%; /* Asegurar que ocupa todo el contenedor */
+    justify-content: space-between;
+    height: 100%;
 }
 
 .icono {
     font-size: 50px;
-}
-.icono-actual{
-    color:rebeccapurple;
+    text-decoration: none;
 }
 
-.foto{
-    height: 8em;
-    width: auto;
-}
-
-.pasos_realizar_envio {
-    background-color: #D9D9D9;
-    border-radius: 50px;
-    padding: 2%;
-    align-content: space-around;
-    height: 90%;
-    align-self: center;
-}
-
-.detalles{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
+.icono-actual {
+    color: rebeccapurple;
+    text-decoration: none;
 }
 
 .formularios_envio {
-    align-self: center;
     width: 70%;
     background-color: #D9D9D9;
     border-radius: 50px;
-    align-items: center;
-    padding: 2%;
-    height: 90%;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    justify-content: space-between;
 }
 
-.salir{
+.salir {
     justify-content: right;
-    color:blueviolet;
+    color: #36054E;
     font-size: 2em;
     justify-items: right;
+    display: flex;
+    justify-content: flex-end;
+    text-decoration: none;
 }
-.botones{
-    display:flex;
-    flex-direction:row;
-    gap: 6rem;
-    justify-content:center;
+.salir:hover{
+    color:darkviolet;
+}
+
+.botones {
+    display: flex;
+    flex-direction: row;
+    gap: 2rem;
+    justify-content: center;
+    margin-top: 20px;
 }
 
 .boton_submit {
@@ -61,21 +74,13 @@
     height: 67px;
     background: #36054E;
     border-radius: 50px;
-    color:white;
+    color: white;
 }
+
 .boton_submit:hover {
     background: darkviolet;
-    border-color:#36054E;
+    border-color: #36054E;
 }
-.form_viaje {
-    display: flex;
-    flex-direction: row;
-    gap: 15px;
-    justify-content: center;
-    height: 40em;
-}
-
-
 
 .form-control {
     border: none;
@@ -95,19 +100,59 @@
     display: flex;
     flex-direction: row;
     gap: 3rem;
-    align-content: center;
-    padding: 3%;
-    flex-grow: 1;
 }
 
 .columna {
     display: flex;
     flex-direction: column;
-    gap: 3rem;
+    gap: 1rem;
     width: 100%;
     padding: 0 1rem;
 }
-.titulo_registroViaje{
+
+.titulo_registroViaje {
     font-size: 25px;
     text-align: center;
+}
+
+.foto {
+    height: 8em;
+    width: auto;
+    margin: 0 auto;
+    display: block;
+}
+
+
+
+.errores {
+    color: red;
+    font-size: 0.9em;
+}
+
+.error {
+    color: red;
+    display: none;
+}
+
+.detalles {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+.detalles div{
+    justify-content: center;
+
+}
+.detalle-paq, .detalle-via {
+    flex: 1; /* Cada elemento ocupa la mitad del espacio disponible */
+    padding: 20px; /* Añade espacio interno para separación */
+    text-align: center; /* Centra el contenido */
+    box-sizing: border-box; /* Incluye el padding en el tamaño total */
+}
+
+@media (max-width: 768px) {
+    .detalle-paq, .detalle-via {
+        flex: 100%; /* En pantallas más pequeñas, ocupa el 100% del ancho */
+    }
 }

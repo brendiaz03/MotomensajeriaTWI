@@ -50,7 +50,7 @@ public class ViajeControlador {
         model.put("clave", claveGoogleMaps);
         model.put("pasoActual", pasoActual);
 
-        if (viajeEnSession == null && !isEditViaje) {
+        if (viajeEnSession == null || isEditViaje) {
             model.put("viaje", new Viaje());
         } else {
             model.put("viaje", viajeEnSession);
@@ -67,7 +67,6 @@ public class ViajeControlador {
 
     @RequestMapping("/form-editar-viaje")
     public ModelAndView mostrarFormEditorViaje(HttpSession session){
-        session.setAttribute("viaje", new Viaje());
         session.setAttribute("isEditViaje", true);
         session.setAttribute("pasoActual", 2);
         return new ModelAndView("redirect:/form-viaje");

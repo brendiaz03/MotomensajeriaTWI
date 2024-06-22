@@ -28,5 +28,6 @@ public enum ModeloVehiculo {
     RENAULT_TRUCKS,
     HINO,
     ISUZU,
-    DAF
+    DAF,
+    MCLAREN
 }
