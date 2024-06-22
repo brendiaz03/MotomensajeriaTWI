@@ -52,7 +52,6 @@ public class LoginControlador {
             model.put("error", mensajeError);
         }
         model.put("datosLogin", new DatosLogin());
-
         return new ModelAndView(viewName, model);
     }
 
