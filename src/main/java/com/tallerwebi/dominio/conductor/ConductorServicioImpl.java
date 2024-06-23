@@ -1,27 +1,26 @@
 package com.tallerwebi.dominio.conductor;
 
-import com.tallerwebi.dominio.enums.TipoUsuario;
-import com.tallerwebi.dominio.exceptions.UsuarioDuplicadoException;
 import com.tallerwebi.dominio.exceptions.UsuarioNoEncontradoException;
-import com.tallerwebi.dominio.usuario.Usuario;
 import com.tallerwebi.dominio.vehiculo.Vehiculo;
-import com.tallerwebi.presentacion.Datos.DatosUsuario;
+import com.tallerwebi.dominio.viaje.Viaje;
+import com.tallerwebi.dominio.viaje.ViajeRepositorio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.NoResultException;
-import java.io.IOException;
-import java.util.Base64;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class ConductorServicioImpl implements ConductorServicio {
 
     private final ConductorRepositorio conductorRepositorio;
+    private final ViajeRepositorio viajeRepositorio;
 
     @Autowired
-    public ConductorServicioImpl(ConductorRepositorio conductorRepositorio) {
+    public ConductorServicioImpl(ConductorRepositorio conductorRepositorio, ViajeRepositorio viajeRepositorio) {
         this.conductorRepositorio = conductorRepositorio;
+        this.viajeRepositorio=viajeRepositorio;
     }
 
 
@@ -44,6 +43,36 @@ public class ConductorServicioImpl implements ConductorServicio {
         }catch(NoResultException e){
             throw new UsuarioNoEncontradoException("No se pudo realizar la relación entre el Vehiculo y el Conductor ya que el Conductor no existe.");
         }
+    }
+
+    @Override
+    public Boolean estaPenalizado(Conductor conductor, List<Viaje> cantidadDescartados) {
+        conductor.setCantPenalizacion((conductor.getCantPenalizacion())+1);
+        this.conductorRepositorio.editarConductor(conductor);
+        if(conductor.getCantPenalizacion()>=2){
+            conductor.setPenalizado(true);
+            conductor.setHoraPenalizacion(LocalDateTime.now());
+            this.conductorRepositorio.editarConductor(conductor);
+            for(Viaje descartado:cantidadDescartados){
+                this.viajeRepositorio.editar(descartado);
+            }
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    @Override
+    public void editarConductor(Conductor conductor) {
+        this.conductorRepositorio.editarConductor(conductor);
+    }
+
+    @Override
+    public void despenalizarConductor(Conductor conductor) {
+        conductor.setPenalizado(false);
+        conductor.setHoraPenalizacion(null);
+        conductor.setCantPenalizacion(0);
+        this.editarConductor(conductor);
     }
 
 

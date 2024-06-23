@@ -51,4 +51,8 @@ public interface ViajeServicio {
     void actualizarViajeCancelado(Viaje viajeObtenido);
 
     List<Viaje> obtenerHistorialDeEnvios(Integer idCliente);
+
+    void duplicarViajeDescartado(Viaje viajeObtenido, Conductor conductor);
+
+    List<Viaje> buscarDescartadosPorConductor(Conductor conductor);
 }

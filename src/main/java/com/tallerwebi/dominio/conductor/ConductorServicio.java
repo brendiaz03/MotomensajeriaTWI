@@ -1,16 +1,20 @@
 package com.tallerwebi.dominio.conductor;
 
 import com.tallerwebi.dominio.exceptions.UsuarioNoEncontradoException;
-import com.tallerwebi.dominio.usuario.Usuario;
 import com.tallerwebi.dominio.vehiculo.Vehiculo;
-import com.tallerwebi.presentacion.Datos.DatosUsuario;
-import org.springframework.web.multipart.MultipartFile;
+import com.tallerwebi.dominio.viaje.Viaje;
 
-import java.io.IOException;
+import java.util.List;
 
 public interface ConductorServicio {
 
     Conductor obtenerConductorPorId(Integer id) throws UsuarioNoEncontradoException;
 
     Boolean RelacionarVehiculoAConductor(Integer idConductor, Vehiculo vehiculo) throws UsuarioNoEncontradoException;
+
+    Boolean estaPenalizado(Conductor conductor, List<Viaje> cantidadDescartados);
+
+    void editarConductor(Conductor conductor);
+
+    void despenalizarConductor(Conductor conductor);
 }
