@@ -36,7 +36,6 @@ public class ViajeServicioImpl implements ViajeServicio {
         if(conductor == null){
             throw new UsuarioNoEncontradoException("No se encuentra logueado");
         }
-
         List<Viaje> viajes = viajeRepositorio.obtenerViajesPorConductor(conductor);
         List<DatosViaje> historial = new ArrayList<>();
         for (Viaje viaje : viajes) {

@@ -33,8 +33,6 @@
                 <li class="nav-item p-2">
                     <a th:href="ayuda" class="nav-link p-2 text-white" href="#">Ayuda</a>
             </ul>
-            <a th:href="@{login}" class="btn-custom" style="text-decoration: none">Ingresar</a>
-            <!-- Muestra el botón de usuario solo si el usuario está logueado -->
         </div>
     </nav>
 </header>
@@ -47,16 +45,18 @@
                     <div>
                         <label for="usuario" class="form-label">Usuario:</label>
                         <input type="text" class="form-control" id="usuario" name="usuario" th:field="*{usuario}">
-                        <span id="usuarioError" class="error"></span>
+                        <div th:if="${error}">
+                            <label th:text="${error}" style="color: red;"></label>
+                        </div>
                     </div>
                     <div>
                         <label for="password" class="form-label">Contraseña:</label>
                         <input type="password" class="form-control" id="password" name="password" th:field="*{password}">
-                        <span id="passwordError" class="error"></span>
+                        <div th:if="${error}">
+                            <label th:text="${error}" style="color: red;"></label>
+                        </div>
                     </div>
-                    <section class="sub_columna" th:if="${error}">
-                        <span class="error" th:text="${error}"></span>
-                    </section>
+
                     <section class="sub_columna">
                         <div>
                             <a href="/recuperar-contraseña">¿Olvidaste tu contraseña?</a>
