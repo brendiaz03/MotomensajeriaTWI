@@ -32,6 +32,8 @@ public class UsuarioServicioImpl implements UsuarioServicio {
         }catch (NoResultException e){
             if(usuario.getTipoUsuario() == TipoUsuario.Conductor){
                 Conductor conductor = usuario.toConductor();
+                conductor.setPenalizado(false);
+                conductor.setCantPenalizacion(0);
                 return usuarioRepositorio.guardarUsuario(conductor);
             }else{
                 Cliente cliente = usuario.toCliente();

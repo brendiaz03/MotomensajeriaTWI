@@ -64,6 +64,9 @@ public class Viaje {
     @Column(name = "enviadoNuevamente")
     private Boolean enviadoNuevamente;
 
+    @Column(name = "afectaPenalizacion")
+    private Boolean afectaPenalizacion;
+
 
     @Transient
     private Double distanciaDelViaje;
@@ -223,6 +226,13 @@ public class Viaje {
 
     public void setEnviadoNuevamente(Boolean enviadoNuevamente) {
         this.enviadoNuevamente = enviadoNuevamente;
+    }
+
+    public Boolean getAfectaPenalizacion() {
+        return afectaPenalizacion;
+    }
+    public void setAfectaPenalizacion(Boolean afectaPenalizacion) {
+        this.afectaPenalizacion = afectaPenalizacion;
     }
 }
 

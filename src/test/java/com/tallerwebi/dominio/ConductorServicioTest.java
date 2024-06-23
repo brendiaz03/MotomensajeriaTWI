@@ -3,6 +3,7 @@ package com.tallerwebi.dominio;
 import com.tallerwebi.dominio.conductor.*;
 import com.tallerwebi.dominio.exceptions.UsuarioNoEncontradoException;
 import com.tallerwebi.dominio.vehiculo.Vehiculo;
+import com.tallerwebi.dominio.viaje.ViajeRepositorio;
 import com.tallerwebi.infraestructura.config.HibernateInfraestructuraTestConfig;
 import org.hibernate.SessionFactory;
 import org.junit.jupiter.api.BeforeEach;
@@ -30,12 +31,16 @@ public class ConductorServicioTest {
     private ConductorServicio conductorServicio;
     private ConductorRepositorio conductorRepositorio;
 
+    private ViajeRepositorio viajeRepositorio;
+
+
     private SessionFactory sessionFactory;
 
     @BeforeEach
     public void init() {
         this.conductorRepositorio = mock(ConductorRepositorio.class);
-        this.conductorServicio = new ConductorServicioImpl(conductorRepositorio);
+        this.viajeRepositorio= mock(ViajeRepositorio.class);
+        this.conductorServicio = new ConductorServicioImpl(conductorRepositorio,viajeRepositorio);
     }
 
 
