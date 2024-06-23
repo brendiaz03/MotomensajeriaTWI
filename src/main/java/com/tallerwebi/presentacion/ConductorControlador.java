@@ -160,7 +160,7 @@ public class ConductorControlador {
 
     @RequestMapping("/volver")
     public ModelAndView volverAlHome(){
-        return new ModelAndView("redirect:/home");
+        return new ModelAndView("redirect:/ubicacion");
     }
 
     @RequestMapping("/descartar")
@@ -199,4 +199,11 @@ public class ConductorControlador {
             session.setAttribute("distancia", distancia);
             return mostrarHomeConductor(session);
     }
+
+    @RequestMapping(path = "/ubicacion")
+    public ModelAndView ubicacoin(){
+        String viewName= "ubicacion";
+        return new ModelAndView(viewName);
+    }
+
 }
