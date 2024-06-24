@@ -79,9 +79,19 @@ public class ViajeRepositorioImpl implements ViajeRepositorio {
         return (List<Viaje>) criteria.list();
     }
 
+
     @Override
     @Transactional
     public List<Viaje> traerTodosLosViajesDescartadosPorConductor(Conductor conductor) {
+        Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Viaje.class);
+        criteria.add(Restrictions.eq("estado", TipoEstado.DESCARTADO));
+        criteria.add(Restrictions.eq("conductor", conductor));
+
+        return (List<Viaje>) criteria.list();
+    }
+    @Override
+    @Transactional
+    public List<Viaje> traerTodosLosViajesDescartadosQueAfectanPenalizacionPorConductor(Conductor conductor) {
         Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Viaje.class);
         criteria.add(Restrictions.eq("estado", TipoEstado.DESCARTADO));
         criteria.add(Restrictions.eq("conductor", conductor));
@@ -96,6 +106,7 @@ public class ViajeRepositorioImpl implements ViajeRepositorio {
         Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Viaje.class);
         criteria.add(Restrictions.eq("estado", TipoEstado.CANCELADO));
         criteria.add(Restrictions.eq("conductor", conductor));
+        criteria.add(Restrictions.eq("afectaPenalizacion", true));
 
         return (List<Viaje>) criteria.list();
     }

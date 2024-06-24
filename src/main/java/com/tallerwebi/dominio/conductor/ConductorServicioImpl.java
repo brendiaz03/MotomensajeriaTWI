@@ -47,27 +47,33 @@ public class ConductorServicioImpl implements ConductorServicio {
 
     @Override
     public Boolean estaPenalizado(Conductor conductor) {
-        List<Viaje> viajesDescartados=this.viajeRepositorio.traerTodosLosViajesDescartadosPorConductor(conductor);
+        List<Viaje> viajesDescartados=this.viajeRepositorio.traerTodosLosViajesDescartadosQueAfectanPenalizacionPorConductor(conductor);
         List<Viaje> viajesCancelados=this.viajeRepositorio.traerTodosLosViajesCanceladosPorConductor(conductor);
 
-        System.out.println("LA CANTIDAD TOTAL DE VIAJES DESCARTADOS ES DE: "+viajesDescartados);
-        System.out.println("LA CANTIDAD TOTAL DE VIAJES CANCELADOS ES DE: "+viajesCancelados);
+        System.out.println("LA CANTIDAD TOTAL DE VIAJES DESCARTADOS ES DE: "+viajesDescartados.size());
+        System.out.println("LA CANTIDAD TOTAL DE VIAJES CANCELADOS ES DE: "+viajesCancelados.size());
 
         Integer cantPenalizacion=viajesDescartados.size()+(viajesCancelados.size())*2;
 
         conductor.setCantPenalizacion(cantPenalizacion);
         this.conductorRepositorio.editarConductor(conductor);
-        if(conductor.getCantPenalizacion()>=5){
+        if(conductor.getCantPenalizacion()>=3){
             conductor.setPenalizado(true);
             conductor.setHoraPenalizacion(LocalDateTime.now());
             this.conductorRepositorio.editarConductor(conductor);
+            for(Viaje viaje: viajesCancelados){
+                viaje.setAfectaPenalizacion(false);
+                this.viajeRepositorio.editar(viaje);
+            }
+            for(Viaje viaje2: viajesDescartados){
+                viaje2.setAfectaPenalizacion(false);
+                this.viajeRepositorio.editar(viaje2);
+            }
             return true;
         }else{
             return false;
         }
     }
-
-
 
 
     @Override

@@ -156,6 +156,7 @@ public class ViajeServicioImpl implements ViajeServicio {
         Viaje viajeAceptadoActual = this.viajeRepositorio.obtenerViajePorId(datosViaje.getIdViaje());
         viajeAceptadoActual.setEstado(TipoEstado.CANCELADO);
         viajeAceptadoActual.setFecha(LocalDateTime.now());
+        viajeAceptadoActual.setAfectaPenalizacion(true);
         viajeRepositorio.editar(viajeAceptadoActual);
     }
 
