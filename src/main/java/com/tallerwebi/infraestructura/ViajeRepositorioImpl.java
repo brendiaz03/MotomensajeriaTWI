@@ -92,6 +92,17 @@ public class ViajeRepositorioImpl implements ViajeRepositorio {
 
     @Override
     @Transactional
+    public List<Viaje> traerTodosLosViajesCanceladosPorConductor(Conductor conductor) {
+        Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Viaje.class);
+        criteria.add(Restrictions.eq("estado", TipoEstado.CANCELADO));
+        criteria.add(Restrictions.eq("conductor", conductor));
+
+        return (List<Viaje>) criteria.list();
+    }
+
+
+    @Override
+    @Transactional
     public Viaje guardarViaje(Viaje viaje) {
         this.sessionFactory.getCurrentSession().saveOrUpdate(viaje);
         return this.obtenerViajePorId(viaje.getId());

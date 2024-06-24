@@ -24,4 +24,5 @@ public interface ViajeRepositorio {
 
    List<Viaje> traerTodosLosViajesDescartadosPorConductor(Conductor idConductor);
 
-    }
+    List<Viaje> traerTodosLosViajesCanceladosPorConductor(Conductor conductor);
+}

@@ -145,10 +145,12 @@ public class ConductorControlador {
     }
 
     @RequestMapping("/cancelar-viaje")
-    public ModelAndView cancelarViaje(@RequestParam("idViaje") Integer idViaje){
+    public ModelAndView cancelarViaje(HttpSession session, @RequestParam("idViaje") Integer idViaje) throws UsuarioNoEncontradoException {
         DatosViaje viaje = viajeServicio.obtenerViajeAceptadoPorId(idViaje);
         viajeServicio.cancelarViaje(viaje);
-        return new ModelAndView("redirect:/home");
+        Conductor conductor = conductorServicio.obtenerConductorPorId((Integer) session.getAttribute("IDUSUARIO"));
+        this.conductorServicio.estaPenalizado(conductor);
+        return new ModelAndView("redirect:/homeConductor");
     }
 
     @RequestMapping("/terminar-viaje")
@@ -167,8 +169,7 @@ public class ConductorControlador {
     public ModelAndView descartarViaje(HttpSession session, @RequestParam("idViaje") Integer idViaje) throws UsuarioNoEncontradoException {
         Conductor conductor = conductorServicio.obtenerConductorPorId((Integer) session.getAttribute("IDUSUARIO"));
         this.viajeServicio.duplicarViajeDescartado(this.viajeServicio.obtenerViajePorId(idViaje), conductor);
-        List<Viaje> descartados=this.viajeServicio.buscarDescartadosPorConductor(conductor);
-        this.conductorServicio.estaPenalizado(conductor, descartados);
+        this.conductorServicio.estaPenalizado(conductor);
         return new ModelAndView("redirect:/homeConductor");
     }
 
