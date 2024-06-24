@@ -46,21 +46,35 @@ public class ConductorServicioImpl implements ConductorServicio {
     }
 
     @Override
-    public Boolean estaPenalizado(Conductor conductor, List<Viaje> cantidadDescartados) {
-        conductor.setCantPenalizacion((conductor.getCantPenalizacion())+1);
+    public Boolean estaPenalizado(Conductor conductor) {
+        List<Viaje> viajesDescartados=this.viajeRepositorio.traerTodosLosViajesDescartadosQueAfectanPenalizacionPorConductor(conductor);
+        List<Viaje> viajesCancelados=this.viajeRepositorio.traerTodosLosViajesCanceladosPorConductor(conductor);
+
+        System.out.println("LA CANTIDAD TOTAL DE VIAJES DESCARTADOS ES DE: "+viajesDescartados.size());
+        System.out.println("LA CANTIDAD TOTAL DE VIAJES CANCELADOS ES DE: "+viajesCancelados.size());
+
+        Integer cantPenalizacion=viajesDescartados.size()+(viajesCancelados.size())*2;
+
+        conductor.setCantPenalizacion(cantPenalizacion);
         this.conductorRepositorio.editarConductor(conductor);
-        if(conductor.getCantPenalizacion()>=2){
+        if(conductor.getCantPenalizacion()>=3){
             conductor.setPenalizado(true);
             conductor.setHoraPenalizacion(LocalDateTime.now());
             this.conductorRepositorio.editarConductor(conductor);
-            for(Viaje descartado:cantidadDescartados){
-                this.viajeRepositorio.editar(descartado);
+            for(Viaje viaje: viajesCancelados){
+                viaje.setAfectaPenalizacion(false);
+                this.viajeRepositorio.editar(viaje);
+            }
+            for(Viaje viaje2: viajesDescartados){
+                viaje2.setAfectaPenalizacion(false);
+                this.viajeRepositorio.editar(viaje2);
             }
             return true;
         }else{
             return false;
         }
     }
+
 
     @Override
     public void editarConductor(Conductor conductor) {
