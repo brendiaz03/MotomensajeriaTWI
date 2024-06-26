@@ -1,13 +1,18 @@
 package com.tallerwebi.presentacion;
 
+import com.tallerwebi.dominio.conductor.Conductor;
 import com.tallerwebi.dominio.conductor.ConductorServicio;
-import com.tallerwebi.dominio.vehiculo.VehiculoServicio;
+import com.tallerwebi.dominio.exceptions.UsuarioNoEncontradoException;
+import com.tallerwebi.dominio.viaje.Viaje;
 import com.tallerwebi.dominio.viaje.ViajeServicio;
+import com.tallerwebi.presentacion.Datos.DatosViaje;
 import org.junit.jupiter.api.BeforeEach;
-
+import org.junit.jupiter.api.Test;
+import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpSession;
-
+import java.util.List;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
 import static org.mockito.Mockito.*;
 
 public class ConductorControladorTest {
@@ -15,354 +20,249 @@ public class ConductorControladorTest {
    private ConductorControlador conductorControlador;
    private ConductorServicio conductorServicio;
    private ViajeServicio viajeServicio;
-   private VehiculoServicio vehiculoServicio;
    private HttpSession session;
 
 
-//    @BeforeEach //antes que ejecuten los test, se ejecute este método (como un constructor de test)
-//   public void init() throws Exception {
-//       this.conductorServicio = mock(ConductorServicio.class);
-//       this.vehiculoServicio=mock(VehiculoServicio.class);
-//       this.viajeServicio=mock(ViajeServicio.class);
-//       this.session = mock(HttpSession.class);
-//       this.conductorControlador = new ConductorControlador(this.conductorServicio, this.vehiculoServicio, this.viajeServicio);
-//
-//   }
-
-    /*@Test
-    public void queAlSolicitarLaPantallaRegistrarmeSeMuestreElFormularioDeRegistroDelConductor() throws UsuarioNoEncontradoException {
-        String nombreEsperado= "registro-conductor";
-        Imagen logo = new Imagen();
-        Imagen user = new Imagen();
-        Imagen auto = new Imagen();
-        Imagen fondo = new Imagen();
-        Imagen botonPS = new Imagen();
-
-        when(imagenServicio.getImagenByName("logo")).thenReturn(logo);
-        when(imagenServicio.getImagenByName("user")).thenReturn(user);
-        when(imagenServicio.getImagenByName("auto")).thenReturn(auto);
-        when(imagenServicio.getImagenByName("fondo")).thenReturn(fondo);
-        when(imagenServicio.getImagenByName("botonPS")).thenReturn(botonPS);
-        when(this.session.getAttribute("isEditForm")).thenReturn(false);
-        ModelAndView mav = conductorControlador.mostrarFormConductor("", session);
-
-        assertThat(mav.getViewName(), equalToIgnoringCase(nombreEsperado));
-        assertThat(mav.getModel().get("conductor"), instanceOf(Conductor.class));
-        assertThat((boolean) mav.getModel().get("isEditForm"), is(false));
-        assertThat(mav.getModel().containsKey("mensajeError"), is(false));
-    }
+    @BeforeEach //antes que ejecuten los test, se ejecute este método (como un constructor de test)
+   public void init() throws Exception {
+       this.conductorServicio = mock(ConductorServicio.class);
+       this.viajeServicio=mock(ViajeServicio.class);
+       this.session = mock(HttpSession.class);
+       this.conductorControlador = new ConductorControlador(this.conductorServicio, this.viajeServicio);
+   }
 
     @Test
-    public void queAlSolicitarPantallaRegistroConMensajeDeErrorMuestreFormularioConError() throws UsuarioNoEncontradoException {
-        String nombreEsperado= "registro-conductor";
-        Imagen logo = new Imagen();
-        Imagen user = new Imagen();
-        Imagen auto = new Imagen();
-        Imagen fondo = new Imagen();
-        Imagen botonPS = new Imagen();
-        String mensajeError="Error";
+    public void queSeRendericeElHomeDelConductorConLosViajesPendientesDisponibles() throws UsuarioNoEncontradoException {
+        String nombreEsperado = "home-conductor";
+        Conductor conductor=mock(Conductor.class);
+        List<DatosViaje> viajesPendientes = mock(List.class);
+        Double distanciaAFiltrar = 5.0;
+        Double latitud = 5.0;
+        Double longitud = 3.0;
+        Boolean isPenalizado = false;
 
-        when(imagenServicio.getImagenByName("logo")).thenReturn(logo);
-        when(imagenServicio.getImagenByName("user")).thenReturn(user);
-        when(imagenServicio.getImagenByName("auto")).thenReturn(auto);
-        when(imagenServicio.getImagenByName("fondo")).thenReturn(fondo);
-        when(imagenServicio.getImagenByName("botonPS")).thenReturn(botonPS);
-        when(this.session.getAttribute("isEditForm")).thenReturn(false);
+        when(session.getAttribute("IDUSUARIO")).thenReturn(1);
+        when(conductorServicio.obtenerConductorPorId(1)).thenReturn(conductor);
+        when(session.getAttribute("distancia")).thenReturn(distanciaAFiltrar);
+        when(session.getAttribute("latitud")).thenReturn(latitud);
+        when(session.getAttribute("longitud")).thenReturn(longitud);
+        when(conductor.getPenalizado()).thenReturn(isPenalizado);
+        when(viajeServicio.filtrarViajesPorDistanciaDelConductor(latitud, longitud, distanciaAFiltrar, conductor)).thenReturn(viajesPendientes);
 
-        ModelAndView mav = conductorControlador.mostrarFormConductor(mensajeError, session);
-        assertThat(mav.getViewName(), equalToIgnoringCase(nombreEsperado));
-        assertThat(mav.getModel().get("conductor"), instanceOf(Conductor.class));
-        assertThat((boolean) mav.getModel().get("isEditForm"), is(false));
-        assertThat(mav.getModel().containsKey("mensajeError"), is(true));
-    }
+        ModelAndView mav = conductorControlador.mostrarHomeConductor(session);
 
-    @Test
-    public void queAlSolicitarPantallaRegistroConIsEditFormTrueMuestreFormularioRegistroParaEdicion() throws UsuarioNoEncontradoException {
-        String nombreEsperado = "registro-conductor";
-        Imagen logo = new Imagen();
-        Imagen user = new Imagen();
-        Imagen auto = new Imagen();
-        Imagen fondo = new Imagen();
-        Imagen botonPS = new Imagen();
-        Conductor conductor = new Conductor();
-        Integer idConductor = 1;
-
-        when(imagenServicio.getImagenByName("logo")).thenReturn(logo);
-        when(imagenServicio.getImagenByName("user")).thenReturn(user);
-        when(imagenServicio.getImagenByName("auto")).thenReturn(auto);
-        when(imagenServicio.getImagenByName("fondo")).thenReturn(fondo);
-        when(imagenServicio.getImagenByName("botonPS")).thenReturn(botonPS);
-        when(session.getAttribute("isEditForm")).thenReturn(true);
-        when(session.getAttribute("IDUSUARIO")).thenReturn(idConductor);
-        when(conductorServicio.obtenerConductorPorId(idConductor)).thenReturn(conductor);
-
-        ModelAndView mav = conductorControlador.mostrarFormConductor(null, session);
-
-        assertThat(mav.getViewName(), equalToIgnoringCase(nombreEsperado));
-        assertThat(mav.getModel().get("conductor"), is(conductor));
-        assertThat((boolean) mav.getModel().get("isEditForm"), is(true));
-        assertThat(mav.getModel().containsKey("mensajeError"), is(false));
-    }
-
-    @Test
-    public void queAlSolicitarPantallaEdicionYNoEncontrarConductorMuestreError() throws UsuarioNoEncontradoException {
-        String nombreEsperado = "registro-conductor";
-        Imagen logo = new Imagen();
-        Imagen user = new Imagen();
-        Imagen auto = new Imagen();
-        Imagen fondo = new Imagen();
-        Imagen botonPS = new Imagen();
-        Conductor conductor = new Conductor();
-        Integer idConductor = 1;
-
-        when(imagenServicio.getImagenByName("logo")).thenReturn(logo);
-        when(imagenServicio.getImagenByName("user")).thenReturn(user);
-        when(imagenServicio.getImagenByName("auto")).thenReturn(auto);
-        when(imagenServicio.getImagenByName("fondo")).thenReturn(fondo);
-        when(imagenServicio.getImagenByName("botonPS")).thenReturn(botonPS);
-        when(session.getAttribute("isEditForm")).thenReturn(true);
-        when(session.getAttribute("IDUSUARIO")).thenReturn(idConductor);
-        when(conductorServicio.obtenerConductorPorId(idConductor)).thenThrow(new UsuarioNoEncontradoException("Conductor no encontrado"));
-
-        ModelAndView mav = conductorControlador.mostrarFormConductor("", session);
-
-        assertThat(mav.getViewName(), equalToIgnoringCase(nombreEsperado));
-        assertThat(mav.getModel().get("mensajeError"), is("Conductor no encontrado"));
-    }
-
-
-    @Test
-    public void queAlSolicitarLaPantallaIrAPerfilSeMuestreElPerfilDelConductor() throws UsuarioNoEncontradoException {
-        String nombreEsperado = "perfil-conductor";
-        Imagen logo = new Imagen();
-        Imagen user = new Imagen();
-        Integer idConductor = 1;
-
-        Conductor conductor = new Conductor();
-        Vehiculo vehiculo = new Vehiculo();
-        vehiculo.setId(1L);
-        conductor.setVehiculo(vehiculo);
-
-        when(imagenServicio.getImagenByName("logo")).thenReturn(logo);
-        when(imagenServicio.getImagenByName("user")).thenReturn(user);
-        when(session.getAttribute("isUsuarioLogueado")).thenReturn(true);
-        when(session.getAttribute("IDUSUARIO")).thenReturn(idConductor);
-        when(conductorServicio.obtenerConductorPorId(idConductor)).thenReturn(conductor);
-
-        ModelAndView mav = this.conductorControlador.irAPerfil(session);
-
-        assertThat(mav.getViewName(), equalToIgnoringCase(nombreEsperado));
-        assertThat(mav.getModel().get("isUsuarioLogueado"), is(true));
-    }
-
-    @Test
-    public void queAlSolicitarLaPantallaIrAPerfilYNoEncontrarConductorMuestreError() throws UsuarioNoEncontradoException {
-        String nombreEsperado = "perfil-conductor";
-        Imagen logo = new Imagen();
-        Imagen user = new Imagen();
-        Integer idConductor = 1;
-
-        Conductor conductor = new Conductor();
-        Vehiculo vehiculo = new Vehiculo();
-        vehiculo.setId(1L);
-        conductor.setVehiculo(vehiculo);
-
-        when(imagenServicio.getImagenByName("logo")).thenReturn(logo);
-        when(imagenServicio.getImagenByName("user")).thenReturn(user);
-        when(session.getAttribute("isUsuarioLogueado")).thenReturn(true);
-        when(session.getAttribute("IDUSUARIO")).thenReturn(idConductor);
-        when(conductorServicio.obtenerConductorPorId(idConductor)).thenThrow(new UsuarioNoEncontradoException("Conductor no encontrado"));
-
-        ModelAndView mav = this.conductorControlador.irAPerfil(session);
-
-        assertThat(mav.getViewName(), equalToIgnoringCase(nombreEsperado));
-        assertThat(mav.getModel().get("mensajeError"), is("Conductor no encontrado"));
-    }
-
-    @Test
-    public void queSeMuestreElFormularioDeEditarConductor() {
-        String nombreEsperado = "redirect:/registro-conductor";
-
-        ModelAndView mav= this.conductorControlador.mostrarEditarConductor(session);
         assertThat(mav.getViewName(), equalTo(nombreEsperado));
-        verify(session).setAttribute("isEditForm", true);
+        assertThat(mav.getModel().get("conductor"), equalTo(conductor));
+        assertThat(mav.getModel().get("isPenalizado"), equalTo(isPenalizado));
+        assertThat(mav.getModel().get("viajes"), equalTo(viajesPendientes));
+
+        verify(conductorServicio).obtenerConductorPorId(1);
+        verify(viajeServicio).filtrarViajesPorDistanciaDelConductor(latitud, longitud, distanciaAFiltrar, conductor);
     }
 
     @Test
-    public void queSeMuestreElFormularioDeEditarImagenDePerfilDeConductorSiExisteElConductor() throws UsuarioNoEncontradoException {
-        String nombreEsperado = "foto-perfil";
-        Integer idConductor = 1;
-        Conductor conductor=new Conductor();
-        Imagen logo = new Imagen();
-        Imagen user = new Imagen();
+    public void queSeRendericeElHistorialDelConductorConElHistorialDeViajesRealizadosPorElMismo() throws UsuarioNoEncontradoException {
+        String nombreEsperado = "historial-viajes";
+        Conductor conductor=mock(Conductor.class);
+        List<DatosViaje> historialViajes = mock(List.class);
 
-        when(imagenServicio.getImagenByName("logo")).thenReturn(logo);
-        when(imagenServicio.getImagenByName("user")).thenReturn(user);
-        when(session.getAttribute("isUsuarioLogueado")).thenReturn(true);
-        when(session.getAttribute("IDUSUARIO")).thenReturn(idConductor);
-        when(conductorServicio.obtenerConductorPorId(idConductor)).thenReturn(conductor);
 
-        ModelAndView mav = conductorControlador.irAEditarFotoPerfil(session);
-        assertThat(mav.getViewName(),equalTo(nombreEsperado));
-        assertThat(mav.getModel().get("isUsuarioLogueado"),equalTo(true));
-        assertThat(mav.getModel().get("conductor"),instanceOf(Conductor.class));
+        when(session.getAttribute("IDUSUARIO")).thenReturn(1);
+        when(conductorServicio.obtenerConductorPorId(1)).thenReturn(conductor);
+        when(viajeServicio.obtenerHistorialDeViajesConductor(conductor)).thenReturn(historialViajes);
+        ModelAndView mav= conductorControlador.mostrarHistorial(session);
+
+        assertThat(mav.getViewName(), equalTo(nombreEsperado));
+        assertThat(mav.getModel().get("conductor"), equalTo(conductor));
+        assertThat(mav.getModel().get("viajesObtenidos"), equalTo(historialViajes));
+        verify(conductorServicio).obtenerConductorPorId(1);
+        verify(viajeServicio).obtenerHistorialDeViajesConductor(conductor);
+    }
+
+
+    @Test
+    public void queSeMuestreUnErrorEnElHistorialDelConductorSiNoSeEncuentraAlConductor() throws UsuarioNoEncontradoException {
+        String nombreEsperado = "historial-viajes";
+        String mensajeError="Conductor no encontrado";
+
+        when(session.getAttribute("IDUSUARIO")).thenReturn(1);
+        when(conductorServicio.obtenerConductorPorId(1)).thenThrow(UsuarioNoEncontradoException.class);
+        ModelAndView mav= conductorControlador.mostrarHistorial(session);
+
+        assertThat(mav.getViewName(), equalTo(nombreEsperado));
+        assertThat(mav.getModel().get("error"), equalTo(mensajeError));
+        verify(conductorServicio).obtenerConductorPorId(1);
+        verify(viajeServicio, never()).obtenerHistorialDeViajesConductor(any(Conductor.class));
     }
 
     @Test
-    public void queNoSeMuestreElFormularioDeEditarImagenDePerfilDeConductorSiNoExisteElConductor() throws UsuarioNoEncontradoException {
-        String nombreEsperado = "foto-perfil";
-        Integer idConductor = 1;
-        Conductor conductor=new Conductor();
-        Imagen logo = new Imagen();
-        Imagen user = new Imagen();
+    public void queSeRendericenTodosLosViajesEnProcesoDelConductor() throws UsuarioNoEncontradoException {
+        String nombreEsperado = "viajes-aceptados";
+        Conductor conductor=mock(Conductor.class);
+        List<Viaje> viajesEnProceso = mock(List.class);
 
-        when(imagenServicio.getImagenByName("logo")).thenReturn(logo);
-        when(imagenServicio.getImagenByName("user")).thenReturn(user);
-        when(session.getAttribute("isUsuarioLogueado")).thenReturn(true);
-        when(session.getAttribute("IDUSUARIO")).thenReturn(idConductor);
-        when(conductorServicio.obtenerConductorPorId(idConductor)).thenThrow(new UsuarioNoEncontradoException("Conductor no encontrado"));
+        when(session.getAttribute("IDUSUARIO")).thenReturn(1);
+        when(conductorServicio.obtenerConductorPorId(1)).thenReturn(conductor);
+        when(viajeServicio.obtenerViajesEnProceso(conductor)).thenReturn(viajesEnProceso);
+        ModelAndView mav= conductorControlador.verViajesEnProceso(session);
 
-        ModelAndView mav = conductorControlador.irAEditarFotoPerfil(session);
-        assertThat(mav.getViewName(),equalTo(nombreEsperado));
-        assertThat(mav.getModel().get("isUsuarioLogueado"),equalTo(true));
-        assertThat(mav.getModel().get("conductor"),equalTo(null));
-        assertThat(mav.getModel().get("mensajeError"), is("Conductor no encontrado"));
-    }*/
-
-    /*@Test
-    public void queSePuedaRegistrarUnNuevoConductor() throws UsuarioDuplicadoException {
-        Conductor nuevoConductor = new Conductor();
-        Conductor conductor = new Conductor();
-        conductor.setId(1);
-
-        when(conductorServicio.registrarConductorNoDuplicado(nuevoConductor)).thenReturn(conductor);
-
-        ModelAndView mav = conductorControlador.registrarConductor(nuevoConductor, session);
-
-        assertThat(mav.getViewName(), equalTo("redirect:/vehiculo"));
-        verify(session).setAttribute("IDUSUARIO", conductor.getId());
-        verify(conductorServicio).registrarConductorNoDuplicado(nuevoConductor);
-    }*/
-/*
-    @Test
-    public void queNoSePuedaRegistrarUnConductorDuplicado() throws UsuarioDuplicadoException {
-        Conductor nuevoConductor = new Conductor();
-        Conductor conductor = new Conductor();
-        conductor.setId(1);
-        when(conductorServicio.registrarConductorNoDuplicado(nuevoConductor)).thenThrow(new UsuarioDuplicadoException("Conductor Duplicado"));
-
-        ModelAndView mav = conductorControlador.registrarConductor(nuevoConductor, session);
-
-        assertThat(mav.getViewName(), equalTo("registro-conductor"));
-        assertThat(mav.getModel().get("mensajeError"), equalTo("Conductor Duplicado"));
-    }*/
-    /*@Test
-    public void queSePuedaEditarUnConductorExistente() throws UsuarioNoEncontradoException {
-        String nombreEsperado = "redirect:/perfil";
-        Integer idUsuario = 1;
-        Conductor nuevo= new Conductor();
-
-        when(session.getAttribute("IDUSUARIO")).thenReturn(idUsuario);
-
-        ModelAndView mav=this.conductorControlador.editarConductor(session,nuevo);
-
-        assertThat(mav.getViewName(),equalTo(nombreEsperado));
-        verify(conductorServicio).editarConductor(nuevo);
-        verify(session).setAttribute("isEditForm", false);
+        assertThat(mav.getViewName(), equalTo(nombreEsperado));
+        assertThat(mav.getModel().get("conductor"), equalTo(conductor));
+        assertThat(mav.getModel().get("viajesObtenidos"), equalTo(viajesEnProceso));
+        verify(conductorServicio).obtenerConductorPorId(1);
+        verify(viajeServicio).obtenerViajesEnProceso(conductor);
     }
 
     @Test
-    public void queNoSePuedaEditarUnConductorInexistente() throws UsuarioNoEncontradoException {
-        String nombreEsperado = "registro-conductor";
-        Integer idUsuario = 1;
-        Conductor nuevo= new Conductor();
-        nuevo.setId(idUsuario);
+    public void queSeMuestreUnErrorEnElApartadoDeViajesEnProcesoDelConductorSiNoSeEncuentraAlConductor() throws UsuarioNoEncontradoException {
+        String nombreEsperado = "viajes-aceptados";
+        String mensajeError="Conductor no encontrado";
 
-        when(session.getAttribute("IDUSUARIO")).thenReturn(idUsuario);
+        when(session.getAttribute("IDUSUARIO")).thenReturn(1);
+        when(conductorServicio.obtenerConductorPorId(1)).thenThrow(UsuarioNoEncontradoException.class);
+        ModelAndView mav= conductorControlador.verViajesEnProceso(session);
 
-        doThrow(new UsuarioNoEncontradoException("Conductor No Encontrado.")).when(conductorServicio).editarConductor(nuevo);
-
-        ModelAndView mav=this.conductorControlador.editarConductor(session,nuevo);
-
-        assertThat(mav.getViewName(),equalTo(nombreEsperado));
-        assertThat(mav.getModel().get("mensajeError"), equalTo("Conductor No Encontrado."));
-        verify(session, never()).setAttribute(eq("isEditForm"), anyBoolean());
-
-    }
-    @Test
-    public void queUnConductorSubaUnaFotoDesdeElFormularioParaIngresarFotoDePerfil() throws UsuarioNoEncontradoException, IOException {
-        String nombreEsperado = "redirect:/perfil";
-        Integer idUsuario = 1;
-        MultipartFile imagen = mock(MultipartFile.class);
-
-        when(session.getAttribute("IDUSUARIO")).thenReturn(idUsuario);
-
-        ModelAndView mav = this.conductorControlador.subirFoto(imagen,session);
-
-        assertThat(mav.getViewName(),equalTo(nombreEsperado));
-        verify(conductorServicio).ingresarImagen(imagen,idUsuario);
+        assertThat(mav.getViewName(), equalTo(nombreEsperado));
+        assertThat(mav.getModel().get("error"), equalTo(mensajeError));
+        verify(conductorServicio).obtenerConductorPorId(1);
+        verify(viajeServicio, never()).obtenerHistorialDeViajesConductor(any(Conductor.class));
     }
 
+@Test
+public void queSeRendericeElViajeAceptadoPorElConductor() throws UsuarioNoEncontradoException {
+    String nombreEsperado = "viaje";
+    Conductor conductor = mock(Conductor.class);
+    DatosViaje viaje = mock(DatosViaje.class);
+    Integer idViaje = 123;
+
+    when(session.getAttribute("IDUSUARIO")).thenReturn(1);
+    when(conductorServicio.obtenerConductorPorId(1)).thenReturn(conductor);
+    when(viajeServicio.obtenerViajeAceptadoPorId(idViaje)).thenReturn(viaje);
+    ModelAndView mav = conductorControlador.verViaje(session, idViaje);
+
+    assertThat(mav.getViewName(), equalTo(nombreEsperado));
+    assertThat(mav.getModel().get("conductor"), equalTo(conductor));
+    assertThat(mav.getModel().get("viaje"), equalTo(viaje));
+    verify(conductorServicio).obtenerConductorPorId(1);
+    verify(viajeServicio).obtenerViajeAceptadoPorId(idViaje);
+}
+
     @Test
-    public void queUnConductorInexistenteNoSubaUnaFotoDesdeElFormularioParaIngresarFotoDePerfil() throws UsuarioNoEncontradoException, IOException {
-        String nombreEsperado = "registro-conductor";
-        Integer idUsuario = 1;
-        MultipartFile imagen = mock(MultipartFile.class);
+    public void queUnConductorCanceleUnViajePreviamenteAceptado() throws UsuarioNoEncontradoException {
+        String nombreEsperado = "redirect:/homeConductor";
+        Conductor conductor = mock(Conductor.class);
+        DatosViaje viaje = mock(DatosViaje.class);
+        Integer idViaje = 123;
 
-        when(session.getAttribute("IDUSUARIO")).thenReturn(idUsuario);
-        doThrow(new UsuarioNoEncontradoException("Conductor no encontrado")).when(conductorServicio).ingresarImagen(imagen, idUsuario);
+        when(session.getAttribute("IDUSUARIO")).thenReturn(1);
+        when(conductorServicio.obtenerConductorPorId(1)).thenReturn(conductor);
+        when(viajeServicio.obtenerViajeAceptadoPorId(idViaje)).thenReturn(viaje);
+        ModelAndView mav = conductorControlador.cancelarViaje(session, idViaje);
 
-        ModelAndView mav = this.conductorControlador.subirFoto(imagen,session);
-
-        assertThat(mav.getViewName(),equalTo(nombreEsperado));
-        assertThat(mav.getModel().get("mensajeError"), equalTo("Conductor no encontrado"));
-        verify(conductorServicio).ingresarImagen(imagen,idUsuario);
+        assertThat(mav.getViewName(), equalTo(nombreEsperado));
+        verify(conductorServicio).obtenerConductorPorId(1);
+        verify(viajeServicio).cancelarViaje(viaje);
+        verify(conductorServicio).estaPenalizado(conductor);
     }
-
     @Test
-    public void queUnConductorExistenteNoSubaUnaFotoDesdeElFormularioParaIngresarFotoDePerfilPorIOException() throws UsuarioNoEncontradoException, IOException {
-        String nombreEsperado = "registro-conductor";
-        Integer idUsuario = 1;
-        MultipartFile imagen = mock(MultipartFile.class);
+    public void queUnConductorTermineUnViajePreviamenteAceptado() {
+        String nombreEsperado = "redirect:/homeConductor";
+        DatosViaje viaje = mock(DatosViaje.class);
+        Integer idViaje = 123;
 
-        when(session.getAttribute("IDUSUARIO")).thenReturn(idUsuario);
-        doThrow(new IOException("Error al subir la imagen")).when(conductorServicio).ingresarImagen(imagen, idUsuario);
+        when(viajeServicio.obtenerViajeAceptadoPorId(idViaje)).thenReturn(viaje);
+        ModelAndView mav = conductorControlador.terminarViaje(idViaje);
 
-        ModelAndView mav = this.conductorControlador.subirFoto(imagen,session);
-
-        assertThat(mav.getViewName(),equalTo(nombreEsperado));
-        assertThat(mav.getModel().get("mensajeError"), equalTo("Error al subir la imagen"));
-        verify(conductorServicio).ingresarImagen(imagen,idUsuario);
-    }
-
-    @Test
-    public void queSeBorreUnConductorExistente() throws UsuarioNoEncontradoException {
-        String nombreEsperado = "redirect:/cerrar-sesion";
-        Integer idUsuario = 1;
-
-        when(session.getAttribute("IDUSUARIO")).thenReturn(idUsuario);
-
-        ModelAndView mav = this.conductorControlador.borrarCuenta(session);
-
-        assertThat(mav.getViewName(),equalTo(nombreEsperado));
-        verify(conductorServicio).borrarConductor(idUsuario);
+        assertThat(mav.getViewName(), equalTo(nombreEsperado));
+        verify(viajeServicio).terminarViaje(viaje);
     }
 
     @Test
-    public void queSeNoSeBorreUnConductorInexistente() throws UsuarioNoEncontradoException {
-        String nombreEsperado = "registro-conductor";
-        Integer idUsuario = 1;
+    public void queUnConductorVuelvaAlHome() {
+        String nombreEsperado = "redirect:/ubicacion";
 
-        when(session.getAttribute("IDUSUARIO")).thenReturn(idUsuario);
-        doThrow(new UsuarioNoEncontradoException("Conductor no encontrado")).when(conductorServicio).borrarConductor(idUsuario);
+        ModelAndView mav = conductorControlador.volverAlHome();
 
-        ModelAndView mav = this.conductorControlador.borrarCuenta(session);
+        assertThat(mav.getViewName(), equalTo(nombreEsperado));
+    }
 
-        assertThat(mav.getViewName(),equalTo(nombreEsperado));
-        assertThat(mav.getModel().get("mensajeError"), equalTo("Conductor no encontrado"));
-        verify(conductorServicio).borrarConductor(idUsuario);
-    }*/
+    @Test
+    public void queUnConductorDescarteUnViajeDeLaListaDeViajesPendientesDelHomeConductor() throws UsuarioNoEncontradoException {
+        String nombreEsperado = "redirect:/homeConductor";
+        Conductor conductor = mock(Conductor.class);
+        Viaje viaje = mock(Viaje.class);
+        Integer idViaje = 123;
 
+        when(session.getAttribute("IDUSUARIO")).thenReturn(1);
+        when(conductorServicio.obtenerConductorPorId(1)).thenReturn(conductor);
+        when(viajeServicio.obtenerViajePorId(idViaje)).thenReturn(viaje);
+        ModelAndView mav = conductorControlador.descartarViaje(session, idViaje);
 
+        assertThat(mav.getViewName(), equalTo(nombreEsperado));
+        verify(conductorServicio).obtenerConductorPorId(1);
+        verify(viajeServicio).duplicarViajeDescartado(viaje,conductor);
+        verify(conductorServicio).estaPenalizado(conductor);
+}
+
+    @Test
+    public void queSeMuestreElDetalleDeLosViajesAceptadosDelConductor() throws UsuarioNoEncontradoException {
+        String nombreEsperado = "detalle-viaje";
+        Conductor conductor=mock(Conductor.class);
+        DatosViaje viaje = mock(DatosViaje.class);
+        Integer idViaje= 1;
+
+        when(session.getAttribute("IDUSUARIO")).thenReturn(1);
+        when(conductorServicio.obtenerConductorPorId(1)).thenReturn(conductor);
+        when(viajeServicio.obtenerViajeAceptadoPorId(idViaje)).thenReturn(viaje);
+        ModelAndView mav= conductorControlador.VerDetalleDelViaje(session, idViaje);
+
+        assertThat(mav.getViewName(), equalTo(nombreEsperado));
+        assertThat(mav.getModel().get("conductor"), equalTo(conductor));
+        assertThat(mav.getModel().get("viaje"), equalTo(viaje));
+        verify(conductorServicio).obtenerConductorPorId(1);
+        verify(viajeServicio).obtenerViajeAceptadoPorId(idViaje);
+    }
+
+    @Test
+    public void queUnConductorVuelvaAlHistorial() {
+    String nombreEsperado = "redirect:/historial";
+
+    ModelAndView mav = conductorControlador.volverAlHistorial();
+
+    assertThat(mav.getViewName(), equalTo(nombreEsperado));
+}
+
+    @Test
+    public void queSeElConductorFiltrePorDistanciaLosViajesPendientesDisponibles() throws UsuarioNoEncontradoException {
+        Double distancia = 10.0;
+
+        ModelAndView mav = conductorControlador.filtrarPorDistancia(session, distancia);
+
+        verify(session).setAttribute("distancia", distancia);
+        assertThat(mav.getViewName(), equalTo("redirect:/homeConductor"));
+    }
+
+    @Test
+    public void queSeCargueLaUbicacionActualDelConductor() {
+        String nombreEsperado = "ubicacion";
+
+        ModelAndView mav = conductorControlador.ubicacion();
+
+        assertThat(mav.getViewName(), equalTo(nombreEsperado));
+    }
+
+@Test
+public void queSeDespenaliceAUnConductorPreviamentePenalizado() throws UsuarioNoEncontradoException {
+    String nombreEsperado = "redirect:/homeConductor";
+    Integer idConductor=1;
+    Conductor conductor= mock(Conductor.class);
+
+    when(session.getAttribute("IDUSUARIO")).thenReturn(idConductor);
+    when(conductorServicio.obtenerConductorPorId(1)).thenReturn(conductor);
+    ModelAndView mav = conductorControlador.despenalizarConductor(session,idConductor);
+
+    assertThat(mav.getViewName(), equalTo(nombreEsperado));
+    verify(conductorServicio).despenalizarConductor(conductor);
+}
 
 }

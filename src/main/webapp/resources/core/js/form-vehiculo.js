@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         // Validar patente
-        var patente = document.getElementById('patente').value;
+        var patente = document.getElementById('patente').value.toUpperCase(); // Convertir a mayúsculas
         var patenteRegex = /^[A-Z]{3}\s?\d{3}$|^[A-Z]{2}\s?\d{3}\s?[A-Z]{2}$/;
         if (!patente) {
             document.getElementById('patenteError').textContent = 'La patente es obligatoria.';
@@ -46,6 +46,9 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('patenteError').textContent = 'La patente debe tener el formato "AAA 111" o "AA 111 AA".';
             document.getElementById('patenteError').style.display = 'block'; // Mostrar el mensaje de error
             valid = false;
+        } else {
+            // Guardar el valor en el campo después de la validación
+            document.getElementById('patente').value = patente;
         }
 
         // Validar peso soportado
@@ -77,4 +80,3 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
-

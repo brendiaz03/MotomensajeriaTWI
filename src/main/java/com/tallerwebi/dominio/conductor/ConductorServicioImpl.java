@@ -23,7 +23,6 @@ public class ConductorServicioImpl implements ConductorServicio {
         this.viajeRepositorio=viajeRepositorio;
     }
 
-
     @Override
     public Conductor obtenerConductorPorId(Integer id) throws UsuarioNoEncontradoException {
         try{
@@ -31,6 +30,11 @@ public class ConductorServicioImpl implements ConductorServicio {
         }catch(NoResultException e){
             throw new UsuarioNoEncontradoException("Conductor no Encontrado");
         }
+    }
+
+    @Override
+    public void editarConductor(Conductor conductor) {
+        this.conductorRepositorio.editarConductor(conductor);
     }
 
     @Override
@@ -49,14 +53,10 @@ public class ConductorServicioImpl implements ConductorServicio {
     public Boolean estaPenalizado(Conductor conductor) {
         List<Viaje> viajesDescartados=this.viajeRepositorio.traerTodosLosViajesDescartadosQueAfectanPenalizacionPorConductor(conductor);
         List<Viaje> viajesCancelados=this.viajeRepositorio.traerTodosLosViajesCanceladosPorConductor(conductor);
-
-        System.out.println("LA CANTIDAD TOTAL DE VIAJES DESCARTADOS ES DE: "+viajesDescartados.size());
-        System.out.println("LA CANTIDAD TOTAL DE VIAJES CANCELADOS ES DE: "+viajesCancelados.size());
-
         Integer cantPenalizacion=viajesDescartados.size()+(viajesCancelados.size())*2;
-
         conductor.setCantPenalizacion(cantPenalizacion);
         this.conductorRepositorio.editarConductor(conductor);
+
         if(conductor.getCantPenalizacion()>=3){
             conductor.setPenalizado(true);
             conductor.setHoraPenalizacion(LocalDateTime.now());
@@ -73,12 +73,6 @@ public class ConductorServicioImpl implements ConductorServicio {
         }else{
             return false;
         }
-    }
-
-
-    @Override
-    public void editarConductor(Conductor conductor) {
-        this.conductorRepositorio.editarConductor(conductor);
     }
 
     @Override

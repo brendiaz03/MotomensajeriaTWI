@@ -1,9 +1,8 @@
 package com.tallerwebi.infraestructura;
 
 import com.tallerwebi.dominio.conductor.Conductor;
-import com.tallerwebi.dominio.exceptions.UsuarioNoEncontradoException;
 import com.tallerwebi.dominio.conductor.ConductorRepositorio;
-import com.tallerwebi.dominio.vehiculo.Vehiculo;
+import com.tallerwebi.dominio.usuario.UsuarioRepositorio;
 import com.tallerwebi.infraestructura.config.HibernateInfraestructuraTestConfig;
 import org.hibernate.SessionFactory;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,9 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-
+import javax.persistence.NoResultException;
 import javax.transaction.Transactional;
-
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.*;
@@ -26,105 +24,57 @@ public class ConductorRepositorioTest {
 
     @Autowired
     private SessionFactory sessionFactory;
-
     private ConductorRepositorio conductorRepositorio;
+    private UsuarioRepositorio usuarioRepositorio;
 
     @BeforeEach
     public void init() {
         this.conductorRepositorio = new ConductorRepositorioImpl(sessionFactory);
+        this.usuarioRepositorio = new UsuarioRepositorioImpl(sessionFactory);
     }
 
-//    @Test
-//    @Transactional
-//    @Rollback
-//    public void queSePuedaGuardarUnNuevoConductorEnBD() {
-//        Conductor nuevoConductor = new Conductor();
-//        nuevoConductor.setNombre("Facu");
-//
-//        Conductor guardado= conductorRepositorio.guardar(nuevoConductor);
-//
-//        assertThat(guardado.getNombre(),equalTo("Facu"));
-//        assertNotNull(nuevoConductor.getId());
-//    }
-//
-//    @Test
-//    @Transactional
-//    @Rollback
-//    public void queSePuedaBuscarUnConductorExistentePorId() {
-//        Conductor nuevoConductor = new Conductor();
-//        nuevoConductor.setId(1);
-//        nuevoConductor.setNombre("Facu");
-//
-//        this.conductorRepositorio.guardar(nuevoConductor);
-//        Conductor conductorEncontrado = conductorRepositorio.buscarConductorPorId(nuevoConductor.getId());
-//
-//        assertNotNull(conductorEncontrado);
-//        assertEquals(nuevoConductor.getId(), conductorEncontrado.getId());
-//        assertEquals(nuevoConductor.getNombre(), conductorEncontrado.getNombre());
-//        assertThat(conductorEncontrado.getNombre(), equalTo("Facu"));
-//    }
+    @Test
+    @Transactional
+    @Rollback
+    public void queSeBusqueUnConductorExistenteEnLaBaseDeDatos() {
+        Conductor nuevoConductor = new Conductor();
+        nuevoConductor.setId(1);
+        nuevoConductor.setNombre("Facu");
 
+        usuarioRepositorio.guardarUsuario(nuevoConductor);
+        Conductor guardado = conductorRepositorio.buscarConductorPorId(nuevoConductor.getId());
 
-//    @Test
-//    @Transactional
-//    @Rollback
-//    public void queSePuedaEditarUnConductorExistente() {
-//        Conductor conductor = new Conductor();
-//        conductor.setCvu("123");
-//        conductorRepositorio.guardar(conductor);
-//
-//        conductor.setCvu("456");
-//        this.conductorRepositorio.editarConductor(conductor);
-//
-//        Conductor conductorEditado = (Conductor) sessionFactory.getCurrentSession().get(Conductor.class, conductor.getId());
-//
-//        assertThat(conductorEditado.getCvu(), equalTo("456"));
-//    }
-//
-//    @Test
-//    @Transactional
-//    @Rollback
-//    public void queSeEncuentrenUnConductorDuplicado() {
-//        Conductor nuevoConductor = new Conductor();
-//        nuevoConductor.setId(1);
-//        nuevoConductor.setNombreUsuario("Facu");
-//        nuevoConductor.setEmail("Facu@gmail.com");
-//
-//        this.conductorRepositorio.guardar(nuevoConductor);
-//
-//        Conductor conductorEncontrado = conductorRepositorio.buscarDuplicados(nuevoConductor.getEmail(),nuevoConductor.getNombreUsuario());
-//
-//        assertNotNull(conductorEncontrado);
-//        assertEquals(nuevoConductor.getId(), conductorEncontrado.getId());
-//        assertEquals(nuevoConductor.getNombre(), conductorEncontrado.getNombre());
-//        assertThat(conductorEncontrado.getNombreUsuario(), equalTo("Facu"));
-//    }
-//    @Test
-//    @Transactional
-//    @Rollback
-//    public void queSePuedaBorrarUnConductorExistente() throws UsuarioNoEncontradoException {
-//        Conductor nuevoConductor = new Conductor();
-//        Conductor guardado=conductorRepositorio.guardar(nuevoConductor);
-//        assertNotNull(guardado);
-//
-//        conductorRepositorio.borrarConductor(nuevoConductor);
-//        Conductor conductorBorrado = (Conductor) sessionFactory.getCurrentSession().get(Conductor.class, nuevoConductor.getId());
-//        assertNull(conductorBorrado);
-//    }
-//
-//    @Test
-//    @Transactional
-//    @Rollback
-//    public void queSePuedaAgregarUnVehiculoAlConductorExistente()  {
-//        Conductor nuevoConductor = new Conductor();
-//        Vehiculo nuevoVehiculo= new Vehiculo();
-//        nuevoConductor.setId(1);
-//
-//        conductorRepositorio.guardar(nuevoConductor);
-//        nuevoConductor.setVehiculo(nuevoVehiculo);
-//        sessionFactory.getCurrentSession().saveOrUpdate(nuevoConductor);
-//
-//        assertNotNull(nuevoConductor.getVehiculo());
-//        assertThat(nuevoConductor.getVehiculo(),equalTo(nuevoVehiculo));
-//    }
+        assertThat(guardado.getNombre(), equalTo("Facu"));
+        assertNotNull(nuevoConductor.getId());
     }
+
+    @Test
+    @Transactional
+    @Rollback
+    public void queSeBusqueUnConductorNoExistenteEnLaBaseDeDatosYEnConsecuenciaLanceUnaExcepcion() {
+        Conductor nuevoConductor = new Conductor();
+        nuevoConductor.setId(1);
+        nuevoConductor.setNombre("Facu");
+
+        usuarioRepositorio.guardarUsuario(nuevoConductor);
+
+        assertThrows(NoResultException.class, () -> {
+            conductorRepositorio.buscarConductorPorId(3); //ES UN TEMA DE ID DE HIBERNATE (SI PONGO ID 2 ME TOMA A LOS ID DE TEST ANTERIORES)
+        });
+        assertNotNull(nuevoConductor.getId());
+    }
+    @Test
+    @Transactional
+    @Rollback
+    public void queSePuedaEditarUnConductorExistente() {
+        Conductor conductor = new Conductor();
+        conductor.setCvu("123");
+        usuarioRepositorio.guardarUsuario(conductor);
+        conductor.setCvu("456");
+
+        this.conductorRepositorio.editarConductor(conductor);
+        Conductor conductorEditado = sessionFactory.getCurrentSession().get(Conductor.class, conductor.getId());
+
+        assertThat(conductorEditado.getCvu(), equalTo("456"));
+    }
+}

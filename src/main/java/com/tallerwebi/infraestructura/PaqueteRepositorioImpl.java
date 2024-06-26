@@ -20,22 +20,11 @@ public class PaqueteRepositorioImpl implements PaqueteRepositorio {
     @Override
     @Transactional
     public Paquete guardarPaquete(Paquete paquete) throws PaqueteNoEncontradoException {
-
         if(paquete==null){
-
-            throw new PaqueteNoEncontradoException();
-
+            throw new PaqueteNoEncontradoException(); //NOSE SI VA PERO LO DEJO POR LAS DUDAS
         }
-
         this.sessionFactory.getCurrentSession().save(paquete);
-
         return paquete;
-    }
-
-    @Override
-    @Transactional
-    public void editarPaquete(Paquete paquete) {
-        this.sessionFactory.getCurrentSession().saveOrUpdate(paquete);
     }
 
     @Override
@@ -49,6 +38,5 @@ public class PaqueteRepositorioImpl implements PaqueteRepositorio {
         }
 
         return paqueteBuscado;
-
     }
 }
