@@ -1,8 +1,8 @@
 package com.tallerwebi.dominio;
+
 import com.tallerwebi.dominio.paquete.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -39,7 +39,6 @@ public class PaqueteServicioTest {
         paquete.setId(29);
 
         when(this.paqueteRepositorio.obtenerPaquetePorId(paquete.getId())).thenReturn(paquete);
-
         Paquete paqueteEsperado = this.paqueteServicio.obtenerPaquetePorId(paquete.getId());
 
         assertThat(paqueteEsperado, equalTo(paquete));
@@ -54,7 +53,6 @@ public class PaqueteServicioTest {
         Paquete paquete = mock(Paquete.class);
 
         when(this.paqueteRepositorio.obtenerPaquetePorId(paquete.getId())).thenThrow(PaqueteNoEncontradoException.class);
-
         assertThrows(PaqueteNoEncontradoException.class, () -> {
             paqueteServicio.obtenerPaquetePorId(paquete.getId());
         });

@@ -2,29 +2,17 @@ package com.tallerwebi.presentacion;
 
 import com.tallerwebi.dominio.conductor.Conductor;
 import com.tallerwebi.dominio.conductor.ConductorServicio;
-import com.tallerwebi.dominio.exceptions.ConductorNoEncontradoException;
 import com.tallerwebi.dominio.exceptions.UsuarioNoEncontradoException;
-import com.tallerwebi.dominio.vehiculo.VehiculoServicio;
 import com.tallerwebi.dominio.viaje.Viaje;
 import com.tallerwebi.dominio.viaje.ViajeServicio;
 import com.tallerwebi.presentacion.Datos.DatosViaje;
-import org.dom4j.rule.Mode;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
-
 import javax.servlet.http.HttpSession;
-
 import java.util.List;
-
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.equalToIgnoringCase;
 import static org.mockito.Mockito.*;
 
 public class ConductorControladorTest {
@@ -82,12 +70,11 @@ public class ConductorControladorTest {
         when(session.getAttribute("IDUSUARIO")).thenReturn(1);
         when(conductorServicio.obtenerConductorPorId(1)).thenReturn(conductor);
         when(viajeServicio.obtenerHistorialDeViajesConductor(conductor)).thenReturn(historialViajes);
-
         ModelAndView mav= conductorControlador.mostrarHistorial(session);
+
         assertThat(mav.getViewName(), equalTo(nombreEsperado));
         assertThat(mav.getModel().get("conductor"), equalTo(conductor));
         assertThat(mav.getModel().get("viajesObtenidos"), equalTo(historialViajes));
-
         verify(conductorServicio).obtenerConductorPorId(1);
         verify(viajeServicio).obtenerHistorialDeViajesConductor(conductor);
     }
@@ -100,11 +87,10 @@ public class ConductorControladorTest {
 
         when(session.getAttribute("IDUSUARIO")).thenReturn(1);
         when(conductorServicio.obtenerConductorPorId(1)).thenThrow(UsuarioNoEncontradoException.class);
-
         ModelAndView mav= conductorControlador.mostrarHistorial(session);
+
         assertThat(mav.getViewName(), equalTo(nombreEsperado));
         assertThat(mav.getModel().get("error"), equalTo(mensajeError));
-
         verify(conductorServicio).obtenerConductorPorId(1);
         verify(viajeServicio, never()).obtenerHistorialDeViajesConductor(any(Conductor.class));
     }
@@ -118,12 +104,11 @@ public class ConductorControladorTest {
         when(session.getAttribute("IDUSUARIO")).thenReturn(1);
         when(conductorServicio.obtenerConductorPorId(1)).thenReturn(conductor);
         when(viajeServicio.obtenerViajesEnProceso(conductor)).thenReturn(viajesEnProceso);
-
         ModelAndView mav= conductorControlador.verViajesEnProceso(session);
+
         assertThat(mav.getViewName(), equalTo(nombreEsperado));
         assertThat(mav.getModel().get("conductor"), equalTo(conductor));
         assertThat(mav.getModel().get("viajesObtenidos"), equalTo(viajesEnProceso));
-
         verify(conductorServicio).obtenerConductorPorId(1);
         verify(viajeServicio).obtenerViajesEnProceso(conductor);
     }
@@ -135,11 +120,10 @@ public class ConductorControladorTest {
 
         when(session.getAttribute("IDUSUARIO")).thenReturn(1);
         when(conductorServicio.obtenerConductorPorId(1)).thenThrow(UsuarioNoEncontradoException.class);
-
         ModelAndView mav= conductorControlador.verViajesEnProceso(session);
+
         assertThat(mav.getViewName(), equalTo(nombreEsperado));
         assertThat(mav.getModel().get("error"), equalTo(mensajeError));
-
         verify(conductorServicio).obtenerConductorPorId(1);
         verify(viajeServicio, never()).obtenerHistorialDeViajesConductor(any(Conductor.class));
     }
@@ -154,13 +138,11 @@ public void queSeRendericeElViajeAceptadoPorElConductor() throws UsuarioNoEncont
     when(session.getAttribute("IDUSUARIO")).thenReturn(1);
     when(conductorServicio.obtenerConductorPorId(1)).thenReturn(conductor);
     when(viajeServicio.obtenerViajeAceptadoPorId(idViaje)).thenReturn(viaje);
-
     ModelAndView mav = conductorControlador.verViaje(session, idViaje);
 
     assertThat(mav.getViewName(), equalTo(nombreEsperado));
     assertThat(mav.getModel().get("conductor"), equalTo(conductor));
     assertThat(mav.getModel().get("viaje"), equalTo(viaje));
-
     verify(conductorServicio).obtenerConductorPorId(1);
     verify(viajeServicio).obtenerViajeAceptadoPorId(idViaje);
 }
@@ -175,11 +157,9 @@ public void queSeRendericeElViajeAceptadoPorElConductor() throws UsuarioNoEncont
         when(session.getAttribute("IDUSUARIO")).thenReturn(1);
         when(conductorServicio.obtenerConductorPorId(1)).thenReturn(conductor);
         when(viajeServicio.obtenerViajeAceptadoPorId(idViaje)).thenReturn(viaje);
-
         ModelAndView mav = conductorControlador.cancelarViaje(session, idViaje);
 
         assertThat(mav.getViewName(), equalTo(nombreEsperado));
-
         verify(conductorServicio).obtenerConductorPorId(1);
         verify(viajeServicio).cancelarViaje(viaje);
         verify(conductorServicio).estaPenalizado(conductor);
@@ -216,11 +196,9 @@ public void queSeRendericeElViajeAceptadoPorElConductor() throws UsuarioNoEncont
         when(session.getAttribute("IDUSUARIO")).thenReturn(1);
         when(conductorServicio.obtenerConductorPorId(1)).thenReturn(conductor);
         when(viajeServicio.obtenerViajePorId(idViaje)).thenReturn(viaje);
-
         ModelAndView mav = conductorControlador.descartarViaje(session, idViaje);
 
         assertThat(mav.getViewName(), equalTo(nombreEsperado));
-
         verify(conductorServicio).obtenerConductorPorId(1);
         verify(viajeServicio).duplicarViajeDescartado(viaje,conductor);
         verify(conductorServicio).estaPenalizado(conductor);
@@ -236,12 +214,11 @@ public void queSeRendericeElViajeAceptadoPorElConductor() throws UsuarioNoEncont
         when(session.getAttribute("IDUSUARIO")).thenReturn(1);
         when(conductorServicio.obtenerConductorPorId(1)).thenReturn(conductor);
         when(viajeServicio.obtenerViajeAceptadoPorId(idViaje)).thenReturn(viaje);
-
         ModelAndView mav= conductorControlador.VerDetalleDelViaje(session, idViaje);
+
         assertThat(mav.getViewName(), equalTo(nombreEsperado));
         assertThat(mav.getModel().get("conductor"), equalTo(conductor));
         assertThat(mav.getModel().get("viaje"), equalTo(viaje));
-
         verify(conductorServicio).obtenerConductorPorId(1);
         verify(viajeServicio).obtenerViajeAceptadoPorId(idViaje);
     }
@@ -282,7 +259,6 @@ public void queSeDespenaliceAUnConductorPreviamentePenalizado() throws UsuarioNo
 
     when(session.getAttribute("IDUSUARIO")).thenReturn(idConductor);
     when(conductorServicio.obtenerConductorPorId(1)).thenReturn(conductor);
-
     ModelAndView mav = conductorControlador.despenalizarConductor(session,idConductor);
 
     assertThat(mav.getViewName(), equalTo(nombreEsperado));

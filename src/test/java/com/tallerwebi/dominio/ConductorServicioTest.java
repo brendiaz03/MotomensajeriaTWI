@@ -6,39 +6,26 @@ import com.tallerwebi.dominio.vehiculo.Vehiculo;
 import com.tallerwebi.dominio.viaje.Viaje;
 import com.tallerwebi.dominio.viaje.ViajeRepositorio;
 import com.tallerwebi.infraestructura.config.HibernateInfraestructuraTestConfig;
-import org.hibernate.SessionFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-
-
 import javax.persistence.NoResultException;
-
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Base64;
 import java.util.List;
-
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
-
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = HibernateInfraestructuraTestConfig.class)
 public class ConductorServicioTest {
     private ConductorServicio conductorServicio;
     private ConductorRepositorio conductorRepositorio;
-
     private ViajeRepositorio viajeRepositorio;
-
-    private SessionFactory sessionFactory;
 
     @BeforeEach
     public void init() {
@@ -53,7 +40,6 @@ public class ConductorServicioTest {
         Conductor conductor = mock(Conductor.class);
 
         when(conductorRepositorio.buscarConductorPorId(idConductor)).thenReturn(conductor);
-
         Conductor conductorObtenido = conductorServicio.obtenerConductorPorId(idConductor);
 
         assertThat(conductorObtenido, equalTo(conductor));
@@ -89,7 +75,6 @@ public class ConductorServicioTest {
         Integer conductorId =1;
 
         when(conductorServicio.obtenerConductorPorId(conductorId)).thenReturn(conductor);
-
         Boolean resultado=this.conductorServicio.RelacionarVehiculoAConductor(conductorId,vehiculo);
 
         assertThat(resultado,equalTo(true));
@@ -99,7 +84,6 @@ public class ConductorServicioTest {
 
     @Test
     public void queSeNoSeRelacioneUnVehiculoAUnConductorSiNoSeEncuentraAlConductor() throws UsuarioNoEncontradoException {
-        Conductor conductor = mock(Conductor.class);
         Vehiculo vehiculo=mock(Vehiculo.class);
         Integer idConductor =1;
 
@@ -124,14 +108,12 @@ public class ConductorServicioTest {
 
         when(viajeRepositorio.traerTodosLosViajesDescartadosQueAfectanPenalizacionPorConductor(conductor)).thenReturn(viajesDescartados);
         when(viajeRepositorio.traerTodosLosViajesCanceladosPorConductor(conductor)).thenReturn(viajesCancelados);
-
         Boolean estaPenalizado = conductorServicio.estaPenalizado(conductor);
 
         assertThat(estaPenalizado, equalTo(true));
         verify(conductor).setCantPenalizacion(cantPenalizacion);
         verify(conductor).setPenalizado(true);
         verify(conductor).setHoraPenalizacion(any(LocalDateTime.class));
-
         verify(conductorRepositorio, times(2)).editarConductor(conductor);
         verify(viajeRepositorio, times(1)).editar(viajeCancelado);
         verify(viajeRepositorio, times(1)).editar(viajeDescartado);
@@ -151,11 +133,9 @@ public class ConductorServicioTest {
 
         when(viajeRepositorio.traerTodosLosViajesDescartadosQueAfectanPenalizacionPorConductor(conductor)).thenReturn(viajesDescartados);
         when(viajeRepositorio.traerTodosLosViajesCanceladosPorConductor(conductor)).thenReturn(viajesCancelados);
-
         Boolean estaPenalizado = conductorServicio.estaPenalizado(conductor);
 
         assertThat(estaPenalizado, equalTo(false));
-
         verify(conductorRepositorio).editarConductor(any(Conductor.class));
         verify(viajeRepositorio, never()).editar(viajeCancelado);
         verify(viajeRepositorio, never()).editar(viajeDescartado);

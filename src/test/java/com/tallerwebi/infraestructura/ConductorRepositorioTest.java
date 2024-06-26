@@ -12,10 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-
 import javax.persistence.NoResultException;
 import javax.transaction.Transactional;
-
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.*;
@@ -42,8 +40,8 @@ public class ConductorRepositorioTest {
         Conductor nuevoConductor = new Conductor();
         nuevoConductor.setId(1);
         nuevoConductor.setNombre("Facu");
-        usuarioRepositorio.guardarUsuario(nuevoConductor);
 
+        usuarioRepositorio.guardarUsuario(nuevoConductor);
         Conductor guardado = conductorRepositorio.buscarConductorPorId(nuevoConductor.getId());
 
         assertThat(guardado.getNombre(), equalTo("Facu"));
@@ -57,12 +55,12 @@ public class ConductorRepositorioTest {
         Conductor nuevoConductor = new Conductor();
         nuevoConductor.setId(1);
         nuevoConductor.setNombre("Facu");
+
         usuarioRepositorio.guardarUsuario(nuevoConductor);
 
         assertThrows(NoResultException.class, () -> {
             conductorRepositorio.buscarConductorPorId(3); //ES UN TEMA DE ID DE HIBERNATE (SI PONGO ID 2 ME TOMA A LOS ID DE TEST ANTERIORES)
         });
-
         assertNotNull(nuevoConductor.getId());
     }
     @Test
@@ -72,10 +70,9 @@ public class ConductorRepositorioTest {
         Conductor conductor = new Conductor();
         conductor.setCvu("123");
         usuarioRepositorio.guardarUsuario(conductor);
-
         conductor.setCvu("456");
-        this.conductorRepositorio.editarConductor(conductor);
 
+        this.conductorRepositorio.editarConductor(conductor);
         Conductor conductorEditado = sessionFactory.getCurrentSession().get(Conductor.class, conductor.getId());
 
         assertThat(conductorEditado.getCvu(), equalTo("456"));

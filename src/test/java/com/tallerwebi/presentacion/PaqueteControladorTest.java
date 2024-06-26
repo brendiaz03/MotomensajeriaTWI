@@ -1,18 +1,11 @@
 package com.tallerwebi.presentacion;
 
-import com.tallerwebi.dominio.exceptions.UsuarioNoEncontradoException;
 import com.tallerwebi.dominio.paquete.Paquete;
 import com.tallerwebi.dominio.paquete.PaqueteServicio;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
-
 import javax.servlet.http.HttpSession;
-
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.mockito.Mockito.mock;
@@ -34,7 +27,7 @@ public class PaqueteControladorTest {
     }
 
     @Test
-    public void queSeRendericeLaVistaDeEdicionDelPaquete() throws UsuarioNoEncontradoException {
+    public void queSeRendericeLaVistaDeEdicionDelPaquete() {
         String viewName= "redirect:/form-viaje";
 
         ModelAndView mav = paqueteControlador.mostrarFormEditorPaquete(httpSession);
@@ -45,7 +38,7 @@ public class PaqueteControladorTest {
     }
 
     @Test
-    public void queSeGuardeElPaqueteLocalmenteParaAvanzarAlSiguientePaso() throws UsuarioNoEncontradoException {
+    public void queSeGuardeElPaqueteLocalmenteParaAvanzarAlSiguientePaso() {
         String viewName= "redirect:/form-viaje";
         Paquete paquete=mock(Paquete.class);
 
@@ -57,7 +50,7 @@ public class PaqueteControladorTest {
     }
 
     @Test
-    public void queSeEditeCorrectamenteElPaqueteLocalmente() throws UsuarioNoEncontradoException {
+    public void queSeEditeCorrectamenteElPaqueteLocalmente() {
         String viewName= "redirect:/form-viaje";
         Paquete paquete=mock(Paquete.class);
 
