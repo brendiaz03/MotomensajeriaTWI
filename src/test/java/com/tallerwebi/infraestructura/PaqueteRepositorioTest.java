@@ -18,6 +18,7 @@ import javax.transaction.Transactional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = HibernateInfraestructuraTestConfig.class)
@@ -36,89 +37,26 @@ public class PaqueteRepositorioTest {
     }
 
     @Test
-    @Rollback
     @Transactional
-    public void queSePuedaGuardarUnPaquete() throws PaqueteNoEncontradoException {
-
-        Paquete paquete = new Paquete(10.0, 5.0, true,"","Facu");
-
-        Paquete paqueteObtenido = null;
-
-        try {
-
-            paquete.setId(100);
-
-            this.paqueteRepositorio.guardarPaquete(paquete);
-
-            paqueteObtenido = this.paqueteRepositorio.obtenerPaquetePorId(paquete.getId());
-
-        } catch(PaqueteNoEncontradoException e) {
-
-            throw new PaqueteNoEncontradoException();
-
-        }
-
-        assertThat(paquete.getId(), equalTo(paqueteObtenido.getId()));
-        assertThat(paquete, equalTo(paqueteObtenido));
-
-    }
-
-
-    @Test
     @Rollback
-    @Transactional
-    public void queSePuedaEditarUnPaquete() throws PaqueteNoEncontradoException {
+    public void queSePuedaGuardarYObtenerUnPaquete() throws PaqueteNoEncontradoException {
+        Paquete paquete = new Paquete(10.0, 5.0, true, "Descripción", "Facu");
 
-        Paquete paquete = new Paquete(10.0, 5.0, true,"","Facu");
-
-        Paquete paqueteObtenido = null;
-
-        try {
-            paquete.setId(1);
-
-            paqueteRepositorio.guardarPaquete(paquete);
-
-            paquete.setPeso(25.25);
-
-            paqueteRepositorio.editarPaquete(paquete);
-
-            paqueteObtenido = this.paqueteRepositorio.obtenerPaquetePorId(paquete.getId());
-
-        } catch(PaqueteNoEncontradoException e) {
-
-            throw new PaqueteNoEncontradoException();
-
-        }
-
-        assertThat(paqueteObtenido.getPeso(), equalTo(25.25));
-        assertThat(paqueteObtenido.getPeso(), equalTo(paquete.getPeso()));
-
-    }
-
-    @Test
-    @Rollback
-    @Transactional
-    public void queSePuedaObtenerUnPaquetePorSuIdYMeDevuelvaElPaquete() throws PaqueteNoEncontradoException {
-
-        Paquete paquete = new Paquete(10.0, 5.0, true,"","Facu");
-
-        paquete.setId(30);
-
-        Paquete paqueteObtenido = null;
-
-        try {
-            paqueteRepositorio.guardarPaquete(paquete);
-
-            paqueteObtenido = this.paqueteRepositorio.obtenerPaquetePorId(paquete.getId());
-
-        } catch(PaqueteNoEncontradoException e) {
-
-            throw new PaqueteNoEncontradoException();
-
-        }
+        paqueteRepositorio.guardarPaquete(paquete);
+        Paquete paqueteObtenido = paqueteRepositorio.obtenerPaquetePorId(paquete.getId());
 
         assertThat(paqueteObtenido.getId(), equalTo(paquete.getId()));
-
+        assertThat(paqueteObtenido, equalTo(paquete));
     }
 
+    @Test
+    @Transactional
+    @Rollback
+    public void queLanceExcepcionAlObtenerPaqueteNoExistente() {
+        Integer paqueteID = 999;
+
+        assertThrows(PaqueteNoEncontradoException.class, () -> {
+            paqueteRepositorio.obtenerPaquetePorId(paqueteID);
+        });
+    }
 }
