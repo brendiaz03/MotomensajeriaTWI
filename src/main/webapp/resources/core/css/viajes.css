@@ -271,4 +271,22 @@ a{
     color: #FFFFFF;
     text-align: center;
     margin-top: 30px;
+    background-color: black;
+    border-radius: 30px;
+    padding: 2%;
+}
+
+.pagarMulta{
+    align-content: center;
+    text-align: center;
+}
+.pagarMulta p{
+    align-content: center;
+    text-align: center;
+}
+.imgPenalizado{
+    height: 200px; /* Ajusta este valor según lo necesario */
+    width: auto;   /* Mantener auto para preservar la relación de aspecto */
+    margin: 0 auto;
+    display: block;
 }

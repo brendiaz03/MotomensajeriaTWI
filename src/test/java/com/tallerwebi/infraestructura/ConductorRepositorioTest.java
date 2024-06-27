@@ -68,13 +68,13 @@ public class ConductorRepositorioTest {
     @Rollback
     public void queSePuedaEditarUnConductorExistente() {
         Conductor conductor = new Conductor();
-        conductor.setCvu("123");
+        conductor.setNombre("facu");
         usuarioRepositorio.guardarUsuario(conductor);
-        conductor.setCvu("456");
+        conductor.setNombre("pepe");
 
         this.conductorRepositorio.editarConductor(conductor);
         Conductor conductorEditado = sessionFactory.getCurrentSession().get(Conductor.class, conductor.getId());
 
-        assertThat(conductorEditado.getCvu(), equalTo("456"));
+        assertThat(conductorEditado.getNombre(), equalTo("pepe"));
     }
 }

@@ -53,13 +53,15 @@ public class ConductorServicioImpl implements ConductorServicio {
     public Boolean estaPenalizado(Conductor conductor) {
         List<Viaje> viajesDescartados=this.viajeRepositorio.traerTodosLosViajesDescartadosQueAfectanPenalizacionPorConductor(conductor);
         List<Viaje> viajesCancelados=this.viajeRepositorio.traerTodosLosViajesCanceladosPorConductor(conductor);
+
         Integer cantPenalizacion=viajesDescartados.size()+(viajesCancelados.size())*2;
+
         conductor.setCantPenalizacion(cantPenalizacion);
         this.conductorRepositorio.editarConductor(conductor);
-
         if(conductor.getCantPenalizacion()>=3){
             conductor.setPenalizado(true);
             conductor.setHoraPenalizacion(LocalDateTime.now());
+            conductor.setMontoPenalizacion(5000.0);
             this.conductorRepositorio.editarConductor(conductor);
             for(Viaje viaje: viajesCancelados){
                 viaje.setAfectaPenalizacion(false);
