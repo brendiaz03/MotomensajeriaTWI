@@ -65,7 +65,7 @@
                                 <p class="card-text"><b>Salida:</b> <span th:text="${viaje.getDomicilioDeSalida()}"></span></p>
                                 <p class="card-text"><b>Llegada:</b> <span th:text="${viaje.getDomicilioDeLlegada()}"></span></p>
                                 <p class="card-text"><b>Paquete de:</b> <span th:text="${viaje.getNombreDelCliente()}"></span></p>
-                                <p class="card-text"><b>Precio:</b> <span th:text="${viaje.getPrecio()}"></span></p>
+                                <p class="card-text"><b>Precio:</b> <span th:text="${viaje.getPrecio()} + ' ARS'"></span></p>
                             </div>
                         </div>
                         <div class="contenedor-boton-cancelar">

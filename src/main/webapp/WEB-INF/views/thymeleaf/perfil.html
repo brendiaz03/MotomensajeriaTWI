@@ -26,12 +26,12 @@
                 <li class="nav-item active  p-2">
                     <a th:href="'home' + ${usuario.getTipoUsuario()}" class="nav-link p-2 text-white" href="#">Inicio</a>
                 </li>
-                <li class="nav-item p-2">
-                    <a th:href="compania" class="nav-link p-2 text-white" href="#">Compañía</a>
-                </li>
-                <li class="nav-item p-2">
-                    <a th:href="ayuda" class="nav-link p-2 text-white" href="#">Ayuda</a>
-                </li>
+<!--                <li class="nav-item p-2">-->
+<!--                    <a th:href="compania" class="nav-link p-2 text-white" href="#">Compañía</a>-->
+<!--                </li>-->
+<!--                <li class="nav-item p-2">-->
+<!--                    <a th:href="ayuda" class="nav-link p-2 text-white" href="#">Ayuda</a>-->
+<!--                </li>-->
                 <li class="nav-item p-2" th:if="${usuario.getTipoUsuario() == T(com.tallerwebi.dominio.enums.TipoUsuario).Conductor}">
                     <a th:href="viajes-en-proceso" class="nav-link p-2 text-white">Viajes en Proceso</a>
                 </li>
@@ -137,7 +137,7 @@
             <div class="card-body">
                 <h4>Cuenta</h4>
                 <a href="javascript:void(0)"  class="confirm-link"  style="text-decoration: none; color: black; transition: color 0.3s;" onmouseover="this.style.color='purple'" onmouseout="this.style.color='black'">
-                    <p>Cerrar Cuenta.</p></a>
+                    <p>Cerrar Cuenta</p></a>
                 <form  id="form-cerrar-cuenta" th:action="@{/borrar-cuenta}" method="GET">
                 </form>
                 <br><br>
