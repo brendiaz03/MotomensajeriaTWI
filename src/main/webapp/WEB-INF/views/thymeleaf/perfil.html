@@ -71,7 +71,7 @@
                         </div>
 
                         <div th:if="${usuario.getImagenPerfil() == null}">
-                            <img th:src="@{/imagenes/user.png}" alt=",,," style="height: 80px;width: 80px">
+                            <img th:src="@{/imagenes/user.png}" alt=",,," style="height: 60px;width: 60px">
                         </div>
                     </a>
                 </div>
@@ -135,13 +135,27 @@
                 <h5 class="card-title text-center p-2"><strong>Seguridad</strong></h5>
             </div>
             <div class="card-body">
+                <h4>Cuenta</h4>
+                <a href="javascript:void(0)"  class="confirm-link"  style="text-decoration: none; color: black; transition: color 0.3s;" onmouseover="this.style.color='purple'" onmouseout="this.style.color='black'">
+                    <p>Cerrar Cuenta.</p></a>
                 <form  id="form-cerrar-cuenta" th:action="@{/borrar-cuenta}" method="GET">
-                    <button class="boton_borrar_cuenta" type="submit">Cerrar cuenta</button>
                 </form>
                 <br><br>
                 <h4>Ayuda</h4>
                 <a href="#" style="text-decoration: none; color: black; transition: color 0.3s;" onmouseover="this.style.color='purple'" onmouseout="this.style.color='black'">
                     <p>Chatea con nuestro soporte online aquí.</p></a> <!--Redirect a la pag de soporte-->
+            </div>
+        </div>
+    </div>
+
+    <div id="confirmPopup" class="modal">
+        <div class="modal-content">
+            <p>¿Está seguro de que deseas eliminar su cuenta de forma definitiva?</p>
+            <div class="container">
+                <div class="d-flex justify-content-center">
+                    <button  class="btn btn-secondary" id="confirmNo">Cancelar</button>
+                <button  class="btn btn-primary me-2" id="confirmYes">Aceptar</button>
+            </div>
             </div>
         </div>
     </div>

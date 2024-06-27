@@ -36,7 +36,6 @@ public class ViajeServicioImpl implements ViajeServicio {
         if(conductor == null){
             throw new UsuarioNoEncontradoException("No se encuentra logueado");
         }
-
         List<Viaje> viajes = viajeRepositorio.obtenerViajesPorConductor(conductor);
         List<DatosViaje> historial = new ArrayList<>();
         for (Viaje viaje : viajes) {
@@ -93,28 +92,42 @@ public class ViajeServicioImpl implements ViajeServicio {
         return isPenalizado;
     }
 
+//
+
     @Override
     public List<DatosViaje> filtrarViajesPorDistanciaDelConductor(Double latitudConductor, Double longitudConductor, Double distanciaAFiltrar, Conductor conductor) {
-
-        if(distanciaAFiltrar == null){
-            List<Viaje> viajes = this.viajeRepositorio.traerTodosLosViajesPendientes();
-            List<Viaje> viajesAMostrar = calcularLaDistanciaDelViajeEntreLaSalidaYElDestino(viajes);
-            List<Viaje> viajesFiltradosDPD = this.compararPesosYDimesionesDeViajes(viajesAMostrar, conductor);
-            DatosViaje datosViaje = new DatosViaje();
-            return viajesFiltradosDPD.stream().limit(5)
-                    .map(viaje -> datosViaje.toDatosViaje(viaje))
-                    .collect(Collectors.toList());
+        List<Viaje> viajes;
+        if (distanciaAFiltrar == null) {
+            viajes = this.viajeRepositorio.traerTodosLosViajesPendientes();
+            System.out.println("VIAJES PENDIENTES TOTALES: " + viajes.size());
+        } else {
+            viajes = this.viajeRepositorio.encontrarViajesCercanos(latitudConductor, longitudConductor, distanciaAFiltrar);
         }
 
-        List<Viaje> viajesCercanos = this.viajeRepositorio.encontrarViajesCercanos(latitudConductor, longitudConductor, distanciaAFiltrar);
-        List<Viaje> viajesAMostrar = calcularLaDistanciaDelViajeEntreLaSalidaYElDestino(viajesCercanos);
-        List<Viaje> viajesFiltradosDPD = this.compararPesosYDimesionesDeViajes(viajesAMostrar, conductor);
-        DatosViaje datosViaje = new DatosViaje();
+        List<Viaje> viajesDescartados = this.viajeRepositorio.traerTodosLosViajesDescartadosPorConductor(conductor);
+        System.out.println("VIAJES DESCARTADOS TOTALES: " + viajesDescartados.size());
 
+        List<Viaje> viajesAFiltrar = filtrarViajesDuplicados(viajes, viajesDescartados);
+        System.out.println("VIAJES A FILTRAR TOTALES: " + viajesAFiltrar.size());
+
+        List<Viaje> viajesAMostrar = calcularLaDistanciaDelViajeEntreLaSalidaYElDestino(viajesAFiltrar);
+        List<Viaje> viajesFiltradosDPD = this.compararPesosYDimesionesDeViajes(viajesAMostrar, conductor);
+
+        DatosViaje datosViaje = new DatosViaje();
         return viajesFiltradosDPD.stream().limit(5)
                 .map(viaje -> datosViaje.toDatosViaje(viaje))
                 .collect(Collectors.toList());
     }
+
+    private List<Viaje> filtrarViajesDuplicados(List<Viaje> viajes, List<Viaje> viajesDescartados) {
+        return viajes.stream()
+                .filter(viaje -> viajesDescartados.stream().noneMatch(viajeDescartado ->
+                        viaje.getPaquete().getId().equals(viajeDescartado.getPaquete().getId()) &&
+                                viaje.getDomicilioDeSalida().equals(viajeDescartado.getDomicilioDeSalida()) &&
+                                viaje.getDomicilioDeLlegada().equals(viajeDescartado.getDomicilioDeLlegada())))
+                .collect(Collectors.toList());
+    }
+
 
     private List<Viaje> compararPesosYDimesionesDeViajes(List<Viaje> viajesAMostrar, Conductor conductor) {
         List <Viaje> filtrados=new ArrayList<>();
@@ -143,6 +156,7 @@ public class ViajeServicioImpl implements ViajeServicio {
         Viaje viajeAceptadoActual = this.viajeRepositorio.obtenerViajePorId(datosViaje.getIdViaje());
         viajeAceptadoActual.setEstado(TipoEstado.CANCELADO);
         viajeAceptadoActual.setFecha(LocalDateTime.now());
+        viajeAceptadoActual.setAfectaPenalizacion(true);
         viajeRepositorio.editar(viajeAceptadoActual);
     }
 
@@ -244,6 +258,19 @@ public class ViajeServicioImpl implements ViajeServicio {
         viajeObtenido.setConductor(null);
         viajeObtenido.setEnviadoNuevamente(false);
         this.viajeRepositorio.guardarViajeDuplicado(viajeObtenido);
+    }
+    @Override
+    public void duplicarViajeDescartado(Viaje viajeObtenido, Conductor conductor) {
+        viajeObtenido.setFecha(LocalDateTime.now());
+        viajeObtenido.setEstado(TipoEstado.DESCARTADO);
+        viajeObtenido.setConductor(conductor);
+        viajeObtenido.setAfectaPenalizacion(true);
+        this.viajeRepositorio.guardarViajeDuplicado(viajeObtenido);
+    }
+
+    @Override
+    public List<Viaje> buscarDescartadosPorConductor(Conductor conductor) {
+       return this.viajeRepositorio.traerTodosLosViajesDescartadosPorConductor(conductor);
     }
 
     @Override

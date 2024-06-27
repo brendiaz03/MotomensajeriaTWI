@@ -17,17 +17,9 @@ public class PaqueteServicioImpl implements PaqueteServicio {
     public Paquete guardarPaquete(Paquete paquete) throws PaqueteNoEncontradoException {
 
         if(paquete==null){
-
-            throw new PaqueteNoEncontradoException();
-
+            throw new PaqueteNoEncontradoException();  //NOSE SI SE NECESITA ESTA VERIFICACION, LA DEJO POR LAS DUDAS
         }
-
         return this.paqueteRepositorio.guardarPaquete(paquete);
-    }
-
-    @Override
-    public void editarPaquete(Paquete paquete) {
-        this.paqueteRepositorio.editarPaquete(paquete);
     }
 
     @Override

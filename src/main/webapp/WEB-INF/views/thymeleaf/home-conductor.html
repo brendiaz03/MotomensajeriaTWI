@@ -14,20 +14,20 @@
 <header>
   <nav class="navbar navbar-expand-lg mx-4">
     <div class="d-flex align-items-center bg-violet">
-      <a th:href="homeConductor" class="mx-2">
+      <a th:href="ubicacion" class="mx-2">
         <img th:src="@{/imagenes/logo.png}" class="d-block w-100 bg-violet" alt=",,," style="height: 50px;width: 50px">
       </a>
     </div>
     <div class="collapse navbar-collapse justify-content-end">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item active  p-2">
-          <a th:href="home" class="nav-link p-2 text-white" href="#">Inicio</a>
+          <a th:href="ubicacion" class="nav-link p-2 text-white">Inicio</a>
         </li>
         <li class="nav-item p-2">
-          <a th:href="compania" class="nav-link p-2 text-white" href="#">Compañía</a>
+<!--          <a th:href="" class="nav-link p-2 text-white" href="#">Compañía</a>-->
         </li>
         <li class="nav-item p-2">
-          <a th:href="ayuda" class="nav-link p-2 text-white" href="#">Ayuda</a>
+<!--          <a th:href="" class="nav-link p-2 text-white" href="#">Ayuda</a>-->
         </li>
         <li class="nav-item p-2">
           <a th:href="viajes-en-proceso" class="nav-link p-2 text-white">Viajes en Proceso</a>
@@ -51,7 +51,18 @@
   </nav>
 </header>
 <main role="main" class="container">
-  <h2 th:if="${isPenalizado}" class="isPenalizado">Usted ha sido penalizado</h2>
+  <section th:if="${isPenalizado}" class="isPenalizado" th:attr="data-penalizacion=${conductor.getHoraPenalizacion()}">
+    <h2>Usted ha sido penalizado.</h2>
+    <h4>Dentro de las próximas <span id="contador"></span> usted podrá volver a realizar envíos.</h4>
+    <div>
+      <p>En caso de querer retomar en el momento con los envíos, puede pagar la multa</p>
+      <form th:action="@{/despenalizar}" method="POST" id="formDespenalizar">
+        <input type="hidden" th:value="${conductor.getId()}" name="conductorId"/>
+        <input type="submit" value="Pagar multa">
+      </form>
+    </div>
+  </section>
+
   <div th:unless="${isPenalizado}">
   <div class="card mt-3 contenedor-solicitudes" style=" background-color: transparent; border: none;">
     <h1 class="text-center titulo-solicitud">Solicitudes de Viajes</h1>
@@ -100,6 +111,7 @@
   </div>
   </div>
 </main>
+<script th:src="@{/js/timer-despenalizacion.js}"></script>
 <script type="text/javascript" th:src="@{webjars/bootstrap/5.2.0/js/bootstrap.min.js}"></script>
 </body>
 </html>

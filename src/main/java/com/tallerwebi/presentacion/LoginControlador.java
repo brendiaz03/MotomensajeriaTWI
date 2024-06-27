@@ -32,8 +32,14 @@ public class LoginControlador {
     }
 
     @RequestMapping("/")
-    public ModelAndView Inicio() {
-        return new ModelAndView("redirect:/home");
+    public ModelAndView error1() {
+        String viewName= "error";
+        return new ModelAndView(viewName);
+    }
+    @RequestMapping("/*")
+    public ModelAndView error2() {
+        String viewName= "error";
+        return new ModelAndView(viewName);
     }
 
     @RequestMapping(path = "/home")
@@ -44,12 +50,14 @@ public class LoginControlador {
 
 
     @RequestMapping(path = "/login")
-    public ModelAndView mostrarLogin(){
+    public ModelAndView mostrarLogin(String mensajeError){
         ModelMap model = new ModelMap();
         String viewName= "login";
 
+        if(mensajeError!=null){
+            model.put("error", mensajeError);
+        }
         model.put("datosLogin", new DatosLogin());
-
         return new ModelAndView(viewName, model);
     }
 
@@ -71,8 +79,8 @@ public class LoginControlador {
                     return new ModelAndView("redirect:/homeCliente", model);
                 }
             }else{
-                model.put("error", "Usuario o clave incorrecta");
-                return new ModelAndView("redirect:/login", model);
+                String mensajeError= "Usuario o clave incorrecta";
+                return this.mostrarLogin(mensajeError);
             }
     }
 

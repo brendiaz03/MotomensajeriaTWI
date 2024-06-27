@@ -24,12 +24,12 @@ public class UsuarioRepositorioImpl implements UsuarioRepositorio {
     @Override
     @Transactional
     public Usuario buscarDuplicados(String email, String nombreUsuario) {
-        Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Usuario.class);
-        criteria.add(Restrictions.or(
-                Restrictions.eq("email", email),
-                Restrictions.eq("nombreUsuario", nombreUsuario)
-        ));
-        return (Usuario) criteria.uniqueResult();
+        String hql = "FROM Usuario WHERE email = :email OR nombreUsuario = :nombreUsuario";
+        Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
+        query.setParameter("email", email);
+        query.setParameter("nombreUsuario", nombreUsuario);
+
+        return (Usuario) query.getSingleResult();
     }
 
 

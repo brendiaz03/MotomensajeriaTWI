@@ -9,13 +9,6 @@
     justify-content: center; /* Alinea horizontalmente el contenido */
     font-family: "Codec Pro",sans-serif;
 }
-/*.custom-form {*/
-/*    background-color: white; !* Establecer el fondo del formulario como blanco *!*/
-/*    padding: 20px; !* Añadir un poco de espacio alrededor del formulario *!*/
-/*    border-radius: 10px; !* Añadir bordes redondeados al formulario *!*/
-/*    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); !* Añadir una ligera sombra al formulario *!*/
-/*    margin-top: 5%;*/
-/*}*/
 
 .titulo_loginConductor {
     font-family: "Codec Pro", serif;

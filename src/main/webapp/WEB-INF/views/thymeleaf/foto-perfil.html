@@ -1,12 +1,11 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<html lang="es" xmlns:th="http://www.thymeleaf.org" style="height: 100%">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Title</title>
+  <title>Foto de Perfil</title>
   <script src="https://kit.fontawesome.com/ca80211b53.js" crossorigin="anonymous"></script>
   <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.0/css/bootstrap.min.css}"/>
-  <link rel="stylesheet" th:href="@{css/login.css}"/>
   <link rel="stylesheet" th:href="@{/css/foto_perfil.css}"/>
   <link rel="stylesheet" th:href="@{css/main.css}"/>
 </head>
@@ -56,61 +55,79 @@
     </div>
   </nav>
 </header>
-<main class="main_registro">
-  <div class="formulario_fondo">
-    <h1 class="titulo_registroConductor">Foto de Perfil</h1>
-    <form id="conductorForm" th:action="@{/subir-foto}" th:object="${usuario}" method="POST" enctype="multipart/form-data">
-      <section class="formulario">
-        <div class="columna">
-          <div class="imagen_contenedor"  th:if="${usuario.getImagenPerfil() != null}">
-            <img alt="img"  th:src="'data:image/jpg;charset=utf-8;base64,' + ${usuario.getImageDataBase64()}"/>
-          </div>
+<main style="height: 40rem">
+  <div class="main_registro">
+    <div class="formulario_fondo">
+      <h1 class="titulo_registroConductor">Foto de Perfil</h1>
+      <form id="conductorForm" th:action="@{/subir-foto}" th:object="${usuario}" method="POST" enctype="multipart/form-data">
+        <section class="formulario">
+          <div class="columna">
+            <div class="imagen_contenedor" id="imagenPerfilContenedor" th:if="${usuario.getImagenPerfil() != null}">
+              <img id="imagenPerfil" alt="img" th:src="'data:image/jpg;charset=utf-8;base64,' + ${usuario.getImageDataBase64()}" class="figure"/>
+            </div>
 
-          <div th:if="${usuario.getImagenPerfil() == null}">
-            <img th:src="@{/imagenes/user.png}" alt=",,," style="height: 80px;width: 80px">
-          </div>
+            <div class="imagen_contenedor" id="imagenUserContenedor" th:if="${usuario.getImagenPerfil() == null}">
+              <img id="imagenUser" th:src="@{/imagenes/user.png}" class="figure"/>
+            </div>
 
-          <div class="contenedor_botones">
-            <div>
-              <a th:href="@{/perfil}" id="backToProfile" >
-                <button class="boton_subir_imagen">
-                  <i class="fa-solid fa-xmark"></i>
+            <div class="imagen_contenedor" id="imagenNuevaContenedor" style="display: none;">
+              <img id="imagenNueva" alt="New Image Preview" class="figure"/>
+            </div>
+
+            <div class="contenedor_botones">
+              <div>
+                <a th:href="@{/perfil}" id="backToProfile">
+                  <button class="boton_subir_imagen" type="button">
+                    <i class="fa-solid fa-xmark"></i>
+                  </button>
+                </a>
+              </div>
+              <div class="boton_contenedor">
+                <input th:field="*{imagenPerfil}" type="file" name="image" accept="image/*" class="form-control-file" onchange="previewImage(event)">
+              </div>
+              <div>
+                <button type="submit" class="boton_subir_imagen">
+                  <i class="fa-solid fa-upload"></i>
                 </button>
-              </a>
-            </div>
-            <div class="boton_contenedor">
-              <input th:field="*{imagenPerfil}" type="file" name="image" accept="image/*" class="form-control-file">
-            </div>
-            <div>
-              <button type="submit" class="boton_subir_imagen">
-                <i class="fa-solid fa-upload"></i>
-              </button>
+              </div>
             </div>
           </div>
-        </div>
-      </section>
-    </form>
+        </section>
+      </form>
+    </div>
   </div>
 </main>
 </body>
 <script>
-  // function previewImage(event) {
-  //   const imagenInput = event.target;
-  //   if (imagenInput.files && imagenInput.files[0]) {
-  //     const reader = new FileReader();
-  //     reader.onload = function (e) {
-  //       const imagenPerfil = document.getElementById('imagenPerfil');
-  //       const imagenNueva = document.getElementById('imagenNueva');
-  //       imagenPerfil.style.display = 'none';
-  //       imagenNueva.style.display = 'block';
-  //       imagenNueva.src = e.target.result;
-  //     };
-  //     reader.readAsDataURL(imagenInput.files[0]);
-  //   }
-  // }
-      document.getElementById('backToProfile').addEventListener('click', function(event) {
-      event.preventDefault();
-      window.location.href = this.href;
-    });
+    function previewImage(event) {
+    const imagenInput = event.target;
+    if (imagenInput.files && imagenInput.files[0]) {
+    const reader = new FileReader();
+    reader.onload = function (e) {
+    const imagenPerfil = document.getElementById('imagenPerfil');
+    const imagenNuevaElement = document.getElementById('imagenNueva');
+    const imagenUser = document.getElementById('imagenUser');
+    const imagenPerfilContenedor = document.getElementById('imagenPerfilContenedor');
+    const imagenUserContenedor = document.getElementById('imagenUserContenedor');
+    const imagenNuevaContenedor = document.getElementById('imagenNuevaContenedor');
+
+    if (imagenPerfil) {
+    imagenPerfilContenedor.style.display = 'none';
+  }
+    if (imagenUser) {
+    imagenUserContenedor.style.display = 'none';
+  }
+    imagenNuevaElement.style.display = 'inline';
+    imagenNuevaElement.src = e.target.result;
+    imagenNuevaContenedor.style.display = 'inline';
+  };
+    reader.readAsDataURL(imagenInput.files[0]);
+  }
+  }
+
+    document.getElementById('backToProfile').addEventListener('click', function(event) {
+    event.preventDefault();
+    window.location.href = this.href;
+  });
 </script>
 </html>

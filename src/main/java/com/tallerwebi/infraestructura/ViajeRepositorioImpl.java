@@ -57,6 +57,7 @@ public class ViajeRepositorioImpl implements ViajeRepositorio {
                 "cos(radians(viaje.longitudDeSalida) - radians(:longitudConductor)) + " +
                 "sin(radians(:latitudConductor)) * sin(radians(viaje.latitudDeSalida)))) < :distanciaAFiltar " +
                 "AND viaje.conductor IS NULL AND viaje.estado = :estado " +
+                "AND viaje.afectaPenalizacion IS NULL " +
                 "ORDER BY (6371 * acos(cos(radians(:latitudConductor)) * cos(radians(viaje.latitudDeSalida)) * " +
                 "cos(radians(viaje.longitudDeSalida) - radians(:longitudConductor)) + " +
                 "sin(radians(:latitudConductor)) * sin(radians(viaje.latitudDeSalida)))) ASC";
@@ -77,6 +78,39 @@ public class ViajeRepositorioImpl implements ViajeRepositorio {
         criteria.add(Restrictions.eq("estado", TipoEstado.PENDIENTE));
         return (List<Viaje>) criteria.list();
     }
+
+
+    @Override
+    @Transactional
+    public List<Viaje> traerTodosLosViajesDescartadosPorConductor(Conductor conductor) {
+        Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Viaje.class);
+        criteria.add(Restrictions.eq("estado", TipoEstado.DESCARTADO));
+        criteria.add(Restrictions.eq("conductor", conductor));
+
+        return (List<Viaje>) criteria.list();
+    }
+    @Override
+    @Transactional
+    public List<Viaje> traerTodosLosViajesDescartadosQueAfectanPenalizacionPorConductor(Conductor conductor) {
+        Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Viaje.class);
+        criteria.add(Restrictions.eq("estado", TipoEstado.DESCARTADO));
+        criteria.add(Restrictions.eq("conductor", conductor));
+        criteria.add(Restrictions.eq("afectaPenalizacion", true));
+
+        return (List<Viaje>) criteria.list();
+    }
+
+    @Override
+    @Transactional
+    public List<Viaje> traerTodosLosViajesCanceladosPorConductor(Conductor conductor) {
+        Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Viaje.class);
+        criteria.add(Restrictions.eq("estado", TipoEstado.CANCELADO));
+        criteria.add(Restrictions.eq("conductor", conductor));
+        criteria.add(Restrictions.eq("afectaPenalizacion", true));
+
+        return (List<Viaje>) criteria.list();
+    }
+
 
     @Override
     @Transactional

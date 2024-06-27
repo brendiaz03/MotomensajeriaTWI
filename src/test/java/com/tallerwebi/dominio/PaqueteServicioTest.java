@@ -1,10 +1,11 @@
 package com.tallerwebi.dominio;
+
 import com.tallerwebi.dominio.paquete.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 public class PaqueteServicioTest {
@@ -21,62 +22,41 @@ public class PaqueteServicioTest {
     @Test
     public void queSePuedaGuardarUnPaqueteYMeDevuelvaUnPaquete() throws PaqueteNoEncontradoException {
 
-        Paquete paquete = new Paquete();
+        Paquete paquete = mock(Paquete.class);
+        paquete.setId(22);
 
-        Paquete paqueteEsperado = new Paquete();
-        try{
-
-            paquete.setId(22);
-
-            when(this.paqueteServicio.guardarPaquete(paquete)).thenReturn(paquete);
-
-            paqueteEsperado = this.paqueteServicio.guardarPaquete(paquete);
-
-        }catch (PaqueteNoEncontradoException e){
-
-            throw new PaqueteNoEncontradoException();
-
-        }
+        when(this.paqueteServicio.guardarPaquete(paquete)).thenReturn(paquete);
+        Paquete paqueteEsperado = this.paqueteServicio.guardarPaquete(paquete);
 
         assertThat(paqueteEsperado, equalTo(paquete));
         assertThat(paqueteEsperado.getId(), equalTo(paquete.getId()));
     }
 
     @Test
-    public void queSePuedaActualizarUnPaquete() {
-        Paquete paquete = new Paquete();
-        paquete.setId(22);
-        paquete.setPeso(10.0);
-
-        paqueteServicio.editarPaquete(paquete);
-
-        assertThat(paquete.getId(), equalTo(22));
-        assertThat(paquete.getPeso(), equalTo(10.0));
-        verify(paqueteRepositorio).editarPaquete(paquete);
-    }
-
-    @Test
     public void queSeObtengaUnPaquetePorSuId() throws PaqueteNoEncontradoException {
 
         Paquete paquete = new Paquete();
+        paquete.setId(29);
 
-        Paquete paqueteEsperado = new Paquete();
-
-        try{
-
-            paquete.setId(29);
-
-            when(paqueteRepositorio.obtenerPaquetePorId(paquete.getId())).thenReturn(paquete);
-
-            paqueteEsperado = this.paqueteServicio.obtenerPaquetePorId(paquete.getId());
-
-        }catch (PaqueteNoEncontradoException e){
-            throw new PaqueteNoEncontradoException();
-        }
+        when(this.paqueteRepositorio.obtenerPaquetePorId(paquete.getId())).thenReturn(paquete);
+        Paquete paqueteEsperado = this.paqueteServicio.obtenerPaquetePorId(paquete.getId());
 
         assertThat(paqueteEsperado, equalTo(paquete));
-        assertThat(paquete.getId(), equalTo(paqueteEsperado.getId()));
-
+        assertThat(paqueteEsperado.getId(), equalTo(paquete.getId()));
+        verify(this.paqueteRepositorio).obtenerPaquetePorId(paquete.getId());
     }
 
+
+    @Test
+    public void queSeBusqueAUnPaquetePorSuIdYNoSeLoEncuentre() throws PaqueteNoEncontradoException {
+
+        Paquete paquete = mock(Paquete.class);
+
+        when(this.paqueteRepositorio.obtenerPaquetePorId(paquete.getId())).thenThrow(PaqueteNoEncontradoException.class);
+        assertThrows(PaqueteNoEncontradoException.class, () -> {
+            paqueteServicio.obtenerPaquetePorId(paquete.getId());
+        });
+
+        verify(paqueteRepositorio, times(1)).obtenerPaquetePorId(paquete.getId());
+    }
 }
