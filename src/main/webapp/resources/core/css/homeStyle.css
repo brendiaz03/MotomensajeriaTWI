@@ -13,6 +13,10 @@ body {
 #letrasHome{
     margin-top: 150px;
 }
+.formFiltro{
+    height: 100%;
+    display: flex;
+}
 
 .titulo_registroConductor {
     font-family: "Codec Pro", serif;

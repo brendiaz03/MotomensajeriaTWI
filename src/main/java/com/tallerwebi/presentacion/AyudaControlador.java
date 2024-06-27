@@ -21,23 +21,23 @@ public class AyudaControlador {
         conductorServicio = _conductorServicio;
     }
 
-    @RequestMapping("/ayuda")
-    public ModelAndView mostrarVistaAyuda(HttpServletRequest request) {
-        ModelMap model = new ModelMap();
-
-        Boolean isUsuarioLogueado = (Boolean) request.getSession().getAttribute("isUsuarioLogueado");
-
-        Conductor conductor;
-
-        model.put("isUsuarioLogueado",isUsuarioLogueado);
-        if(request.getSession().getAttribute("IDUSUARIO") != null){
-            //conductor = conductorServicio.obtenerConductorPorId((Integer) request.getSession().getAttribute("IDUSUARIO"));
-        }else{
-            conductor = null;
-        }
-        //model.put("conductor", conductor);
-        return new ModelAndView("ayuda", model);
-    }
+//    @RequestMapping("/ayuda")
+//    public ModelAndView mostrarVistaAyuda(HttpServletRequest request) {
+//        ModelMap model = new ModelMap();
+//
+//        Boolean isUsuarioLogueado = (Boolean) request.getSession().getAttribute("isUsuarioLogueado");
+//
+//        Conductor conductor;
+//
+//        model.put("isUsuarioLogueado",isUsuarioLogueado);
+//        if(request.getSession().getAttribute("IDUSUARIO") != null){
+//            //conductor = conductorServicio.obtenerConductorPorId((Integer) request.getSession().getAttribute("IDUSUARIO"));
+//        }else{
+//            conductor = null;
+//        }
+//        //model.put("conductor", conductor);
+//        return new ModelAndView("ayuda", model);
+//    }
 
 
 }

@@ -39,6 +39,7 @@ public class ConductorControlador {
                 distanciaAFiltrar, conductor);
         model.put("isPenalizado", conductor.getPenalizado());
         model.put("viajes", viajesCercanosPendientes);
+        model.put("cantidadDeViajes", viajesCercanosPendientes.size());
         return new ModelAndView(viewName, model);
     }
 
@@ -120,11 +121,6 @@ public class ConductorControlador {
         Conductor conductor = conductorServicio.obtenerConductorPorId((Integer) session.getAttribute("IDUSUARIO"));
 
         DatosViaje viaje = viajeServicio.obtenerViajeAceptadoPorId(idViaje);
-
-//        if (viaje.getEstado() != TipoEstado.CANCELADO && viaje.getEstado() != TipoEstado.TERMINADO && viaje.getEstado() != TipoEstado.DESCARTADO) {
-//            model.put("error", "Viaje no disponible para ser visto");
-//            return new ModelAndView(viewName, model);
-//        } tiene que estar en el service
 
         model.put("clave", claveGoogleMaps);
         model.put("conductor", conductor);
