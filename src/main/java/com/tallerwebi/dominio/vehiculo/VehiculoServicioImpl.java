@@ -1,8 +1,5 @@
 package com.tallerwebi.dominio.vehiculo;
-import com.tallerwebi.dominio.conductor.Conductor;
-import com.tallerwebi.dominio.exceptions.UsuarioDuplicadoException;
 import com.tallerwebi.dominio.exceptions.VehiculoDuplicadoException;
-import com.tallerwebi.dominio.usuario.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +12,7 @@ public class VehiculoServicioImpl implements VehiculoServicio {
     public VehiculoServicioImpl(VehiculoRepositorio _VehiculoRepositorio) {
         this.vehiculoRepositorio = _VehiculoRepositorio;
     }
+
     @Override
     public Vehiculo registrarVehiculo(Vehiculo vehiculo) throws VehiculoDuplicadoException {
         try{
@@ -30,11 +28,15 @@ public class VehiculoServicioImpl implements VehiculoServicio {
         vehiculoRepositorio.editar(vehiculo);
     }
 
-    private void verificarDuplicados(String patente) throws VehiculoDuplicadoException {
+    @Override
+    public void verificarDuplicados(String patente) throws VehiculoDuplicadoException {
+
         Vehiculo duplicado = vehiculoRepositorio.buscarVehiculoPorPatente(patente);
+
         if (duplicado != null) {
             throw new VehiculoDuplicadoException("La patente del vehiculo ya existe");
         }
+
     }
 }
 

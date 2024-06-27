@@ -2,6 +2,8 @@ package com.tallerwebi.presentacion;
 
 import com.tallerwebi.dominio.conductor.*;
 import com.tallerwebi.dominio.exceptions.UsuarioNoEncontradoException;
+import com.tallerwebi.dominio.mercadoPago.MercadoPagoServicio;
+import com.tallerwebi.dominio.mercadoPago.MercadoPagoServicioImpl;
 import com.tallerwebi.dominio.viaje.Viaje;
 import com.tallerwebi.dominio.viaje.ViajeServicio;
 import com.tallerwebi.presentacion.Datos.DatosViaje;
@@ -9,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
@@ -16,11 +20,13 @@ import java.util.List;
 public class ConductorControlador {
     private ConductorServicio conductorServicio;
     private ViajeServicio viajeServicio;
+    private final MercadoPagoServicio mercadoPagoServicio;
 
     @Autowired
     public ConductorControlador(ConductorServicio conductorServicio, ViajeServicio viajeServicio) {
         this.conductorServicio = conductorServicio;
         this.viajeServicio = viajeServicio;
+        this.mercadoPagoServicio = new MercadoPagoServicioImpl();
     }
 
     @GetMapping("/homeConductor")
@@ -202,5 +208,22 @@ public class ConductorControlador {
 
         return new ModelAndView("redirect:/homeConductor");
     }
+  /*  @RequestMapping(value = "/despenalizar")
+    public String despenalizarConductor(@RequestParam("montoPenalizacion") Double montoPenalizacion,
+                                        RedirectAttributes redirectAttributes, HttpSession session) {
+
+        if (montoPenalizacion == null || montoPenalizacion < 0) {
+            redirectAttributes.addFlashAttribute("error", "Monto de penalización inválido.");
+            return "redirect:/homeConductor";
+        }
+
+        try {
+            String redirectUrl = mercadoPagoServicio.pagarPenalizacionMp(montoPenalizacion);
+            return "redirect:" + redirectUrl;
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Error al procesar el pago: " + e.getMessage());
+            return "redirect:/homeConductor";
+        }
+    }*/
 
 }

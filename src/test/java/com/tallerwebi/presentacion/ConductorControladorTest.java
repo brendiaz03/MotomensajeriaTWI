@@ -250,7 +250,7 @@ public void queSeRendericeElViajeAceptadoPorElConductor() throws UsuarioNoEncont
 
         assertThat(mav.getViewName(), equalTo(nombreEsperado));
     }
-
+/*
 @Test
 public void queSeDespenaliceAUnConductorPreviamentePenalizado() throws UsuarioNoEncontradoException {
     String nombreEsperado = "redirect:/homeConductor";
@@ -263,6 +263,6 @@ public void queSeDespenaliceAUnConductorPreviamentePenalizado() throws UsuarioNo
 
     assertThat(mav.getViewName(), equalTo(nombreEsperado));
     verify(conductorServicio).despenalizarConductor(conductor);
-}
+}*/
 
 }

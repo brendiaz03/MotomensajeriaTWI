@@ -39,7 +39,7 @@ public class VehiculoRepositorioTest {
     @Test
     @Rollback
     @Transactional
-    public void queAlBuscarElVehiculoPorPatenteDevuelvaElVehiculo(){
+    public void queAlBuscarElVehiculoPorPatenteDevuelvaElVehiculoYLoGuarde(){
 
         Vehiculo vehiculoEsperado= new Vehiculo("sfsfsfd", Color.ROJO, ModeloVehiculo.BMW, TipoVehiculo.AUTO, 0.0, 0.0);
 
@@ -49,23 +49,8 @@ public class VehiculoRepositorioTest {
 
         assertThat(vehiculoEsperado.getId(), equalTo(vehiculoObtenido.getId()));
         assertThat(vehiculoEsperado.getPatente(), equalTo(vehiculoObtenido.getPatente()));
-
-    }
-
-    @Test
-    @Rollback
-    @Transactional
-    public void queAlGuardarUnVehiculoMeDevuelvaElVehiculo(){
-
-        Vehiculo vehiculoEsperado= new Vehiculo("sfsfsfd", Color.ROJO, ModeloVehiculo.BMW, TipoVehiculo.AUTO, 0.0, 0.0);
-
-        vehiculoRepositorio.guardarVehiculo(vehiculoEsperado);
-
-        Vehiculo vehiculoObtenido = vehiculoRepositorio.buscarVehiculoPorPatente(vehiculoEsperado.getPatente());
-
         assertThat(vehiculoEsperado, equalTo(vehiculoObtenido));
-        assertThat(vehiculoEsperado.getId(), equalTo(vehiculoObtenido.getId()));
-        assertThat(vehiculoEsperado.getPatente(), equalTo(vehiculoObtenido.getPatente()));
+
     }
 
     @Test
