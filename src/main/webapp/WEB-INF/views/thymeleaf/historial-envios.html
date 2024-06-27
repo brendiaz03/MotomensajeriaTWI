@@ -80,7 +80,7 @@
                                 <div th:if="${viaje.getEstado() == CANCELADO}" class="cancelado">Cancelado</div>
                             </div>
                             <div>
-                                <a th:href="@{/detalle-envio(idViaje=${viaje.getId()})}" class="boton-verde">Ver detalle</a>
+                                <a th:href="@{/detalle-envio(idViaje=${viaje.getId()})}" class="boton-verde" th:id="'detalle-' + ${viaje.getId()}">Ver detalle</a>
                             </div>
                         </div>
                     </div>
