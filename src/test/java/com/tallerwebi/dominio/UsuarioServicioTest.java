@@ -41,30 +41,30 @@ public class UsuarioServicioTest {
 
     @Test
     public void queSeBusqueDuplicadosYAlNoEncontrarloSeRegistreCorrectamenteUnUsuarioDeTipoConductor() throws UsuarioDuplicadoException {
-        // Arrange
         DatosUsuario nuevoUsuario = mock(DatosUsuario.class);
         when(nuevoUsuario.getEmail()).thenReturn("facu@gmail.com");
         when(nuevoUsuario.getNombreUsuario()).thenReturn("facu");
         when(nuevoUsuario.getTipoUsuario()).thenReturn(TipoUsuario.Conductor);
 
+        // Simulamos que no se encuentra ningún duplicado
         when(usuarioRepositorio.buscarDuplicados("facu@gmail.com", "facu")).thenReturn(null);
 
+        // Mock para el usuario que se va a guardar
         Conductor conductor = mock(Conductor.class);
         when(nuevoUsuario.toConductor()).thenReturn(conductor);
         when(usuarioRepositorio.guardarUsuario(conductor)).thenReturn(conductor);
 
-        // Act
+        // Verificamos el registro del usuario
         Usuario usuarioRegistrado = usuarioServicio.registrarUsuario(nuevoUsuario);
 
-        // Assert
         assertNotNull(usuarioRegistrado);
         assertEquals(conductor, usuarioRegistrado);
         verify(usuarioRepositorio, times(1)).guardarUsuario(conductor);
     }
 
+
     @Test
     public void queSeBusqueDuplicadosYSeLanceExcepcionSiYaExisteElUsuario() {
-        // Arrange
         DatosUsuario nuevoUsuario = mock(DatosUsuario.class);
         when(nuevoUsuario.getEmail()).thenReturn("facu@gmail.com");
         when(nuevoUsuario.getNombreUsuario()).thenReturn("facu");
@@ -72,7 +72,6 @@ public class UsuarioServicioTest {
         Usuario usuarioDuplicado = mock(Usuario.class);
         when(usuarioRepositorio.buscarDuplicados("facu@gmail.com", "facu")).thenReturn(usuarioDuplicado);
 
-        // Act & Assert
         assertThrows(UsuarioDuplicadoException.class, () -> usuarioServicio.registrarUsuario(nuevoUsuario));
     }
 
@@ -80,7 +79,6 @@ public class UsuarioServicioTest {
 
     @Test
     public void queSeActualiceCorrectamenteUnUsuarioDeTipoConductor() throws UsuarioNoEncontradoException {
-        // Arrange
         DatosUsuario datosUsuario = mock(DatosUsuario.class);
         when(datosUsuario.getId()).thenReturn(1);
         when(datosUsuario.getTipoUsuario()).thenReturn(TipoUsuario.Conductor);
@@ -92,17 +90,14 @@ public class UsuarioServicioTest {
         when(datosUsuario.toConductor()).thenReturn(conductorEditado);
         when(conductorEditado.getId()).thenReturn(1);
 
-        // Act
         usuarioServicio.actualizarUsuario(datosUsuario, TipoUsuario.Conductor);
 
-        // Assert
         verify(usuarioRepositorio, times(1)).editarUsuario(conductorEditado);
     }
 
 
     @Test
     public void queSeActualiceCorrectamenteUnUsuarioDeTipoCliente() throws UsuarioNoEncontradoException {
-        // Arrange
         DatosUsuario datosUsuario = mock(DatosUsuario.class);
         when(datosUsuario.getId()).thenReturn(1);
         when(datosUsuario.getTipoUsuario()).thenReturn(TipoUsuario.Cliente);
@@ -114,22 +109,18 @@ public class UsuarioServicioTest {
         when(datosUsuario.toCliente()).thenReturn(clienteEditado);
         when(clienteEditado.getId()).thenReturn(1);
 
-        // Act
         usuarioServicio.actualizarUsuario(datosUsuario, TipoUsuario.Cliente);
 
-        // Assert
         verify(usuarioRepositorio, times(1)).editarUsuario(clienteEditado);
     }
 
 
     @Test
     public void queSeLanceExcepcionSiNoSeEncuentraElUsuarioAlActualizar() {
-        // Arrange
         DatosUsuario datosUsuario = mock(DatosUsuario.class);
         when(datosUsuario.getId()).thenReturn(1);
         when(usuarioRepositorio.getUsuarioById(1)).thenThrow(new NoResultException());
 
-        // Act & Assert
         assertThrows(UsuarioNoEncontradoException.class, () -> usuarioServicio.actualizarUsuario(datosUsuario, TipoUsuario.Conductor));
     }
 
@@ -137,24 +128,19 @@ public class UsuarioServicioTest {
 
     @Test
     public void queSeObtengaCorrectamenteUnUsuarioPorId() throws UsuarioNoEncontradoException {
-        // Arrange
         Usuario usuarioExistente = mock(Usuario.class);
         when(usuarioRepositorio.getUsuarioById(1)).thenReturn(usuarioExistente);
 
-        // Act
         Usuario usuarioObtenido = usuarioServicio.obtenerUsuarioPorId(1);
 
-        // Assert
         assertNotNull(usuarioObtenido);
         assertEquals(usuarioExistente, usuarioObtenido);
     }
 
     @Test
     public void queSeLanceExcepcionSiNoSeEncuentraElUsuarioPorId() {
-        // Arrange
         when(usuarioRepositorio.getUsuarioById(1)).thenThrow(new NoResultException());
 
-        // Act & Assert
         assertThrows(UsuarioNoEncontradoException.class, () -> usuarioServicio.obtenerUsuarioPorId(1));
     }
 
@@ -162,41 +148,34 @@ public class UsuarioServicioTest {
 
     @Test
     public void queSeIngreseCorrectamenteUnaImagenDePerfil() throws UsuarioNoEncontradoException, IOException {
-        // Arrange
         MultipartFile imagenMock = mock(MultipartFile.class);
         when(imagenMock.getBytes()).thenReturn("imagen".getBytes());
 
         Usuario usuarioExistente = mock(Usuario.class);
         when(usuarioRepositorio.getUsuarioById(1)).thenReturn(usuarioExistente);
 
-        // Act
         usuarioServicio.ingresarImagen(imagenMock, 1);
 
-        // Assert
         verify(usuarioExistente, times(1)).setImagenPerfil(Base64.getEncoder().encode("imagen".getBytes()));
         verify(usuarioRepositorio, times(1)).editarUsuario(usuarioExistente);
     }
 
     @Test
     public void queSeLanceExcepcionSiNoSeEncuentraElUsuarioAlIngresarImagen() {
-        // Arrange
         MultipartFile imagenMock = mock(MultipartFile.class);
         when(usuarioRepositorio.getUsuarioById(1)).thenThrow(new NoResultException());
 
-        // Act & Assert
         assertThrows(UsuarioNoEncontradoException.class, () -> usuarioServicio.ingresarImagen(imagenMock, 1));
     }
 
     @Test
     public void queSeLanceRuntimeExceptionEnCasoDeIOExceptionAlIngresarImagen() throws IOException {
-        // Arrange
         MultipartFile imagenMock = mock(MultipartFile.class);
         when(imagenMock.getBytes()).thenThrow(new IOException());
 
         Usuario usuarioExistente = mock(Usuario.class);
         when(usuarioRepositorio.getUsuarioById(1)).thenReturn(usuarioExistente);
 
-        // Act & Assert
         assertThrows(RuntimeException.class, () -> usuarioServicio.ingresarImagen(imagenMock, 1));
     }
 
