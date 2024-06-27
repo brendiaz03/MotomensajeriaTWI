@@ -3,233 +3,157 @@ package com.tallerwebi.dominio;
 import com.tallerwebi.dominio.conductor.*;
 import com.tallerwebi.dominio.exceptions.UsuarioNoEncontradoException;
 import com.tallerwebi.dominio.vehiculo.Vehiculo;
+import com.tallerwebi.dominio.viaje.Viaje;
+import com.tallerwebi.dominio.viaje.ViajeRepositorio;
 import com.tallerwebi.infraestructura.config.HibernateInfraestructuraTestConfig;
-import org.hibernate.SessionFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-
-
 import javax.persistence.NoResultException;
-
-import java.io.IOException;
-import java.util.Base64;
-
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
-
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = HibernateInfraestructuraTestConfig.class)
 public class ConductorServicioTest {
     private ConductorServicio conductorServicio;
     private ConductorRepositorio conductorRepositorio;
-
-    private SessionFactory sessionFactory;
+    private ViajeRepositorio viajeRepositorio;
 
     @BeforeEach
     public void init() {
         this.conductorRepositorio = mock(ConductorRepositorio.class);
-        this.conductorServicio = new ConductorServicioImpl(conductorRepositorio);
+        this.viajeRepositorio= mock(ViajeRepositorio.class);
+        this.conductorServicio = new ConductorServicioImpl(conductorRepositorio,viajeRepositorio);
+    }
+
+    @Test
+    public void queSeBusqueUnConductorPorIDYSiLoEncuentraEntoncesLoDevuelve() throws UsuarioNoEncontradoException {
+        Integer idConductor = 1;
+        Conductor conductor = mock(Conductor.class);
+
+        when(conductorRepositorio.buscarConductorPorId(idConductor)).thenReturn(conductor);
+        Conductor conductorObtenido = conductorServicio.obtenerConductorPorId(idConductor);
+
+        assertThat(conductorObtenido, equalTo(conductor));
+        verify(conductorRepositorio).buscarConductorPorId(idConductor);
+    }
+
+    @Test
+    public void queSeBusqueUnConductorPorIDYQueLanceUnaExcepcionEnCasoDeNoEncontrarlo() {
+        Integer idConductor = 1;
+
+        when(conductorRepositorio.buscarConductorPorId(idConductor)).thenThrow(NoResultException.class);
+
+        assertThrows(UsuarioNoEncontradoException.class, () -> {
+            conductorServicio.obtenerConductorPorId(idConductor);
+        });
+
+        verify(conductorRepositorio).buscarConductorPorId(idConductor);
+    }
+
+    @Test
+    public void queSeEditeUnConductorExistente() {
+        Conductor conductor = mock(Conductor.class);
+
+        conductorServicio.editarConductor(conductor);
+
+        verify(conductorRepositorio).editarConductor(conductor);
+    }
+
+    @Test
+    public void queSeRelacioneCorrectamenteUnVehiculoAUnConductor() throws UsuarioNoEncontradoException {
+        Conductor conductor = mock(Conductor.class);
+        Vehiculo vehiculo=mock(Vehiculo.class);
+        Integer conductorId =1;
+
+        when(conductorServicio.obtenerConductorPorId(conductorId)).thenReturn(conductor);
+        Boolean resultado=this.conductorServicio.RelacionarVehiculoAConductor(conductorId,vehiculo);
+
+        assertThat(resultado,equalTo(true));
+        verify(conductor).setVehiculo(vehiculo);
+        verify(conductorRepositorio).editarConductor(conductor);
+    }
+
+    @Test
+    public void queSeNoSeRelacioneUnVehiculoAUnConductorSiNoSeEncuentraAlConductor() throws UsuarioNoEncontradoException {
+        Vehiculo vehiculo=mock(Vehiculo.class);
+        Integer idConductor =1;
+
+        when(conductorServicio.obtenerConductorPorId(idConductor)).thenThrow(NoResultException.class);
+
+        assertThrows(UsuarioNoEncontradoException.class, () -> {conductorServicio.RelacionarVehiculoAConductor(idConductor, vehiculo);
+        });
+        verify(conductorRepositorio, never()).editarConductor(any(Conductor.class));
+    }
+    
+    @Test
+    public void verificarSiElConductorEstaPenalizadoEnBaseASusViajesDescartadosOCancelados() {
+        Conductor conductor = mock(Conductor.class);
+        Integer cantPenalizacion = 3;
+        when(conductor.getCantPenalizacion()).thenReturn(cantPenalizacion);
+        List<Viaje> viajesDescartados = new ArrayList<>();
+        List<Viaje> viajesCancelados = new ArrayList<>();
+        Viaje viajeDescartado = mock(Viaje.class);
+        Viaje viajeCancelado = mock(Viaje.class);
+        viajesDescartados.add(viajeDescartado);
+        viajesCancelados.add(viajeCancelado);
+
+        when(viajeRepositorio.traerTodosLosViajesDescartadosQueAfectanPenalizacionPorConductor(conductor)).thenReturn(viajesDescartados);
+        when(viajeRepositorio.traerTodosLosViajesCanceladosPorConductor(conductor)).thenReturn(viajesCancelados);
+        Boolean estaPenalizado = conductorServicio.estaPenalizado(conductor);
+
+        assertThat(estaPenalizado, equalTo(true));
+        verify(conductor).setCantPenalizacion(cantPenalizacion);
+        verify(conductor).setPenalizado(true);
+        verify(conductor).setHoraPenalizacion(any(LocalDateTime.class));
+        verify(conductorRepositorio, times(2)).editarConductor(conductor);
+        verify(viajeRepositorio, times(1)).editar(viajeCancelado);
+        verify(viajeRepositorio, times(1)).editar(viajeDescartado);
+    }
+
+    @Test
+    public void verificarSiElConductorNoEstaPenalizadoEnBaseASusViajesDescartadosOCancelados () {
+        Conductor conductor = mock(Conductor.class);
+        Integer cantPenalizacion = 2;
+        when(conductor.getCantPenalizacion()).thenReturn(cantPenalizacion);
+        List<Viaje> viajesDescartados = new ArrayList<>();
+        List<Viaje> viajesCancelados = new ArrayList<>();
+        Viaje viajeDescartado = mock(Viaje.class);
+        Viaje viajeCancelado = mock(Viaje.class);
+        viajesDescartados.add(viajeDescartado);
+        viajesCancelados.add(viajeCancelado);
+
+        when(viajeRepositorio.traerTodosLosViajesDescartadosQueAfectanPenalizacionPorConductor(conductor)).thenReturn(viajesDescartados);
+        when(viajeRepositorio.traerTodosLosViajesCanceladosPorConductor(conductor)).thenReturn(viajesCancelados);
+        Boolean estaPenalizado = conductorServicio.estaPenalizado(conductor);
+
+        assertThat(estaPenalizado, equalTo(false));
+        verify(conductorRepositorio).editarConductor(any(Conductor.class));
+        verify(viajeRepositorio, never()).editar(viajeCancelado);
+        verify(viajeRepositorio, never()).editar(viajeDescartado);
     }
 
 
-   /* @Test
-    public void queSeEnvieLaSolicitudDeRegistroYQueNoSeEncuentrenDuplicadosPorEndeSeRegistreCorrectamente() throws UsuarioDuplicadoException {
+    @Test
+public void queSeDespenaliceUnConductorPreviamentePenalizado() throws UsuarioNoEncontradoException {
+    Conductor conductor = mock(Conductor.class);
 
-        Conductor nuevoConductor = new Conductor();
-        nuevoConductor.setEmail("facu@gmail.com");
-        nuevoConductor.setNombreUsuario("facu");
+    this.conductorServicio.despenalizarConductor(conductor);
 
-        when(conductorRepositorio.buscarDuplicados(nuevoConductor.getEmail(), nuevoConductor.getNombreUsuario())).thenThrow(NoResultException.class);
-        when(conductorRepositorio.guardar(nuevoConductor)).thenReturn(nuevoConductor);
+    verify(conductor).setPenalizado(false);
+    verify(conductor).setHoraPenalizacion(null);
+    verify(conductor).setCantPenalizacion(0);
+    verify(conductorRepositorio).editarConductor(conductor);
+}
 
-        Conductor conductorRegistrado = conductorServicio.registrarConductorNoDuplicado(nuevoConductor);
-
-        assertNotNull(conductorRegistrado);
-        assertEquals(nuevoConductor.getNombreUsuario(), conductorRegistrado.getNombreUsuario());
-        assertEquals(nuevoConductor.getEmail(), conductorRegistrado.getEmail());
-    }*/
-
-    /*@Test
-    public void queSeEnvieLaSolicitudDeRegistroYQueSeEncuentrenDuplicadosPorEndeNoSeRegistre() throws UsuarioDuplicadoException {
-        Conductor conductor = new Conductor();
-        conductor.setEmail("facu@gmail.com");
-        conductor.setNombreUsuario("Facu");
-
-        when(this.conductorRepositorio.buscarDuplicados(conductor.getEmail(), conductor.getNombreUsuario())).thenReturn(conductor);
-
-        assertThrows(UsuarioDuplicadoException.class, () -> conductorServicio.registrarConductorNoDuplicado(conductor));
-    }*/
-//
-//    @Test
-//    public void queSeObtengaConductorBuscadoPorIDSiExisteElMismo() throws UsuarioNoEncontradoException {
-//        Integer conductorId = 1;
-//        Conductor conductorBuscado = new Conductor();
-//        conductorBuscado.setId(conductorId);
-//
-//        when(conductorRepositorio.buscarConductorPorId(conductorId)).thenReturn(conductorBuscado);
-//        Conductor conductorObtenido = conductorServicio.obtenerConductorPorId(conductorId);
-//
-//        assertNotNull(conductorObtenido);
-//        assertThat(conductorObtenido, equalTo(conductorBuscado));
-//    }
-//
-//    @Test
-//    public void queSeNoEncuentreConductorBuscadoPorIDSiNoExiste() throws UsuarioNoEncontradoException {
-//        Integer conductorId = 1;
-//        Conductor conductorBuscado = new Conductor();
-//        conductorBuscado.setId(conductorId);
-//
-//        when(conductorRepositorio.buscarConductorPorId(conductorId)).thenThrow(NoResultException.class);
-//
-//        assertThrows(UsuarioNoEncontradoException.class, () -> conductorServicio.obtenerConductorPorId(conductorBuscado.getId()));
-//    }
-//
-//    @Test
-//    public void queSeEditeConductorSinImagenDePerfilManteniendoLaExistente() throws UsuarioNoEncontradoException {
-//        Conductor conductorEditado = new Conductor();
-//        conductorEditado.setId(1);
-//        conductorEditado.setNombre("Kira");
-//        conductorEditado.setVehiculo(new Vehiculo());
-//        conductorEditado.setImagenPerfil(null);
-//
-//        Conductor conductorExistente = new Conductor();
-//        conductorExistente.setId(1);
-//        conductorExistente.setNombre("Facu");
-//        conductorExistente.setVehiculo(new Vehiculo());
-//        byte[] imagenExistente = "fotoVieja".getBytes();
-//        conductorExistente.setImagenPerfil(imagenExistente);
-//
-//        when(conductorRepositorio.buscarConductorPorId(conductorEditado.getId())).thenReturn(conductorExistente);
-//
-//        conductorServicio.editarConductor(conductorEditado);
-//
-//        assertEquals("Kira", conductorEditado.getNombre());
-//        assertNotNull(conductorExistente.getVehiculo());
-//        assertEquals(imagenExistente, conductorEditado.getImagenPerfil());
-//        verify(conductorRepositorio).buscarConductorPorId(conductorEditado.getId());
-//        verify(conductorRepositorio).editarConductor(conductorEditado);
-//    }
-//
-//    @Test
-//    public void queSeEditeConductorConImagenDePerfilNueva() throws UsuarioNoEncontradoException {
-//        Conductor conductorEditado = new Conductor();
-//        conductorEditado.setId(1);
-//        conductorEditado.setNombre("Kira");
-//        conductorEditado.setVehiculo(new Vehiculo());
-//        conductorEditado.setImagenPerfil(null);
-//        byte[] imagenNueva = "fotoNueva".getBytes();
-//        conductorEditado.setImagenPerfil(imagenNueva);
-//
-//        Conductor conductorExistente = new Conductor();
-//        conductorExistente.setId(1);
-//        conductorExistente.setNombre("Facu");
-//        conductorExistente.setVehiculo(new Vehiculo());
-//        byte[] imagenExistente = "fotoVieja".getBytes();
-//        conductorExistente.setImagenPerfil(imagenExistente);
-//
-//        when(conductorRepositorio.buscarConductorPorId(conductorEditado.getId())).thenReturn(conductorExistente);
-//
-//        conductorServicio.editarConductor(conductorEditado);
-//
-//        assertEquals("Kira", conductorEditado.getNombre());
-//        assertNotNull(conductorExistente.getVehiculo());
-//        assertEquals(imagenNueva, conductorEditado.getImagenPerfil());
-//        verify(conductorRepositorio).buscarConductorPorId(conductorEditado.getId());
-//        verify(conductorRepositorio).editarConductor(conductorEditado);
-//    }
-//
-//    @Test
-//    public void queSeBusqueUnConductorParaEditarloYNoSeEncuentre() throws UsuarioNoEncontradoException {
-//        Conductor conductorEditado = new Conductor();
-//        conductorEditado.setId(1);
-//        conductorEditado.setNombre("Kira");
-//        conductorEditado.setVehiculo(new Vehiculo());
-//        conductorEditado.setImagenPerfil("fotoNueva".getBytes());
-//
-//        when(conductorRepositorio.buscarConductorPorId(conductorEditado.getId())).thenThrow(new NoResultException());
-//
-//        assertThrows(UsuarioNoEncontradoException.class, () -> {
-//            conductorServicio.editarConductor(conductorEditado);
-//        });
-//
-//        verify(conductorRepositorio).buscarConductorPorId(conductorEditado.getId());
-//        verify(conductorRepositorio, never()).editarConductor(any(Conductor.class));
-//    }
-//
-//    @Test
-//    public void queSePuedaIngresarUnaImagenAlPerfilDelConductor() throws IOException, UsuarioNoEncontradoException {
-//        Conductor conductor = new Conductor();
-//        Integer conductorId = 29;
-//        conductor.setId(conductorId);
-//        when(this.conductorRepositorio.buscarConductorPorId(conductorId)).thenReturn(conductor);
-//        MockMultipartFile imagen = new MockMultipartFile("imagen", "imagen.jpg", "image/jpeg", "Este es el contenido de una imagen de prueba.".getBytes());
-//        byte[] imagenCodificada = Base64.getEncoder().encode(imagen.getBytes());
-//        conductorServicio.ingresarImagen(imagen, conductorId);
-//        assertThat(conductor.getImagenPerfil(), equalTo(imagenCodificada));
-//    }
-//
-//    @Test
-//    public void queNoSePuedaRelacionarUnVehiculoAlConductor() throws UsuarioNoEncontradoException {
-//        Conductor conductor = new Conductor();
-//        Vehiculo vehiculo = new Vehiculo();
-//        Long idVehiculo = 22L;
-//        Integer idConductor = 22;
-//        conductor.setId(idConductor);
-//        vehiculo.setId(idVehiculo);
-//        doThrow(new IllegalArgumentException("Conductor no encontrado con el ID: " + idConductor)).when(conductorRepositorio).agregarVehiculoAConductor(idConductor, vehiculo);
-//        Boolean resultado;
-//        try {
-//            resultado = conductorServicio.RelacionarVehiculoAConductor(idConductor, vehiculo);
-//        } catch (IllegalArgumentException e) {
-//            resultado = false;
-//        }
-//        assertThat(resultado, equalTo(false));
-//        assertThat(conductor.getVehiculo(), equalTo(null));
-//    }
-//
-//    @Test
-//    public void queSePuedaRelacionarUnVehiculoAlConductor() throws UsuarioNoEncontradoException {
-//        Conductor conductor = new Conductor();
-//        Vehiculo vehiculo = new Vehiculo();
-//        Long idVehiculo = 22L;
-//        Integer idConductor = 22;
-//        conductor.setId(idConductor);
-//        vehiculo.setId(idVehiculo);
-//        doNothing().when(conductorRepositorio).agregarVehiculoAConductor(idConductor, vehiculo);
-//        Boolean resultado;
-//        try {
-//            resultado = conductorServicio.RelacionarVehiculoAConductor(idConductor, vehiculo);
-//        } catch (UsuarioNoEncontradoException e) {
-//            throw new RuntimeException(e);
-//        }
-//        conductor.setVehiculo(vehiculo);
-//        vehiculo.setConductor(conductor);
-//        assertThat(conductor.getVehiculo(), equalTo(vehiculo));
-//        assertThat(conductor.getId(), equalTo(vehiculo.getConductor().getId()));
-//        assertThat(resultado, equalTo(true));
-//    }
-//
-//    @Test
-//    public void queSePuedaBorrarUnConductorExistente() throws UsuarioNoEncontradoException {
-//        Integer idConductor = 1;
-//        Conductor conductorABorrar = new Conductor();
-//        conductorABorrar.setId(idConductor);
-//        when(conductorRepositorio.buscarConductorPorId(idConductor)).thenReturn(conductorABorrar);
-//        doNothing().when(conductorRepositorio).borrarConductor(conductorABorrar);
-//        Conductor conductorEsperado = conductorRepositorio.buscarConductorPorId(idConductor);
-//        assertThat(conductorEsperado.getId(), equalTo(conductorABorrar.getId()));
-//        conductorServicio.borrarConductor(idConductor);
-//        when(conductorRepositorio.buscarConductorPorId(idConductor)).thenReturn(null);
-//        conductorEsperado = conductorRepositorio.buscarConductorPorId(idConductor);
-//        assertNull(conductorEsperado);
-//    }
 }
 
 

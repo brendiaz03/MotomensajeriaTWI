@@ -33,12 +33,15 @@ public class ConductorControlador {
         List<DatosViaje> viajesCercanosPendientes;
 
         Double distanciaAFiltrar = (Double) session.getAttribute("distancia");
-        viajesCercanosPendientes = this.viajeServicio.filtrarViajesPorDistanciaDelConductor((Double)session.getAttribute("latitud"),
-                (Double)session.getAttribute("longitud"), distanciaAFiltrar, conductor);
-        session.setAttribute("isPenalizado", this.viajeServicio.estaPenalizado(conductor));
+        viajesCercanosPendientes = this.viajeServicio.filtrarViajesPorDistanciaDelConductor(
+                (Double)session.getAttribute("latitud"),
+                (Double)session.getAttribute("longitud"),
+                distanciaAFiltrar, conductor);
+        model.put("isPenalizado", conductor.getPenalizado());
         model.put("viajes", viajesCercanosPendientes);
         return new ModelAndView(viewName, model);
     }
+
 
     @RequestMapping("/historial")
     public ModelAndView mostrarHistorial(HttpSession session) throws UsuarioNoEncontradoException {
@@ -107,11 +110,62 @@ public class ConductorControlador {
         return new ModelAndView(viewName, model);
     }
 
+
     @RequestMapping(value = "/viajeAceptado", method = RequestMethod.GET)
     public ModelAndView verViaje(HttpSession session, @RequestParam("idViaje") Integer idViaje) throws UsuarioNoEncontradoException {
         ModelMap model = new ModelMap();
 
         String viewName = "viaje";
+        String claveGoogleMaps = "AIzaSyDcPeOyMBqG_1mZgjpei_R2ficRigdkINg";
+        Conductor conductor = conductorServicio.obtenerConductorPorId((Integer) session.getAttribute("IDUSUARIO"));
+
+        DatosViaje viaje = viajeServicio.obtenerViajeAceptadoPorId(idViaje);
+
+//        if (viaje.getEstado() != TipoEstado.CANCELADO && viaje.getEstado() != TipoEstado.TERMINADO && viaje.getEstado() != TipoEstado.DESCARTADO) {
+//            model.put("error", "Viaje no disponible para ser visto");
+//            return new ModelAndView(viewName, model);
+//        } tiene que estar en el service
+
+        model.put("clave", claveGoogleMaps);
+        model.put("conductor", conductor);
+        model.put("viaje", viaje);
+        return new ModelAndView(viewName, model);
+    }
+
+    @RequestMapping("/cancelar-viaje")
+    public ModelAndView cancelarViaje(HttpSession session, @RequestParam("idViaje") Integer idViaje) throws UsuarioNoEncontradoException {
+        DatosViaje viaje = viajeServicio.obtenerViajeAceptadoPorId(idViaje);
+        viajeServicio.cancelarViaje(viaje);
+        Conductor conductor = conductorServicio.obtenerConductorPorId((Integer) session.getAttribute("IDUSUARIO"));
+        this.conductorServicio.estaPenalizado(conductor);
+        return new ModelAndView("redirect:/homeConductor");
+    }
+
+    @RequestMapping("/terminar-viaje")
+    public ModelAndView terminarViaje(@RequestParam("idViaje") Integer idViaje){
+        DatosViaje viaje = viajeServicio.obtenerViajeAceptadoPorId(idViaje);
+        viajeServicio.terminarViaje(viaje);
+        return new ModelAndView("redirect:/homeConductor");
+    }
+
+    @RequestMapping("/volver")
+    public ModelAndView volverAlHome(){
+        return new ModelAndView("redirect:/ubicacion");
+    }
+
+    @RequestMapping("/descartar")
+    public ModelAndView descartarViaje(HttpSession session, @RequestParam("idViaje") Integer idViaje) throws UsuarioNoEncontradoException {
+        Conductor conductor = conductorServicio.obtenerConductorPorId((Integer) session.getAttribute("IDUSUARIO"));
+        this.viajeServicio.duplicarViajeDescartado(this.viajeServicio.obtenerViajePorId(idViaje), conductor);
+        this.conductorServicio.estaPenalizado(conductor);
+        return new ModelAndView("redirect:/homeConductor");
+    }
+
+    @RequestMapping("/detalle")
+    public ModelAndView VerDetalleDelViaje(HttpSession session, @RequestParam("idViaje") Integer idViaje) throws UsuarioNoEncontradoException {
+        ModelMap model = new ModelMap();
+
+        String viewName = "detalle-viaje";
         String claveGoogleMaps = "AIzaSyDcPeOyMBqG_1mZgjpei_R2ficRigdkINg";
         Conductor conductor = conductorServicio.obtenerConductorPorId((Integer) session.getAttribute("IDUSUARIO"));
 
@@ -123,50 +177,6 @@ public class ConductorControlador {
         return new ModelAndView(viewName, model);
     }
 
-    @RequestMapping("/cancelar-viaje")
-    public ModelAndView cancelarViaje(@RequestParam("idViaje") Integer idViaje){
-        DatosViaje viaje = viajeServicio.obtenerViajeAceptadoPorId(idViaje);
-        viajeServicio.cancelarViaje(viaje);
-        return new ModelAndView("redirect:/home");
-    }
-
-    @RequestMapping("/terminar-viaje")
-    public ModelAndView terminarViaje(@RequestParam("idViaje") Integer idViaje){
-        DatosViaje viaje = viajeServicio.obtenerViajeAceptadoPorId(idViaje);
-        viajeServicio.terminarViaje(viaje);
-        return new ModelAndView("redirect:/home");
-    }
-
-    @RequestMapping("/volver")
-    public ModelAndView volverAlHome(){
-        return new ModelAndView("redirect:/ubicacion");
-    }
-
-    @RequestMapping("/descartar")
-    public ModelAndView descartarViaje(HttpSession session, @RequestParam("idViaje") Integer idViaje) throws UsuarioNoEncontradoException {
-        Conductor conductor = conductorServicio.obtenerConductorPorId((Integer) session.getAttribute("IDUSUARIO"));
-        this.viajeServicio.descartarViaje(idViaje, conductor);
-        Boolean isPenalizado = this.viajeServicio.estaPenalizado(conductor);
-        session.setAttribute("isPenalizado", isPenalizado);
-        return new ModelAndView("redirect:/home");
-    }
-
-//    @RequestMapping("/detalle")
-//    public ModelAndView VerDetalleDelViaje(HttpSession session, @RequestParam("idViaje") Integer idViaje) throws UsuarioNoEncontradoException {
-//        ModelMap model = new ModelMap();
-//
-//        String viewName = "detalle-viaje";
-//        String claveGoogleMaps = "AIzaSyDcPeOyMBqG_1mZgjpei_R2ficRigdkINg";
-//        Conductor conductor = conductorServicio.obtenerConductorPorId((Integer) session.getAttribute("IDUSUARIO"));
-//
-//        DatosViaje viaje = viajeServicio.obtenerViajeAceptadoPorId(idViaje);
-//
-//        model.put("clave", claveGoogleMaps);
-//        model.put("conductor", conductor);
-//        model.put("viaje", viaje);
-//        return new ModelAndView(viewName, model);
-//    }
-
     @RequestMapping("/volver-historial")
     public ModelAndView volverAlHistorial(){
         return new ModelAndView("redirect:/historial");
@@ -176,13 +186,21 @@ public class ConductorControlador {
     @RequestMapping(value = "/filtrarPorDistancia", method = RequestMethod.POST)
     public ModelAndView filtrarPorDistancia(HttpSession session, @RequestParam Double distancia) throws UsuarioNoEncontradoException {
             session.setAttribute("distancia", distancia);
-            return mostrarHomeConductor(session);
+            return new ModelAndView("redirect:/homeConductor");
     }
 
     @RequestMapping(path = "/ubicacion")
-    public ModelAndView ubicacoin(){
+    public ModelAndView ubicacion(){
         String viewName= "ubicacion";
         return new ModelAndView(viewName);
+    }
+
+    @PostMapping("/despenalizar")
+    public ModelAndView despenalizarConductor(HttpSession session, @RequestParam("conductorId") Integer conductorId) throws UsuarioNoEncontradoException {
+
+        this.conductorServicio.despenalizarConductor(conductorServicio.obtenerConductorPorId(conductorId));
+
+        return new ModelAndView("redirect:/homeConductor");
     }
 
 }

@@ -21,4 +21,11 @@ public interface ViajeRepositorio {
     List<Viaje> obtenerViajesPorCliente(Integer idusuario);
 
     void guardarViajeDuplicado(Viaje viajeObtenido);
-}
+
+   List<Viaje> traerTodosLosViajesDescartadosPorConductor(Conductor idConductor);
+
+    List<Viaje> traerTodosLosViajesCanceladosPorConductor(Conductor conductor);
+
+    List<Viaje> traerTodosLosViajesDescartadosQueAfectanPenalizacionPorConductor(Conductor conductor);
+
+    }
