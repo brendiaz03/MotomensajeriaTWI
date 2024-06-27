@@ -14,8 +14,6 @@ import java.util.List;
 @Entity
 public class Conductor extends Usuario {
 
-    @Column(name = "cvu")
-    private String cvu;
 
     @Column(name = "isPenalizado")
     private Boolean isPenalizado;
@@ -57,13 +55,6 @@ public class Conductor extends Usuario {
         this.vehiculo = vehiculo;
     }
 
-    public String getCvu() {
-        return cvu;
-    }
-
-    public void setCvu(String cvu) {
-        this.cvu = cvu;
-    }
 
     public Boolean getPenalizado() {
         return isPenalizado;
