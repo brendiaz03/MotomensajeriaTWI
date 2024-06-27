@@ -32,8 +32,14 @@ public class LoginControlador {
     }
 
     @RequestMapping("/")
-    public ModelAndView Inicio() {
-        return new ModelAndView("redirect:/home");
+    public ModelAndView error1() {
+        String viewName= "error";
+        return new ModelAndView(viewName);
+    }
+    @RequestMapping("/*")
+    public ModelAndView error2() {
+        String viewName= "error";
+        return new ModelAndView(viewName);
     }
 
     @RequestMapping(path = "/home")
