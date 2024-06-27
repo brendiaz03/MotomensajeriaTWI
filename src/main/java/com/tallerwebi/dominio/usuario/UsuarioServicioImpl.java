@@ -85,5 +85,10 @@ public class UsuarioServicioImpl implements UsuarioServicio {
         }
     }
 
+    @Override
+    public void borrarCuenta(Integer id) throws UsuarioNoEncontradoException {
+
+    }
+
 
 }

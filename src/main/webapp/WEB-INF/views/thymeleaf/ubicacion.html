@@ -6,6 +6,7 @@
     <script src="https://kit.fontawesome.com/ca80211b53.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.0/css/bootstrap.min.css}"/>
     <link rel="stylesheet" th:href="@{css/main.css}"/>
+    <link rel="stylesheet" th:href="@{css/ubicacion.css}"/>
     <title>Motomensajeria</title>
     <script>
         window.onload = function() {
@@ -50,7 +51,7 @@
 <header>
 </header>
 <main>
-    <h1 class="text-center align-content-md-center">Cargando ubicación...</h1>
+    <span class="loader"></span>
     <form id="ubicacionForm" action="/actualizarUbicacion" method="post">
         <input type="hidden" id="latitud" name="latitud" value="">
         <input type="hidden" id="longitud" name="longitud" value="">

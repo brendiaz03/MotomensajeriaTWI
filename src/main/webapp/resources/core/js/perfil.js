@@ -35,14 +35,43 @@ document.addEventListener('DOMContentLoaded', function () {
         const defaultTarget = defaultOption.dataset.target;
         showCard(defaultTarget);
     }
+    // Obtener el enlace de cerrar cuenta y agregar evento de clic
+    var confirmLink = document.querySelector('.confirm-link');
+    if (confirmLink) {
+        confirmLink.addEventListener('click', function(event) {
+            event.preventDefault(); // Prevenir el comportamiento por defecto del enlace
 
-    document.getElementById("form-cerrar-cuenta").addEventListener("submit", function(event) {
-        event.preventDefault(); // Evita que el formulario se envíe automáticamente
+            // Mostrar el popup de confirmación
+            openPopup();
+        });
+    }
 
-        if (confirm("¿Estás seguro de que deseas cerrar tu cuenta?")) {
-            // Si el usuario confirma, redirige utilizando la URL generada por Thymeleaf
-            window.location.href = this.getAttribute("action");
-        }
+    // Función para mostrar el popup de confirmación
+    function openPopup() {
+        document.getElementById('confirmPopup').style.display = 'block';
+    }
+
+    // Función para cerrar el popup de confirmación
+    function closePopup() {
+        document.getElementById('confirmPopup').style.display = 'none';
+    }
+
+    // Event listener para el enlace de "Cerrar Cuenta"
+    document.querySelectorAll('.confirm-link').forEach(link => {
+        link.addEventListener('click', function (event) {
+            event.preventDefault(); // Prevenir el comportamiento por defecto del enlace
+            openPopup(); // Mostrar el popup de confirmación
+        });
     });
 
+    // Event listener para el botón "Sí" dentro del popup de confirmación
+    document.getElementById('confirmYes').addEventListener('click', function () {
+            document.getElementById("form-cerrar-cuenta").submit(); // Enviar el formulario si se confirma
+        closePopup(); // Cerrar el popup después de la confirmación
+    });
+
+    // Event listener para el botón "No" dentro del popup de confirmación
+    document.getElementById('confirmNo').addEventListener('click', function () {
+        closePopup(); // Cerrar el popup si se selecciona "No"
+    });
 });

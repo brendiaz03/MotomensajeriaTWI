@@ -15,4 +15,6 @@ public interface UsuarioServicio {
     Usuario obtenerUsuarioPorId(Integer id) throws UsuarioNoEncontradoException;
 
     void ingresarImagen(MultipartFile imagen, Integer idUsuario) throws UsuarioNoEncontradoException;
+
+    void borrarCuenta(Integer id) throws UsuarioNoEncontradoException;
 }

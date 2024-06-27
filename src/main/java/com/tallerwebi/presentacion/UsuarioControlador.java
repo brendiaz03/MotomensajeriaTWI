@@ -133,14 +133,15 @@ public class UsuarioControlador {
         }
     }
 
-//    @RequestMapping(value = "/borrar-cuenta", method = RequestMethod.GET)
-//    public ModelAndView borrarCuenta(HttpSession session) {
-//        try {
-//            conductorServicio.borrarConductor((Integer) session.getAttribute("IDUSUARIO"));
-//        } catch (UsuarioNoEncontradoException e) {
-//            return this.mostrarFormConductor(e.getMessage(), session);
-//        }
-//        return new ModelAndView("redirect:/cerrar-sesion");
-//    }
+    @RequestMapping(value = "/borrar-cuenta", method = RequestMethod.GET)
+    public ModelAndView borrarCuenta(HttpSession session) {
+        ModelMap model = new ModelMap();
+        try{
+        usuarioServicio.borrarCuenta((Integer) session.getAttribute("IDUSUARIO"));}
+        catch(UsuarioNoEncontradoException e){
+            model.put("mensajeError", e.getMessage());
+        }
+        return new ModelAndView("redirect:/cerrar-sesion", model);
+    }
 
 }
