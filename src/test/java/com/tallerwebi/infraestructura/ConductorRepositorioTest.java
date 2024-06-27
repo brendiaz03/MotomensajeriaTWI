@@ -62,19 +62,19 @@ public class ConductorRepositorioTest {
             conductorRepositorio.buscarConductorPorId(3); //ES UN TEMA DE ID DE HIBERNATE (SI PONGO ID 2 ME TOMA A LOS ID DE TEST ANTERIORES)
         });
         assertNotNull(nuevoConductor.getId());
-    }/*
+    }
     @Test
     @Transactional
     @Rollback
     public void queSePuedaEditarUnConductorExistente() {
         Conductor conductor = new Conductor();
-        conductor.setCvu("123");
+        conductor.setNombre("facu");
         usuarioRepositorio.guardarUsuario(conductor);
-        conductor.setCvu("456");
+        conductor.setNombre("pepe");
 
         this.conductorRepositorio.editarConductor(conductor);
         Conductor conductorEditado = sessionFactory.getCurrentSession().get(Conductor.class, conductor.getId());
 
-        assertThat(conductorEditado.getCvu(), equalTo("456"));
-    }*/
+        assertThat(conductorEditado.getNombre(), equalTo("pepe"));
+    }
 }

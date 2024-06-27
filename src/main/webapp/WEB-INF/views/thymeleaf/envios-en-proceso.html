@@ -22,12 +22,12 @@
                 <li class="nav-item active  p-2">
                     <a th:href="homeCliente" class="nav-link p-2 text-white" href="#">Inicio</a>
                 </li>
-                <li class="nav-item p-2">
-                    <a th:href="compania" class="nav-link p-2 text-white" href="#">Compañía</a>
-                </li>
-                <li class="nav-item p-2">
-                    <a th:href="ayuda" class="nav-link p-2 text-white" href="#">Ayuda</a>
-                </li>
+<!--                <li class="nav-item p-2">-->
+<!--                    <a th:href="compania" class="nav-link p-2 text-white" href="#">Compañía</a>-->
+<!--                </li>-->
+<!--                <li class="nav-item p-2">-->
+<!--                    <a th:href="ayuda" class="nav-link p-2 text-white" href="#">Ayuda</a>-->
+<!--                </li>-->
                 <li class="nav-item p-2">
                     <a th:href="envios-en-proceso" class="nav-link p-2 text-white">Envios en Proceso</a>
                 </li>
@@ -51,8 +51,8 @@
 </header>
 <main class="main-envios-proceso">
         <section class="titulo-envios">
-            <h1>Envíos en Proceso</h1>
-            <h2 th:if="${viajesEnProceso == null || #lists.isEmpty(viajesEnProceso)}">No hay envíos en proceso.</h2>
+            <h1 style="color:white">Envíos en Proceso</h1>
+            <h2 th:if="${viajesEnProceso == null || #lists.isEmpty(viajesEnProceso)}" style="color:white">No hay envíos en proceso.</h2>
         </section>
     <section th:if="${viajesEnProceso != null && !#lists.isEmpty(viajesEnProceso)}" style="background-color: transparent; border:none; padding:0; margin:0;">
         <article class="tarjeta-viaje-proceso" th:each="viaje : ${viajesEnProceso}" style="background-color: transparent; border:none; padding:0; margin-bottom: 20px;">
@@ -80,8 +80,8 @@
                         <i class="fa-solid fa-trash-can"></i>
                     </button>
                 </form>
-
             </div>
+
         </article>
     </section>
 

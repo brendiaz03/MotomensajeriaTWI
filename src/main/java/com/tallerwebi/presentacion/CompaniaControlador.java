@@ -21,21 +21,21 @@ public class CompaniaControlador {
         this.conductorServicio = conductorServicio;
     }
 
-    @RequestMapping("/compania")
-    public ModelAndView mostrarVistaCompania(HttpServletRequest request) throws UsuarioNoEncontradoException {
-        ModelMap model = new ModelMap();
-        Boolean isUsuarioLogueado = (Boolean) request.getSession().getAttribute("isUsuarioLogueado");
-
-        Conductor conductor;
-
-        model.put("isUsuarioLogueado",isUsuarioLogueado);
-        if(request.getSession().getAttribute("IDUSUARIO") != null){
-            conductor = conductorServicio.obtenerConductorPorId((Integer) request.getSession().getAttribute("IDUSUARIO"));
-        }else{
-            conductor = null;
-        }
-        model.put("conductor", conductor);
-        return new ModelAndView("compania", model);
-    }
+//    @RequestMapping("/compania")
+//    public ModelAndView mostrarVistaCompania(HttpServletRequest request) throws UsuarioNoEncontradoException {
+//        ModelMap model = new ModelMap();
+//        Boolean isUsuarioLogueado = (Boolean) request.getSession().getAttribute("isUsuarioLogueado");
+//
+//        Conductor conductor;
+//
+//        model.put("isUsuarioLogueado",isUsuarioLogueado);
+//        if(request.getSession().getAttribute("IDUSUARIO") != null){
+//            conductor = conductorServicio.obtenerConductorPorId((Integer) request.getSession().getAttribute("IDUSUARIO"));
+//        }else{
+//            conductor = null;
+//        }
+//        model.put("conductor", conductor);
+//        return new ModelAndView("compania", model);
+//    }
 
 }

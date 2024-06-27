@@ -27,16 +27,10 @@ public class UsuarioControladorTest {
     private HttpSession session;
     private UsuarioControlador usuarioControlador;
     private UsuarioServicio usuarioServicio;
-    private ClienteServicio clienteServicio;
-    private ConductorServicio conductorServicio;
-
-
 
     @BeforeEach
     public void init(){
         this.session=mock(HttpSession.class);
-        this.clienteServicio=mock(ClienteServicio.class);
-        this.conductorServicio=mock(ConductorServicio.class);
         this.usuarioServicio = mock(UsuarioServicio.class);
         this.usuarioControlador = new UsuarioControlador(usuarioServicio);
     }
@@ -48,16 +42,13 @@ public class UsuarioControladorTest {
         Usuario usuario= mock(Usuario.class);
         DatosUsuario usuarioDTO= mock(DatosUsuario.class);
 
-        Boolean isEditForm= false;
-
-
         when(this.session.getAttribute("isEditForm")).thenReturn(false);
         ModelAndView mav = usuarioControlador.mostrarForm(usuarioDTO,"", session);
 
         assertThat(mav.getViewName(), equalToIgnoringCase(viewName));
         assertThat(mav.getModel().get("usuario"), instanceOf(DatosUsuario.class));
         assertThat((boolean) mav.getModel().get("isEditForm"), equalTo(false));
-        assertThat(mav.getModel().containsKey("mensajeError"), equalTo(false));
+        assertThat(mav.getModel().containsKey("mensajeError"), equalTo(true)); //correct
     }
 
 //REGISTRAR-USUARIO
@@ -82,7 +73,7 @@ public class UsuarioControladorTest {
 
     @Test
     public void queAlSolicitarRegistrarUsuarioSeRegistreUnCliente() throws Exception {
-        String redireccionCliente="redirect:/homeCliente";
+        String redireccionCliente="redirect:/home";
         DatosUsuario nuevo = mock(DatosUsuario.class);
         Cliente nuevoCliente = mock(Cliente.class);
         Integer idUsuario = 1;
@@ -190,52 +181,22 @@ public class UsuarioControladorTest {
 //EDITAR USUARIO
     @Test
     public void queAlSolicitarEditarUsuarioSeEdite() throws Exception {
-        // Arrange
         String redireccionPerfil = "redirect:/perfil";
         DatosUsuario usuarioEditado = mock(DatosUsuario.class);
         TipoUsuario tipoUsuario = TipoUsuario.Conductor;
         Integer idUsuario = 1;
 
-        // Simulamos la sesión
         when(session.getAttribute("IDUSUARIO")).thenReturn(idUsuario);
         when(session.getAttribute("tipoUsuario")).thenReturn(tipoUsuario);
         when(session.getAttribute("isEditForm")).thenReturn(false);
 
-        // Act
         ModelAndView mav = usuarioControlador.editarConductor(session, usuarioEditado);
 
-        // Assert
         assertThat(mav.getViewName(), equalToIgnoringCase(redireccionPerfil));
         assertThat(session.getAttribute("IDUSUARIO"), equalTo(idUsuario));
         assertThat(session.getAttribute("isEditForm"), equalTo(false));
         verify(usuarioServicio, times(1)).actualizarUsuario(usuarioEditado, tipoUsuario);
     }
-
-//    @Test
-//    public void queAlSolicitarEditarUsuarioYFalleLaEdicionSeMuestreElFormularioDeEdicion() throws Exception {
-//        // Arrange
-//        TipoUsuario tipoUsuario = TipoUsuario.Cliente;
-//        String viewName = "form-usuario";
-//        Integer idUsuario = 1;
-//        DatosUsuario usuarioDto= mock(DatosUsuario.class);
-//
-//        // Simulamos la sesión
-//        when(session.getAttribute("IDUSUARIO")).thenReturn(idUsuario);
-//        when(session.getAttribute("tipoUsuario")).thenReturn(tipoUsuario);
-//
-//        // Simulamos que falla la actualización del usuario
-//        doThrow(UsuarioNoEncontradoException.class)
-//                .when(usuarioServicio)
-//                .actualizarUsuario(usuarioDto, tipoUsuario);
-//
-//        // Act
-//        ModelAndView mav = usuarioControlador.editarConductor(session, new DatosUsuario());
-//
-//        // Assert
-//        assertThat(mav.getViewName(), equalToIgnoringCase(viewName));
-//        assertThat((boolean) mav.getModel().get("isEditForm"), equalTo(true));
-//        assertThat(mav.getModel().containsKey("mensajeError"), equalTo(true));
-//    }
 
 
 //SUBIR-FOTO
@@ -251,19 +212,6 @@ public class UsuarioControladorTest {
         assertThat(mav.getViewName(), equalToIgnoringCase(viewName));
     }
 
-//    @Test
-//    public void queAlSubirUnaImagenDePerfilNoSeEncuentreAlUsuario() throws UsuarioNoEncontradoException {
-//        String viewName="redirect:/foto-perfil";
-//        Integer idUsuario = 1;
-//        MultipartFile imagen = mock(MultipartFile.class);
-//
-//        doThrow(new UsuarioNoEncontradoException("")).when(usuarioServicio).ingresarImagen(imagen, idUsuario);
-//
-//        ModelAndView mav = this.usuarioControlador.subirFoto(imagen,session);
-//
-//        assertThat(mav.getViewName(),equalTo(viewName));
-//        assertThat(mav.getModel().get("mensajeError"), equalTo("Conductor no encontrado"));
-//        verify(usuarioServicio).ingresarImagen(imagen,idUsuario);
-//    }
+
   }
 

@@ -7,10 +7,15 @@ import com.tallerwebi.dominio.viaje.Viaje;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Entity
 public class Conductor extends Usuario {
+
+    @Column(name = "cvu")
+    private String cvu;
 
     @Column(name = "isPenalizado")
     private Boolean isPenalizado;

@@ -2,8 +2,7 @@ package com.tallerwebi.infraestructura;
 
 import com.tallerwebi.dominio.cliente.Cliente;
 import com.tallerwebi.dominio.cliente.ClienteRepositorio;
-import com.tallerwebi.dominio.paquete.Paquete;
-import com.tallerwebi.dominio.viaje.Viaje;
+import com.tallerwebi.dominio.usuario.UsuarioRepositorio;
 import com.tallerwebi.infraestructura.config.HibernateInfraestructuraTestConfig;
 import org.hibernate.SessionFactory;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,10 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.transaction.annotation.Transactional;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
+import javax.transaction.Transactional;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = HibernateInfraestructuraTestConfig.class)
@@ -26,9 +25,40 @@ public class ClienteRepositorioTest {
     private SessionFactory sessionFactory;
     private ClienteRepositorio clienteRepositorio;
 
+    private UsuarioRepositorio usuarioRepositorio;
+
     @BeforeEach
     public void init(){
         this.clienteRepositorio = new ClienteRepositorioImpl(sessionFactory);
+        this.usuarioRepositorio = new UsuarioRepositorioImpl(sessionFactory);
+    }
+
+    @Test
+    @Transactional
+    @Rollback
+    public void obtengoUnClienteExistenteEnLaBD() {
+        Cliente cliente =new Cliente();
+        cliente.setId(1);
+        cliente.setNombre("Marcos");
+        usuarioRepositorio.guardarUsuario(cliente);
+
+        Cliente clienteObtenido = clienteRepositorio.obtenerClientePorId(cliente.getId());
+        assertNotNull(clienteObtenido);
+        assertEquals(1, clienteObtenido.getId());
+        assertEquals("Marcos", clienteObtenido.getNombre());
+    }
+
+    @Test
+    @Transactional
+    @Rollback
+    public void buscarUnClienteNoExistenteLaBD() {
+        Cliente cliente =new Cliente();
+        cliente.setId(1);
+        cliente.setNombre("Marcos");
+        usuarioRepositorio.guardarUsuario(cliente);
+
+        Cliente clienteObtenido = clienteRepositorio.obtenerClientePorId(3);
+        assertNull(clienteObtenido);
     }
 
 }
