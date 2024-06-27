@@ -58,6 +58,8 @@
 
 .contenedor-boton-cancelar{
     text-align: center;
+    display: flex;
+    justify-content: center;
 }
 
 .imagen-viaje{
@@ -121,6 +123,13 @@
 
 .cancelado {
     background-color: #dc3545;
+}
+
+.card-text{
+    color: #4f4f4f;
+    span{
+        color:black;
+    }
 }
 
 p {
@@ -193,48 +202,91 @@ p {
 }
 
 .contenedor-filtro {
-    width: 300px;
-    margin: 20px 0 20px auto;
-    border: none;
+    width: 100%;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    background-color: lightgrey;
+    border-radius: 30px;
+    padding: 2% 7% 2% 7%;
+}
+.formFiltro{
+    display: flex;
+    flex-direction: column;
+    display: none;
+    overflow: hidden;
+}
+.contenedor-filtro.active .formFiltro {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
 }
 
+.pregunta_acordeon{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.options-filtro{
+    display: flex;
+    flex-direction: column;
+}
 .label-filtro {
-    display: block;
-    margin-bottom: 10px;
-    font-weight: bold;
+
 }
 
 .select-filtro {
-    width: 100%;
-    font-size: 16px;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 3px;
+    height: 2rem;
+    border:none;
+    width: 30%;
+    background-color: #9d8f8f61;
 }
-
-.boton-filtro {
-    width: 100%;
-    padding: 10px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    margin-top: 10px;
-}
-
-.boton-filtro:hover {
-    background-color: #0056b3;
-}
-
 .option-filtro{
-    font-size: 20px;
 }
-
+.btn_h_aceptar{
+    width: 200px;
+    height: 40px;
+    background: #36054E;
+    border-radius: 50px;
+     color: white;
+    display: flex;
+     text-align: center;
+    justify-content: center;
+    align-items: center;
+}
+.btn_h_cancelar{
+    width: 200px;
+    height: 40px;
+    background: #ffffff;
+    border-radius: 50px;
+     color: #370a37;
+    display: flex;
+    border-color: #370a37;
+    border:solid;
+    justify-content: center;
+    align-items: center;
+}
+a{
+    text-decoration: none;
+}
 .isPenalizado{
     color: #FFFFFF;
     text-align: center;
     margin-top: 30px;
+    background-color: black;
+    border-radius: 30px;
+    padding: 2%;
+}
+
+.pagarMulta{
+    align-content: center;
+    text-align: center;
+}
+.pagarMulta p{
+    align-content: center;
+    text-align: center;
+}
+.imgPenalizado{
+    height: 200px; /* Ajusta este valor según lo necesario */
+    width: auto;   /* Mantener auto para preservar la relación de aspecto */
+    margin: 0 auto;
+    display: block;
 }
