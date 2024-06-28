@@ -6,10 +6,9 @@
   <script src="https://kit.fontawesome.com/ca80211b53.js" crossorigin="anonymous"></script>
   <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.0/css/bootstrap.min.css}"/>
   <link rel="stylesheet" th:href="@{css/main.css}"/>
-  <link rel="stylesheet" th:href="@{css/homeStyle.css}"/>
-  <link rel="stylesheet" th:href="@{css/viajes.css}"/>
-
-  <title>Motomensajeria</title>
+  <link rel="stylesheet" th:href="@{css/home.css}"/>
+  <title>Home</title>
+  <link rel="icon" th:src="@{/imagenes/logo.png}" type="image/png">
 </head>
 <body>
 <header>
@@ -35,27 +34,15 @@
     </div>
   </nav>
 </header>
-<main role="main" class="container">
-  <div class="container">
-    <div class="row">
-      <div class="col-md-6">
-        <div class="contenido d-flex justify-content-center align-items-center mt-lg-3">
-          <div class="texto text-center text-white" id="letrasHome">
-            <h2 class="m-0">¡Tus paquetes a tiempo siempre!</h2>
-            <h2 class="m-0">Te ofrecemos envíos en el acto.</h2>
-            <p class="m-0">Confía en nosotros.</p>
+<main>
+          <div class="cont-texto-home">
+            <h2 class="texto-home">¡Tus paquetes a tiempo siempre!</h2>
+            <h2 class="texto-home">Te ofrecemos envíos en el acto.</h2>
+            <p class="texto-home">Confía en nosotros.</p>
           </div>
-        </div>
-      </div>
-      <div class="col-md-6">
-        <div class="contenido d-flex justify-content-center align-items-center">
-          <div class="imagen text-center">
-            <img th:src="@{/imagenes/auto-home.svg}" class="d-block mx-auto" alt="Imagen de Auto" style="width: 180%; height: 200%;">
+          <div class="cont-imagen-auto">
+            <img th:src="@{/imagenes/auto-home.svg}" id="img-auto" alt="Imagen de Auto">
           </div>
-        </div>
-      </div>
-    </div>
-  </div>
 </main>
 <script type="text/javascript" th:src="@{webjars/bootstrap/5.2.0/js/bootstrap.min.js}"></script>
 </body>

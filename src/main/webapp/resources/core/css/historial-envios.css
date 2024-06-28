@@ -1,0 +1,11 @@
+main{
+    display: flex;
+    justify-content: center;
+    height: 100%;
+    align-items: center;
+}
+img{
+    height: 60%;
+    width: 80%;
+}
+

@@ -32,12 +32,11 @@ public class LoginControlador {
     }
 
     @RequestMapping("/")
-    public ModelAndView error1() {
-        String viewName= "error";
-        return new ModelAndView(viewName);
+    public ModelAndView error1(HttpSession session) {
+        return this.mostrarHome(session);
     }
     @RequestMapping("/*")
-    public ModelAndView error2() {
+    public ModelAndView error() {
         String viewName= "error";
         return new ModelAndView(viewName);
     }
