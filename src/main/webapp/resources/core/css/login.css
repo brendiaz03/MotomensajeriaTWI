@@ -1,48 +1,29 @@
-@font-face {
-    font-family: 'Codec Pro';
-    src: url('CodecPro-Bold.ttf') format('truetype');
-}
-
-.main_login {
+main {
     display: flex;
     align-items: center; /* Alinea verticalmente el contenido */
     justify-content: center; /* Alinea horizontalmente el contenido */
-    font-family: "Codec Pro",sans-serif;
+    height: 89vh;
 }
-
-.titulo_loginConductor {
-    font-family: "Codec Pro", serif;
-    font-style: normal;
-    font-weight: 500;
+.btn-aceptar{
+    width: 200px;
+}
+.btn-cancelar{
+    width: 200px;
+}
+.fondo-form{
+    width: 35%;
+    height: 75%;
+}
+.container-form-login{
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.titulo-login {
     font-size: 30px;
-    line-height: 25px;
-    text-align: center;
     color: #000000;
 }
-
-.formulario_fondo_login{
-    align-self: center;
-    width: 35%;
-    background-color: #D9D9D9;
-    border-radius: 50px;
-    align-items: center;
-    padding:2%;
-}
-
-.boton_Redireccion{
-    width: 262px;
-    height: 68px;
-    background: #FFFFFF;
-    border: 3px solid #36054E;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    border-radius: 50px;
-}
-
-.boton_Redireccion:hover {
-    background: lightgray;
-    color:#FFFFFF;
-}
-
 .sub_columna{
     display:flex;
     flex-direction: column;
@@ -50,40 +31,11 @@
     align-content: center;
     align-items: center;
     justify-content: center;
+    margin-top: 5%;
 }
-
 .sub_columna div{
     padding:2%;
 }
-
-.card-text.option {
-    cursor: pointer; /* Cambia el cursor a una mano */
-    padding: 10px; /* Espaciado interno para una mejor apariencia */
-    transition: background-color 0.3s; /* Transición suave para el cambio de color */
-    border-radius: 15px;
+.label-form{
+    margin-top: 5%;
 }
-
-/* Estilos para cuando el mouse pasa sobre las opciones */
-.card-text.option:hover {
-    background-color: darkgray; /* Cambia el color de fondo al pasar el mouse */
-    color:black;
-    border-radius: 15px;
-}
-
-.boton_borrar_cuenta{
-    width: 10em;
-    height: 3em;
-    background: #36054E;
-    border-radius: 50px;
-    color:white;
-}
-
-.boton_borrar_cuenta:hover {
-    background: darkviolet;
-    border-color:#36054E;
-}
-
-.rounded-circle:hover {
-    background-color: #b0b0b0; /* Cambia el color de fondo a un tono más claro */
-}
-
