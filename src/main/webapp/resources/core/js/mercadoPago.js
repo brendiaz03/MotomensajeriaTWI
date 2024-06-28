@@ -38,7 +38,7 @@ function generarPreferencia(precioTotal) {
         console.log("Respuesta del servidor:", xhr.responseText);
     });
 }
-/*
+
 $(document).ready(function () {
     // Manejar clic en el botón "Pagar Penalización" desde home-conductor
     $("#pagarPenalizacion").click(function (event) {
@@ -96,4 +96,4 @@ function generarPreferenciaPenalizacion(montoPenalizacion) {
         console.log("Estado:", status);
         console.log("Respuesta del servidor:", xhr.responseText);
     });
-}*/
+}

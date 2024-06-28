@@ -28,7 +28,7 @@ public class VehiculoServicioTest {
     }
 
     @Test
-    public void queSePuedaRegistrarUnVehiculoYloDevuelva() {
+    public void queSePuedaRegistrarUnVehiculoYloDevuelva() throws VehiculoDuplicadoException {
 
         Vehiculo vehiculo = new Vehiculo();
 
@@ -36,24 +36,18 @@ public class VehiculoServicioTest {
 
         vehiculo.setPatente("Cami123");
 
-        try{
-            when(this.vehiculoServicio.registrarVehiculo(vehiculo)).thenReturn(vehiculo);
+        when(this.vehiculoServicio.registrarVehiculo(vehiculo)).thenReturn(vehiculo);
 
-            vehiculoObtenido = this.vehiculoServicio.registrarVehiculo(vehiculo);
+        vehiculoObtenido = this.vehiculoServicio.registrarVehiculo(vehiculo);
 
-            verify(vehiculoRepositorio, times(1)).guardarVehiculo(vehiculo);
+        verify(vehiculoRepositorio, times(1)).guardarVehiculo(vehiculo);
 
-            assertThat(vehiculo.getPatente(), equalTo(vehiculoObtenido.getPatente()));
+        assertThat(vehiculo.getPatente(), equalTo(vehiculoObtenido.getPatente()));
 
-            assertThat(vehiculo, equalTo(vehiculoObtenido));
-
-        } catch (VehiculoDuplicadoException e) {
-
-            throw new RuntimeException(e);
+        assertThat(vehiculo, equalTo(vehiculoObtenido));
 
         }
 
-    }
 
    /* @Test
     public void dadoQueSeEditeElVehiculoDeConductorQueSeVeaReflejadoElCambio() throws UsuarioNoEncontradoException {
@@ -71,6 +65,7 @@ public class VehiculoServicioTest {
         assertThat(vehiculo.getPatente(), equalTo("Kira"));
     }*/
 
+    //Corregir nombres y que sean muy específicos.
     @Test
     public void queSePuedaActualizarUnVehiculo() {
 
@@ -87,19 +82,11 @@ public class VehiculoServicioTest {
     }
 
     @Test
-    public void queNoLanceExcepcionSiLaPatenteDelVehiculoNoEstaDuplicada() {
+    public void queNoLanceExcepcionSiLaPatenteDelVehiculoNoEstaDuplicada() throws VehiculoDuplicadoException {
 
         when(vehiculoRepositorio.buscarVehiculoPorPatente("ABC123")).thenReturn(null);
 
-        try {
-
-            vehiculoServicio.verificarDuplicados("ABC123");
-
-        } catch (VehiculoDuplicadoException e) {
-
-            fail("No se espera VehiculoDuplicadoException");
-
-        }
+        vehiculoServicio.verificarDuplicados("ABC123");
 
         verify(vehiculoRepositorio, times(1)).buscarVehiculoPorPatente("ABC123");
 

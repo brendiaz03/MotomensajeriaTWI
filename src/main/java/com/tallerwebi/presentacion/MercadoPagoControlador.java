@@ -37,7 +37,7 @@ public class MercadoPagoControlador{
             return new ResponseEntity<>("", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-/*
+
     @RequestMapping(value = "/preferenciaPenalizacion", method = RequestMethod.POST)
     public ResponseEntity<String> generarPreferenciaPenalizacion(@RequestParam("montoPenalizacion") Double montoPenalizacion) {
         try {
@@ -57,6 +57,6 @@ public class MercadoPagoControlador{
         } catch (Exception e) {
             return new ResponseEntity<>("", HttpStatus.INTERNAL_SERVER_ERROR);
         }
-    }*/
+    }
 
 }

@@ -60,17 +60,10 @@
     <div class="pagarMulta"><br>
       <img class="imgPenalizado" th:src="@{/imagenes/penalizado.png}" alt=",,,"><br>
       <p>En caso de querer retomar en el momento con los envíos, puede pagar la multa</p>
-
-      <form th:action="@{/despenalizar}" method="POST" id="formDespenalizar" class="botones">
+      <form th:action="@{/despenalizar}" method="POST" id="formDespenalizar">
         <input type="hidden" th:value="${conductor.getId()}" name="conductorId"/>
-        <input type="hidden" th:value="${conductor.getMontoPenalizacion()}" name="montoPenalizacion"/>
-        <input type="submit" value="Pagar Penalización">
+        <input type="submit" value="Pagar multa">
       </form>
-      <!--
-      <section class="botones">
-        <a th:href="@{despenalizar}" ><button class="boton_submit" id="boton_pagar_envio">Pagar</button></a>
-      </section>
-      -->
     </div>
   </section>
 

@@ -59,14 +59,14 @@ public class ConductorRepositorioTest {
         usuarioRepositorio.guardarUsuario(nuevoConductor);
 
         assertThrows(NoResultException.class, () -> {
-            conductorRepositorio.buscarConductorPorId(3); //ES UN TEMA DE ID DE HIBERNATE (SI PONGO ID 2 ME TOMA A LOS ID DE TEST ANTERIORES)
+            conductorRepositorio.buscarConductorPorId(2); //ES UN TEMA DE ID DE HIBERNATE (SI PONGO ID 2 ME TOMA A LOS ID DE TEST ANTERIORES)
         });
         assertNotNull(nuevoConductor.getId());
     }
     @Test
     @Transactional
     @Rollback
-    public void queSePuedaEditarUnConductorExistente() {
+    public void dadoQueExisteUnConductorQueCuandoLoQuieroEditarElCampoNombreSePuedaEditarYObtener() {
         Conductor conductor = new Conductor();
         conductor.setNombre("facu");
         usuarioRepositorio.guardarUsuario(conductor);

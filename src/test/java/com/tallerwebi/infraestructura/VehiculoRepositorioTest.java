@@ -36,6 +36,7 @@ public class VehiculoRepositorioTest {
 
     }
 
+    //Corregir nombres que sean más específicos.
     @Test
     @Rollback
     @Transactional

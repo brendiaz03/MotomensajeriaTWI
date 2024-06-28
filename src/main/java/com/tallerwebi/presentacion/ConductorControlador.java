@@ -196,15 +196,16 @@ public class ConductorControlador {
         String viewName= "ubicacion";
         return new ModelAndView(viewName);
     }
-
+/*
     @PostMapping("/despenalizar")
     public ModelAndView despenalizarConductor(HttpSession session, @RequestParam("conductorId") Integer conductorId) throws UsuarioNoEncontradoException {
 
         this.conductorServicio.despenalizarConductor(conductorServicio.obtenerConductorPorId(conductorId));
 
         return new ModelAndView("redirect:/homeConductor");
-    }
-  /*  @RequestMapping(value = "/despenalizar")
+    }*/
+
+    @RequestMapping(value = "/despenalizar")
     public String despenalizarConductor(@RequestParam("montoPenalizacion") Double montoPenalizacion,
                                         RedirectAttributes redirectAttributes, HttpSession session) {
 
@@ -220,6 +221,6 @@ public class ConductorControlador {
             redirectAttributes.addFlashAttribute("error", "Error al procesar el pago: " + e.getMessage());
             return "redirect:/homeConductor";
         }
-    }*/
+    }
 
 }

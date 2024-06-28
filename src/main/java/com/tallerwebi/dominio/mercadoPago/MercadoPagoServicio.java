@@ -6,5 +6,5 @@ public interface MercadoPagoServicio {
 
     String pagarViajeMp(Double precioDelViaje) throws IOException;
 
-    //String pagarPenalizacionMp(Double montoPenalizacion) throws IOException;
+    String pagarPenalizacionMp(Double montoPenalizacion) throws IOException;
 }
