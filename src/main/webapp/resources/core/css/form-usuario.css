@@ -1,11 +1,153 @@
-main{
+@font-face {
+    font-family: 'Codec Pro';
+    src: url('CodecPro-Bold.ttf') format('truetype');
+}
+
+.main_registro {
     display: flex;
-    justify-content: center;
-    height: 100%;
+    align-items: center; /* Alinea verticalmente el contenido */
+    justify-content: center; /* Alinea horizontalmente el contenido */
+    font-family: "Codec Pro",sans-serif;
+}
+
+.form-control{
+    border-top: none; /* Elimina el borde superior */
+    border-left: none; /* Elimina el borde izquierdo */
+    border-right: none; /* Elimina el borde derecho */
+    border-bottom: 1px solid black; /* Agrega el borde inferior negro */
+    border-radius: 0; /* Elimina cualquier radio de borde */
+    background-color: #D9D9D9; /* Hace el fondo transparente para que se vea como una línea */
+    padding: 0; /* Elimina el relleno */
+    height: 30px; /* Ajusta automáticamente la altura según el contenido */
+}
+
+.form-control:focus {
+    background-color: #BDBDBD;
+    border-color: #D9D9D9;
+    outline: none; /* Elimina el resplandor predeterminado al enfocar el campo */
+}
+
+.form-control:-webkit-autofill {
+    box-shadow: 0 0 0 30px #D9D9D9 inset; /* Cambia el color de fondo del campo */
+    -webkit-box-shadow: 0 0 0 30px #D9D9D9 inset; /* Para navegadores basados en WebKit */
+}
+
+.formulario_fondo {
+    align-self: center;
+    width: 70%;
+    background-color: #D9D9D9;
+    border-radius: 50px;
     align-items: center;
+    padding:2%;
 }
-img{
-    height: 60%;
+.formulario{
+    display: flex;
+    flex-direction: row;
+    gap: 3rem;
+    align-content: center;
+    padding:3%;
+    padding-bottom:4%;
+    flex-grow: 1;
+}
+
+.columna{
+    display: flex;
+    flex-direction: column;
+    gap: 3rem; /* Espacio entre las columnas */
+    width: 100%; /* Ocupa a el ancho de la columna */
+    padding: 0 1rem; /* Agrega un relleno horizontal */
+    box-sizing: border-box;
+}
+.imagen_contenedor{
+    max-width: 100%; /* Establece un tamaño máximo */
+    max-height: 100%; /* Establece un tamaño máximo */
+    display: block; /* Asegura que las imágenes se comporten como bloques */
+    margin: auto; /* Centra verticalmente */
+}
+/*.primera-columna {*/
+/*    width: 20%;*/
+/*    flex-basis: 20%;*/
+/*}*/
+
+
+/*.segunda-columna,*/
+/*.tercera-columna {*/
+/*    width:40%;*/
+/*    flex-basis: 40%;*/
+/*}*/
+
+.user_default{
+    width:100%;
+    height:100%;
+}
+
+.titulo_registroConductor {
+    font-family: "Codec Pro", serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 30px;
+    line-height: 25px;
+    text-align: center;
+    color: #000000;
+}
+
+.fuente_formulario_registro {
+    font-family: "Codec Pro", serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 21px;
+    color: #000000;
+}
+
+.errores{
     width: 80%;
+    background: #36054E;
+    color: white;
+    border-radius: 20px; /* Agrega bordes redondeados */
+    padding: 1%; /* Ajusta el espacio interior */
+    text-align: center; /* Centra el texto */
+    margin: 1% auto; /* Centra horizontalmente */
 }
+
+.botones{
+    display:flex;
+    flex-direction:row;
+    gap: 6rem;
+    justify-content:center;
+}
+
+.boton_submit {
+    width: 262px;
+    height: 67px;
+    background: #36054E;
+    border-radius: 50px;
+    color:white;
+}
+.boton_submit:hover {
+    background: darkviolet;
+    border-color:#36054E;
+}
+.boton_cancelar {
+    width: 262px;
+    height: 67px;
+    background: #FFFFFF;
+    border: 3px solid #36054E;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 50px;
+}
+.boton_cancelar:hover {
+    background: lightgray;
+    color:#FFFFFF;
+}
+.error {
+    color: red; /* Cambia el color del mensaje de error a rojo */
+    font-size: 0.9em; /* Tamaño de la fuente opcional */
+    margin-top: 5px; /* Espacio opcional arriba del mensaje de error */
+}
+
+
+
+
+
 
