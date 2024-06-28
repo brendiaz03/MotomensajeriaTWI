@@ -1,11 +1,115 @@
-main{
+main {
     display: flex;
-    justify-content: center;
-    height: 100%;
     align-items: center;
-}
-img{
-    height: 60%;
-    width: 80%;
+    justify-content: center;
+    font-family: "Codec Pro",sans-serif;
 }
 
+.form-control{
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-bottom: 1px solid black;
+    border-radius: 0;
+    background-color: #D9D9D9;
+    padding: 0;
+    height: 30px;
+}
+
+.form-control:focus {
+    background-color: #BDBDBD;
+    border-color: #D9D9D9;
+    outline: none;
+}
+
+.form-control:-webkit-autofill {
+    box-shadow: 0 0 0 30px #D9D9D9 inset;
+    -webkit-box-shadow: 0 0 0 30px #D9D9D9 inset;
+}
+.formulario_fondo {
+    align-self: center;
+    width: 70%;
+    background-color: #D9D9D9;
+    border-radius: 50px;
+    align-items: center;
+    padding:2%;
+}
+.formulario{
+    display: flex;
+    flex-direction: row;
+    gap: 8rem;
+    align-content: center;
+    padding:3%;
+    padding-bottom:4%;
+}
+
+.columna{
+    display: flex;
+    flex-direction:column;
+    gap: 4rem;
+    width: 100%;
+}
+
+.titulo_registroConductor {
+    font-family: "Codec Pro", serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 30px;
+    line-height: 25px;
+    text-align: center;
+    color: #000000;
+}
+
+.fuente_formulario_registro {
+    font-family: "Codec Pro", serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 21px;
+    color: #000000;
+}
+
+.errores{
+    width: 80%;
+    background: #36054E;
+    color: white;
+    border-radius: 20px;
+    padding: 1%;
+    text-align: center;
+    margin: 1% auto;
+}
+
+.botones{
+    display:flex;
+    flex-direction:row;
+    gap: 6rem;
+    justify-content:center;
+}
+.boton_submit {
+    width: 262px;
+    height: 67px;
+    background: #36054E;
+    border-radius: 50px;
+    color:white;
+}
+.boton_submit:hover {
+    background: darkviolet;
+    border-color:#36054E;
+}
+.boton_cancelar {
+    width: 242px;
+    height: 68px;
+    background: #FFFFFF;
+    border: 3px solid #36054E;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 50px;
+}
+.boton_cancelar:hover {
+    background: lightgray;
+    color:#FFFFFF;
+}
+.error {
+    color: red; /* Cambia el color del mensaje de error a rojo */
+    font-size: 0.9em; /* Tamaño de la fuente opcional */
+    margin-top: 5px; /* Espacio opcional arriba del mensaje de error */
+}
