@@ -23,6 +23,7 @@ main {
 .titulo-login {
     font-size: 30px;
     color: #000000;
+    margin-bottom: 5%;
 }
 .sub_columna{
     display:flex;
