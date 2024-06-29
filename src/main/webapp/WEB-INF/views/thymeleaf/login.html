@@ -11,7 +11,6 @@
     <!-- custom style -->
     <link rel="stylesheet" th:href="@{css/login.css}"/>
     <link rel="stylesheet" th:href="@{css/main.css}"/>
-    <link rel="stylesheet" th:href="@{css/registro-conductor.css}"/>
 </head>
 <body>
 <header>
@@ -36,46 +35,44 @@
         </div>
     </nav>
 </header>
-<main class="main_login">
-    <div class="formulario_fondo_login">
-        <h1 style="text-align: center" class="titulo_loginConductor">Iniciar Sesión</h1>
-        <form id="loginForm" action="#" th:action="@{/validar-login}" method="POST" th:object="${datosLogin}">
-            <section class="formulario">
-                <div class="columna">
-                    <div>
-                        <label for="usuario" class="form-label">Usuario:</label>
-                        <input type="text" class="form-control" id="usuario" name="usuario" th:field="*{usuario}">
-                        <div th:if="${error}">
-                            <label th:text="${error}" style="color: red;"></label>
-                        </div>
+<main>
+    <div class="fondo-form">
+        <div class="container-form-login">
+            <h1 style="text-align: center" class="titulo-login">Iniciar Sesión</h1>
+            <form id="loginForm" action="#" th:action="@{/validar-login}" method="POST" th:object="${datosLogin}">
+                <div>
+                    <label for="usuario">Usuario:</label>
+                    <input type="text" class="form-control" id="usuario" name="usuario" th:field="*{usuario}">
+                    <div th:if="${error}">
+                        <label th:text="${error}" style="color: red;"></label>
                     </div>
-                    <div>
-                        <label for="password" class="form-label">Contraseña:</label>
-                        <input type="password" class="form-control" id="password" name="password" th:field="*{password}">
-                        <div th:if="${error}">
-                            <label th:text="${error}" style="color: red;"></label>
-                        </div>
-                    </div>
-
-                    <section class="sub_columna">
-                        <div>
-                            <a href="/recuperar-contraseña">¿Olvidaste tu contraseña?</a>
-                        </div>
-                        <div>
-                            <button type="submit" class="boton_submit">Ingresar</button>
-                        </div>
-                        <div>
-                            <a th:href="nuevo-usuario" id="boton_Redireccion">
-                                <button type="button" id="boton_reg" class="boton_Redireccion">Registrarse</button>
-                            </a>
-                        </div>
-                    </section>
                 </div>
-            </section>
-        </form>
+                <div>
+                    <label for="password" class="label-form">Contraseña:</label>
+                    <input type="password" class="form-control" id="password" name="password" th:field="*{password}">
+                    <div th:if="${error}">
+                        <label th:text="${error}" style="color: red;"></label>
+                    </div>
+                </div>
 
+                <section class="sub_columna">
+                    <div>
+                        <a href="/recuperar-contraseña">¿Olvidaste tu contraseña?</a>
+                    </div>
+                    <div>
+                        <button type="submit" class="btn-aceptar" id="ingresar">Ingresar</button>
+                    </div>
+                    <div>
+                        <a th:href="nuevo-usuario">
+                            <button type="button" class="btn-cancelar">Registrarse</button>
+                        </a>
+                    </div>
+                </section>
+            </form>
+
+        </div>
     </div>
 </main>
 </body>
-<script th:src="@{/js/form-login.js}"></script>
+<script th:src="@{/js/login.js}"></script>
 </html>
