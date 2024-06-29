@@ -143,7 +143,7 @@ public class ConductorServicioTest {
 
 
     @Test
-public void queSeDespenaliceUnConductorPreviamentePenalizado() throws UsuarioNoEncontradoException {
+    public void queSeDespenaliceUnConductorPreviamentePenalizado()  {
     Conductor conductor = mock(Conductor.class);
 
     this.conductorServicio.despenalizarConductor(conductor);
