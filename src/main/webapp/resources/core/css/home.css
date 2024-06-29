@@ -1,0 +1,22 @@
+main{
+    display: flex;
+    flex-direction: row;
+}
+.texto-home{
+    color:white;
+}
+#img-auto{
+    height: 100%;
+    width: 100%;
+}
+.cont-imagen-auto{
+    height: 38rem;
+    width: 50%;
+}
+.cont-texto-home{
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}

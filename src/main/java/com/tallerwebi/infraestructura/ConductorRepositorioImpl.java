@@ -17,7 +17,6 @@ public class ConductorRepositorioImpl implements ConductorRepositorio {
 
     private SessionFactory sessionFactory;
     public ConductorRepositorioImpl(SessionFactory sessionFactory) {
-
         this.sessionFactory=sessionFactory;
     }
 

@@ -1,8 +1,3 @@
-@font-face {
-    font-family: 'Codec Pro';
-    src: url('CodecPro-Bold.ttf') format('truetype');
-}
-
 main {
     display: flex;
     align-items: center;
