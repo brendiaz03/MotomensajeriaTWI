@@ -1,0 +1,292 @@
+.boton-aceptar:hover {
+    background-color: #eee;
+}
+
+.boton-volver:hover {
+    background-color: #eee;
+}
+
+.boton-aceptar {
+    background-color: forestgreen;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    display: inline-block;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.boton-volver {
+    background-color: #ed9000;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    display: inline-block;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.contenedor-botones {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-bottom: 35px;
+}
+
+.titulo-solicitud{
+    font-weight: 500;
+    font-size: 30px;
+    line-height: 25px;
+    margin-top: 40px;
+    color: white;
+}
+
+.contenedor-viaje{
+    background-color: lightgrey;
+}
+
+.titulo-viajes{
+    color: white;
+}
+
+.contenedor-datos-viajes-aceptados{
+    font-size: 18px;
+    background-color: lightgrey;
+}
+
+.contenedor-boton-cancelar{
+    text-align: center;
+    display: flex;
+    justify-content: center;
+}
+
+.imagen-viaje{
+    background-image: url("imagenes/obelisco.jpg");
+    background-position: center;
+    background-size: cover;
+    height: 400px;
+    text-align: center;
+    margin: 40px 0;
+}
+
+.contenedor-datos-viaje {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 15px 0;
+    gap: 20px;
+    font-size: 20px;
+    border-radius: 10px;
+}
+
+.contenedor-datos-viaje > div {
+    flex: 1;
+    max-width: 45%;
+}
+
+.contenedor-botones {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 15px;
+    gap: 10px;
+}
+
+.boton-verde, .boton-rojo {
+    background-color: #008cba;
+    color: #fff;
+    padding: 10px 30px;
+    border: none;
+    border-radius: 5px;
+    display: inline-block;
+    cursor: pointer;
+    text-decoration: none;
+    margin: 0 10px;
+}
+
+.boton-rojo {
+    background-color: #dc3545;
+}
+
+.terminado, .cancelado {
+    background-color: #008cba;
+    color: #fff;
+    padding: 10px 30px;
+    border: none;
+    border-radius: 5px;
+    display: inline-block;
+    text-decoration: none;
+    margin: 0 10px;
+}
+
+.cancelado {
+    background-color: #dc3545;
+}
+
+.card-text{
+    color: #4f4f4f;
+    span{
+        color:black;
+    }
+}
+
+p {
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 1.4;
+    margin: 5px 0;
+    text-align: left;
+}
+
+.titulo-solicitud {
+    font-weight: 500;
+    font-size: 30px;
+    line-height: 1.2;
+    margin-top: 20px;
+    color: white;
+    text-align: center;
+}
+
+.card {
+    border-radius: 30px;
+    padding: 2%;
+    background-color: lightgrey;
+}
+
+.contenedor-viaje {
+    margin: 15px 0;
+}
+
+.boton-rojo:hover, .boton-verde:hover {
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    transform: translateY(-1px);
+    color: black;
+    background-color: coral;
+}
+
+.boton-verde:hover {
+    background-color: aqua;
+}
+
+.viajes-proceso-img {
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch;
+    padding: 2%;
+}
+
+.imagen-viaje-proceso {
+    flex: 1;
+    max-width: 50%;
+    background-image: url("imagenes/obelisco.jpg");
+    background-position: center;
+    background-size: cover;
+}
+
+.contenedor-imagen-viaje-proceso {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 15px 0;
+    gap: 20px;
+    font-size: 20px;
+    border-radius: 10px;
+}
+
+#map{
+    height: 500px;
+    width: 100%;
+}
+
+.contenedor-filtro {
+    width: 100%;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    background-color: lightgrey;
+    border-radius: 30px;
+    padding: 2% 7% 2% 7%;
+}
+.formFiltro{
+    display: flex;
+    flex-direction: column;
+    display: none;
+    overflow: hidden;
+}
+.contenedor-filtro.active .formFiltro {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.pregunta_acordeon{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.options-filtro{
+    display: flex;
+    flex-direction: column;
+}
+.label-filtro {
+
+}
+
+.select-filtro {
+    height: 2rem;
+    border:none;
+    width: 30%;
+    background-color: #9d8f8f61;
+}
+.option-filtro{
+}
+.btn_h_aceptar{
+    width: 200px;
+    height: 40px;
+    background: #36054E;
+    border-radius: 50px;
+     color: white;
+    display: flex;
+     text-align: center;
+    justify-content: center;
+    align-items: center;
+}
+.btn_h_cancelar{
+    width: 200px;
+    height: 40px;
+    background: #ffffff;
+    border-radius: 50px;
+     color: #370a37;
+    display: flex;
+    border-color: #370a37;
+    border:solid;
+    justify-content: center;
+    align-items: center;
+}
+a{
+    text-decoration: none;
+}
+.isPenalizado{
+    color: #FFFFFF;
+    text-align: center;
+    margin-top: 30px;
+    background-color: black;
+    border-radius: 30px;
+    padding: 2%;
+}
+
+.pagarMulta{
+    align-content: center;
+    text-align: center;
+}
+.pagarMulta p{
+    align-content: center;
+    text-align: center;
+}
+.imgPenalizado{
+    height: 200px; /* Ajusta este valor según lo necesario */
+    width: auto;   /* Mantener auto para preservar la relación de aspecto */
+    margin: 0 auto;
+    display: block;
+}
