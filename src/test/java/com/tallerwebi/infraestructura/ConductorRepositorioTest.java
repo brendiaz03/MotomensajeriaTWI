@@ -38,7 +38,6 @@ public class ConductorRepositorioTest {
     @Rollback
     public void queSeBusqueUnConductorExistenteEnLaBaseDeDatos() {
         Conductor nuevoConductor = new Conductor();
-        nuevoConductor.setId(1);
         nuevoConductor.setNombre("Facu");
 
         usuarioRepositorio.guardarUsuario(nuevoConductor);
@@ -53,13 +52,12 @@ public class ConductorRepositorioTest {
     @Rollback
     public void queSeBusqueUnConductorNoExistenteEnLaBaseDeDatosYEnConsecuenciaLanceUnaExcepcion() {
         Conductor nuevoConductor = new Conductor();
-        nuevoConductor.setId(1);
         nuevoConductor.setNombre("Facu");
 
         usuarioRepositorio.guardarUsuario(nuevoConductor);
 
         assertThrows(NoResultException.class, () -> {
-            conductorRepositorio.buscarConductorPorId(3); //ES UN TEMA DE ID DE HIBERNATE (SI PONGO ID 2 ME TOMA A LOS ID DE TEST ANTERIORES)
+            conductorRepositorio.buscarConductorPorId(2); //ES UN TEMA DE ID DE HIBERNATE (SI PONGO ID 2 ME TOMA A LOS ID DE TEST ANTERIORES)
         });
         assertNotNull(nuevoConductor.getId());
     }

@@ -32,7 +32,7 @@
                     <a th:href="envios-en-proceso" class="nav-link p-2 text-white">Envios en Proceso</a>
                 </li>
                 <li class="nav-item p-2">
-                    <a th:href="historial-envios" class="nav-link p-2 text-white" href="#">Historial de Envios</a>
+                    <a th:href="historial-envios" class="nav-link p-2 text-white" href="#" id="historial-envios">Historial de Envios</a>
                 </li>
             </ul>
             <a th:href="perfil" class="btn mx-2" style="border:none;">
@@ -76,7 +76,7 @@
                 <i class="fa-solid fa-circle-info toggle-info"></i>
                 <form th:action="@{cancelar-envio}" method="post">
                     <input type="hidden" id="idViaje" name="idViaje" th:value="${viaje.getId()}">
-                    <button type="submit" class="icon-button">
+                    <button type="submit" class="icon-button" th:id="'cancelar-envio-' + ${viaje.getId()}">
                         <i class="fa-solid fa-trash-can"></i>
                     </button>
                 </form>
