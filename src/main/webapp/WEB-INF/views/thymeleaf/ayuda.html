@@ -64,49 +64,49 @@
     </nav>
 </header>
 <main role="main" class="container">
-
     <div class="container mt-5">
-        <div class="row">
+        <!-- Título principal de Ayuda -->
+        <div class="row mb-5">
             <div class="col-md-12">
-                <div class="contenido d-flex justify-content-center align-items-center mt-lg-3">
-                    <div class="texto text-center text-white" id="letrasHome">
-                        <h2 class="m-0">¿Necesitas Ayuda?</h2>
-                        <p class="m-0">Estamos aquí para ayudarte. Consulta nuestras preguntas frecuentes o contáctanos directamente para obtener asistencia.</p>
-                    </div>
+                <div class="contenido text-center text-white p-4 rounded" style="background-color: #4b0082;">
+                    <h2 class="mb-4"><i class="fas fa-question-circle"></i> ¿Necesitas Ayuda?</h2>
+                    <p>Estamos aquí para ayudarte. Consulta nuestras preguntas frecuentes o contáctanos directamente para obtener asistencia.</p>
                 </div>
             </div>
         </div>
 
-        <div class="row mt-5">
-            <div class="col-md-6">
-                <div class="contenido d-flex justify-content-center align-items-center">
-                    <div class="texto text-center text-white" id="letrasHome">
-                        <h2 class="m-0">Preguntas Frecuentes</h2>
-                        <p class="m-0">Encuentra respuestas a las preguntas más comunes sobre nuestros servicios y cómo utilizarlos.</p>
-                        <ul class="m-0">
-                            <li>¿Cómo me registro en la plataforma?</li>
-                            <li>¿Cómo solicito un servicio de motomensajería?</li>
-                            <li>¿Qué métodos de pago están disponibles?</li>
-                            <li>¿Cómo puedo contactar al soporte?</li>
-                        </ul>
-                    </div>
+        <!-- Sección de Preguntas Frecuentes y Contacto -->
+        <div class="row">
+            <!-- Preguntas Frecuentes -->
+            <div class="col-md-6 mb-5 h-100">
+                <div class="contenido d-flex flex-column justify-content-center align-items-center text-center text-white p-4 rounded h-100" style="background-color: #6a0dad;">
+                    <h2 class="mb-4"><i class="fas fa-comments"></i> Preguntas Frecuentes</h2>
+                    <p>Encuentra respuestas a las preguntas más comunes sobre nuestros servicios y cómo utilizarlos.</p>
+                    <ul class="list-unstyled mt-3">
+                        <li class="mb-2"><i class="fas fa-chevron-right"></i> ¿Cómo me registro en la plataforma?</li>
+                        <li class="mb-2"><i class="fas fa-chevron-right"></i> ¿Cómo solicito un servicio de motomensajería?</li>
+                        <li class="mb-2"><i class="fas fa-chevron-right"></i> ¿Qué métodos de pago están disponibles?</li>
+                        <li><i class="fas fa-chevron-right"></i> ¿Cómo puedo contactar al soporte?</li>
+                    </ul>
                 </div>
             </div>
-            <div class="col-md-6">
-                <div class="contenido d-flex justify-content-center align-items-center">
-                    <div class="texto text-center text-white" id="letrasHome">
-                        <h2 class="m-0">Contacto</h2>
-                        <p class="m-0">Si no encuentras la respuesta que buscas, contáctanos directamente:</p>
-                        <p class="m-0">Email: soporte@motomensajeria.com</p>
-                        <p class="m-0">Teléfono: +34 123 456 789</p>
-                        <p class="m-0">Horario de Atención: Lunes a Viernes, de 9:00 a 18:00</p>
-                    </div>
+
+            <!-- Contacto -->
+            <div class="col-md-6 h-100">
+                <div class="contenido d-flex flex-column justify-content-center align-items-center text-center text-white p-4 rounded h-100" style="background-color: #6a0dad;">
+                    <h2 class="mb-4"><i class="fas fa-envelope"></i> Contacto</h2>
+                    <p>Si no encuentras la respuesta que buscas, contáctanos directamente:</p>
+                    <p class="mt-3"><i class="fas fa-envelope-open-text"></i> Email: soporte@motomensajeria.com</p>
+                    <p><i class="fas fa-phone-alt"></i> Teléfono: +34 123 456 789</p>
+                    <p><i class="fas fa-clock"></i> Horario de Atención: Lunes a Viernes, de 9:00 a 18:00</p>
                 </div>
             </div>
         </div>
     </div>
-
 </main>
+
+
+
 
 <script type="text/javascript" th:src="@{/webjars/bootstrap/5.2.0/js/bootstrap.min.js}"></script>
 </body>
