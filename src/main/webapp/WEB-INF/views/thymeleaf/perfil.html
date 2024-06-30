@@ -28,23 +28,23 @@
                 <li class="nav-item active  p-2">
                     <a th:href="'home' + ${usuario.getTipoUsuario()}" class="nav-link p-2 text-white" href="#">Inicio</a>
                 </li>
-<!--                <li class="nav-item p-2">-->
-<!--                    <a th:href="compania" class="nav-link p-2 text-white" href="#">Compañía</a>-->
-<!--                </li>-->
-<!--                <li class="nav-item p-2">-->
-<!--                    <a th:href="ayuda" class="nav-link p-2 text-white" href="#">Ayuda</a>-->
-<!--                </li>-->
+                <li class="nav-item p-2">
+                    <a th:href="compania" class="nav-link p-2 text-white" href="#">Compañía</a>
+                </li>
+                <li class="nav-item p-2">
+                    <a th:href="ayuda" class="nav-link p-2 text-white" href="#">Ayuda</a>
+                </li>
                 <li class="nav-item p-2" th:if="${usuario.getTipoUsuario() == T(com.tallerwebi.dominio.enums.TipoUsuario).Conductor}">
                     <a th:href="viajes-en-proceso" class="nav-link p-2 text-white">Viajes en Proceso</a>
                 </li>
                 <li class="nav-item p-2" th:if="${usuario.getTipoUsuario() == T(com.tallerwebi.dominio.enums.TipoUsuario).Conductor}">
                     <a th:href="historial" class="nav-link p-2 text-white" href="#">Historial de Viajes</a>
                 </li>
-                <li class="nav-item p-2" th:if="${usuario.getTipoUsuario() == T(com.tallerwebi.dominio.enums.TipoUsuario).Cliente}">
-                    <a th:href="homeCliente" class="nav-link p-2 text-white">Envios en Proceso</a>
+                <li class="nav-item p-2" th:if="${usuario!=null && usuario.getTipoUsuario() == T(com.tallerwebi.dominio.enums.TipoUsuario).Cliente}">
+                    <a th:href="envios-en-proceso" class="nav-link p-2 text-white">Envios en Proceso</a>
                 </li>
-                <li class="nav-item p-2" th:if="${usuario.getTipoUsuario() == T(com.tallerwebi.dominio.enums.TipoUsuario).Cliente}">
-                    <a th:href="homeCliente" class="nav-link p-2 text-white" href="#">Historial de Envios</a>
+                <li class="nav-item p-2" th:if="${usuario!=null && usuario.getTipoUsuario() == T(com.tallerwebi.dominio.enums.TipoUsuario).Cliente}">
+                    <a th:href="historial-envios" class="nav-link p-2 text-white" href="#">Historial de Envios</a>
                 </li>
             </ul>
             <!-- Muestra el botón de usuario solo si el usuario está logueado -->

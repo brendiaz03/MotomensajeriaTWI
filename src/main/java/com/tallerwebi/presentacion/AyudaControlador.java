@@ -2,6 +2,9 @@ package com.tallerwebi.presentacion;
 
 import com.tallerwebi.dominio.conductor.Conductor;
 import com.tallerwebi.dominio.conductor.ConductorServicio;
+import com.tallerwebi.dominio.exceptions.UsuarioNoEncontradoException;
+import com.tallerwebi.dominio.usuario.Usuario;
+import com.tallerwebi.dominio.usuario.UsuarioServicio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -14,30 +17,29 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 public class AyudaControlador {
 
-    private ConductorServicio conductorServicio;
+    private UsuarioServicio usuarioServicio;
 
     @Autowired
-    public AyudaControlador(ConductorServicio _conductorServicio){
-        conductorServicio = _conductorServicio;
+    public AyudaControlador(UsuarioServicio usuarioServicio){
+
+        this.usuarioServicio = usuarioServicio;
     }
 
-//    @RequestMapping("/ayuda")
-//    public ModelAndView mostrarVistaAyuda(HttpServletRequest request) {
-//        ModelMap model = new ModelMap();
-//
-//        Boolean isUsuarioLogueado = (Boolean) request.getSession().getAttribute("isUsuarioLogueado");
-//
-//        Conductor conductor;
-//
-//        model.put("isUsuarioLogueado",isUsuarioLogueado);
-//        if(request.getSession().getAttribute("IDUSUARIO") != null){
-//            //conductor = conductorServicio.obtenerConductorPorId((Integer) request.getSession().getAttribute("IDUSUARIO"));
-//        }else{
-//            conductor = null;
-//        }
-//        //model.put("conductor", conductor);
-//        return new ModelAndView("ayuda", model);
-//    }
+    @RequestMapping("/ayuda")
+    public ModelAndView mostrarVistaAyuda(HttpServletRequest request) throws UsuarioNoEncontradoException {
+        ModelMap model = new ModelMap();
+        Usuario usuario;
+
+        if(request.getSession().getAttribute("IDUSUARIO") != null){
+            usuario= usuarioServicio.obtenerUsuarioPorId((Integer)request.getSession().getAttribute("IDUSUARIO"));
+            model.put("usuario", usuario);
+        }else{
+            model.put("usuario",null);
+        }
+
+        return new ModelAndView("ayuda", model);
+    }
+
 
 
 }
