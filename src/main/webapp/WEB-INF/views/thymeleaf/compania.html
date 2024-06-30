@@ -5,9 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <script src="https://kit.fontawesome.com/ca80211b53.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.0/css/bootstrap.min.css}"/>
-    <link rel="stylesheet" th:href="@{css/main.css}"/>
-    <link rel="stylesheet" th:href="@{css/home.css}"/>
     <link rel="stylesheet" th:href="@{css/compania.css}"/>
+    <link rel="stylesheet" th:href="@{css/home.css}"/>
 
     <title>Compañía - Motomensajeria</title>
 </head>
@@ -64,46 +63,62 @@
     </nav>
 </header>
 <main role="main" class="container">
-
     <div class="container mt-5">
-        <div class="row">
-            <div class="col-md-6">
-                <div class="contenido d-flex justify-content-center align-items-center mt-lg-3">
-                    <div class="texto text-center text-white"> <!--id="letrasHome"-->
-                        <h2 class="m-0">Acerca de Nosotros</h2>
-                        <p class="m-0">Somos una compañía líder en el servicio de motomensajería. Con años de experiencia en el mercado, nos dedicamos a ofrecer soluciones rápidas y confiables para tus necesidades de envío y transporte.</p>
-                        <p class="m-0">Nuestro compromiso es con la calidad y la satisfacción de nuestros clientes, brindando un servicio eficiente y seguro en todo momento.</p>
-                    </div>
+        <!-- Primera fila: Texto a la izquierda, imagen a la derecha -->
+        <div class="row mb-5 align-items-stretch">
+            <div class="col-md-6 d-flex align-items-center">
+                <div class="contenido text-center text-white p-4 rounded" style="background-color: #6a0dad;">
+                    <h2 class="mb-4"><i class="fas fa-building"></i> Acerca de Nosotros</h2>
+                    <p>Somos una compañía líder en el servicio de motomensajería. Con años de experiencia en el mercado, nos dedicamos a ofrecer soluciones rápidas y confiables para tus necesidades de envío y transporte.</p>
+                    <p>Nuestro compromiso es con la calidad y la satisfacción de nuestros clientes, brindando un servicio eficiente y seguro en todo momento.</p>
                 </div>
             </div>
-            <div class="col-md-6">
-                <div class="contenido d-flex justify-content-center align-items-center">
-                    <div class="imagen text-center">
-                    <!--    <img th:src="${companiaImagen.getImagenBase64()}" class="d-block mx-auto" alt="Imagen de Compañía" style="width: 100%; height: auto;"> -->
-                    </div>
+            <div class="col-md-6 d-flex justify-content-center align-items-center">
+                <div class="imagen text-center w-100 h-100">
+                    <img th:src="@{/imagenes/compania-1.jpg}" class="d-block mx-auto img-fluid h-100 rounded" alt="Imagen de Compañía">
                 </div>
             </div>
         </div>
 
-        <div class="row mt-5">
-            <div class="col-md-12">
-                <div class="contenido d-flex justify-content-center align-items-center">
-                    <div class="texto text-center text-white" id="letrasHome">
-                        <h2 class="m-0">Nuestros Servicios</h2>
-                        <p class="m-0">Ofrecemos una amplia gama de servicios que incluyen:</p>
-                        <ul class="m-0">
-                            <li>Entrega rápida de paquetes</li>
-                            <li>Transporte seguro de documentos importantes</li>
-                            <li>Servicio de mensajería personalizado</li>
-                            <li>Y mucho más...</li>
-                        </ul>
-                    </div>
+        <!-- Segunda fila: Imagen a la izquierda, texto a la derecha -->
+        <div class="row mb-5 align-items-stretch">
+            <div class="col-md-6 d-flex justify-content-center align-items-center">
+                <div class="imagen text-center w-100 h-100">
+                    <img th:src="@{/imagenes/compania-2.jpg}" class="d-block mx-auto img-fluid h-100 rounded" alt="Imagen de Compañía">
+                </div>
+            </div>
+            <div class="col-md-6 d-flex align-items-center">
+                <div class="contenido text-center text-white p-4 rounded" style="background-color: #6a0dad;">
+                    <h2 class="mb-4"><i class="fas fa-cogs"></i> Nuestros Servicios</h2>
+                    <p>Ofrecemos una amplia gama de servicios que dentro de los cuales se incluyen:</p>
+                    <ul class="list-unstyled mt-3">
+                        <li class="mb-2"><i class="fas fa-shipping-fast"></i> Entrega rápida de paquetes</li>
+                        <li class="mb-2"><i class="fas fa-file-alt"></i> Transporte seguro de documentos importantes</li>
+                        <li class="mb-2"><i class="fas fa-user-check"></i> Servicio de mensajería personalizado</li>
+                        <li><i class="fas fa-ellipsis-h"></i> Y mucho más...</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tercera fila: Texto a la izquierda, imagen a la derecha -->
+        <div class="row mb-5 align-items-stretch">
+            <div class="col-md-6 d-flex align-items-center">
+                <div class="contenido text-center text-white p-4 rounded" style="background-color: #6a0dad;">
+                    <h2 class="mb-4"><i class="fas fa-users"></i> Nuestro Equipo</h2>
+                    <p>Contamos con un equipo altamente capacitado y comprometido con la excelencia, listo para atenderte en todo momento.</p>
+                    <p>Estamos aquí para asegurarnos de que tus envíos lleguen a tiempo y en perfectas condiciones.</p>
+                </div>
+            </div>
+            <div class="col-md-6 d-flex justify-content-center align-items-center">
+                <div class="imagen text-center w-100 h-100">
+                    <img th:src="@{/imagenes/compania-3.jpg}" class="d-block mx-auto img-fluid h-100 rounded" alt="Imagen del Equipo">
                 </div>
             </div>
         </div>
     </div>
-
 </main>
+
 
 <script type="text/javascript" th:src="@{/webjars/bootstrap/5.2.0/js/bootstrap.min.js}"></script>
 </body>
