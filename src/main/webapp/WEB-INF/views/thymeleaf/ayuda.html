@@ -15,7 +15,10 @@
 <header>
     <nav class="navbar navbar-expand-lg mx-4">
         <div class="d-flex align-items-center bg-violet"> <!-- Div pegado a la izquierda -->
-            <a th:href="home" class="mx-2">
+            <a th:if="${usuario!=null}" th:href="'home' + ${usuario.getTipoUsuario()}" class="mx-2">
+                <img th:src="@{/imagenes/logo.png}" class="d-block w-100 bg-violet" alt=",,," style="height: 50px;width: 50px">
+            </a>
+            <a th:if="${usuario==null}" th:href="home"  class="mx-2">
                 <img th:src="@{/imagenes/logo.png}" class="d-block w-100 bg-violet" alt=",,," style="height: 50px;width: 50px">
             </a>
         </div>
@@ -23,7 +26,8 @@
         <div class="collapse navbar-collapse justify-content-end"> <!-- Div pegado a la derecha -->
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item active  p-2">
-                    <a th:href="home" class="nav-link p-2 text-white" href="#">Inicio</a>
+                    <a th:if="${usuario!=null}" th:href="'home' + ${usuario.getTipoUsuario()}" class="nav-link p-2 text-white" href="#">Inicio</a>
+                    <a th:if="${usuario==null}" th:href="home" class="nav-link p-2 text-white" href="#">Inicio</a>
                 </li>
                 <li class="nav-item p-2">
                     <a th:href="compania" class="nav-link p-2 text-white" href="#">Compañía</a>
@@ -31,24 +35,31 @@
                 <li class="nav-item p-2">
                     <a th:href="ayuda" class="nav-link p-2 text-white" href="#">Ayuda</a>
                 </li>
-                <li class="nav-item p-2" th:if="${isUsuarioLogueado}">
+                <li class="nav-item p-2" th:if="${usuario!=null && usuario.getTipoUsuario() == T(com.tallerwebi.dominio.enums.TipoUsuario).Conductor}">
                     <a th:href="viajes-en-proceso" class="nav-link p-2 text-white">Viajes en Proceso</a>
                 </li>
-                <li class="nav-item p-2" th:if="${isUsuarioLogueado}">
+                <li class="nav-item p-2" th:if="${usuario!=null && usuario.getTipoUsuario() == T(com.tallerwebi.dominio.enums.TipoUsuario).Conductor}">
                     <a th:href="historial" class="nav-link p-2 text-white" href="#">Historial de Viajes</a>
                 </li>
+                <li class="nav-item p-2" th:if="${usuario!=null && usuario.getTipoUsuario() == T(com.tallerwebi.dominio.enums.TipoUsuario).Cliente}">
+                    <a th:href="envios-en-proceso" class="nav-link p-2 text-white">Envios en Proceso</a>
+                </li>
+                <li class="nav-item p-2" th:if="${usuario!=null && usuario.getTipoUsuario() == T(com.tallerwebi.dominio.enums.TipoUsuario).Cliente}">
+                    <a th:href="historial-envios" class="nav-link p-2 text-white" href="#">Historial de Envios</a>
+                </li>
             </ul>
-            <a th:unless="${isUsuarioLogueado}" th:href="@{login}" class="btn-custom" style="text-decoration: none">Ingresar</a>
+            <a th:if="${usuario==null}" th:href="@{login}" class="btn-cancelar">Ingresar</a>
+
             <!-- Muestra el botón de usuario solo si el usuario está logueado -->
-            <a th:if="${isUsuarioLogueado}" th:href="perfil" class="btn mx-2" style="border:none;">
-                <div class="container d-flex justify-content-center align-items-center"  th:if="${conductor.getImagenPerfil() != null}" style="border: none">
-                    <img alt="img" class="d-block rounded-circle" th:src="'data:image/jpg;charset=utf-8;base64,' + ${conductor.getImageDataBase64()}" style=" width: 40px; height: 40px;"/>
+            <a th:if="${usuario!=null}" th:href="perfil" class="btn mx-2" style="border:none;">
+                <div class="container d-flex justify-content-center align-items-center"  th:if="${usuario.getImagenPerfil() != null}" style="border: none">
+                    <img alt="img" class="d-block rounded-circle" th:src="'data:image/jpg;charset=utf-8;base64,' + ${usuario.getImageDataBase64()}" style=" width: 40px; height: 40px;"/>
                 </div>
-                <div th:if="${conductor.getImagenPerfil() == null}">
+                <div th:if="${usuario!=null && usuario.getImagenPerfil() == null}">
                     <img th:src="@{/imagenes/user.png}" alt=",,," style="height: 20px;width: 20px">
                 </div>
             </a>
-            <a th:if="${isUsuarioLogueado}" th:href="@{cerrar-sesion}"><i class="fa-solid fa-arrow-right-from-bracket" style=" border-radius:25px; padding:11px; background-color: white; color: #36054E; transition: color 0.3s;" onmouseover="this.style.color='white';this.style.backgroundColor='lightgray'" onmouseout="this.style.color='purple'; this.style.backgroundColor='white'" ></i></a>
+            <a th:if="${usuario!=null}" th:href="@{cerrar-sesion}"><i class="fa-solid fa-arrow-right-from-bracket" style=" border-radius:25px; padding:11px; background-color: white; color: #36054E; transition: color 0.3s;" onmouseover="this.style.color='white';this.style.backgroundColor='lightgray'" onmouseout="this.style.color='purple'; this.style.backgroundColor='white'" ></i></a>
         </div>
     </nav>
 </header>

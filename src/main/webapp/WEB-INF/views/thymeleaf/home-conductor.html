@@ -26,10 +26,10 @@
           <a th:href="ubicacion" class="nav-link p-2 text-white">Inicio</a>
         </li>
         <li class="nav-item p-2">
-<!--          <a th:href="" class="nav-link p-2 text-white" href="#">Compañía</a>-->
+          <a th:href="compania" class="nav-link p-2 text-white" href="#">Compañía</a>
         </li>
         <li class="nav-item p-2">
-<!--          <a th:href="" class="nav-link p-2 text-white" href="#">Ayuda</a>-->
+          <a th:href="ayuda" class="nav-link p-2 text-white" href="#">Ayuda</a>
         </li>
         <li class="nav-item p-2">
           <a th:href="viajes-en-proceso" class="nav-link p-2 text-white">Viajes en Proceso</a>
@@ -38,6 +38,7 @@
           <a th:href="historial" class="nav-link p-2 text-white" href="#">Historial de Viajes</a>
         </li>
       </ul>
+
       <a th:href="perfil" class="btn mx-2" style="border:none;">
         <div class="container d-flex justify-content-center align-items-center"  th:if="${conductor.getImagenPerfil() != null}" style="border: none">
           <img alt="img" class="d-block rounded-circle" th:src="'data:image/jpg;charset=utf-8;base64,' + ${conductor.getImageDataBase64()}" style=" width: 40px; height: 40px;"/>
