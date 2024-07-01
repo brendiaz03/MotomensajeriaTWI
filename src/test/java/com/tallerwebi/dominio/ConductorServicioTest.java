@@ -35,7 +35,7 @@ public class ConductorServicioTest {
     }
 
     @Test
-    public void queSeBusqueUnConductorPorIDYSiLoEncuentraEntoncesLoDevuelve() throws UsuarioNoEncontradoException {
+    public void queSeBusqueUnConductorPorIDYSiLoEncuentraEntoncesLoDevuelveCorrectamente() throws UsuarioNoEncontradoException {
         Integer idConductor = 1;
         Conductor conductor = mock(Conductor.class);
 
@@ -47,7 +47,7 @@ public class ConductorServicioTest {
     }
 
     @Test
-    public void queSeBusqueUnConductorPorIDYQueLanceUnaExcepcionEnCasoDeNoEncontrarlo() {
+    public void queSeBusqueUnConductorPorIDYQueLanceUnaUsuarioNoEncontradoExceptionEnCasoDeNoEncontrarlo() {
         Integer idConductor = 1;
 
         when(conductorRepositorio.buscarConductorPorId(idConductor)).thenThrow(NoResultException.class);
@@ -95,19 +95,22 @@ public class ConductorServicioTest {
     }
     
     @Test
-    public void verificarSiElConductorEstaPenalizadoEnBaseASusViajesDescartadosOCancelados() {
+    public void creoDosViajesDescartadosYUnCanceladoParaLuegoVerificarSiElConductorEstaPenalizadoEnBaseASusViajesDescartadosOCancelados() {
         Conductor conductor = mock(Conductor.class);
-        Integer cantPenalizacion = 3;
-        when(conductor.getCantPenalizacion()).thenReturn(cantPenalizacion);
         List<Viaje> viajesDescartados = new ArrayList<>();
         List<Viaje> viajesCancelados = new ArrayList<>();
         Viaje viajeDescartado = mock(Viaje.class);
         Viaje viajeCancelado = mock(Viaje.class);
         viajesDescartados.add(viajeDescartado);
+        viajesDescartados.add(viajeDescartado);
         viajesCancelados.add(viajeCancelado);
 
         when(viajeRepositorio.traerTodosLosViajesDescartadosQueAfectanPenalizacionPorConductor(conductor)).thenReturn(viajesDescartados);
         when(viajeRepositorio.traerTodosLosViajesCanceladosPorConductor(conductor)).thenReturn(viajesCancelados);
+
+        Integer cantPenalizacion = viajesDescartados.size()+(viajesCancelados.size()*2);
+        when(conductor.getCantPenalizacion()).thenReturn(cantPenalizacion);
+
         Boolean estaPenalizado = conductorServicio.estaPenalizado(conductor);
 
         assertThat(estaPenalizado, equalTo(true));
@@ -116,23 +119,25 @@ public class ConductorServicioTest {
         verify(conductor).setHoraPenalizacion(any(LocalDateTime.class));
         verify(conductorRepositorio, times(2)).editarConductor(conductor);
         verify(viajeRepositorio, times(1)).editar(viajeCancelado);
-        verify(viajeRepositorio, times(1)).editar(viajeDescartado);
+        verify(viajeRepositorio, times(2)).editar(viajeDescartado);
     }
 
     @Test
-    public void verificarSiElConductorNoEstaPenalizadoEnBaseASusViajesDescartadosOCancelados () {
+    public void creoDosViajesDescartadosParaLuegoVerificarSiElConductorNoEstaPenalizadoEnBaseASusViajesDescartadosOCancelados () {
         Conductor conductor = mock(Conductor.class);
-        Integer cantPenalizacion = 2;
-        when(conductor.getCantPenalizacion()).thenReturn(cantPenalizacion);
         List<Viaje> viajesDescartados = new ArrayList<>();
         List<Viaje> viajesCancelados = new ArrayList<>();
         Viaje viajeDescartado = mock(Viaje.class);
         Viaje viajeCancelado = mock(Viaje.class);
         viajesDescartados.add(viajeDescartado);
-        viajesCancelados.add(viajeCancelado);
+        viajesDescartados.add(viajeDescartado);
 
         when(viajeRepositorio.traerTodosLosViajesDescartadosQueAfectanPenalizacionPorConductor(conductor)).thenReturn(viajesDescartados);
         when(viajeRepositorio.traerTodosLosViajesCanceladosPorConductor(conductor)).thenReturn(viajesCancelados);
+
+        Integer cantPenalizacion = viajesDescartados.size()+(viajesCancelados.size()*2);
+        when(conductor.getCantPenalizacion()).thenReturn(cantPenalizacion);
+
         Boolean estaPenalizado = conductorServicio.estaPenalizado(conductor);
 
         assertThat(estaPenalizado, equalTo(false));
@@ -143,7 +148,7 @@ public class ConductorServicioTest {
 
 
     @Test
-    public void queSeDespenaliceUnConductorPreviamentePenalizado()  {
+    public void queSeDespenaliceExitosamenteAUnConductorPreviamentePenalizado()  {
     Conductor conductor = mock(Conductor.class);
 
     this.conductorServicio.despenalizarConductor(conductor);

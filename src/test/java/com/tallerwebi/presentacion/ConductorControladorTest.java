@@ -13,6 +13,7 @@ import javax.servlet.http.HttpSession;
 import java.util.List;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.mockito.Mockito.*;
 
 public class ConductorControladorTest {
@@ -23,7 +24,7 @@ public class ConductorControladorTest {
    private HttpSession session;
 
 
-    @BeforeEach //antes que ejecuten los test, se ejecute este método (como un constructor de test)
+    @BeforeEach
    public void init() throws Exception {
        this.conductorServicio = mock(ConductorServicio.class);
        this.viajeServicio=mock(ViajeServicio.class);
@@ -32,7 +33,36 @@ public class ConductorControladorTest {
    }
 
     @Test
-    public void queSeRendericeElHomeDelConductorConLosViajesPendientesDisponibles() throws UsuarioNoEncontradoException {
+    public void queSeRendericeElHomeDelConductorConLosViajesPendientesDisponiblesFiltradosPorLaUbicacionDelConductor() throws UsuarioNoEncontradoException {
+        String nombreEsperado = "home-conductor";
+        Conductor conductor=mock(Conductor.class);
+        List<DatosViaje> viajesPendientes = mock(List.class);
+        Double distanciaAFiltrar = 5.0;
+        Double latitud = 5.0;
+        Double longitud = 3.0;
+        Boolean isPenalizado = false;
+
+        when(session.getAttribute("IDUSUARIO")).thenReturn(1);
+        when(conductorServicio.obtenerConductorPorId(1)).thenReturn(conductor);
+        when(session.getAttribute("distancia")).thenReturn(distanciaAFiltrar);
+        when(session.getAttribute("latitud")).thenReturn(latitud);
+        when(session.getAttribute("longitud")).thenReturn(longitud);
+        when(conductor.getPenalizado()).thenReturn(isPenalizado);
+        when(viajeServicio.filtrarViajesPorDistanciaDelConductor(latitud, longitud, distanciaAFiltrar, conductor)).thenReturn(viajesPendientes);
+
+        ModelAndView mav = conductorControlador.mostrarHomeConductor(session);
+
+        assertThat(mav.getViewName(), equalTo(nombreEsperado));
+        assertThat(mav.getModel().get("conductor"), equalTo(conductor));
+        assertThat(mav.getModel().get("viajes"), equalTo(viajesPendientes));
+        assertFalse(mav.getModel().containsKey("isPenalizado"));
+
+        verify(conductorServicio).obtenerConductorPorId(1);
+        verify(viajeServicio).filtrarViajesPorDistanciaDelConductor(latitud, longitud, distanciaAFiltrar, conductor);
+    }
+
+    @Test
+    public void queSeRendericeElHomeDelConductorConElMensajeDePenalizacionEnCasoDeQueElMismoEstePenalizado() throws UsuarioNoEncontradoException {
         String nombreEsperado = "home-conductor";
         Conductor conductor=mock(Conductor.class);
         List<DatosViaje> viajesPendientes = mock(List.class);

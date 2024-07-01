@@ -43,9 +43,13 @@ public class ConductorControlador {
                 (Double)session.getAttribute("latitud"),
                 (Double)session.getAttribute("longitud"),
                 distanciaAFiltrar, conductor);
-        model.put("isPenalizado", conductor.getPenalizado());
         model.put("viajes", viajesCercanosPendientes);
         model.put("cantidadDeViajes", viajesCercanosPendientes.size());
+
+        if(conductor.getPenalizado()){
+            model.put("isPenalizado", conductor.getPenalizado());
+        }
+
         return new ModelAndView(viewName, model);
     }
 

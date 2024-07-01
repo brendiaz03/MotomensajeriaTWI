@@ -20,10 +20,9 @@ public class PaqueteServicioTest {
     }
 
     @Test
-    public void queSePuedaGuardarUnPaqueteYMeDevuelvaUnPaquete() throws PaqueteNoEncontradoException {
+    public void queSePuedaGuardarUnNuevoPaqueteYMeDevuelvaElMismo() throws PaqueteNoEncontradoException {
 
         Paquete paquete = mock(Paquete.class);
-        paquete.setId(22);
 
         when(this.paqueteServicio.guardarPaquete(paquete)).thenReturn(paquete);
         Paquete paqueteEsperado = this.paqueteServicio.guardarPaquete(paquete);
@@ -33,9 +32,9 @@ public class PaqueteServicioTest {
     }
 
     @Test
-    public void queSeObtengaUnPaquetePorSuId() throws PaqueteNoEncontradoException {
+    public void queSeObtengaPuedaBuscarUnPaqueteUnPaquetePorSuIdYMeLoDevuelvaCorrectamente() throws PaqueteNoEncontradoException {
 
-        Paquete paquete = new Paquete();
+        Paquete paquete = mock(Paquete.class);
         paquete.setId(29);
 
         when(this.paqueteRepositorio.obtenerPaquetePorId(paquete.getId())).thenReturn(paquete);
@@ -48,7 +47,7 @@ public class PaqueteServicioTest {
 
 
     @Test
-    public void queSeBusqueAUnPaquetePorSuIdYNoSeLoEncuentre() throws PaqueteNoEncontradoException {
+    public void queSeBusqueAUnPaquetePorSuIdYNoSeLoEncuentreOcasionandoQueSeLanceUnPaqueteNoEncontradoException() throws PaqueteNoEncontradoException {
 
         Paquete paquete = mock(Paquete.class);
 
