@@ -5,18 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <script src="https://kit.fontawesome.com/ca80211b53.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.0/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" th:href="@{css/historial-viajes.css}"/>
     <link rel="stylesheet" th:href="@{css/main.css}"/>
     <link rel="stylesheet" th:href="@{css/home.css}"/>
     <link rel="stylesheet" th:href="@{css/viaje.css}"/>
-    <link rel="stylesheet" th:href="@{css/historial-viajes.css}"/>
 
     <title>Motomensajeria</title>
 </head>
 <body>
 <header>
     <nav class="navbar navbar-expand-lg mx-4">
-        <div class="d-flex align-items-center bg-violet">
-            <a th:href="ubicacion" class="mx-2">
+        <div class="d-flex align-items-center bg-violet"> <!-- Div pegado a la izquierda -->
+            <a th:href="homeConductor" class="mx-2">
                 <img th:src="@{/imagenes/logo.png}" class="d-block w-100 bg-violet" alt=",,," style="height: 50px;width: 50px">
             </a>
         </div>
@@ -26,10 +26,10 @@
                     <a th:href="ubicacion" class="nav-link p-2 text-white">Inicio</a>
                 </li>
                 <li class="nav-item p-2">
-                   <a th:href="" class="nav-link p-2 text-white" href="#">Compañía</a>
+                   <a th:href="compania" class="nav-link p-2 text-white" href="#">Compañía</a>
                 </li>
                 <li class="nav-item p-2">
-                   <a th:href="" class="nav-link p-2 text-white" href="#">Ayuda</a>
+                   <a th:href="ayuda" class="nav-link p-2 text-white" href="#">Ayuda</a>
                 </li>
                 <li class="nav-item p-2">
                     <a th:href="viajes-en-proceso" class="nav-link p-2 text-white">Viajes en Proceso</a>
@@ -56,7 +56,9 @@
     <div class="container">
         <div class="card-header">
             <h1 class="text-center titulo-viajes">Historial de Viajes</h1>
-            <h2 th:text="${sinViajes}" class="text-center titulo-viajes"></h2>
+            <div th:if="${viajesObtenidos.size()==0}">
+                <h2  style="border-radius:25px;text-align:center;color:white;background-color: black; padding:2%;">No hay historial disponible. Realice viajes para poder visualizarlos aquí.</h2>
+            </div>
         </div>
         <div class="card mt-3 contenedor-viajes" style="background-color: transparent; border: none;">
             <div class="card-body" th:each="viaje : ${viajesObtenidos}">

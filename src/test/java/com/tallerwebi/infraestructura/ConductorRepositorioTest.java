@@ -36,12 +36,10 @@ public class ConductorRepositorioTest {
     @Test
     @Transactional
     @Rollback
-    public void queSeBusqueUnConductorExistenteEnLaBaseDeDatos() {
+    public void queSeGuardeExitosamenteUnNuevoConductorConNombreEnLaBaseDeDatos() {
         Conductor nuevoConductor = new Conductor();
         nuevoConductor.setNombre("Facu");
-
-        usuarioRepositorio.guardarUsuario(nuevoConductor);
-        Conductor guardado = conductorRepositorio.buscarConductorPorId(nuevoConductor.getId());
+        Conductor guardado=(Conductor)this.usuarioRepositorio.guardarUsuario(nuevoConductor);
 
         assertThat(guardado.getNombre(), equalTo("Facu"));
         assertNotNull(nuevoConductor.getId());
@@ -50,24 +48,36 @@ public class ConductorRepositorioTest {
     @Test
     @Transactional
     @Rollback
-    public void queSeBusqueUnConductorNoExistenteEnLaBaseDeDatosYEnConsecuenciaLanceUnaExcepcion() {
+    public void queSeCreeUnConductorConNombreYLuegoSeBusqueSuExistenciaEnLaBaseDeDatos() {
         Conductor nuevoConductor = new Conductor();
         nuevoConductor.setNombre("Facu");
+        this.sessionFactory.getCurrentSession().save(nuevoConductor);
 
-        usuarioRepositorio.guardarUsuario(nuevoConductor);
+        Conductor guardado = this.sessionFactory.getCurrentSession().get(Conductor.class, nuevoConductor.getId());
 
-        assertThrows(NoResultException.class, () -> {
-            conductorRepositorio.buscarConductorPorId(2); //ES UN TEMA DE ID DE HIBERNATE (SI PONGO ID 2 ME TOMA A LOS ID DE TEST ANTERIORES)
-        });
+        assertThat(guardado.getNombre(), equalTo("Facu"));
         assertNotNull(nuevoConductor.getId());
     }
+
     @Test
     @Transactional
     @Rollback
-    public void queSePuedaEditarUnConductorExistente() {
+    public void queBusqueUnConductorNoExistenteEnLaBaseDeDatosYEnConsecuenciaLanceUnaExcepcion() {
+        Integer idInexistente=-1;
+
+        assertThrows(NoResultException.class, () -> {
+            this.conductorRepositorio.buscarConductorPorId(idInexistente);
+        });
+
+    }
+
+    @Test
+    @Transactional
+    @Rollback
+    public void queSeCreeUnConductorConUnNombreYLuegoSeEditeCorrectamenteElNombreDelConductorExistente() {
         Conductor conductor = new Conductor();
         conductor.setNombre("facu");
-        usuarioRepositorio.guardarUsuario(conductor);
+        this.sessionFactory.getCurrentSession().save(conductor);
         conductor.setNombre("pepe");
 
         this.conductorRepositorio.editarConductor(conductor);

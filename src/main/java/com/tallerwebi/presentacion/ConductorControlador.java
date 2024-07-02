@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -32,9 +31,15 @@ public class ConductorControlador {
     @GetMapping("/homeConductor")
     public ModelAndView mostrarHomeConductor(HttpSession session) throws UsuarioNoEncontradoException {
         ModelMap model = new ModelMap();
-        String viewName = "home-conductor";
+        String viewName = "homeConductor";
         Conductor conductor = conductorServicio.obtenerConductorPorId((Integer) session.getAttribute("IDUSUARIO"));
         model.put("conductor", conductor);
+
+        if(conductor.getPenalizado()){
+            model.put("isPenalizado", conductor.getPenalizado());
+            model.put("noVehiculo",false);
+            return new ModelAndView(viewName, model);
+        }else if(conductor.getVehiculo()!=null){
 
         List<DatosViaje> viajesCercanosPendientes;
 
@@ -43,9 +48,13 @@ public class ConductorControlador {
                 (Double)session.getAttribute("latitud"),
                 (Double)session.getAttribute("longitud"),
                 distanciaAFiltrar, conductor);
-        model.put("isPenalizado", conductor.getPenalizado());
         model.put("viajes", viajesCercanosPendientes);
         model.put("cantidadDeViajes", viajesCercanosPendientes.size());
+        model.put("noVehiculo",false);
+
+        return new ModelAndView(viewName, model);
+        }
+        model.put("noVehiculo",true);
         return new ModelAndView(viewName, model);
     }
 

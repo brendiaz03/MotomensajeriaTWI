@@ -27,7 +27,7 @@ public class PaqueteControladorTest {
     }
 
     @Test
-    public void queSeRendericeLaVistaDeEdicionDelPaquete() {
+    public void queSeRendericeElPasoUnoEnElFormDeViajeElCualRefiereALaCrecionOEdicionDelPaquete() {
         String viewName= "redirect:/form-viaje";
 
         ModelAndView mav = paqueteControlador.mostrarFormEditorPaquete(httpSession);
@@ -38,7 +38,7 @@ public class PaqueteControladorTest {
     }
 
     @Test
-    public void queSeGuardeElPaqueteLocalmenteParaAvanzarAlSiguientePaso() {
+    public void queSeGuardeElPaqueteLocalmenteParaAvanzarAlSiguientePasoQueRefiereALaCreacionDelViaje() {
         String viewName= "redirect:/form-viaje";
         Paquete paquete=mock(Paquete.class);
 
@@ -50,7 +50,7 @@ public class PaqueteControladorTest {
     }
 
     @Test
-    public void queSeEditeCorrectamenteElPaqueteLocalmente() {
+    public void queSeEditeCorrectamenteElPaqueteLocalmenteYAvanceAlPasoTresQueRefiereAlDetalleCompletoDelEnvio() {
         String viewName= "redirect:/form-viaje";
         Paquete paquete=mock(Paquete.class);
 
