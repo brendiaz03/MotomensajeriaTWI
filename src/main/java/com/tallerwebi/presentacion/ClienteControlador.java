@@ -41,7 +41,7 @@ public class ClienteControlador {
         }
 
         model.put("cliente", cliente);
-        String viewName = "home-cliente";
+        String viewName = "homeCliente";
         this.reiniciarVariables(session);
         return new ModelAndView(viewName, model);
     }

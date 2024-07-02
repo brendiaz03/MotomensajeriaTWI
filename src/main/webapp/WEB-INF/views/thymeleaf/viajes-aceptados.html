@@ -16,8 +16,8 @@
 <body>
 <header>
     <nav class="navbar navbar-expand-lg mx-4">
-        <div class="d-flex align-items-center bg-violet">
-            <a th:href="ubicacion" class="mx-2">
+        <div class="d-flex align-items-center bg-violet"> <!-- Div pegado a la izquierda -->
+            <a th:href="homeConductor" class="mx-2">
                 <img th:src="@{/imagenes/logo.png}" class="d-block w-100 bg-violet" alt=",,," style="height: 50px;width: 50px">
             </a>
         </div>
@@ -27,10 +27,10 @@
                     <a th:href="ubicacion" class="nav-link p-2 text-white">Inicio</a>
                 </li>
                 <li class="nav-item p-2">
-                    <a th:href="" class="nav-link p-2 text-white" href="#">Compañía</a>
+                    <a th:href="compania" class="nav-link p-2 text-white" href="#">Compañía</a>
                 </li>
                 <li class="nav-item p-2">
-                  <a th:href="" class="nav-link p-2 text-white" href="#">Ayuda</a>
+                  <a th:href="ayuda" class="nav-link p-2 text-white" href="#">Ayuda</a>
                 </li>
                 <li class="nav-item p-2">
                     <a th:href="viajes-en-proceso" class="nav-link p-2 text-white">Viajes en Proceso</a>
@@ -57,7 +57,9 @@
     <div class="container">
         <div class="card-header">
             <h1 class="text-center titulo-viajes">Viajes en Proceso</h1>
-            <h2 th:text="${sinViajes}" class="text-center titulo-viajes"></h2>
+            <div th:if="${viajesObtenidos.size()==0}">
+                <h2 style="border-radius:25px;text-align:center;color:white;background-color: black; padding:2%;">Actualmente no hay viajes en proceso.</h2>
+            </div>
         </div>
         <div th:if="${viajesObtenidos != null}" class="card mt-3 contenedor-viajes" style="background-color: transparent;border:none; padding:0; margin:0;">
             <div class="card-body" th:each="viaje : ${viajesObtenidos}" style="background-color: transparent;border:none; padding:0; margin:0;">

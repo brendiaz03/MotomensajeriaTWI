@@ -15,9 +15,9 @@
 <body>
 <header>
     <nav class="navbar navbar-expand-lg mx-4">
-        <div class="d-flex align-items-center bg-violet">
-            <a th:href="home" class="mx-2">
-                <img th:src="${logo.getImagenBase64()}" class="d-block w-100 bg-violet" alt=",,," style="height: 50px;width: 50px">
+        <div class="d-flex align-items-center bg-violet"> <!-- Div pegado a la izquierda -->
+            <a th:href="homeConductor" class="mx-2">
+                <img th:src="@{/imagenes/logo.png}" class="d-block w-100 bg-violet" alt=",,," style="height: 50px;width: 50px">
             </a>
         </div>
         <div class="collapse navbar-collapse justify-content-end">

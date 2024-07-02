@@ -9,3 +9,23 @@ img{
     width: 80%;
 }
 
+.btn_noVeh_aceptar{
+    width: 200px;
+    height: 40px;
+    background: #36054E;
+    border-radius: 50px;
+    color: white;
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    align-self: center;
+    text-decoration: none;
+}
+
+.btn_noVeh_aceptar:hover{
+    background: blueviolet;
+    color: white;
+    text-decoration: none;
+}
+

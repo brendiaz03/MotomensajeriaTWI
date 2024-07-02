@@ -69,7 +69,7 @@ public class ConductorServicioTest {
     }
 
     @Test
-    public void queSeRelacioneCorrectamenteUnVehiculoAUnConductor() throws UsuarioNoEncontradoException {
+    public void queSeRelacioneCorrectamenteUnVehiculoAUnConductorBuscadoPorId() throws UsuarioNoEncontradoException {
         Conductor conductor = mock(Conductor.class);
         Vehiculo vehiculo=mock(Vehiculo.class);
         Integer conductorId =1;
@@ -83,7 +83,7 @@ public class ConductorServicioTest {
     }
 
     @Test
-    public void queSeNoSeRelacioneUnVehiculoAUnConductorSiNoSeEncuentraAlConductor() throws UsuarioNoEncontradoException {
+    public void queSeNoSeRelacioneUnVehiculoAUnConductorSiNoSeEncuentraAlConductorBuscadoPorId() throws UsuarioNoEncontradoException {
         Vehiculo vehiculo=mock(Vehiculo.class);
         Integer idConductor =1;
 

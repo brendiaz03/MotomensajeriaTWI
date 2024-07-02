@@ -42,7 +42,6 @@ public class UsuarioControlador {
         }else{
             model.put("usuario", actual);
             model.put("mensajeError",mensajeError);
-
         }
 
         return new ModelAndView(viewName, model);
@@ -74,6 +73,15 @@ public class UsuarioControlador {
         try {
           Usuario usuario = usuarioServicio.obtenerUsuarioPorId((Integer)session.getAttribute("IDUSUARIO"));
           model.put("usuario", usuario);
+          if(usuario.getTipoUsuario().equals(TipoUsuario.Conductor)){
+             Conductor conductor=(Conductor) usuario;
+             if (conductor.getVehiculo()!=null){
+                 model.put("noVehiculo",false);
+                 return new ModelAndView("perfil", model);
+             }else{
+                 model.put("noVehiculo",true);
+             }
+          }
         } catch (Exception e) {
             model.put("mensajeError", e.getMessage());
         }

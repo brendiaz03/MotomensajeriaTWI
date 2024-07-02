@@ -85,6 +85,7 @@ public class LoginControlador {
 
     @RequestMapping(path = "/cerrar-sesion")
     public ModelAndView cerrarSesion(HttpSession session) throws UsuarioNoEncontradoException {
+        session.setAttribute("isUsuarioLogueado",false);
         session.invalidate();
         return mostrarHome(session);
     }
