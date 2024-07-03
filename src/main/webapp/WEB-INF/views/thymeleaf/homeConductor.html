@@ -74,8 +74,11 @@
 
   <div class="container-home-conductor" th:unless="${isPenalizado}">
     <h1 class="text-center h1-home">Solicitudes de Viajes</h1>
-    <div th:if="${noVehiculo==true}" class="noVehiculo">
-      <h2 class="titulo-envios">Usted no tiene ningún vehículo registrado, por favor, registre uno.</h2>
+    <div th:if="${noVehiculo==true}" class="fondo-form">
+      <h5 class="titulo-envios">Usted no tiene ningún vehículo registrado. Por favor, registre uno para continuar.</h5>
+      <div class="cont-img-auto">
+        <img class="img-no-auto" th:src="@{/imagenes/noauto.svg}" alt=",,,">
+      </div>
       <a th:href="form-vehiculo" class="btn-aceptar">Registrar Vehículo</a>
     </div>
     <div class="fondo-form" th:if="${noVehiculo==false}">
@@ -92,7 +95,7 @@
     </div>
     <div class="contenedor-solicitud" th:if="${conductor.getVehiculo() != null}">
       <div class="fondo-form"  th:each="viaje : ${viajes}">
-        <div >
+        <div>
           <div class="cont-direcciones">
             <p><strong>Direccion de Salida:</strong> <span th:text="${viaje.getDomicilioDeSalida()}"></span></p>
             <p><strong>Direccion de Llegada:</strong> <span th:text="${viaje.getDomicilioDeLlegada()}"></span></p>

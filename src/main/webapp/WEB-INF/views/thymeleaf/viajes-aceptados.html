@@ -6,11 +6,8 @@
     <script src="https://kit.fontawesome.com/ca80211b53.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.0/css/bootstrap.min.css}"/>
     <link rel="stylesheet" th:href="@{css/main.css}"/>
-    <link rel="stylesheet" th:href="@{css/home.css}"/>
-    <link rel="stylesheet" th:href="@{css/viaje.css}"/>
     <link rel="stylesheet" th:href="@{css/viajes-aceptados.css}"/>
-
-    <title>Motomensajeria</title>
+    <title>Viajes</title>
     <script th:src="@{/js/viaje.js}"></script>
 </head>
 <body>
@@ -53,33 +50,28 @@
         </div>
     </nav>
 </header>
-<main role="main" class="container">
-    <div class="container">
-        <div class="card-header">
-            <h1 class="text-center titulo-viajes">Viajes en Proceso</h1>
+<main role="main">
+
+            <h1 class="text-center h1-home">Viajes en Proceso</h1>
             <div th:if="${viajesObtenidos.size()==0}">
-                <h2 style="border-radius:25px;text-align:center;color:white;background-color: black; padding:2%;">Actualmente no hay viajes en proceso.</h2>
+                <h5>Actualmente no hay viajes en proceso.</h5>
             </div>
-        </div>
-        <div th:if="${viajesObtenidos != null}" class="card mt-3 contenedor-viajes" style="background-color: transparent;border:none; padding:0; margin:0;">
-            <div class="card-body" th:each="viaje : ${viajesObtenidos}" style="background-color: transparent;border:none; padding:0; margin:0;">
-                <div class="card mt-3 ml-3 contenedor-datos-viajes-aceptados" style="background-color: transparent;border:none; padding:0; margin:0;">
-                    <div class="card-body viaje">
-                        <div class="card mt-3 ml-3 contenedor-viaje" th:data-latitud-salida="${viaje.latitudDeSalida}" th:data-longitud-salida="${viaje.longitudDeSalida}" th:data-latitud-llegada="${viaje.latitudDeLlegada}" th:data-longitud-llegada="${viaje.longitudDeLlegada}">
-                            <div class="viajes-proceso-img">
-                                <div>
+        <div th:if="${viajesObtenidos != null}" >
+            <div class="cont">
+            <div class="contenedor-solicitud" th:each="viaje : ${viajesObtenidos}" >
+                    <div class="fondo-form">
+                        <div class="cont-direcciones">
                                     <p class="card-text"><b>Salida:</b> <span th:text="${viaje.getDomicilioDeSalida()}"></span></p>
                                     <p class="card-text"><b>Llegada:</b> <span th:text="${viaje.getDomicilioDeLlegada()}"></span></p>
-                                    <p class="card-text"><b>Paquete de:</b> <span th:text="${viaje.getCliente().getNombre()}"></span></p>
-                                    <p class="card-text"><b>Precio:</b> <span th:text="${viaje.getPrecio()} + ' ARS'"></span></p>
-                                </div>
-                            </div>
-                            <div class="contenedor-boton-cancelar" >
-                                <a th:href="@{/viajeAceptado(idViaje=${viaje.getId()})}" class="btn_h_aceptar" style="padding: 10px 50px;">Ver</a>
-                            </div>
+                        </div>
+                        <div class="cont-precio">
+                            <p class="card-text"><b>Paquete de:</b> <span th:text="${viaje.getCliente().getNombre()}"></span></p>
+                            <p class="card-text"><b>Precio:</b> <span th:text="${viaje.getPrecio()} + ' ARS'"></span></p>
+                        </div>
+                        <div class="contenedor-botones" >
+                                <a th:href="@{/viajeAceptado(idViaje=${viaje.getId()})}" class="btn-aceptar">Ver</a>
                         </div>
                     </div>
-                </div>
             </div>
         </div>
     </div>
