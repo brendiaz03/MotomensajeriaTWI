@@ -1,3 +1,21 @@
+.btn-terminado:hover {
+    background: #ffffff;
+    text-decoration: none;
+    color: green;
+}
+.btn-cancelado:hover {
+    background: #ffffff;
+    text-decoration: none;
+    color: red;
+}
+.btn-volver:hover {
+    background: #ffffff;
+    text-decoration: none;
+    color: #d7d701;
+}
+
+
+
 .boton-aceptar:hover {
     background-color: #eee;
 }
@@ -26,13 +44,6 @@
     display: inline-block;
     cursor: pointer;
     text-decoration: none;
-}
-
-.contenedor-botones {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    margin-bottom: 35px;
 }
 
 .titulo-solicitud{
@@ -79,19 +90,6 @@
     gap: 20px;
     font-size: 20px;
     border-radius: 10px;
-}
-
-.contenedor-datos-viaje > div {
-    flex: 1;
-    max-width: 45%;
-}
-
-.contenedor-botones {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 15px;
-    gap: 10px;
 }
 
 .boton-verde, .boton-rojo {

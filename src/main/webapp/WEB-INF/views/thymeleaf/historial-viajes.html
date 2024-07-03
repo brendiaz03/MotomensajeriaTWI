@@ -7,10 +7,7 @@
     <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.0/css/bootstrap.min.css}"/>
     <link rel="stylesheet" th:href="@{css/historial-viajes.css}"/>
     <link rel="stylesheet" th:href="@{css/main.css}"/>
-    <link rel="stylesheet" th:href="@{css/home.css}"/>
-    <link rel="stylesheet" th:href="@{css/viaje.css}"/>
-
-    <title>Motomensajeria</title>
+    <title>Historial</title>
 </head>
 <body>
 <header>
@@ -52,41 +49,45 @@
         </div>
     </nav>
 </header>
-<main role="main" class="container">
-    <div class="container">
-        <div class="card-header">
-            <h1 class="text-center titulo-viajes">Historial de Viajes</h1>
+<main role="main">
+            <h1 class="text-center h1-home">Historial de Viajes</h1>
             <div th:if="${viajesObtenidos.size()==0}">
-                <h2  style="border-radius:25px;text-align:center;color:white;background-color: black; padding:2%;">No hay historial disponible. Realice viajes para poder visualizarlos aquí.</h2>
+                <h5>Todavia no hay historial disponible.</h5>
             </div>
-        </div>
-        <div class="card mt-3 contenedor-viajes" style="background-color: transparent; border: none;">
-            <div class="card-body" th:each="viaje : ${viajesObtenidos}">
-                <div class="card mt-3 ml-3 contenedor-datos-viajes-aceptados">
-                    <div class="card-body viaje" th:data-viaje-id="${viaje.idViaje}">
-                        <div class="viajes-proceso-img">
-                            <div>
-                                <p class="card-text"><b>Salida:</b> <span th:text="${viaje.getDomicilioDeSalida()}"></span></p>
-                                <p class="card-text"><b>Llegada:</b> <span th:text="${viaje.getDomicilioDeLlegada()}"></span></p>
+    <div th:if="${viajesObtenidos != null}" >
+        <div class="cont">
+            <div class="contenedor-solicitud" th:each="viaje : ${viajesObtenidos}">
+                    <div  th:data-viaje-id="${viaje.idViaje}">
+                        <div class="fondo-form">
+                            <div class="cont-direcciones">
+                                <p class="card-text"><strong>Salida:</strong> <span th:text="${viaje.getDomicilioDeSalida()}"></span></p>
+                                <p class="card-text"><strong>Llegada:</strong> <span th:text="${viaje.getDomicilioDeLlegada()}"></span></p>
+                            </div>
+                            <div class="cont-precio">
                                 <p class="card-text"><b>Paquete de:</b> <span th:text="${viaje.getNombreDelCliente()}"></span></p>
                                 <p class="card-text"><b>Precio:</b> <span th:text="${viaje.getPrecio()} + ' ARS'"></span></p>
                             </div>
-                        </div>
-                        <div class="contenedor-boton-cancelar">
+
+
+                        <div  class="contenedor-botones-hist">
                             <div th:with="TERMINADO=${T(com.tallerwebi.dominio.enums.TipoEstado).TERMINADO}">
-                                <div th:if="${viaje.getEstado() == TERMINADO}" class="terminado">Terminado</div>
+                                <div th:if="${viaje.getEstado() == TERMINADO}">
+                                    <button disabled class="btn-terminado">
+                                        Terminado
+                                    </button></div>
                             </div>
                             <div th:with="CANCELADO=${T(com.tallerwebi.dominio.enums.TipoEstado).CANCELADO}">
-                                <div th:if="${viaje.getEstado() == CANCELADO}" class="cancelado">Cancelado</div>
+                                <div th:if="${viaje.getEstado() == CANCELADO}">
+                                <button disabled class="btn-cancelado">
+                                    Cancelado
+                                </button>
+                                </div>
                             </div>
-<!--                            <div>-->
-<!--                                <a th:href="@{/detalle(idViaje=${viaje.getIdViaje()})}" class="boton-verde">Ver detalle</a>-->
-<!--                            </div>-->
+                        </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
     </div>
 </main>
 <script type="text/javascript" th:src="@{webjars/bootstrap/5.2.0/js/bootstrap.min.js}"></script>
