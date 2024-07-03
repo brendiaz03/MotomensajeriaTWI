@@ -2,22 +2,20 @@
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>Motomensajeria</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <script src="https://kit.fontawesome.com/ca80211b53.js" crossorigin="anonymous"></script>
   <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.0/css/bootstrap.min.css}"/>
   <link rel="stylesheet" th:href="@{css/main.css}"/>
-  <link rel="stylesheet" th:href="@{css/home.css}"/>
-  <link rel="stylesheet" th:href="@{css/viaje.css}"/>
   <link rel="stylesheet" th:href="@{css/homeConductor.css}"/>
-  <script th:src="@{https://code.jquery.com/jquery-3.6.4.min.js}" defer></script>
-  <script th:src="@{/js/mercadoPago.js}" defer></script>
+    <script th:src="@{https://code.jquery.com/jquery-3.6.4.min.js}" defer></script>
+    <script th:src="@{/js/mercadoPago.js}" defer></script>
+  <title>Home</title>
 </head>
 <body>
 <header>
   <nav class="navbar navbar-expand-lg mx-4">
-    <div class="d-flex align-items-center bg-violet"> <!-- Div pegado a la izquierda -->
-      <a th:href="homeConductor" class="mx-2">
+    <div class="d-flex align-items-center bg-violet">
+      <a th:href="ubicacion" class="mx-2">
         <img th:src="@{/imagenes/logo.png}" class="d-block w-100 bg-violet" alt=",,," style="height: 50px;width: 50px">
       </a>
     </div>
@@ -74,59 +72,49 @@
 
   </section>
 
-  <div th:unless="${isPenalizado}">
-    <div class="card mt-3 contenedor-solicitudes" style=" background-color: transparent; border: none;">
-      <h1 class="text-center titulo-solicitud">Solicitudes de Viajes</h1>
-      <div th:if="${noVehiculo==true}" class="noVehiculo">
-        <h2 class="titulo-envios">Usted no tiene ningún vehículo registrado, por favor, registre uno para poder ver los envíos disponibles en la cercanía.</h2>
-        <a th:href="form-vehiculo" class="btn_noVeh_aceptar">Registrar Vehículo</a>
-      </div>
-      <div class="contenedor-filtro" th:if="${noVehiculo==false}">
-        <label class="label-filtro">Cantidad de solicitudes:  <span th:text="${cantidadDeViajes}"></span> </label>
-        <div class="pregunta_acordeon">
-          <label class="label-filtro">Filtros</label>
-          <i class="fa-solid fa-sort-down"></i>
-        </div>
-        <form class="formFiltro" th:action="@{/filtrarPorDistancia}" method="post">
+  <div class="container-home-conductor" th:unless="${isPenalizado}">
+    <h1 class="text-center h1-home">Solicitudes de Viajes</h1>
+    <div th:if="${noVehiculo==true}" class="noVehiculo">
+      <h2 class="titulo-envios">Usted no tiene ningún vehículo registrado, por favor, registre uno.</h2>
+      <a th:href="form-vehiculo" class="btn-aceptar">Registrar Vehículo</a>
+    </div>
+    <div class="fondo-form" th:if="${noVehiculo==false}">
+      <label class="label-filtro">Cantidad de solicitudes:  <span th:text="${cantidadDeViajes}"></span> </label>
+      <form class="formFiltro" th:action="@{/filtrarPorDistancia}" method="post">
           <select id="filtro-distancia" name="distancia" class="select-filtro">
             <option value="" selected class="option-filtro">Filtrar viajes por distancia</option>
             <option value=2.0 class="option-filtro">2 Kilometros</option>
             <option value=5.0 class="option-filtro">5 Kilometros</option>
             <option value=10.0 class="option-filtro">10 Kilometros</option>
           </select>
-          <button type="submit" class="btn_h_aceptar">Aceptar</button>
-        </form>
-      </div>
-
-      <div class="card-body viaje" th:each="viaje : ${viajes}">
-        <div class="card mt-3 ml-3 contenedor-viaje">
-          <div class="card-body contenedor-datos-viaje flex" >
-            <div>
-              <p class="card-text"><b>Direccion de Salida:</b> <span th:text="${viaje.getDomicilioDeSalida()}"></span></p>
-              <p class="card-text"><b>Direccion de Llegada:</b> <span th:text="${viaje.getDomicilioDeLlegada()}"></span></p>
-              <p class="card-text"><b>Distancia del viaje:</b> <span th:text="${viaje.getDistanciaDelViaje()} + ' KM'"></span></p>
-            </div>
-            <div>
-              <p class="card-text"><b>Paquete de:</b> <span th:text="${viaje.getNombreDelCliente()}"></span></p>
-              <p class="card-text"><b>Precio:</b><span th:text="${viaje.getPrecio()} + ' ARS'"></span></p>
-              <!--            <p class="card-text"><b>Distancia desde tu ubicación:</b><span class="distanceFromCurrentPosition"></span></p>-->
-            </div>
+          <button type="submit" class="btn-aceptar">Aceptar</button>
+      </form>
+    </div>
+    <div class="contenedor-solicitud" th:if="${conductor.getVehiculo() != null}">
+      <div class="fondo-form"  th:each="viaje : ${viajes}">
+        <div >
+          <div class="cont-direcciones">
+            <p><strong>Direccion de Salida:</strong> <span th:text="${viaje.getDomicilioDeSalida()}"></span></p>
+            <p><strong>Direccion de Llegada:</strong> <span th:text="${viaje.getDomicilioDeLlegada()}"></span></p>
+            <p><strong>Distancia del viaje:</strong> <span th:text="${viaje.getDistanciaDelViaje()} + ' KM'"></span></p>
+          </div>
+          <div class="cont-precio">
+            <p class="card-text"><b>Paquete de: </b> <span th:text="${viaje.getNombreDelCliente()}"></span></p>
+            <p class="card-text"><b>Precio: </b><span th:text="${viaje.getPrecio()} + ' ARS'"></span></p>
           </div>
           <div class="contenedor-botones">
-            <div class="btn_h_aceptar">
-              <a th:href="@{/viaje-aceptado(idViaje=${viaje.getIdViaje()})}">Aceptar</a>
+            <div >
+              <a class="btn-aceptar" th:href="@{/viaje-aceptado(idViaje=${viaje.getIdViaje()})}">Aceptar</a>
             </div>
-            <div>
-              <a th:href="@{/descartar(idViaje=${viaje.getIdViaje()})}" onclick="descartarViaje(this)" class="btn_h_cancelar">Descartar</a>
+            <div >
+              <a class="btn-cancelar" th:href="@{/descartar(idViaje=${viaje.getIdViaje()})}" onclick="descartarViaje(this)">Descartar</a>
             </div>
           </div>
-        </div>
       </div>
     </div>
   </div>
-
+  </div>
 </main>
-<script th:src="@{/js/home-conductor.js}"></script>
 <script th:src="@{/js/timer-despenalizacion.js}"></script>
 <script type="text/javascript" th:src="@{webjars/bootstrap/5.2.0/js/bootstrap.min.js}"></script>
 </body>

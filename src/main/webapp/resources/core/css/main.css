@@ -20,16 +20,16 @@ html{
 .btn-cancelar {
     color: #370a37; /* Texto violeta */
     background-color: white; /* Fondo blanco */
-    border-color: #370a37; /* Borde violeta */
+    border: 3px solid #36054E;
     border-radius: 50px;
     padding: 5px 30px 5px 30px ;
     text-decoration: none;
 }
 
 .btn-cancelar:hover {
-    color: black; /* Cambiar el color del texto a blanco al pasar el ratón */
-    background-color:  #626262; /* Cambiar el fondo a violeta al pasar el ratón */
-    border: none;
+    background: lightgray;
+    color:#FFFFFF;
+    text-decoration: none;
 }
 .btn-aceptar {
     color: #ffffff; /* Texto violeta */
@@ -41,8 +41,10 @@ html{
 }
 
 .btn-aceptar:hover {
-    color: black; /* Cambiar el color del texto a blanco al pasar el ratón */
-    background-color: #626262; /* Cambiar el fondo a violeta al pasar el ratón */
+    background: darkviolet;
+    border-color:#36054E;
+    text-decoration: none;
+    color: white;
 }
 .fondo-form{
     align-self: center;
