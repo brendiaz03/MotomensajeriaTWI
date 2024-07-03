@@ -7,12 +7,8 @@
     <script src="https://kit.fontawesome.com/ca80211b53.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.0/css/bootstrap.min.css}"/>
     <script th:src="@{/js/perfil.js}"> </script>
-    <!-- custom style -->
     <link rel="stylesheet" th:href="@{css/perfil.css}"/>
-    <link rel="stylesheet" th:href="@{css/login.css}"/>
     <link rel="stylesheet" th:href="@{css/main.css}"/>
-    <link rel="stylesheet" th:href="@{css/home.css}"/>
-
 </head>
 <body>
 <header>
@@ -78,7 +74,7 @@
                 </div>
             </div>
             <div class="card-body" style="align-content: center; justify-content: center; text-align: center;align-items: center">
-                <h5 class="card-title text-center"><span th:text="${usuario.getNombreUsuario()}"></span></h5>
+                <h4 class="card-title text-center"><span th:text="${usuario.getNombreUsuario()}"></span></h4>
                 <p class="card-title text-center"><span th:text="${usuario.getEmail()}"></span></p>
 
             </div>
@@ -126,7 +122,7 @@
                 <div th:if="${noVehiculo==true}">
                     <div class="noVehiculo">
                         <p>Usted no tiene registrado ningún vehículo. Para continuar registre uno aquí.</p>
-                        <a th:href="form-vehiculo" class="btn_noVeh_aceptar">Registrar Vehículo</a>
+                        <a th:href="form-vehiculo" class="btn-aceptar">Registrar Vehículo</a>
                     </div>
                 </div>
             </div>

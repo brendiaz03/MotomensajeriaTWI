@@ -6,7 +6,6 @@
     <script src="https://kit.fontawesome.com/ca80211b53.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.0/css/bootstrap.min.css}"/>
     <link rel="stylesheet" th:href="@{css/main.css}"/>
-    <link rel="stylesheet" th:href="@{css/home.css}"/>
     <link rel="stylesheet" th:href="@{css/viaje.css}"/>
     <title>Motomensajeria</title>
 </head>
@@ -51,32 +50,33 @@
     </nav>
 </header>
 <main role="main" class="container">
-    <h1 class="text-center titulo-solicitud">Datos de Viaje en Proceso</h1>
+    <h1 class="text-center h1-home">Viaje en Proceso</h1>
     <section id="map">
         <div></div>
     </section>
     <section>
-        <div class="card mt-3 contenedor-viaje">
-            <div class="card-body contenedor-datos-viaje flex">
-                <div>
+        <div class="fondo-form">
+                <div class="cont-direcciones">
                     <p class="card-text"><b>Direccion de Salida:</b> <span th:text="${viaje.getDomicilioDeSalida()}"></span></p>
                     <p class="card-text"><b>Direccion de Llegada:</b> <span th:text="${viaje.getDomicilioDeLlegada()}"></span></p>
-                    <p class="card-text"><b>Precio:</b> $<span th:text="${viaje.getPrecio()}"></span> ARS</p>
-                    <p class="card-text"><b>Paquete de:</b> <span th:text="${viaje.getNombreDelCliente()}"></span></p>
                 </div>
-                <div>
-                    <div id="datosMap" th:data-latitud-salida="${viaje.latitudDeSalida}" th:data-longitud-salida="${viaje.longitudDeSalida}" th:data-latitud-llegada="${viaje.latitudDeLlegada}" th:data-longitud-llegada="${viaje.longitudDeLlegada}"></div>
-                </div>
+            <div>
+                <div id="datosMap" th:data-latitud-salida="${viaje.latitudDeSalida}" th:data-longitud-salida="${viaje.longitudDeSalida}" th:data-latitud-llegada="${viaje.latitudDeLlegada}" th:data-longitud-llegada="${viaje.longitudDeLlegada}"></div>
             </div>
-            <div class="contenedor-botones" style="margin-top: 4%">
+                <div class="cont-precio">
+                    <p class="card-text"><b>Paquete de:</b> <span th:text="${viaje.getNombreDelCliente()}"></span></p>
+                    <p class="card-text"><b>Precio:</b> $<span th:text="${viaje.getPrecio()}"></span> ARS</p>
+                </div>
+
+            <div class="contenedor-botones">
                 <div>
-                    <a th:href="@{volver}" class="boton-enlace boton-volver">Volver</a>
+                    <a th:href="@{volver}" class="btn-volver">Volver</a>
                 </div>
                 <div>
-                    <a th:href="@{/cancelar-viaje(idViaje=${viaje.getIdViaje()})}" class="boton-rojo">Cancelar</a>
+                    <a th:href="@{/cancelar-viaje(idViaje=${viaje.getIdViaje()})}" class="btn-cancelado">Cancelar</a>
                 </div>
                 <div>
-                    <a th:href="@{/terminar-viaje(idViaje=${viaje.getIdViaje()})}" class="boton-aceptar">Terminar</a>
+                    <a th:href="@{/terminar-viaje(idViaje=${viaje.getIdViaje()})}" class="btn-terminado">Terminar</a>
                 </div>
             </div>
         </div>
