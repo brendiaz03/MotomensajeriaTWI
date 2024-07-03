@@ -70,7 +70,7 @@ import org.json.JSONObject;
         }
     }
 
-/*    @Override
+    @Override
     public String pagarPenalizacionMp(Double montoPenalizacion) throws IOException {
         // Define la API Key y Endpoint de Mercado Pago
         String apiKey = "APP_USR-6516945332441912-062213-33e68d63ba4f0fdd7ffb8678d2be0fa4-1867816013";
@@ -96,6 +96,7 @@ import org.json.JSONObject;
         JSONObject jsonBody = new JSONObject();
         jsonBody.put("items", new JSONObject[]{item});
 
+
         // Envia la solicitud a Mercado Pago
         try (OutputStream os = con.getOutputStream()) {
             byte[] input = jsonBody.toString().getBytes("utf-8");
@@ -119,7 +120,6 @@ import org.json.JSONObject;
             return "https://www.mercadopago.com.ar/checkout/v1/redirect?pref_id=" + preferenceId;
         }
     }
-*/
 
 }
 
