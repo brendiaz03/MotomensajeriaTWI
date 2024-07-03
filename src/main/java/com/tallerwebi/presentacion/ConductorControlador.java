@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -206,29 +207,23 @@ public class ConductorControlador {
         return new ModelAndView(viewName);
     }
 
-    @PostMapping("/despenalizar")
-    public ModelAndView despenalizarConductor(HttpSession session, @RequestParam("conductorId") Integer conductorId) throws UsuarioNoEncontradoException {
-
-        this.conductorServicio.despenalizarConductor(conductorServicio.obtenerConductorPorId(conductorId));
-
-        return new ModelAndView("redirect:/homeConductor");
-    }
-  /*  @RequestMapping(value = "/despenalizar")
-    public String despenalizarConductor(@RequestParam("montoPenalizacion") Double montoPenalizacion,
-                                        RedirectAttributes redirectAttributes, HttpSession session) {
+    @RequestMapping(value = "/despenalizar")
+    public ModelAndView despenalizarConductor(@RequestParam("montoPenalizacion") Double montoPenalizacion,
+                                              RedirectAttributes redirectAttributes, HttpSession session) {
 
         if (montoPenalizacion == null || montoPenalizacion < 0) {
             redirectAttributes.addFlashAttribute("error", "Monto de penalización inválido.");
-            return "redirect:/homeConductor";
+            return new ModelAndView("redirect:/homeConductor");
         }
 
         try {
             String redirectUrl = mercadoPagoServicio.pagarPenalizacionMp(montoPenalizacion);
-            return "redirect:" + redirectUrl;
+            return new ModelAndView("redirect:" + redirectUrl);
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Error al procesar el pago: " + e.getMessage());
-            return "redirect:/homeConductor";
+            return new ModelAndView("redirect:/homeConductor");
         }
-    }*/
+    }
 
 }
+

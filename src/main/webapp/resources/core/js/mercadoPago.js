@@ -38,19 +38,7 @@ function generarPreferencia(precioTotal) {
         console.log("Respuesta del servidor:", xhr.responseText);
     });
 }
-/*
-$(document).ready(function () {
-    // Manejar clic en el botón "Pagar Penalización" desde home-conductor
-    $("#pagarPenalizacion").click(function (event) {
-        event.preventDefault(); // Evitar el comportamiento por defecto del formulario
-        var montoPenalizacion = $("input[name='montoPenalizacion']").val(); // Obtener el valor del campo oculto
-        if (montoPenalizacion) {
-            generarPreferenciaPenalizacion(montoPenalizacion);
-        } else {
-            console.log("montoPenalizacion no está definido.");
-        }
-    });
-});
+
 $(document).ready(function () {
     // Manejar clic en el botón "Pagar Penalización" desde home-conductor
     $("#despenalizar").click(function (event) {
@@ -96,4 +84,4 @@ function generarPreferenciaPenalizacion(montoPenalizacion) {
         console.log("Estado:", status);
         console.log("Respuesta del servidor:", xhr.responseText);
     });
-}*/
+}
