@@ -72,8 +72,8 @@ public class ConductorControlador {
         try {
             conductor = conductorServicio.obtenerConductorPorId((Integer) session.getAttribute("IDUSUARIO"));
         } catch (UsuarioNoEncontradoException e) {
-            model.put("error", "Conductor no encontrado");
-            return new ModelAndView(viewName, model);
+            model.put("mensajeError", e.getMessage() + " Por favor, vuelva a intentarlo.");
+            return new ModelAndView("redirect:/*", model);
         }
 
         List<DatosViaje> historialViajes = this.viajeServicio.obtenerHistorialDeViajesConductor(conductor);
@@ -116,8 +116,8 @@ public class ConductorControlador {
         try {
             conductor = conductorServicio.obtenerConductorPorId((Integer) session.getAttribute("IDUSUARIO"));
         } catch (UsuarioNoEncontradoException e) {
-            model.put("error", "Conductor no encontrado");
-            return new ModelAndView(viewName, model);
+            model.put("mensajeError", e.getMessage() + " Por favor, vuelva a intentarlo.");
+            return new ModelAndView("redirect:/*", model);
         }
 
         List<Viaje> viajesObtenidos = viajeServicio.obtenerViajesEnProceso(conductor);

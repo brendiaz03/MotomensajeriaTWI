@@ -35,10 +35,16 @@ public class LoginControlador {
     public ModelAndView error1(HttpSession session) {
         return this.mostrarHome(session);
     }
+
+
     @RequestMapping("/*")
-    public ModelAndView error() {
+    public ModelAndView error(String mensajeError) {
+        ModelMap model = new ModelMap();
         String viewName= "error";
-        return new ModelAndView(viewName);
+        if(mensajeError!=null){
+            model.put("error", mensajeError);
+        }
+        return new ModelAndView(viewName, model);
     }
 
     @RequestMapping(path = "/home")
