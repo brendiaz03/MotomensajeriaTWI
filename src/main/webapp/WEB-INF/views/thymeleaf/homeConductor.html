@@ -6,9 +6,10 @@
   <script src="https://kit.fontawesome.com/ca80211b53.js" crossorigin="anonymous"></script>
   <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.0/css/bootstrap.min.css}"/>
   <link rel="stylesheet" th:href="@{css/main.css}"/>
-  <link rel="stylesheet" th:href="@{css/homeStyle.css}"/>
-  <link rel="stylesheet" th:href="@{css/viajes.css}"/>
-  <title>Motomensajeria</title>
+  <link rel="stylesheet" th:href="@{css/homeConductor.css}"/>
+    <script th:src="@{https://code.jquery.com/jquery-3.6.4.min.js}" defer></script>
+    <script th:src="@{/js/mercadoPago.js}" defer></script>
+  <title>Home</title>
 </head>
 <body>
 <header>
@@ -24,10 +25,10 @@
           <a th:href="ubicacion" class="nav-link p-2 text-white">Inicio</a>
         </li>
         <li class="nav-item p-2">
-<!--          <a th:href="" class="nav-link p-2 text-white" href="#">Compañía</a>-->
+          <a th:href="compania" class="nav-link p-2 text-white" href="#">Compañía</a>
         </li>
         <li class="nav-item p-2">
-<!--          <a th:href="" class="nav-link p-2 text-white" href="#">Ayuda</a>-->
+          <a th:href="ayuda" class="nav-link p-2 text-white" href="#">Ayuda</a>
         </li>
         <li class="nav-item p-2">
           <a th:href="viajes-en-proceso" class="nav-link p-2 text-white">Viajes en Proceso</a>
@@ -36,6 +37,7 @@
           <a th:href="historial" class="nav-link p-2 text-white" href="#">Historial de Viajes</a>
         </li>
       </ul>
+
       <a th:href="perfil" class="btn mx-2" style="border:none;">
         <div class="container d-flex justify-content-center align-items-center"  th:if="${conductor.getImagenPerfil() != null}" style="border: none">
           <img alt="img" class="d-block rounded-circle" th:src="'data:image/jpg;charset=utf-8;base64,' + ${conductor.getImageDataBase64()}" style=" width: 40px; height: 40px;"/>
@@ -51,32 +53,33 @@
   </nav>
 </header>
 <main role="main" class="container">
+
   <section th:if="${isPenalizado}" class="isPenalizado" th:attr="data-penalizacion=${conductor.getHoraPenalizacion()}">
+
     <h2>Usted ha sido penalizado.</h2>
     <h4>Dentro de las próximas <span id="contador"></span> usted podrá volver a realizar envíos.</h4>
+
     <div class="pagarMulta"><br>
       <img class="imgPenalizado" th:src="@{/imagenes/penalizado.png}" alt=",,,"><br>
       <p>En caso de querer retomar en el momento con los envíos, puede pagar la multa</p>
-      <form th:action="@{/despenalizar}" method="POST" id="formDespenalizar">
+
+      <form th:action="@{/despenalizar}" method="POST" id="formDespenalizar" class="botones">
         <input type="hidden" th:value="${conductor.getId()}" name="conductorId"/>
-        <input type="submit" value="Pagar multa">
+        <input type="hidden" th:value="${conductor.getMontoPenalizacion()}" name="montoPenalizacion"/>
+        <button type="submit">Pagar Penalización</button>
       </form>
     </div>
+
   </section>
 
-  <div th:unless="${isPenalizado}">
-  <div class="card mt-3 contenedor-solicitudes" style=" background-color: transparent; border: none;">
-    <h1 class="text-center titulo-solicitud">Solicitudes de Viajes</h1>
-    <div th:if="${conductor.getVehiculo() == null}" class="noVehiculo">
-      <h2 class="titulo_registroConductor">Usted no tiene ningún vehículo registrado, por favor, registre uno.</h2>
-      <a th:href="vehiculo" class="btn_registro">Registrar Vehículo</a>
+  <div class="container-home-conductor" th:unless="${isPenalizado}">
+    <h1 class="text-center h1-home">Solicitudes de Viajes</h1>
+    <div th:if="${noVehiculo==true}" class="noVehiculo">
+      <h2 class="titulo-envios">Usted no tiene ningún vehículo registrado, por favor, registre uno.</h2>
+      <a th:href="form-vehiculo" class="btn-aceptar">Registrar Vehículo</a>
     </div>
-    <div class="contenedor-filtro" th:if="${conductor.getVehiculo() != null}">
+    <div class="fondo-form" th:if="${noVehiculo==false}">
       <label class="label-filtro">Cantidad de solicitudes:  <span th:text="${cantidadDeViajes}"></span> </label>
-      <div class="pregunta_acordeon">
-        <label class="label-filtro">Filtros</label>
-        <i class="fa-solid fa-sort-down"></i>
-      </div>
       <form class="formFiltro" th:action="@{/filtrarPorDistancia}" method="post">
           <select id="filtro-distancia" name="distancia" class="select-filtro">
             <option value="" selected class="option-filtro">Filtrar viajes por distancia</option>
@@ -84,40 +87,38 @@
             <option value=5.0 class="option-filtro">5 Kilometros</option>
             <option value=10.0 class="option-filtro">10 Kilometros</option>
           </select>
-          <button type="submit" class="btn_h_aceptar">Aceptar</button>
+          <button type="submit" class="btn-aceptar">Aceptar</button>
       </form>
     </div>
-
-    <div class="card-body viaje" th:each="viaje : ${viajes}">
-      <div class="card mt-3 ml-3 contenedor-viaje">
-        <div class="card-body contenedor-datos-viaje flex" >
-          <div>
-            <p class="card-text"><b>Direccion de Salida:</b> <span th:text="${viaje.getDomicilioDeSalida()}"></span></p>
-            <p class="card-text"><b>Direccion de Llegada:</b> <span th:text="${viaje.getDomicilioDeLlegada()}"></span></p>
-            <p class="card-text"><b>Distancia del viaje:</b> <span th:text="${viaje.getDistanciaDelViaje()} + ' KM'"></span></p>
+    <div class="contenedor-solicitud" th:if="${conductor.getVehiculo() != null}">
+      <div class="fondo-form"  th:each="viaje : ${viajes}">
+        <div >
+          <div class="cont-direcciones">
+            <p><strong>Direccion de Salida:</strong> <span th:text="${viaje.getDomicilioDeSalida()}"></span></p>
+            <p><strong>Direccion de Llegada:</strong> <span th:text="${viaje.getDomicilioDeLlegada()}"></span></p>
+            <p><strong>Distancia del viaje:</strong> <span th:text="${viaje.getDistanciaDelViaje()} + ' KM'"></span></p>
           </div>
-          <div>
-            <p class="card-text"><b>Paquete de:</b> <span th:text="${viaje.getNombreDelCliente()}"></span></p>
-            <p class="card-text"><b>Precio:</b><span th:text="${viaje.getPrecio()} + ' ARS'"></span></p>
-<!--            <p class="card-text"><b>Distancia desde tu ubicación:</b><span class="distanceFromCurrentPosition"></span></p>-->
+          <div class="cont-precio">
+            <p class="card-text"><b>Paquete de: </b> <span th:text="${viaje.getNombreDelCliente()}"></span></p>
+            <p class="card-text"><b>Precio: </b><span th:text="${viaje.getPrecio()} + ' ARS'"></span></p>
           </div>
-        </div>
-        <div class="contenedor-botones">
-          <div class="btn_h_aceptar">
-            <a th:href="@{/viaje-aceptado(idViaje=${viaje.getIdViaje()})}">Aceptar</a>
+          <div class="contenedor-botones">
+            <div >
+              <a class="btn-aceptar" th:href="@{/viaje-aceptado(idViaje=${viaje.getIdViaje()})}">Aceptar</a>
+            </div>
+            <div >
+              <a class="btn-cancelar" th:href="@{/descartar(idViaje=${viaje.getIdViaje()})}" onclick="descartarViaje(this)">Descartar</a>
+            </div>
           </div>
-          <div>
-            <a th:href="@{/descartar(idViaje=${viaje.getIdViaje()})}" onclick="descartarViaje(this)" class="btn_h_cancelar">Descartar</a>
-          </div>
-        </div>
       </div>
     </div>
   </div>
   </div>
-  </div>
 </main>
-<script th:src="@{/js/home-conductor.js}"></script>
 <script th:src="@{/js/timer-despenalizacion.js}"></script>
 <script type="text/javascript" th:src="@{webjars/bootstrap/5.2.0/js/bootstrap.min.js}"></script>
 </body>
+
+<script th:src="@{https://sdk.mercadopago.com/js/v2}"></script>
+
 </html>

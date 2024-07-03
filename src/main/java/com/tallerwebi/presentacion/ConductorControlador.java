@@ -32,9 +32,15 @@ public class ConductorControlador {
     @GetMapping("/homeConductor")
     public ModelAndView mostrarHomeConductor(HttpSession session) throws UsuarioNoEncontradoException {
         ModelMap model = new ModelMap();
-        String viewName = "home-conductor";
+        String viewName = "homeConductor";
         Conductor conductor = conductorServicio.obtenerConductorPorId((Integer) session.getAttribute("IDUSUARIO"));
         model.put("conductor", conductor);
+
+        if(conductor.getPenalizado()){
+            model.put("isPenalizado", conductor.getPenalizado());
+            model.put("noVehiculo",false);
+            return new ModelAndView(viewName, model);
+        }else if(conductor.getVehiculo()!=null){
 
         List<DatosViaje> viajesCercanosPendientes;
 
@@ -43,9 +49,13 @@ public class ConductorControlador {
                 (Double)session.getAttribute("latitud"),
                 (Double)session.getAttribute("longitud"),
                 distanciaAFiltrar, conductor);
-        model.put("isPenalizado", conductor.getPenalizado());
         model.put("viajes", viajesCercanosPendientes);
         model.put("cantidadDeViajes", viajesCercanosPendientes.size());
+        model.put("noVehiculo",false);
+
+        return new ModelAndView(viewName, model);
+        }
+        model.put("noVehiculo",true);
         return new ModelAndView(viewName, model);
     }
 
@@ -197,29 +207,23 @@ public class ConductorControlador {
         return new ModelAndView(viewName);
     }
 
-    @PostMapping("/despenalizar")
-    public ModelAndView despenalizarConductor(HttpSession session, @RequestParam("conductorId") Integer conductorId) throws UsuarioNoEncontradoException {
-
-        this.conductorServicio.despenalizarConductor(conductorServicio.obtenerConductorPorId(conductorId));
-
-        return new ModelAndView("redirect:/homeConductor");
-    }
-  /*  @RequestMapping(value = "/despenalizar")
-    public String despenalizarConductor(@RequestParam("montoPenalizacion") Double montoPenalizacion,
-                                        RedirectAttributes redirectAttributes, HttpSession session) {
+    @RequestMapping(value = "/despenalizar")
+    public ModelAndView despenalizarConductor(@RequestParam("montoPenalizacion") Double montoPenalizacion,
+                                              RedirectAttributes redirectAttributes, HttpSession session) {
 
         if (montoPenalizacion == null || montoPenalizacion < 0) {
             redirectAttributes.addFlashAttribute("error", "Monto de penalización inválido.");
-            return "redirect:/homeConductor";
+            return new ModelAndView("redirect:/homeConductor");
         }
 
         try {
             String redirectUrl = mercadoPagoServicio.pagarPenalizacionMp(montoPenalizacion);
-            return "redirect:" + redirectUrl;
+            return new ModelAndView("redirect:" + redirectUrl);
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Error al procesar el pago: " + e.getMessage());
-            return "redirect:/homeConductor";
+            return new ModelAndView("redirect:/homeConductor");
         }
-    }*/
+    }
 
 }
+

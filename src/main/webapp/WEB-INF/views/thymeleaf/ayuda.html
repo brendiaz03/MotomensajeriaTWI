@@ -6,14 +6,16 @@
     <script src="https://kit.fontawesome.com/ca80211b53.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.0/css/bootstrap.min.css}"/>
     <link rel="stylesheet" th:href="@{css/main.css}"/>
-    <link rel="stylesheet" th:href="@{css/homeStyle.css}"/>
+    <link rel="stylesheet" th:href="@{css/home.css}"/>
+    <link rel="stylesheet" th:href="@{css/ayuda.css}"/>
+
     <title>Ayuda - Motomensajeria</title>
 </head>
 <body>
 <header>
     <nav class="navbar navbar-expand-lg mx-4">
         <div class="d-flex align-items-center bg-violet"> <!-- Div pegado a la izquierda -->
-            <a th:href="home" class="mx-2">
+            <a th:href="${usuario != null && usuario.tipoUsuario != null ? 'home' + usuario.tipoUsuario : 'home'}" class="mx-2">
                 <img th:src="@{/imagenes/logo.png}" class="d-block w-100 bg-violet" alt=",,," style="height: 50px;width: 50px">
             </a>
         </div>
@@ -21,7 +23,8 @@
         <div class="collapse navbar-collapse justify-content-end"> <!-- Div pegado a la derecha -->
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item active  p-2">
-                    <a th:href="home" class="nav-link p-2 text-white" href="#">Inicio</a>
+                    <a th:if="${usuario!=null}" th:href="'home' + ${usuario.getTipoUsuario()}" class="nav-link p-2 text-white" href="#">Inicio</a>
+                    <a th:if="${usuario==null}" th:href="home" class="nav-link p-2 text-white" href="#">Inicio</a>
                 </li>
                 <li class="nav-item p-2">
                     <a th:href="compania" class="nav-link p-2 text-white" href="#">Compañía</a>
@@ -29,71 +32,78 @@
                 <li class="nav-item p-2">
                     <a th:href="ayuda" class="nav-link p-2 text-white" href="#">Ayuda</a>
                 </li>
-                <li class="nav-item p-2" th:if="${isUsuarioLogueado}">
+                <li class="nav-item p-2" th:if="${usuario!=null && usuario.getTipoUsuario() == T(com.tallerwebi.dominio.enums.TipoUsuario).Conductor}">
                     <a th:href="viajes-en-proceso" class="nav-link p-2 text-white">Viajes en Proceso</a>
                 </li>
-                <li class="nav-item p-2" th:if="${isUsuarioLogueado}">
+                <li class="nav-item p-2" th:if="${usuario!=null && usuario.getTipoUsuario() == T(com.tallerwebi.dominio.enums.TipoUsuario).Conductor}">
                     <a th:href="historial" class="nav-link p-2 text-white" href="#">Historial de Viajes</a>
                 </li>
+                <li class="nav-item p-2" th:if="${usuario!=null && usuario.getTipoUsuario() == T(com.tallerwebi.dominio.enums.TipoUsuario).Cliente}">
+                    <a th:href="envios-en-proceso" class="nav-link p-2 text-white">Envios en Proceso</a>
+                </li>
+                <li class="nav-item p-2" th:if="${usuario!=null && usuario.getTipoUsuario() == T(com.tallerwebi.dominio.enums.TipoUsuario).Cliente}">
+                    <a th:href="historial-envios" class="nav-link p-2 text-white" href="#">Historial de Envios</a>
+                </li>
             </ul>
-            <a th:unless="${isUsuarioLogueado}" th:href="@{login}" class="btn-custom" style="text-decoration: none">Ingresar</a>
+            <a th:if="${usuario==null}" th:href="@{login}" class="btn-cancelar">Ingresar</a>
+
             <!-- Muestra el botón de usuario solo si el usuario está logueado -->
-            <a th:if="${isUsuarioLogueado}" th:href="perfil" class="btn mx-2" style="border:none;">
-                <div class="container d-flex justify-content-center align-items-center"  th:if="${conductor.getImagenPerfil() != null}" style="border: none">
-                    <img alt="img" class="d-block rounded-circle" th:src="'data:image/jpg;charset=utf-8;base64,' + ${conductor.getImageDataBase64()}" style=" width: 40px; height: 40px;"/>
+            <a th:if="${usuario!=null}" th:href="perfil" class="btn mx-2" style="border:none;">
+                <div class="container d-flex justify-content-center align-items-center"  th:if="${usuario.getImagenPerfil() != null}" style="border: none">
+                    <img alt="img" class="d-block rounded-circle" th:src="'data:image/jpg;charset=utf-8;base64,' + ${usuario.getImageDataBase64()}" style=" width: 40px; height: 40px;"/>
                 </div>
-                <div th:if="${conductor.getImagenPerfil() == null}">
+                <div th:if="${usuario!=null && usuario.getImagenPerfil() == null}">
                     <img th:src="@{/imagenes/user.png}" alt=",,," style="height: 20px;width: 20px">
                 </div>
             </a>
-            <a th:if="${isUsuarioLogueado}" th:href="@{cerrar-sesion}"><i class="fa-solid fa-arrow-right-from-bracket" style=" border-radius:25px; padding:11px; background-color: white; color: #36054E; transition: color 0.3s;" onmouseover="this.style.color='white';this.style.backgroundColor='lightgray'" onmouseout="this.style.color='purple'; this.style.backgroundColor='white'" ></i></a>
+            <a th:if="${usuario!=null}" th:href="@{cerrar-sesion}"><i class="fa-solid fa-arrow-right-from-bracket" style=" border-radius:25px; padding:11px; background-color: white; color: #36054E; transition: color 0.3s;" onmouseover="this.style.color='white';this.style.backgroundColor='lightgray'" onmouseout="this.style.color='purple'; this.style.backgroundColor='white'" ></i></a>
         </div>
     </nav>
 </header>
 <main role="main" class="container">
-
     <div class="container mt-5">
-        <div class="row">
+        <!-- Título principal de Ayuda -->
+        <div class="row mb-5">
             <div class="col-md-12">
-                <div class="contenido d-flex justify-content-center align-items-center mt-lg-3">
-                    <div class="texto text-center text-white" id="letrasHome">
-                        <h2 class="m-0">¿Necesitas Ayuda?</h2>
-                        <p class="m-0">Estamos aquí para ayudarte. Consulta nuestras preguntas frecuentes o contáctanos directamente para obtener asistencia.</p>
-                    </div>
+                <div class="contenido text-center text-white p-4 rounded" style="background-color: #4b0082;">
+                    <h2 class="mb-4"><i class="fas fa-question-circle"></i> ¿Necesitas Ayuda?</h2>
+                    <p>Estamos aquí para ayudarte. Consulta nuestras preguntas frecuentes o contáctanos directamente para obtener asistencia.</p>
                 </div>
             </div>
         </div>
 
-        <div class="row mt-5">
-            <div class="col-md-6">
-                <div class="contenido d-flex justify-content-center align-items-center">
-                    <div class="texto text-center text-white" id="letrasHome">
-                        <h2 class="m-0">Preguntas Frecuentes</h2>
-                        <p class="m-0">Encuentra respuestas a las preguntas más comunes sobre nuestros servicios y cómo utilizarlos.</p>
-                        <ul class="m-0">
-                            <li>¿Cómo me registro en la plataforma?</li>
-                            <li>¿Cómo solicito un servicio de motomensajería?</li>
-                            <li>¿Qué métodos de pago están disponibles?</li>
-                            <li>¿Cómo puedo contactar al soporte?</li>
-                        </ul>
-                    </div>
+        <!-- Sección de Preguntas Frecuentes y Contacto -->
+        <div class="row">
+            <!-- Preguntas Frecuentes -->
+            <div class="col-md-6 mb-5 h-100">
+                <div class="contenido d-flex flex-column justify-content-center align-items-center text-center text-white p-4 rounded h-100" style="background-color: #6a0dad;">
+                    <h2 class="mb-4"><i class="fas fa-comments"></i> Preguntas Frecuentes</h2>
+                    <p>Encuentra respuestas a las preguntas más comunes sobre nuestros servicios y cómo utilizarlos.</p>
+                    <ul class="list-unstyled mt-3">
+                        <li class="mb-2"><i class="fas fa-chevron-right"></i> ¿Cómo me registro en la plataforma?</li>
+                        <li class="mb-2"><i class="fas fa-chevron-right"></i> ¿Cómo solicito un servicio de motomensajería?</li>
+                        <li class="mb-2"><i class="fas fa-chevron-right"></i> ¿Qué métodos de pago están disponibles?</li>
+                        <li><i class="fas fa-chevron-right"></i> ¿Cómo puedo contactar al soporte?</li>
+                    </ul>
                 </div>
             </div>
-            <div class="col-md-6">
-                <div class="contenido d-flex justify-content-center align-items-center">
-                    <div class="texto text-center text-white" id="letrasHome">
-                        <h2 class="m-0">Contacto</h2>
-                        <p class="m-0">Si no encuentras la respuesta que buscas, contáctanos directamente:</p>
-                        <p class="m-0">Email: soporte@motomensajeria.com</p>
-                        <p class="m-0">Teléfono: +34 123 456 789</p>
-                        <p class="m-0">Horario de Atención: Lunes a Viernes, de 9:00 a 18:00</p>
-                    </div>
+
+            <!-- Contacto -->
+            <div class="col-md-6 h-100">
+                <div class="contenido d-flex flex-column justify-content-center align-items-center text-center text-white p-4 rounded h-100" style="background-color: #6a0dad;">
+                    <h2 class="mb-4"><i class="fas fa-envelope"></i> Contacto</h2>
+                    <p>Si no encuentras la respuesta que buscas, contáctanos directamente:</p>
+                    <p class="mt-3"><i class="fas fa-envelope-open-text"></i> Email: soporte@motomensajeria.com</p>
+                    <p><i class="fas fa-phone-alt"></i> Teléfono: +34 123 456 789</p>
+                    <p><i class="fas fa-clock"></i> Horario de Atención: Lunes a Viernes, de 9:00 a 18:00</p>
                 </div>
             </div>
         </div>
     </div>
-
 </main>
+
+
+
 
 <script type="text/javascript" th:src="@{/webjars/bootstrap/5.2.0/js/bootstrap.min.js}"></script>
 </body>

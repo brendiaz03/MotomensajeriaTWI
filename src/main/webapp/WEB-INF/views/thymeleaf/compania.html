@@ -5,22 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <script src="https://kit.fontawesome.com/ca80211b53.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.0/css/bootstrap.min.css}"/>
-    <link rel="stylesheet" th:href="@{css/main.css}"/>
-    <link rel="stylesheet" th:href="@{css/homeStyle.css}"/>
+    <link rel="stylesheet" th:href="@{css/compania.css}"/>
+    <link rel="stylesheet" th:href="@{css/home.css}"/>
+
     <title>Compañía - Motomensajeria</title>
 </head>
 <body>
 <header>
     <nav class="navbar navbar-expand-lg mx-4">
-        <div class="d-flex align-items-center bg-violet">
-            <a th:href="home" class="mx-2">
+        <div class="d-flex align-items-center bg-violet"> <!-- Div pegado a la izquierda -->
+            <a th:href="${usuario != null && usuario.tipoUsuario != null ? 'home' + usuario.tipoUsuario : 'home'}" class="mx-2">
                 <img th:src="@{/imagenes/logo.png}" class="d-block w-100 bg-violet" alt=",,," style="height: 50px;width: 50px">
             </a>
         </div>
-        <div class="collapse navbar-collapse justify-content-end">
+        <div class="collapse navbar-collapse justify-content-end"> <!-- Div pegado a la derecha -->
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item active  p-2">
-                    <a th:href="home" class="nav-link p-2 text-white" href="#">Inicio</a>
+                    <a th:if="${usuario!=null}" th:href="'home' + ${usuario.getTipoUsuario()}" class="nav-link p-2 text-white" href="#">Inicio</a>
+                    <a th:if="${usuario==null}" th:href="home" class="nav-link p-2 text-white" href="#">Inicio</a>
                 </li>
                 <li class="nav-item p-2">
                     <a th:href="compania" class="nav-link p-2 text-white" href="#">Compañía</a>
@@ -28,66 +30,91 @@
                 <li class="nav-item p-2">
                     <a th:href="ayuda" class="nav-link p-2 text-white" href="#">Ayuda</a>
                 </li>
-                <li class="nav-item p-2">
-                    <a th:href="viajes-en-proceso" class="nav-link p-2 text-white">Viajes en Proceso</a>
+                    <li class="nav-item p-2" th:if="${usuario!=null && usuario.getTipoUsuario() == T(com.tallerwebi.dominio.enums.TipoUsuario).Conductor}">
+                        <a th:href="viajes-en-proceso" class="nav-link p-2 text-white">Viajes en Proceso</a>
+                    </li>
+                    <li class="nav-item p-2" th:if="${usuario!=null && usuario.getTipoUsuario() == T(com.tallerwebi.dominio.enums.TipoUsuario).Conductor}">
+                        <a th:href="historial" class="nav-link p-2 text-white" href="#">Historial de Viajes</a>
+                    </li>
+                <li class="nav-item p-2" th:if="${usuario!=null && usuario.getTipoUsuario() == T(com.tallerwebi.dominio.enums.TipoUsuario).Cliente}">
+                    <a th:href="envios-en-proceso" class="nav-link p-2 text-white">Envios en Proceso</a>
                 </li>
-                <li class="nav-item p-2">
-                    <a th:href="historial" class="nav-link p-2 text-white" href="#">Historial de Viajes</a>
+                <li class="nav-item p-2" th:if="${usuario!=null && usuario.getTipoUsuario() == T(com.tallerwebi.dominio.enums.TipoUsuario).Cliente}">
+                    <a th:href="historial-envios" class="nav-link p-2 text-white" href="#">Historial de Envios</a>
                 </li>
             </ul>
-            <a th:href="perfil" class="btn mx-2" style="border:none;">
+            <a th:if="${usuario==null}" th:href="@{login}" class="btn-cancelar">Ingresar</a>
 
-                <div th:if="${conductor.getImagenPerfil() == null}">
+            <!-- Muestra el botón de usuario solo si el usuario está logueado -->
+            <a th:if="${usuario!=null}" th:href="perfil" class="btn mx-2" style="border:none;">
+                <div class="container d-flex justify-content-center align-items-center"  th:if="${usuario.getImagenPerfil() != null}" style="border: none">
+                    <img alt="img" class="d-block rounded-circle" th:src="'data:image/jpg;charset=utf-8;base64,' + ${usuario.getImageDataBase64()}" style=" width: 40px; height: 40px;"/>
+                </div>
+                <div th:if="${usuario!=null && usuario.getImagenPerfil() == null}">
                     <img th:src="@{/imagenes/user.png}" alt=",,," style="height: 20px;width: 20px">
                 </div>
             </a>
-            <a th:href="@{cerrar-sesion}">
-                <i class="fa-solid fa-arrow-right-from-bracket" style="border-radius:25px; padding:11px; background-color: white; color: #36054E; transition: color 0.3s;" onmouseover="this.style.color='white';this.style.backgroundColor='lightgray'" onmouseout="this.style.color='#36054E'; this.style.backgroundColor='white'"></i>
-            </a>
+            <a th:if="${usuario!=null}" th:href="@{cerrar-sesion}"><i class="fa-solid fa-arrow-right-from-bracket" style=" border-radius:25px; padding:11px; background-color: white; color: #36054E; transition: color 0.3s;" onmouseover="this.style.color='white';this.style.backgroundColor='lightgray'" onmouseout="this.style.color='purple'; this.style.backgroundColor='white'" ></i></a>
         </div>
     </nav>
 </header>
 <main role="main" class="container">
-
     <div class="container mt-5">
-        <div class="row">
-            <div class="col-md-6">
-                <div class="contenido d-flex justify-content-center align-items-center mt-lg-3">
-                    <div class="texto text-center text-white"> <!--id="letrasHome"-->
-                        <h2 class="m-0">Acerca de Nosotros</h2>
-                        <p class="m-0">Somos una compañía líder en el servicio de motomensajería. Con años de experiencia en el mercado, nos dedicamos a ofrecer soluciones rápidas y confiables para tus necesidades de envío y transporte.</p>
-                        <p class="m-0">Nuestro compromiso es con la calidad y la satisfacción de nuestros clientes, brindando un servicio eficiente y seguro en todo momento.</p>
-                    </div>
+        <!-- Primera fila: Texto a la izquierda, imagen a la derecha -->
+        <div class="row mb-5 align-items-stretch">
+            <div class="col-md-6 d-flex align-items-center">
+                <div class="contenido text-center text-white p-4 rounded" style="background-color: #6a0dad;">
+                    <h2 class="mb-4"><i class="fas fa-building"></i> Acerca de Nosotros</h2>
+                    <p>Somos una compañía líder en el servicio de motomensajería. Con años de experiencia en el mercado, nos dedicamos a ofrecer soluciones rápidas y confiables para tus necesidades de envío y transporte.</p>
+                    <p>Nuestro compromiso es con la calidad y la satisfacción de nuestros clientes, brindando un servicio eficiente y seguro en todo momento.</p>
                 </div>
             </div>
-            <div class="col-md-6">
-                <div class="contenido d-flex justify-content-center align-items-center">
-                    <div class="imagen text-center">
-                    <!--    <img th:src="${companiaImagen.getImagenBase64()}" class="d-block mx-auto" alt="Imagen de Compañía" style="width: 100%; height: auto;"> -->
-                    </div>
+            <div class="col-md-6 d-flex justify-content-center align-items-center">
+                <div class="imagen text-center w-100 h-100">
+                    <img th:src="@{/imagenes/compania-1.jpg}" class="d-block mx-auto img-fluid h-100 rounded" alt="Imagen de Compañía">
                 </div>
             </div>
         </div>
 
-        <div class="row mt-5">
-            <div class="col-md-12">
-                <div class="contenido d-flex justify-content-center align-items-center">
-                    <div class="texto text-center text-white" id="letrasHome">
-                        <h2 class="m-0">Nuestros Servicios</h2>
-                        <p class="m-0">Ofrecemos una amplia gama de servicios que incluyen:</p>
-                        <ul class="m-0">
-                            <li>Entrega rápida de paquetes</li>
-                            <li>Transporte seguro de documentos importantes</li>
-                            <li>Servicio de mensajería personalizado</li>
-                            <li>Y mucho más...</li>
-                        </ul>
-                    </div>
+        <!-- Segunda fila: Imagen a la izquierda, texto a la derecha -->
+        <div class="row mb-5 align-items-stretch">
+            <div class="col-md-6 d-flex justify-content-center align-items-center">
+                <div class="imagen text-center w-100 h-100">
+                    <img th:src="@{/imagenes/compania-2.jpg}" class="d-block mx-auto img-fluid h-100 rounded" alt="Imagen de Compañía">
+                </div>
+            </div>
+            <div class="col-md-6 d-flex align-items-center">
+                <div class="contenido text-center text-white p-4 rounded" style="background-color: #6a0dad;">
+                    <h2 class="mb-4"><i class="fas fa-cogs"></i> Nuestros Servicios</h2>
+                    <p>Ofrecemos una amplia gama de servicios que dentro de los cuales se incluyen:</p>
+                    <ul class="list-unstyled mt-3">
+                        <li class="mb-2"><i class="fas fa-shipping-fast"></i> Entrega rápida de paquetes</li>
+                        <li class="mb-2"><i class="fas fa-file-alt"></i> Transporte seguro de documentos importantes</li>
+                        <li class="mb-2"><i class="fas fa-user-check"></i> Servicio de mensajería personalizado</li>
+                        <li><i class="fas fa-ellipsis-h"></i> Y mucho más...</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tercera fila: Texto a la izquierda, imagen a la derecha -->
+        <div class="row mb-5 align-items-stretch">
+            <div class="col-md-6 d-flex align-items-center">
+                <div class="contenido text-center text-white p-4 rounded" style="background-color: #6a0dad;">
+                    <h2 class="mb-4"><i class="fas fa-users"></i> Nuestro Equipo</h2>
+                    <p>Contamos con un equipo altamente capacitado y comprometido con la excelencia, listo para atenderte en todo momento.</p>
+                    <p>Estamos aquí para asegurarnos de que tus envíos lleguen a tiempo y en perfectas condiciones.</p>
+                </div>
+            </div>
+            <div class="col-md-6 d-flex justify-content-center align-items-center">
+                <div class="imagen text-center w-100 h-100">
+                    <img th:src="@{/imagenes/compania-3.jpg}" class="d-block mx-auto img-fluid h-100 rounded" alt="Imagen del Equipo">
                 </div>
             </div>
         </div>
     </div>
-
 </main>
+
 
 <script type="text/javascript" th:src="@{/webjars/bootstrap/5.2.0/js/bootstrap.min.js}"></script>
 </body>
