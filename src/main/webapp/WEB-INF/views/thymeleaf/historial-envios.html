@@ -6,29 +6,33 @@
     <script src="https://kit.fontawesome.com/ca80211b53.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.0/css/bootstrap.min.css}"/>
     <link rel="stylesheet" th:href="@{css/main.css}"/>
-    <link rel="stylesheet" th:href="@{css/homeStyle.css}"/>
-    <link rel="stylesheet" th:href="@{css/viajes.css}"/>
+    <link rel="stylesheet" th:href="@{css/home.css}"/>
+    <link rel="stylesheet" th:href="@{css/viaje.css}"/>
+    <link rel="stylesheet" th:href="@{css/historial-envios.css}"/>
+
     <title>Motomensajeria</title>
 </head>
 <body>
 <header>
     <nav class="navbar navbar-expand-lg mx-4">
-        <div class="d-flex align-items-center bg-violet">
-            <a th:href="homeCliente" class="mx-2">
-                <img th:src="@{/imagenes/logo.png}" class="d-block w-100 bg-violet" alt=",,," style="height: 50px;width: 50px">
-            </a>
+        <div class="d-flex align-items-center bg-violet"> <!-- Div pegado a la izquierda -->
+            <div class="d-flex align-items-center bg-violet"> <!-- Div pegado a la izquierda -->
+                <a th:href="homeCliente" class="mx-2">
+                    <img th:src="@{/imagenes/logo.png}" class="d-block w-100 bg-violet" alt=",,," style="height: 50px;width: 50px">
+                </a>
+            </div>
         </div>
         <div class="collapse navbar-collapse justify-content-end">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item active  p-2">
                     <a th:href="homeCliente" class="nav-link p-2 text-white" href="#">Inicio</a>
                 </li>
-<!--                <li class="nav-item p-2">-->
-<!--                    <a th:href="compania" class="nav-link p-2 text-white" href="#">Compañía</a>-->
-<!--                </li>-->
-<!--                <li class="nav-item p-2">-->
-<!--                    <a th:href="ayuda" class="nav-link p-2 text-white" href="#">Ayuda</a>-->
-<!--                </li>-->
+                <li class="nav-item p-2">
+                    <a th:href="compania" class="nav-link p-2 text-white" href="#">Compañía</a>
+                </li>
+                <li class="nav-item p-2">
+                    <a th:href="ayuda" class="nav-link p-2 text-white" href="#">Ayuda</a>
+                </li>
                 <li class="nav-item p-2">
                     <a th:href="envios-en-proceso" class="nav-link p-2 text-white">Envios en Proceso</a>
                 </li>
@@ -53,8 +57,10 @@
 <main role="main" class="container">
     <div class="container">
         <div class="card-header">
-            <h1 class="text-center titulo-viajes">Historial de Envíos</h1>
-            <h2 th:if="${#lists.isEmpty(viajesObtenidos)}">No hay envíos en proceso.</h2>
+            <h1 class="text-center titulo-viajes" style="align-self: center;text-align: center">Historial de Envíos</h1>
+            <div th:if="${viajesObtenidos == null || #lists.isEmpty(viajesObtenidos)}">
+                <h2 style="border-radius:25px;text-align:center;color:white;background-color: black; padding:2%;">No hay historial disponible. Solicite envíos de paquetes para poder visualizarlos aquí.</h2>
+            </div>
         </div>
         <div class="card mt-3 contenedor-viajes" style="background-color: transparent; border: none;" th:unless="${#lists.isEmpty(viajesObtenidos)}">
             <div class="card-body" th:each="viaje : ${viajesObtenidos}">

@@ -38,6 +38,22 @@ public class VehiculoControlador {
             model.put("vehiculo",nuevoVehiculo);
             model.put("mensajeError",mensajeError);
         }
+
+        Conductor buscado =conductorServicio.obtenerConductorPorId((Integer)session.getAttribute("IDUSUARIO"));
+        Boolean estaLogueado=(Boolean)session.getAttribute("isUsuarioLogueado");
+        if((estaLogueado!=null && estaLogueado) && buscado.getVehiculo()==null){
+            System.out.println("EL USUARIO ESTA LOGUEADO");
+
+            model.put("estaLogueado",estaLogueado);
+            model.put("noVehiculo", true);
+        }else if(estaLogueado==null || !estaLogueado){
+            System.out.println("EL USUARIO NOOOOO ESTA LOGUEADO");
+
+            model.put("noVehiculo", true);
+        }else{
+            model.put("noVehiculo",false);
+        }
+
         if((Boolean)session.getAttribute("isEditForm")){
             model.put("isEditForm", true);
             Conductor conductor =conductorServicio.obtenerConductorPorId((Integer)session.getAttribute("IDUSUARIO"));
@@ -46,6 +62,7 @@ public class VehiculoControlador {
             model.put("isEditForm", false);
             model.put("vehiculo", new Vehiculo());
         }
+
         return new ModelAndView(viewName, model);
     }
 
@@ -54,7 +71,13 @@ public class VehiculoControlador {
         try{
             Vehiculo vehiculo = vehiculoServicio.registrarVehiculo(nuevoVehiculo);
             conductorServicio.RelacionarVehiculoAConductor((Integer)session.getAttribute("IDUSUARIO"), vehiculo);
-            return new ModelAndView("redirect:/home");
+
+            Boolean estaLogueado=(Boolean)session.getAttribute("isUsuarioLogueado");
+            if((estaLogueado!=null && estaLogueado)){
+                return new ModelAndView("redirect:/perfil");
+            }else{
+                return new ModelAndView("redirect:/home");
+            }
         }catch(UsuarioNoEncontradoException | VehiculoDuplicadoException e){
             return this.mostrarRegistroDelVehiculo(nuevoVehiculo,e.getMessage(),session);
         }

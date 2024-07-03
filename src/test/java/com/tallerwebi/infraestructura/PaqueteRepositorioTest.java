@@ -15,7 +15,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import javax.transaction.Transactional;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = HibernateInfraestructuraTestConfig.class)
@@ -36,20 +36,34 @@ public class PaqueteRepositorioTest {
     @Test
     @Transactional
     @Rollback
-    public void queSePuedaGuardarYObtenerUnPaquete() throws PaqueteNoEncontradoException {
+    public void queSeCreeUnNuevoPaqueteYSeGuardeExitosamenteEnLaBaseDeDatos() throws PaqueteNoEncontradoException {
         Paquete paquete = new Paquete(10.0, 5.0, true, "Descripción", "Facu");
 
-        paqueteRepositorio.guardarPaquete(paquete);
-        Paquete paqueteObtenido = paqueteRepositorio.obtenerPaquetePorId(paquete.getId());
+        Paquete guardado=paqueteRepositorio.guardarPaquete(paquete);
 
-        assertThat(paqueteObtenido.getId(), equalTo(paquete.getId()));
-        assertThat(paqueteObtenido, equalTo(paquete));
+        assertThat(guardado.getDescripcion(), equalTo(paquete.getDescripcion()));
+        assertNotNull(guardado);
     }
+
 
     @Test
     @Transactional
     @Rollback
-    public void queLanceExcepcionAlObtenerPaqueteNoExistente() {
+    public void queSeCreeUnNuevoPaqueteYAlBuscarloEnLaBaseDeDatosSeObtengaElMismoDeManeraExitosa() throws PaqueteNoEncontradoException {
+        Paquete paquete = new Paquete(10.0, 5.0, true, "Descripción", "Facu");
+        this.sessionFactory.getCurrentSession().save(paquete);
+
+        Paquete paqueteObtenido=this.paqueteRepositorio.obtenerPaquetePorId(paquete.getId());
+
+        assertThat(paqueteObtenido.getDescripcion(), equalTo(paquete.getDescripcion()));
+        assertNotNull(paqueteObtenido);
+    }
+
+
+    @Test
+    @Transactional
+    @Rollback
+    public void queSeBusqueUnPaqueteNoExistenteEnLaBBaseDeDatosYEnConsecuenciaSeLanceLaExcepcionDePaqueteNoEncontradoException() {
         Integer paqueteID = 999;
 
         assertThrows(PaqueteNoEncontradoException.class, () -> {
