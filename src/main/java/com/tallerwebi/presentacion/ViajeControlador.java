@@ -26,20 +26,16 @@ import java.io.IOException;
 public class ViajeControlador {
 
     private final ViajeServicio viajeServicio;
-    private final ConductorServicio conductorServicio;
     private final ClienteServicio clienteServicio;
     private final PaqueteServicio paqueteServicio;
-   // private MercadoPagoServicio mercadoPagoServicio;
-    private final MercadoPagoServicioImpl mercadoPagoServicio;
+    private MercadoPagoServicio mercadoPagoServicio;
 
     @Autowired
-    public ViajeControlador(ViajeServicio viajeServicio, ConductorServicio conductorServicio, ClienteServicio clienteServicio, PaqueteServicio paqueteServicio){
+    public ViajeControlador(ViajeServicio viajeServicio, ClienteServicio clienteServicio, PaqueteServicio paqueteServicio, MercadoPagoServicio mercadoPagoServicio){
         this.viajeServicio = viajeServicio;
-        this.conductorServicio = conductorServicio;
         this.clienteServicio = clienteServicio;
         this.paqueteServicio = paqueteServicio;
-        //this.mercadoPagoServicio = mercadoPagoServicio;
-        this.mercadoPagoServicio = new MercadoPagoServicioImpl();
+        this.mercadoPagoServicio = mercadoPagoServicio;
 
     }
     @RequestMapping("/form-viaje")
@@ -91,6 +87,7 @@ public class ViajeControlador {
         session.setAttribute("pasoActual", 3);
         return new ModelAndView("redirect:/form-viaje");
     }
+
     @RequestMapping(value = "/crear-viaje", method = RequestMethod.POST, consumes = "application/x-www-form-urlencoded")
     public ModelAndView crearViajeLocalmente(@ModelAttribute("viaje") Viaje viaje, HttpSession session){
         session.setAttribute("viajeActual", viaje);
@@ -115,18 +112,18 @@ public class ViajeControlador {
     }
 
     @RequestMapping(value = "/pagar")
-    public String pagarViaje(@RequestParam("precio") Double precioDelViaje, RedirectAttributes redirectAttributes, HttpSession session) {
-        if (precioDelViaje == null || precioDelViaje < 0) {
-            redirectAttributes.addFlashAttribute("error", "Precio inválido.");
+    public ModelAndView pagarViaje(@RequestParam("precio") Double precioDelViaje, RedirectAttributes redirectAttributes) {
+        if (precioDelViaje != null && precioDelViaje > 0) {
+            try {
+                String redirectUrl = mercadoPagoServicio.pagarViajeMp(precioDelViaje);
+                return new ModelAndView("redirect:" + redirectUrl);
+            } catch (Exception e) {
+                redirectAttributes.addFlashAttribute("error", "Error al procesar el pago");
+                return new ModelAndView("redirect:/homeCliente");
+            }
         }
 
-        try {
-            String redirectUrl = mercadoPagoServicio.pagarViajeMp(precioDelViaje);
-            return "redirect:" + redirectUrl;
-        } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("error", "Error al procesar el pago: " + e.getMessage());
-            return "redirect:/homeCliente";
-        }
+        redirectAttributes.addFlashAttribute("error", "Precio inválido.");
+        return new ModelAndView("redirect:/homeCliente");
     }
-
 }
