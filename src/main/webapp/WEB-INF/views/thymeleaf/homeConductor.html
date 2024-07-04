@@ -74,16 +74,20 @@
 
   <div class="container-home-conductor" th:unless="${isPenalizado}">
     <h1 class="text-center h1-home">Solicitudes de Viajes</h1>
-    <div th:if="${noVehiculo==true}" class="fondo-form">
-      <h5 class="titulo-envios">Usted no tiene ningún vehículo registrado. Por favor, registre uno para continuar.</h5>
-      <div class="cont-img-auto">
-        <img class="img-no-auto" th:src="@{/imagenes/noauto.svg}" alt=",,,">
+    <div class="tam-no-veh">
+      <div th:if="${noVehiculo==true}" class="fondo-form">
+        <h6 class="titulo-envios">Usted no tiene ningún vehículo registrado. Por favor, registre uno para continuar.</h6>
+        <div class="cont-img-auto">
+          <img class="img-no-auto" th:src="@{/imagenes/noauto.svg}" alt=",,,">
+        </div>
+        <a th:href="form-vehiculo" class="btn-aceptar">Registrar Vehículo</a>
       </div>
-      <a th:href="form-vehiculo" class="btn-aceptar">Registrar Vehículo</a>
     </div>
-    <div class="fondo-form" th:if="${noVehiculo==false}">
-      <label class="label-filtro">Cantidad de solicitudes:  <span th:text="${cantidadDeViajes}"></span> </label>
-      <form class="formFiltro" th:action="@{/filtrarPorDistancia}" method="post">
+
+    <div class="tam-card-filtro">
+      <div class="fondo-form" th:if="${noVehiculo==false}">
+        <label class="label-filtro">Cantidad de solicitudes:  <span th:text="${cantidadDeViajes}"></span> </label>
+        <form class="formFiltro" th:action="@{/filtrarPorDistancia}" method="post">
           <select id="filtro-distancia" name="distancia" class="select-filtro">
             <option value="" selected class="option-filtro">Filtrar viajes por distancia</option>
             <option value=2.0 class="option-filtro">2 Kilometros</option>
@@ -91,8 +95,10 @@
             <option value=10.0 class="option-filtro">10 Kilometros</option>
           </select>
           <button type="submit" class="btn-aceptar">Aceptar</button>
-      </form>
+        </form>
+      </div>
     </div>
+
     <div class="contenedor-solicitud" th:if="${conductor.getVehiculo() != null}">
       <div class="fondo-form"  th:each="viaje : ${viajes}">
         <div>

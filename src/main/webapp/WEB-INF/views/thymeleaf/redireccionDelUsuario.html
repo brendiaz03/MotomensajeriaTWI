@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redirección del Usuario</title>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.0/css/bootstrap.min.css}" />
+    <script th:src="@{https://code.jquery.com/jquery-3.6.4.min.js}" defer></script>
+    <script th:src="@{/js/mercadoPago.js}" defer></script>
+</head>
+<body>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6 text-center mt-5">
+            <h1>Transacción Completada</h1>
+            <p>Gracias por elegir Motomensajería envíos.</p>
+            <br>
+            <a th:href="${tipo.name() == 'CONDUCTOR' ? '/homeConductor' : '/homeCliente'}">
+                <button id="homeButton" class="btn btn-primary">Volver al Inicio</button>
+            </a>
+        </div>
+    </div>
+</div>
+
+</body>
+
+
+<script th:src="@{https://sdk.mercadopago.com/js/v2}"></script>
+
+</html>

@@ -1,10 +1,10 @@
 package com.tallerwebi.dominio.exceptions;
 
-public class PaqueteNoEncontradoException extends Exception {
+public class NoSePudoGuardarElPaqueteException extends Exception {
 
     private final String mensajeError;
 
-    public PaqueteNoEncontradoException(String mensajeError) {
+    public NoSePudoGuardarElPaqueteException(String mensajeError) {
 
         super(mensajeError);
 

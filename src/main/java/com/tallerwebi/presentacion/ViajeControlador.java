@@ -5,6 +5,11 @@ import com.tallerwebi.dominio.cliente.ClienteServicio;
 import com.tallerwebi.dominio.exceptions.ClienteNoEncontradoException;
 import com.tallerwebi.dominio.exceptions.PrecioInvalidoException;
 import com.tallerwebi.dominio.exceptions.ViajeNoEncontradoException;
+import com.tallerwebi.dominio.conductor.Conductor;
+import com.tallerwebi.dominio.enums.TipoEstado;
+import com.tallerwebi.dominio.exceptions.NoSePudoGuardarElPaqueteException;
+import com.tallerwebi.dominio.exceptions.PaqueteNoEncontradoException;
+import com.tallerwebi.dominio.exceptions.UsuarioNoEncontradoException;
 import com.tallerwebi.dominio.mercadoPago.MercadoPagoServicio;
 import com.tallerwebi.dominio.paquete.Paquete;
 import com.tallerwebi.dominio.exceptions.PaqueteNoEncontradoException;
@@ -102,19 +107,41 @@ public class ViajeControlador {
         Paquete paqueteActual = (Paquete) session.getAttribute("paqueteActual");
         Viaje viajeActual = (Viaje) session.getAttribute("viajeActual");
 
-        this.paqueteServicio.guardarPaquete(paqueteActual);
-        this.viajeServicio.crearViaje(cliente, viajeActual, paqueteActual);
+        try {
+
+            this.paqueteServicio.guardarPaquete(paqueteActual);
+
+            this.viajeServicio.crearViaje(cliente, viajeActual, paqueteActual);
 
         // Redirección con el precio del viaje
         return new ModelAndView("redirect:/pagar?precio=" + viajeActual.getPrecio());
+            // Redirección con el precio del viaje
+            return new ModelAndView("redirect:/pagar?precio=" + viajeActual.getPrecio());
+
+        } catch (NoSePudoGuardarElPaqueteException e) {
+
+            String error = "Error: " + e.getMessage();
+
+            return new ModelAndView(error);
+
+        }
+
     }
 
     @RequestMapping(value = "/pagar")
-    public ModelAndView pagarViaje(@RequestParam("precio") Double precioDelViaje, RedirectAttributes redirectAttributes) {
+    public ModelAndView pagarViaje(@RequestParam("precio") Double precioDelViaje, RedirectAttributes redirectAttributes, HttpSession session) {
         if (precioDelViaje != null && precioDelViaje > 0) {
             try {
                 String redirectUrl = mercadoPagoServicio.pagarViajeMp(precioDelViaje);
+
+                Viaje viaje = this.viajeServicio.obtenerViajePorId((Integer)session.getAttribute("IDVIAJE"));
+
+                viaje.setEstado(TipoEstado.PENDIENTE);
+
+                this.viajeServicio.actualizarViaje(viaje);
+
                 return new ModelAndView("redirect:" + redirectUrl);
+
             } catch (Exception e) {
                 redirectAttributes.addFlashAttribute("error", "Error al procesar el pago");
                 return new ModelAndView("redirect:/homeCliente");

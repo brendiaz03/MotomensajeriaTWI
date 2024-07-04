@@ -75,8 +75,8 @@ public class ConductorControlador {
         try {
             conductor = conductorServicio.obtenerConductorPorId((Integer) session.getAttribute("IDUSUARIO"));
         } catch (UsuarioNoEncontradoException e) {
-            model.put("error", "Conductor no encontrado");
-            return new ModelAndView(viewName, model);
+            model.put("mensajeError", e.getMessage() + " Por favor, vuelva a intentarlo.");
+            return new ModelAndView("redirect:/*", model);
         }
 
         List<DatosViaje> historialViajes = this.viajeServicio.obtenerHistorialDeViajesConductor(conductor);
@@ -119,8 +119,8 @@ public class ConductorControlador {
         try {
             conductor = conductorServicio.obtenerConductorPorId((Integer) session.getAttribute("IDUSUARIO"));
         } catch (UsuarioNoEncontradoException e) {
-            model.put("error", "Conductor no encontrado");
-            return new ModelAndView(viewName, model);
+            model.put("mensajeError", e.getMessage() + " Por favor, vuelva a intentarlo.");
+            return new ModelAndView("redirect:/*", model);
         }
 
         List<Viaje> viajesObtenidos = viajeServicio.obtenerViajesEnProceso(conductor);
@@ -214,14 +214,20 @@ public class ConductorControlador {
     public ModelAndView despenalizarConductor(@RequestParam("montoPenalizacion") Double montoPenalizacion,
                                               RedirectAttributes redirectAttributes, HttpSession session) {
 
-        if (montoPenalizacion == null || montoPenalizacion < 0) {
+        if (montoPenalizacion == null || montoPenalizacion < 5000) {
             redirectAttributes.addFlashAttribute("error", "Monto de penalización inválido.");
             return new ModelAndView("redirect:/homeConductor");
         }
 
         try {
             String redirectUrl = mercadoPagoServicio.pagarPenalizacionMp(montoPenalizacion);
+
+            Conductor conductor = this.conductorServicio.obtenerConductorPorId((Integer)session.getAttribute("IDUSUARIO"));
+
+            this.conductorServicio.despenalizarConductor(conductor);
+
             return new ModelAndView("redirect:" + redirectUrl);
+
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Error al procesar el pago: " + e.getMessage());
             return new ModelAndView("redirect:/homeConductor");

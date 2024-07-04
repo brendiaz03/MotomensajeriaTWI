@@ -8,8 +8,14 @@
 .fondo-form {
     display: flex;
     flex-direction: column;
+    width: 100%;
 }
-
+.tam-card-filtro{
+    width: 45%;
+}
+.tam-no-veh{
+    width: 60%;
+}
 .container-home-conductor{
     display: flex;
     flex-direction: column;

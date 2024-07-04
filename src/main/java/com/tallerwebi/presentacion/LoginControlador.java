@@ -1,9 +1,7 @@
 package com.tallerwebi.presentacion;
 
-import com.tallerwebi.dominio.cliente.ClienteServicio;
 import com.tallerwebi.dominio.enums.TipoUsuario;
 import com.tallerwebi.dominio.exceptions.UsuarioNoEncontradoException;
-import com.tallerwebi.dominio.conductor.ConductorServicio;
 import com.tallerwebi.dominio.usuario.Usuario;
 import com.tallerwebi.presentacion.Datos.DatosLogin;
 import com.tallerwebi.dominio.login.LoginServicio;
@@ -12,33 +10,33 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 @Controller
-@SessionAttributes("isUsuarioLogueado")
 public class LoginControlador {
 
     private LoginServicio loginServicio;
-    private ConductorServicio conductorServicio;
-    private ClienteServicio clienteServicio;
 
 
     @Autowired
-    public LoginControlador(LoginServicio loginServicio, ConductorServicio conductorServicio, ClienteServicio clienteServicio){
+    public LoginControlador(LoginServicio loginServicio){
         this.loginServicio = loginServicio;
-        this.conductorServicio = conductorServicio;
-        this.clienteServicio = clienteServicio;
     }
 
     @RequestMapping("/")
     public ModelAndView error1(HttpSession session) {
         return this.mostrarHome(session);
     }
+
+
     @RequestMapping("/*")
-    public ModelAndView error() {
+    public ModelAndView error(String mensajeError) {
+        ModelMap model = new ModelMap();
         String viewName= "error";
-        return new ModelAndView(viewName);
+        if(mensajeError!=null){
+            model.put("error", mensajeError);
+        }
+        return new ModelAndView(viewName, model);
     }
 
     @RequestMapping(path = "/home")
@@ -69,7 +67,6 @@ public class LoginControlador {
             if (usuario != null) {
                 session.setAttribute("IDUSUARIO", usuario.getId());
                 session.setAttribute("tipoUsuario", usuario.getTipoUsuario());
-                session.setAttribute("isUsuarioLogueado", true);
                 session.setAttribute("isEditForm", false);
                 model.put("correcto", "Usuario o clave correcta");
                 if(usuario.getTipoUsuario().equals(TipoUsuario.Conductor)){
@@ -85,7 +82,6 @@ public class LoginControlador {
 
     @RequestMapping(path = "/cerrar-sesion")
     public ModelAndView cerrarSesion(HttpSession session) throws UsuarioNoEncontradoException {
-        session.setAttribute("isUsuarioLogueado",false);
         session.invalidate();
         return mostrarHome(session);
     }
