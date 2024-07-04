@@ -33,8 +33,13 @@ public class ClienteControlador {
     @RequestMapping("/homeCliente")
     public ModelAndView mostrarHomeCliente(HttpSession session) {
         ModelMap model = new ModelMap();
+        Cliente cliente;
         try{
-            Cliente cliente = clienteServicio.obtenerClientePorId((Integer) session.getAttribute("IDUSUARIO"));
+             cliente = clienteServicio.obtenerClientePorId((Integer) session.getAttribute("IDUSUARIO"));
+        }catch (UsuarioNoEncontradoException e){
+            model.put("mensajeError", e.getMessage() + " Por favor, vuelva a intentarlo.");
+            return new ModelAndView("redirect:/*", model);
+        }
             List<Viaje> viajesCancelados = this.viajeServicio.obtenerViajesCanceladosDelCliente(cliente.getId());
 
             if(!viajesCancelados.isEmpty()) {
@@ -46,10 +51,7 @@ public class ClienteControlador {
             String viewName = "homeCliente";
             this.reiniciarVariables(session);
             return new ModelAndView(viewName, model);
-        }catch (UsuarioNoEncontradoException e){
-            model.put("mensajeError", e.getMessage() + " Por favor, vuelva a intentarlo.");
-            return new ModelAndView("redirect:/*", model);
-        }
+
     }
 
     public void reiniciarVariables(HttpSession session){

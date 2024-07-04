@@ -38,8 +38,13 @@ public class VehiculoControlador {
             model.put("vehiculo",nuevoVehiculo);
             model.put("mensajeError",mensajeError);
         }
+        Conductor buscado;
         try {
-            Conductor buscado = conductorServicio.obtenerConductorPorId((Integer) session.getAttribute("IDUSUARIO"));
+            buscado = conductorServicio.obtenerConductorPorId((Integer) session.getAttribute("IDUSUARIO"));
+        }catch (UsuarioNoEncontradoException e){
+            model.put("mensajeError", e.getMessage() + " Por favor, vuelva a intentarlo.");
+            return new ModelAndView("redirect:/*", model);
+        }
             if (buscado.getVehiculo() == null) {
                 model.put("noVehiculo", true);
             } else {
@@ -53,10 +58,6 @@ public class VehiculoControlador {
                 model.put("vehiculo", new Vehiculo());
             }
             return new ModelAndView(viewName, model);
-        }catch (UsuarioNoEncontradoException e){
-            model.put("mensajeError", e.getMessage() + " Por favor, vuelva a intentarlo.");
-            return new ModelAndView("redirect:/*", model);
-        }
     }
 
     @PostMapping("/registrar-vehiculo")
@@ -72,17 +73,18 @@ public class VehiculoControlador {
 
     @PostMapping("/editar-vehiculo")
     public ModelAndView editarVehiculo(@ModelAttribute("vehiculo") Vehiculo nuevoVehiculo, HttpSession session) throws UsuarioNoEncontradoException {
+        Conductor conductor;
         try{
-            Conductor conductor =conductorServicio.obtenerConductorPorId((Integer)session.getAttribute("IDUSUARIO"));
-            nuevoVehiculo.setId(conductor.getVehiculo().getId());
-            vehiculoServicio.actualizarVehiculo(nuevoVehiculo);
-            session.setAttribute("isEditForm", false);
-            return new ModelAndView("redirect:/perfil");
+            conductor =conductorServicio.obtenerConductorPorId((Integer)session.getAttribute("IDUSUARIO"));
         }catch(UsuarioNoEncontradoException e){
             ModelMap model = new ModelMap();
             model.put("mensajeError", e.getMessage() + " Por favor, vuelva a intentarlo.");
             return new ModelAndView("redirect:/*", model);
         }
+            nuevoVehiculo.setId(conductor.getVehiculo().getId());
+            vehiculoServicio.actualizarVehiculo(nuevoVehiculo);
+            session.setAttribute("isEditForm", false);
+            return new ModelAndView("redirect:/perfil");
     }
 
     @RequestMapping(value = "/form-vehiculo-editar", method = RequestMethod.GET)
