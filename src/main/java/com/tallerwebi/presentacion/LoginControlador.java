@@ -1,9 +1,7 @@
 package com.tallerwebi.presentacion;
 
-import com.tallerwebi.dominio.cliente.ClienteServicio;
 import com.tallerwebi.dominio.enums.TipoUsuario;
 import com.tallerwebi.dominio.exceptions.UsuarioNoEncontradoException;
-import com.tallerwebi.dominio.conductor.ConductorServicio;
 import com.tallerwebi.dominio.usuario.Usuario;
 import com.tallerwebi.presentacion.Datos.DatosLogin;
 import com.tallerwebi.dominio.login.LoginServicio;
@@ -12,7 +10,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 @Controller
