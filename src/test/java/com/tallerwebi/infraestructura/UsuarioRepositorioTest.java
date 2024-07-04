@@ -128,6 +128,29 @@ public class UsuarioRepositorioTest {
         assertEquals("testuser", usuarioObtenido.getNombreUsuario());
 
     }
+
+    @Test
+    @Transactional
+    @Rollback
+    public void queSePuedaEliminarLaCuentaDeUnUsuarioExistente() {
+
+        Cliente clienteExistente = new Cliente();
+
+        clienteExistente.setEmail("Cami@lalala.com");
+
+        clienteExistente.setNombreUsuario("Cami");
+
+        clienteExistente.setTipoUsuario(TipoUsuario.Cliente);
+
+        Usuario usuarioExistente = usuarioRepositorio.guardarUsuario(clienteExistente);
+
+        this.usuarioRepositorio.eliminarCuentaDeUsuario(usuarioExistente);
+
+        assertNull(sessionFactory.getCurrentSession().get(Usuario.class, usuarioExistente.getId()));
+
+    }
+
+
 /*
     @Test
     @Transactional

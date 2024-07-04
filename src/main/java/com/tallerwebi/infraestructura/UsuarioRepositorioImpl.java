@@ -54,4 +54,14 @@ public class UsuarioRepositorioImpl implements UsuarioRepositorio {
         return (Usuario) query.getSingleResult();
     }
 
+    @Override
+    @Transactional
+    public void eliminarCuentaDeUsuario(Usuario usuario) {
+
+        Session session = this.sessionFactory.getCurrentSession();
+
+        session.delete(usuario);
+
+    }
+
 }

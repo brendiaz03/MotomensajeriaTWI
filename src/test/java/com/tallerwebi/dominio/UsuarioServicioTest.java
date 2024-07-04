@@ -20,6 +20,7 @@ import javax.persistence.NoResultException;
 import java.io.IOException;
 import java.util.Base64;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -194,11 +195,13 @@ public class UsuarioServicioTest {
     }
 
     @Test
-    public void queSeLanceExcepcionSiNoSeEncuentraElUsuarioPorId() {
+    public void queSeLanceExcepcionSiNoSeEncuentraElUsuarioPorId() throws UsuarioNoEncontradoException {
+
         when(usuarioRepositorio.getUsuarioById(1)).thenThrow(new NoResultException());
 
         assertThrows(UsuarioNoEncontradoException.class, () -> usuarioServicio.obtenerUsuarioPorId(1));
     }
+
 
     //INGRESAR IMAGEN
 
@@ -217,7 +220,7 @@ public class UsuarioServicioTest {
     }
 
     @Test
-    public void queSeLanceExcepcionSiNoSeEncuentraElUsuarioAlIngresarImagen() {
+    public void queSeLanceExcepcionSiNoSeEncuentraElUsuarioAlIngresarImagen() throws UsuarioNoEncontradoException{
         MultipartFile imagenMock = mock(MultipartFile.class);
         when(usuarioRepositorio.getUsuarioById(1)).thenThrow(new NoResultException());
 
@@ -233,6 +236,28 @@ public class UsuarioServicioTest {
         when(usuarioRepositorio.getUsuarioById(1)).thenReturn(usuarioExistente);
 
         assertThrows(RuntimeException.class, () -> usuarioServicio.ingresarImagen(imagenMock, 1));
+    }
+
+    @Test
+    public void queSeBorreLaCuentaDeUnUsuarioExistenteCorrectamente() throws UsuarioNoEncontradoException {
+
+        Usuario usuario = mock(Usuario.class);
+
+        when(usuarioRepositorio.getUsuarioById(1)).thenReturn(usuario);
+
+        usuarioServicio.borrarCuenta(1);
+
+        verify(usuarioRepositorio, times(1)).eliminarCuentaDeUsuario(usuario);
+
+    }
+
+    @Test
+    public void queSeLanceExcepcionSiNoSeEncuentraElUsuarioAlBorrarCuenta() throws UsuarioNoEncontradoException{
+
+        when(usuarioRepositorio.getUsuarioById(1)).thenThrow(new NoResultException());
+
+        assertThrows(UsuarioNoEncontradoException.class, () -> usuarioServicio.borrarCuenta(1));
+
     }
 
 }
