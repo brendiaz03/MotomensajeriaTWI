@@ -1,7 +1,7 @@
 package com.tallerwebi.infraestructura;
 
+import com.tallerwebi.dominio.exceptions.PaqueteNoEncontradoException;
 import com.tallerwebi.dominio.paquete.Paquete;
-import com.tallerwebi.dominio.paquete.PaqueteNoEncontradoException;
 import com.tallerwebi.dominio.paquete.PaqueteRepositorio;
 import com.tallerwebi.infraestructura.config.HibernateInfraestructuraTestConfig;
 import org.hibernate.SessionFactory;
@@ -36,38 +36,32 @@ public class PaqueteRepositorioTest {
     @Test
     @Transactional
     @Rollback
-    public void queSeCreeUnNuevoPaqueteYSeGuardeExitosamenteEnLaBaseDeDatos() throws PaqueteNoEncontradoException {
+    public void queSeCreeUnNuevoPaqueteYSeGuardeExitosamenteEnLaBaseDeDatos() {
+
         Paquete paquete = new Paquete(10.0, 5.0, true, "Descripción", "Facu");
 
-        Paquete guardado=paqueteRepositorio.guardarPaquete(paquete);
+        Paquete guardado = paqueteRepositorio.guardarPaquete(paquete);
 
         assertThat(guardado.getDescripcion(), equalTo(paquete.getDescripcion()));
         assertNotNull(guardado);
+
     }
 
 
     @Test
     @Transactional
     @Rollback
-    public void queSeCreeUnNuevoPaqueteYAlBuscarloEnLaBaseDeDatosSeObtengaElMismoDeManeraExitosa() throws PaqueteNoEncontradoException {
+    public void queSeCreeUnNuevoPaqueteYAlBuscarloEnLaBaseDeDatosSeObtengaElMismoDeManeraExitosa() {
+
         Paquete paquete = new Paquete(10.0, 5.0, true, "Descripción", "Facu");
+
         this.sessionFactory.getCurrentSession().save(paquete);
 
-        Paquete paqueteObtenido=this.paqueteRepositorio.obtenerPaquetePorId(paquete.getId());
+        Paquete paqueteObtenido = this.paqueteRepositorio.obtenerPaquetePorId(paquete.getId());
 
         assertThat(paqueteObtenido.getDescripcion(), equalTo(paquete.getDescripcion()));
         assertNotNull(paqueteObtenido);
+
     }
 
-
-    @Test
-    @Transactional
-    @Rollback
-    public void queSeBusqueUnPaqueteNoExistenteEnLaBBaseDeDatosYEnConsecuenciaSeLanceLaExcepcionDePaqueteNoEncontradoException() {
-        Integer paqueteID = 999;
-
-        assertThrows(PaqueteNoEncontradoException.class, () -> {
-            paqueteRepositorio.obtenerPaquetePorId(paqueteID);
-        });
-    }
 }

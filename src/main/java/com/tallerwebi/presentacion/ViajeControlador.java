@@ -2,18 +2,15 @@ package com.tallerwebi.presentacion;
 
 import com.tallerwebi.dominio.cliente.Cliente;
 import com.tallerwebi.dominio.cliente.ClienteServicio;
+import com.tallerwebi.dominio.exceptions.NoSePudoGuardarElPaqueteException;
+import com.tallerwebi.dominio.exceptions.PaqueteNoEncontradoException;
 import com.tallerwebi.dominio.exceptions.UsuarioNoEncontradoException;
 import com.tallerwebi.dominio.mercadoPago.MercadoPagoServicio;
-import com.tallerwebi.dominio.mercadoPago.MercadoPagoServicioImpl;
 import com.tallerwebi.dominio.paquete.Paquete;
-import com.tallerwebi.dominio.conductor.ConductorServicio;
-import com.tallerwebi.dominio.paquete.PaqueteNoEncontradoException;
 import com.tallerwebi.dominio.paquete.PaqueteServicio;
 import com.tallerwebi.dominio.viaje.Viaje;
 import com.tallerwebi.dominio.viaje.ViajeServicio;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +18,6 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
 
 @Controller
 public class ViajeControlador {
@@ -98,18 +94,30 @@ public class ViajeControlador {
     }
 
     @RequestMapping(value = "/crear-envio")
-    public String crearViajeConPaqueteYCliente(HttpSession session) throws PaqueteNoEncontradoException, UsuarioNoEncontradoException {
+    public ModelAndView crearViajeConPaqueteYCliente(HttpSession session) throws UsuarioNoEncontradoException, NoSePudoGuardarElPaqueteException {
         // Obtiene el cliente y el paquete actual desde la sesión
         Integer idUsuario = (Integer) session.getAttribute("IDUSUARIO");
         Cliente cliente = this.clienteServicio.obtenerClientePorId(idUsuario);
         Paquete paqueteActual = (Paquete) session.getAttribute("paqueteActual");
         Viaje viajeActual = (Viaje) session.getAttribute("viajeActual");
 
-        this.paqueteServicio.guardarPaquete(paqueteActual);
-        this.viajeServicio.crearViaje(cliente, viajeActual, paqueteActual);
+        try {
 
-        // Redirección con el precio del viaje
-        return "redirect:/pagar?precio=" + viajeActual.getPrecio();
+            this.paqueteServicio.guardarPaquete(paqueteActual);
+
+            this.viajeServicio.crearViaje(cliente, viajeActual, paqueteActual);
+
+            // Redirección con el precio del viaje
+            return new ModelAndView("redirect:/pagar?precio=" + viajeActual.getPrecio());
+
+        } catch (NoSePudoGuardarElPaqueteException e) {
+
+            String error = "Error: " + e.getMessage();
+
+            return new ModelAndView(error);
+
+        }
+
     }
 
     @RequestMapping(value = "/pagar")

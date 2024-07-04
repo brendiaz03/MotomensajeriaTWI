@@ -20,6 +20,7 @@ import javax.persistence.NoResultException;
 import java.io.IOException;
 import java.util.Base64;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -40,17 +41,22 @@ public class UsuarioServicioTest {
     //REGISTRAR USUARIO
 
     @Test
-    public void queSeBusqueDuplicadosYAlNoEncontrarloSeRegistreCorrectamenteUnUsuarioDeTipoConductor() throws UsuarioDuplicadoException {
+    public void queSeBusqueUsuarioDuplicadoYAlNoEncontrarloSeRegistreCorrectamenteUnUsuarioDeTipoConductor() throws UsuarioDuplicadoException {
+
         DatosUsuario nuevoUsuario = mock(DatosUsuario.class);
+
         when(nuevoUsuario.getEmail()).thenReturn("facu@gmail.com");
         when(nuevoUsuario.getNombreUsuario()).thenReturn("facu");
         when(nuevoUsuario.getTipoUsuario()).thenReturn(TipoUsuario.Conductor);
 
-        // Simulamos que no se encuentra ningún duplicado
-        when(usuarioRepositorio.buscarDuplicados("facu@gmail.com", "facu")).thenReturn(null);
+        // Simulamos que buscarDuplicados lanza una excepción NoResultException
+        when(usuarioRepositorio.buscarDuplicados("facu@gmail.com", "facu")).thenThrow(new NoResultException());
 
         // Mock para el usuario que se va a guardar
-        Conductor conductor = mock(Conductor.class);
+        Conductor conductor = new Conductor();
+        conductor.setEmail("facu@gmail.com");
+        conductor.setNombreUsuario("facu");
+
         when(nuevoUsuario.toConductor()).thenReturn(conductor);
         when(usuarioRepositorio.guardarUsuario(conductor)).thenReturn(conductor);
 
@@ -62,17 +68,50 @@ public class UsuarioServicioTest {
         verify(usuarioRepositorio, times(1)).guardarUsuario(conductor);
     }
 
-
     @Test
-    public void queSeBusqueDuplicadosYSeLanceExcepcionSiYaExisteElUsuario() {
-        DatosUsuario nuevoUsuario = mock(DatosUsuario.class);
-        when(nuevoUsuario.getEmail()).thenReturn("facu@gmail.com");
-        when(nuevoUsuario.getNombreUsuario()).thenReturn("facu");
+    public void queSeBusqueUsuarioDuplicadoYQueAlEncontrarloSeLanceLaExcepcionUsuarioDuplicadoException () throws UsuarioDuplicadoException {
+
+        DatosUsuario usuario = mock(DatosUsuario.class);
+
+        when(usuario.getEmail()).thenReturn("cami123@outlook.com");
+
+        when(usuario.getNombreUsuario()).thenReturn("Camila");
 
         Usuario usuarioDuplicado = mock(Usuario.class);
-        when(usuarioRepositorio.buscarDuplicados("facu@gmail.com", "facu")).thenReturn(usuarioDuplicado);
 
-        assertThrows(UsuarioDuplicadoException.class, () -> usuarioServicio.registrarUsuario(nuevoUsuario));
+        when(this.usuarioRepositorio.buscarDuplicados("cami123@outlook.com", "Camila")).thenReturn(usuarioDuplicado);
+
+        assertThrows(UsuarioDuplicadoException.class, () -> {
+            usuarioServicio.registrarUsuario(usuario);
+        });
+
+    }
+
+    @Test
+    public void queSeBusqueDuplicadosYAlNoEncontrarloSeRegistreCorrectamenteUnUsuarioDeTipoCliente() throws UsuarioDuplicadoException {
+
+        DatosUsuario usuario = mock(DatosUsuario.class);
+
+        when(usuario.getEmail()).thenReturn("cami123@outlook.com");
+
+        when(usuario.getNombreUsuario()).thenReturn("Camila");
+
+        when(usuario.getTipoUsuario()).thenReturn(TipoUsuario.Cliente);
+
+        when(this.usuarioRepositorio.buscarDuplicados("cami123@outlook.com", "Camila")).thenThrow(new NoResultException());
+
+        Cliente cliente = new Cliente();
+        cliente.setEmail("cami123@outlook.com");
+        cliente.setNombreUsuario("Camila");
+
+        when(usuario.toCliente()).thenReturn(cliente);
+        when(usuarioRepositorio.guardarUsuario(cliente)).thenReturn(cliente);
+
+        Usuario usuarioRegistrado = usuarioServicio.registrarUsuario(usuario);
+
+        assertNotNull(usuarioRegistrado);
+        assertEquals(cliente, usuarioRegistrado);
+        verify(usuarioRepositorio, times(1)).guardarUsuario(cliente);
     }
 
     //ACTUALIZAR USUARIO
@@ -138,11 +177,13 @@ public class UsuarioServicioTest {
     }
 
     @Test
-    public void queSeLanceExcepcionSiNoSeEncuentraElUsuarioPorId() {
+    public void queSeLanceExcepcionSiNoSeEncuentraElUsuarioPorId() throws UsuarioNoEncontradoException {
+
         when(usuarioRepositorio.getUsuarioById(1)).thenThrow(new NoResultException());
 
         assertThrows(UsuarioNoEncontradoException.class, () -> usuarioServicio.obtenerUsuarioPorId(1));
     }
+
 
     //INGRESAR IMAGEN
 
@@ -161,7 +202,7 @@ public class UsuarioServicioTest {
     }
 
     @Test
-    public void queSeLanceExcepcionSiNoSeEncuentraElUsuarioAlIngresarImagen() {
+    public void queSeLanceExcepcionSiNoSeEncuentraElUsuarioAlIngresarImagen() throws UsuarioNoEncontradoException{
         MultipartFile imagenMock = mock(MultipartFile.class);
         when(usuarioRepositorio.getUsuarioById(1)).thenThrow(new NoResultException());
 
@@ -177,6 +218,28 @@ public class UsuarioServicioTest {
         when(usuarioRepositorio.getUsuarioById(1)).thenReturn(usuarioExistente);
 
         assertThrows(RuntimeException.class, () -> usuarioServicio.ingresarImagen(imagenMock, 1));
+    }
+
+    @Test
+    public void queSeBorreLaCuentaDeUnUsuarioExistenteCorrectamente() throws UsuarioNoEncontradoException {
+
+        Usuario usuario = mock(Usuario.class);
+
+        when(usuarioRepositorio.getUsuarioById(1)).thenReturn(usuario);
+
+        usuarioServicio.borrarCuenta(1);
+
+        verify(usuarioRepositorio, times(1)).eliminarCuentaDeUsuario(usuario);
+
+    }
+
+    @Test
+    public void queSeLanceExcepcionSiNoSeEncuentraElUsuarioAlBorrarCuenta() throws UsuarioNoEncontradoException{
+
+        when(usuarioRepositorio.getUsuarioById(1)).thenThrow(new NoResultException());
+
+        assertThrows(UsuarioNoEncontradoException.class, () -> usuarioServicio.borrarCuenta(1));
+
     }
 
 }

@@ -1,7 +1,6 @@
 package com.tallerwebi.dominio.usuario;
 
-import com.tallerwebi.dominio.cliente.Cliente;
-import com.tallerwebi.dominio.conductor.Conductor;
+import org.springframework.transaction.annotation.Transactional;
 
 public interface UsuarioRepositorio {
     Usuario buscarDuplicados(String email, String nombreUsuario);
@@ -11,4 +10,7 @@ public interface UsuarioRepositorio {
     void editarUsuario(Usuario usuario);
 
     Usuario getUsuarioById(Integer id);
+
+    @Transactional
+    void eliminarCuentaDeUsuario(Usuario usuario);
 }
