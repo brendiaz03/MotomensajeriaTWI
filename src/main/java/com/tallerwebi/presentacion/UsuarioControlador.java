@@ -33,9 +33,13 @@ public class UsuarioControlador {
 
     @RequestMapping(value = "/nuevo-usuario", method = RequestMethod.GET)
     public ModelAndView mostrarForm(DatosUsuario actual,String mensajeError, HttpSession session) {
+
         String viewName= "form-usuario";
+
         ModelMap model = new ModelMap();
+
         model.put("isEditForm", false);
+
         if(mensajeError==null||mensajeError.isEmpty()){
             model.put("usuario", new DatosUsuario());
             model.put("mensajeError",null);

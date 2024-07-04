@@ -211,14 +211,16 @@ public class ConductorControlador {
     public ModelAndView despenalizarConductor(@RequestParam("montoPenalizacion") Double montoPenalizacion,
                                               RedirectAttributes redirectAttributes, HttpSession session) {
 
-        if (montoPenalizacion == null || montoPenalizacion < 0) {
+        if (montoPenalizacion == null || montoPenalizacion < 5000) {
             redirectAttributes.addFlashAttribute("error", "Monto de penalización inválido.");
             return new ModelAndView("redirect:/homeConductor");
         }
 
         try {
             String redirectUrl = mercadoPagoServicio.pagarPenalizacionMp(montoPenalizacion);
+
             return new ModelAndView("redirect:" + redirectUrl);
+
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Error al procesar el pago: " + e.getMessage());
             return new ModelAndView("redirect:/homeConductor");

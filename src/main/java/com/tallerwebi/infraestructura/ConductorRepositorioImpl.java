@@ -35,5 +35,4 @@ public class ConductorRepositorioImpl implements ConductorRepositorio {
             sessionFactory.getCurrentSession().saveOrUpdate(conductor);
     }
 
-
 }

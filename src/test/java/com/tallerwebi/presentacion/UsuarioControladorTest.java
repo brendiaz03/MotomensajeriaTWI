@@ -1,17 +1,15 @@
 package com.tallerwebi.presentacion;
 import com.tallerwebi.dominio.cliente.Cliente;
-import com.tallerwebi.dominio.cliente.ClienteServicio;
 import com.tallerwebi.dominio.conductor.Conductor;
-import com.tallerwebi.dominio.conductor.ConductorServicio;
+import com.tallerwebi.dominio.vehiculo.Vehiculo;
 import com.tallerwebi.dominio.enums.TipoUsuario;
+import com.tallerwebi.dominio.exceptions.UsuarioDuplicadoException;
 import com.tallerwebi.dominio.exceptions.UsuarioNoEncontradoException;
 import com.tallerwebi.dominio.usuario.Usuario;
 import com.tallerwebi.dominio.usuario.UsuarioServicio;
 import com.tallerwebi.presentacion.Datos.DatosUsuario;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -90,34 +88,102 @@ public class UsuarioControladorTest {
         assertTrue(usuarioServicio.registrarUsuario(nuevo) instanceof Cliente);
     }
 
+    @Test
+    public void queAlRegistrarUsuarioDuplicadoSeMuestreElFormularioConMensajeDeError() throws Exception {
+
+        String mensajeError = "Usuario o Email ya existentes";
+
+        DatosUsuario nuevo = mock(DatosUsuario.class);
+
+        when(usuarioServicio.registrarUsuario(nuevo)).thenThrow(new UsuarioDuplicadoException(mensajeError));
+
+        ModelAndView mav = usuarioControlador.registrarConductor(nuevo, session);
+
+        assertThat(mav.getViewName(), equalToIgnoringCase("form-usuario"));
+        assertThat(mav.getModel().get("usuario"), equalTo(nuevo));
+        assertThat(mav.getModel().get("mensajeError"), equalTo(mensajeError));
+
+    }
 
 //MOSTRAR-PERFIL
-    @Test
-    public void queAlSolicitarRedirigirseAlPerfilSeMuestreElPerfilDelUsuario() throws Exception {
-        String viewName="perfil";
-        Usuario usuario= mock(Usuario.class);
-
-        when(this.usuarioServicio.obtenerUsuarioPorId((Integer)this.session.getAttribute("IDUSUARIO"))).thenReturn(usuario);
-        ModelAndView mav = usuarioControlador.irAPerfil(session);
-
-        assertThat(mav.getViewName(), equalToIgnoringCase(viewName));
-        assertThat(mav.getModel().get("usuario"), instanceOf(Usuario.class));
-        assertThat(mav.getModel().containsKey("mensajeError"), equalTo(false));
-    }
 
     @Test
     public void queAlSolicitarRedirigirseAlPerfilYNoSeEncuentreUsuarioSeMuestreUnMensajeDeError() throws UsuarioNoEncontradoException {
-        String viewName="perfil";
-        Usuario usuario= mock(Usuario.class);
 
-        when(this.usuarioServicio.obtenerUsuarioPorId((Integer)this.session.getAttribute("IDUSUARIO"))).thenThrow(UsuarioNoEncontradoException.class);
+        String expectedRedirect = "redirect:/*";
+        Integer idUsuario = 1;
+
+        when(this.session.getAttribute("IDUSUARIO")).thenReturn(idUsuario);
+
+        when(this.usuarioServicio.obtenerUsuarioPorId(idUsuario)).thenThrow(new UsuarioNoEncontradoException("No se encontro al usuario."));
+
+        ModelAndView mav = usuarioControlador.irAPerfil(session);
+
+        assertThat(mav.getViewName(), equalToIgnoringCase(expectedRedirect));
+        assertThat(mav.getModel().containsKey("mensajeError"), equalTo(true));
+        assertThat(mav.getModel().get("mensajeError"), equalTo("No se encontro al usuario. Por favor, vuelva a intentarlo."));
+
+    }
+
+    @Test
+    public void queAlSolicitarRedirigirseAlPerfilYNoSeEncuentreElUsuarioSeMuestreUnMensajeDeError() throws UsuarioNoEncontradoException {
+
+        String expectedRedirectViewName = "redirect:/*";
+        String expectedErrorMessage = "No se encontro al usuario.";
+
+        when(this.session.getAttribute("IDUSUARIO")).thenReturn(1);
+
+        when(this.usuarioServicio.obtenerUsuarioPorId(1)).thenThrow(new UsuarioNoEncontradoException(expectedErrorMessage));
+
+        ModelAndView mav = usuarioControlador.irAPerfil(session);
+
+        assertThat(mav.getViewName(), equalToIgnoringCase(expectedRedirectViewName));
+        assertThat(mav.getModel().containsKey("mensajeError"), equalTo(true));
+        assertThat(mav.getModel().get("mensajeError"), equalTo(expectedErrorMessage + " Por favor, vuelva a intentarlo."));
+        assertThat(mav.getModel().containsKey("usuario"), equalTo(false));
+    }
+
+    @Test
+    public void queAlSolicitarRedirigirseAlPerfilYElUsuarioSeaConductorConVehiculoSeMuestreElPerfilConNoVehiculoEnFalse() throws Exception {
+
+        String viewName = "perfil";
+
+        Conductor conductor = mock(Conductor.class);
+
+        when(conductor.getTipoUsuario()).thenReturn(TipoUsuario.Conductor);
+        when(conductor.getVehiculo()).thenReturn(mock(Vehiculo.class));
+
+        when(this.usuarioServicio.obtenerUsuarioPorId((Integer) this.session.getAttribute("IDUSUARIO"))).thenReturn(conductor);
+
         ModelAndView mav = usuarioControlador.irAPerfil(session);
 
         assertThat(mav.getViewName(), equalToIgnoringCase(viewName));
-        assertThat(mav.getModel().containsKey("mensajeError"), equalTo(true));
-        assertThat(mav.getModel().containsKey("usuario"), equalTo(false));
+        assertThat(mav.getModel().get("usuario"), instanceOf(Conductor.class));
+        assertThat(mav.getModel().get("noVehiculo"), equalTo(false));
+
     }
-//MOSTRAR-EDITAR-FOTO-PERFIL
+
+    @Test
+    public void queAlSolicitarRedirigirseAlPerfilYElUsuarioSeaConductorSinVehiculoSeMuestreElPerfilConNoVehiculoEnTrue() throws Exception {
+
+        String viewName = "perfil";
+
+        Conductor conductor = mock(Conductor.class);
+
+        when(conductor.getTipoUsuario()).thenReturn(TipoUsuario.Conductor);
+        when(conductor.getVehiculo()).thenReturn(null);
+
+        when(this.usuarioServicio.obtenerUsuarioPorId((Integer) this.session.getAttribute("IDUSUARIO"))).thenReturn(conductor);
+
+        ModelAndView mav = usuarioControlador.irAPerfil(session);
+
+        assertThat(mav.getViewName(), equalToIgnoringCase(viewName));
+        assertThat(mav.getModel().get("usuario"), instanceOf(Conductor.class));
+        assertThat(mav.getModel().get("noVehiculo"), equalTo(true));
+
+    }
+
+    //MOSTRAR-EDITAR-FOTO-PERFIL
     @Test
     public void queAlSolicitarRedirigirseALaEdicionDeFotoDePerfilSeRendericeLaVistaDeEdicionDeFotoDePerfilDelUsuario() throws UsuarioNoEncontradoException {
         String viewName="foto-perfil";
@@ -135,19 +201,24 @@ public class UsuarioControladorTest {
 
     @Test
     public void queAlSolicitarRedirigirseALaEdicionDeFotoDePerfilYNoSeEncuentreUnUsuarioExistenteMuestreUnMensajeDeError() throws UsuarioNoEncontradoException {
-        String viewName="foto-perfil";
-        Usuario usuario= mock(Usuario.class);
 
-        when(this.usuarioServicio.obtenerUsuarioPorId((Integer) this.session.getAttribute("IDUSUARIO"))).thenThrow(new UsuarioNoEncontradoException("No se encontro al usuario."));
+        String expectedErrorMessage = "No se encontro al usuario.";
+        String expectedRedirectViewName = "redirect:/*";
+
+        when(session.getAttribute("IDUSUARIO")).thenReturn(1);
+
+        when(usuarioServicio.obtenerUsuarioPorId(1)).thenThrow(new UsuarioNoEncontradoException(expectedErrorMessage));
+
         ModelAndView mav = usuarioControlador.irAEditarFotoPerfil(session);
 
-        assertThat(mav.getViewName(), equalToIgnoringCase(viewName));
-        assertThat(mav.getModel().containsKey("usuario"), equalTo(false));
+        assertThat(mav.getViewName(), equalToIgnoringCase(expectedRedirectViewName));
         assertThat(mav.getModel().containsKey("mensajeError"), equalTo(true));
-        assertThat(mav.getModel().get("mensajeError"), equalTo("No se encontro al usuario."));
+        assertThat(mav.getModel().get("mensajeError"), equalTo(expectedErrorMessage + " Por favor, vuelva a intentarlo."));
+        assertThat(mav.getModel().containsKey("usuario"), equalTo(false));
     }
 
-//MOSTRAR-FORM-EDICION-USUARIO
+
+    //MOSTRAR-FORM-EDICION-USUARIO
     @Test
     public void queAlSolicitarEditarUsuarioSeMuestreElFormularioDeEdicion() throws UsuarioNoEncontradoException {
         String viewName="form-usuario";
@@ -165,20 +236,43 @@ public class UsuarioControladorTest {
     }
 
     @Test
-    public void queAlSolicitarEditarUsuarioNoSeEncuentreElMismoYMUestreUnMensajeDeError() throws UsuarioNoEncontradoException {
-        String viewName="form-usuario";
-        Usuario usuario= mock(Usuario.class);
+    public void queSeLanceUsuarioNoEncontradoExcepcionAlSolicitarEditarUsuario() throws UsuarioNoEncontradoException {
 
-        when(this.usuarioServicio.obtenerUsuarioPorId((Integer)this.session.getAttribute("IDUSUARIO"))).thenThrow(UsuarioNoEncontradoException.class);
+        Integer idUsuario = 1;
+
+        String expectedErrorMessage = "No se encontro al usuario.";
+
+        when(session.getAttribute("IDUSUARIO")).thenReturn(idUsuario);
+
+        when(usuarioServicio.obtenerUsuarioPorId(idUsuario)).thenThrow(new UsuarioNoEncontradoException(expectedErrorMessage));
 
         ModelAndView mav = usuarioControlador.mostrarEditarFormulario(session);
 
-        assertThat(mav.getViewName(), equalToIgnoringCase(viewName));
+        assertThat(mav.getViewName(), equalToIgnoringCase("redirect:/*"));
         assertThat(mav.getModel().containsKey("mensajeError"), equalTo(true));
+        assertThat(mav.getModel().get("mensajeError"), equalTo(expectedErrorMessage + " Por favor, vuelva a intentarlo."));
         assertThat(mav.getModel().containsKey("usuario"), equalTo(false));
     }
 
-//EDITAR USUARIO
+    @Test
+    public void queSeMuestreMensajeDeNoVehiculoCuandoElConductorNoTieneUnVehiculoGuardado() throws UsuarioNoEncontradoException {
+
+        String viewName = "perfil";
+
+        Conductor conductor = mock(Conductor.class);
+
+        when(conductor.getVehiculo()).thenReturn(null); // Conductor sin vehículo
+        when(conductor.getTipoUsuario()).thenReturn(TipoUsuario.Conductor);
+
+        when(this.usuarioServicio.obtenerUsuarioPorId((Integer)this.session.getAttribute("IDUSUARIO"))).thenReturn(conductor);
+
+        ModelAndView mav = usuarioControlador.irAPerfil(session);
+
+        assertThat(mav.getViewName(), equalToIgnoringCase(viewName));
+        assertThat((boolean) mav.getModel().get("noVehiculo"), equalTo(true));
+    }
+
+    //EDITAR USUARIO
     @Test
     public void queAlSolicitarEditarUsuarioSeEdite() throws Exception {
         String redireccionPerfil = "redirect:/perfil";
@@ -198,8 +292,7 @@ public class UsuarioControladorTest {
         verify(usuarioServicio, times(1)).actualizarUsuario(usuarioEditado, tipoUsuario);
     }
 
-
-//SUBIR-FOTO
+    //SUBIR-FOTO
     @Test
     public void queAlSubirUnaImagenDePerfilSeLeActualiceLaMismaAlUsuarioActual() throws UsuarioNoEncontradoException {
         String viewName="redirect:/perfil";
@@ -212,6 +305,34 @@ public class UsuarioControladorTest {
         assertThat(mav.getViewName(), equalToIgnoringCase(viewName));
     }
 
+    //BORRAR CUENTA
 
-  }
+    @Test
+    public void queAlSolicitarBorrarCuentaDeUnUsuarioLaCuentaSeBorreCorrectamente() throws UsuarioNoEncontradoException {
+
+        Integer idUsuario = 1;
+
+        when(session.getAttribute("IDUSUARIO")).thenReturn(idUsuario);
+
+        ModelAndView mav = usuarioControlador.borrarCuenta(session);
+
+        assertThat(mav.getViewName(), equalToIgnoringCase("redirect:/cerrar-sesion"));
+        verify(usuarioServicio, times(1)).borrarCuenta(idUsuario);
+    }
+
+    @Test
+    public void queAlSolicitarBorrarCuentaDeUnUsuarioYNoEncontrarUnUsuarioSeMuestreMensajeDeError() throws UsuarioNoEncontradoException {
+        Integer idUsuario = 1;
+
+        when(session.getAttribute("IDUSUARIO")).thenReturn(idUsuario);
+        doThrow(new UsuarioNoEncontradoException("No se encontro al usuario.")).when(usuarioServicio).borrarCuenta(idUsuario);
+
+        ModelAndView mav = usuarioControlador.borrarCuenta(session);
+
+        assertThat(mav.getViewName(), equalToIgnoringCase("redirect:/*"));
+        assertThat(mav.getModel().containsKey("mensajeError"), equalTo(true));
+        assertThat(mav.getModel().get("mensajeError"), equalTo("No se encontro al usuario. Por favor, vuelva a intentarlo."));
+    }
+
+}
 
