@@ -38,32 +38,25 @@ public class VehiculoControlador {
             model.put("vehiculo",nuevoVehiculo);
             model.put("mensajeError",mensajeError);
         }
-
-        Conductor buscado =conductorServicio.obtenerConductorPorId((Integer)session.getAttribute("IDUSUARIO"));
-        Boolean estaLogueado=(Boolean)session.getAttribute("isUsuarioLogueado");
-        if((estaLogueado!=null && estaLogueado) && buscado.getVehiculo()==null){
-            System.out.println("EL USUARIO ESTA LOGUEADO");
-
-            model.put("estaLogueado",estaLogueado);
-            model.put("noVehiculo", true);
-        }else if(estaLogueado==null || !estaLogueado){
-            System.out.println("EL USUARIO NOOOOO ESTA LOGUEADO");
-
-            model.put("noVehiculo", true);
-        }else{
-            model.put("noVehiculo",false);
+        try {
+            Conductor buscado = conductorServicio.obtenerConductorPorId((Integer) session.getAttribute("IDUSUARIO"));
+            if (buscado.getVehiculo() == null) {
+                model.put("noVehiculo", true);
+            } else {
+                model.put("noVehiculo", false);
+            }
+            if ((Boolean) session.getAttribute("isEditForm")) {
+                model.put("isEditForm", true);
+                model.put("vehiculo", buscado.getVehiculo());
+            } else {
+                model.put("isEditForm", false);
+                model.put("vehiculo", new Vehiculo());
+            }
+            return new ModelAndView(viewName, model);
+        }catch (UsuarioNoEncontradoException e){
+            model.put("mensajeError", e.getMessage() + " Por favor, vuelva a intentarlo.");
+            return new ModelAndView("redirect:/*", model);
         }
-
-        if((Boolean)session.getAttribute("isEditForm")){
-            model.put("isEditForm", true);
-            Conductor conductor =conductorServicio.obtenerConductorPorId((Integer)session.getAttribute("IDUSUARIO"));
-            model.put("vehiculo", conductor.getVehiculo());
-        }else{
-            model.put("isEditForm", false);
-            model.put("vehiculo", new Vehiculo());
-        }
-
-        return new ModelAndView(viewName, model);
     }
 
     @PostMapping("/registrar-vehiculo")
@@ -71,14 +64,8 @@ public class VehiculoControlador {
         try{
             Vehiculo vehiculo = vehiculoServicio.registrarVehiculo(nuevoVehiculo);
             conductorServicio.RelacionarVehiculoAConductor((Integer)session.getAttribute("IDUSUARIO"), vehiculo);
-
-            Boolean estaLogueado=(Boolean)session.getAttribute("isUsuarioLogueado");
-            if((estaLogueado!=null && estaLogueado)){
-                return new ModelAndView("redirect:/perfil");
-            }else{
-                return new ModelAndView("redirect:/home");
-            }
-        }catch(UsuarioNoEncontradoException | VehiculoDuplicadoException e){
+            return new ModelAndView("redirect:/perfil");
+        }catch(VehiculoDuplicadoException | UsuarioNoEncontradoException e){
             return this.mostrarRegistroDelVehiculo(nuevoVehiculo,e.getMessage(),session);
         }
     }
@@ -92,7 +79,9 @@ public class VehiculoControlador {
             session.setAttribute("isEditForm", false);
             return new ModelAndView("redirect:/perfil");
         }catch(UsuarioNoEncontradoException e){
-            return this.mostrarRegistroDelVehiculo(nuevoVehiculo,e.getMessage(),session);
+            ModelMap model = new ModelMap();
+            model.put("mensajeError", e.getMessage() + " Por favor, vuelva a intentarlo.");
+            return new ModelAndView("redirect:/*", model);
         }
     }
 
@@ -101,7 +90,5 @@ public class VehiculoControlador {
         session.setAttribute("isEditForm", true);
         return "redirect:/form-vehiculo";
     }
-
-
 
 }

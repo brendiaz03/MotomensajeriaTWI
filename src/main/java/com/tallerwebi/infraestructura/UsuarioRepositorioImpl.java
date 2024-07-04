@@ -52,7 +52,6 @@ public class UsuarioRepositorioImpl implements UsuarioRepositorio {
     @Override
     @Transactional
     public Usuario getUsuarioById(Integer id) {
-
         String hql = "FROM Usuario WHERE id =:id";
         Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
         query.setParameter("id", id);
