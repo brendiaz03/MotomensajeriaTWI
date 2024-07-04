@@ -44,11 +44,12 @@ $(document).ready(function () {
     $("#despenalizar").click(function (event) {
         event.preventDefault(); // Evitar el comportamiento por defecto del formulario
         var montoPenalizacion = $("input[name='montoPenalizacion']").val(); // Obtener el valor del campo oculto
+
         if (montoPenalizacion) {
-            console.log("Valor de montoPenalizacion: " + montoPenalizacion); // Imprimir el valor para depuración
             generarPreferenciaPenalizacion(montoPenalizacion);
+
         } else {
-            console.log("montoPenalizacion no está definido.");
+            console.log("El monto de penalizacion del conductor no está definido.");
         }
     });
 });
@@ -84,4 +85,5 @@ function generarPreferenciaPenalizacion(montoPenalizacion) {
         console.log("Estado:", status);
         console.log("Respuesta del servidor:", xhr.responseText);
     });
+
 }

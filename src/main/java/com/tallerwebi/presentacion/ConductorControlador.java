@@ -219,6 +219,10 @@ public class ConductorControlador {
         try {
             String redirectUrl = mercadoPagoServicio.pagarPenalizacionMp(montoPenalizacion);
 
+            Conductor conductor = this.conductorServicio.obtenerConductorPorId((Integer)session.getAttribute("IDUSUARIO"));
+
+            this.conductorServicio.despenalizarConductor(conductor);
+
             return new ModelAndView("redirect:" + redirectUrl);
 
         } catch (Exception e) {
