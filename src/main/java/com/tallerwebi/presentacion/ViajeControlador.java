@@ -2,6 +2,8 @@ package com.tallerwebi.presentacion;
 
 import com.tallerwebi.dominio.cliente.Cliente;
 import com.tallerwebi.dominio.cliente.ClienteServicio;
+import com.tallerwebi.dominio.conductor.Conductor;
+import com.tallerwebi.dominio.enums.TipoEstado;
 import com.tallerwebi.dominio.exceptions.NoSePudoGuardarElPaqueteException;
 import com.tallerwebi.dominio.exceptions.PaqueteNoEncontradoException;
 import com.tallerwebi.dominio.exceptions.UsuarioNoEncontradoException;
@@ -121,11 +123,19 @@ public class ViajeControlador {
     }
 
     @RequestMapping(value = "/pagar")
-    public ModelAndView pagarViaje(@RequestParam("precio") Double precioDelViaje, RedirectAttributes redirectAttributes) {
+    public ModelAndView pagarViaje(@RequestParam("precio") Double precioDelViaje, RedirectAttributes redirectAttributes, HttpSession session) {
         if (precioDelViaje != null && precioDelViaje > 0) {
             try {
                 String redirectUrl = mercadoPagoServicio.pagarViajeMp(precioDelViaje);
+
+                Viaje viaje = this.viajeServicio.obtenerViajePorId((Integer)session.getAttribute("IDVIAJE"));
+
+                viaje.setEstado(TipoEstado.PENDIENTE);
+
+                this.viajeServicio.actualizarViaje(viaje);
+
                 return new ModelAndView("redirect:" + redirectUrl);
+
             } catch (Exception e) {
                 redirectAttributes.addFlashAttribute("error", "Error al procesar el pago");
                 return new ModelAndView("redirect:/homeCliente");
