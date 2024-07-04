@@ -211,7 +211,7 @@ public class ConductorControlador {
     public ModelAndView despenalizarConductor(@RequestParam("montoPenalizacion") Double montoPenalizacion,
                                               RedirectAttributes redirectAttributes, HttpSession session) {
 
-        if (montoPenalizacion == null || montoPenalizacion < 0) {
+        if (montoPenalizacion == null || montoPenalizacion < 5000) {
             redirectAttributes.addFlashAttribute("error", "Monto de penalización inválido.");
             return new ModelAndView("redirect:/homeConductor");
         }

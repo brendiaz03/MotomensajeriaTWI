@@ -1,5 +1,7 @@
 package com.tallerwebi.dominio;
 
+import com.tallerwebi.dominio.exceptions.NoSePudoGuardarElPaqueteException;
+import com.tallerwebi.dominio.exceptions.PaqueteNoEncontradoException;
 import com.tallerwebi.dominio.paquete.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,47 +17,71 @@ public class PaqueteServicioTest {
 
     @BeforeEach
     public void init(){
+
         this.paqueteRepositorio = mock(PaqueteRepositorio.class);
+
         this.paqueteServicio = new PaqueteServicioImpl(this.paqueteRepositorio);
+
     }
 
     @Test
-    public void queSePuedaGuardarUnNuevoPaqueteYMeDevuelvaElMismo() throws PaqueteNoEncontradoException {
+    public void queSePuedaGuardarUnNuevoPaqueteYMeDevuelvaElMismo() throws NoSePudoGuardarElPaqueteException {
 
         Paquete paquete = mock(Paquete.class);
 
         when(this.paqueteServicio.guardarPaquete(paquete)).thenReturn(paquete);
+
         Paquete paqueteEsperado = this.paqueteServicio.guardarPaquete(paquete);
 
         assertThat(paqueteEsperado, equalTo(paquete));
+
         assertThat(paqueteEsperado.getId(), equalTo(paquete.getId()));
+
     }
 
     @Test
-    public void queSeObtengaPuedaBuscarUnPaqueteUnPaquetePorSuIdYMeLoDevuelvaCorrectamente() throws PaqueteNoEncontradoException {
+    public void queAlIntentarGuardarUnPaqueteNoSePuedaGuardarYMeLanceLaExcepcionNoSePudoGuardarElPaqueteException() throws NoSePudoGuardarElPaqueteException {
 
         Paquete paquete = mock(Paquete.class);
+
+        when(this.paqueteRepositorio.guardarPaquete(paquete)).thenAnswer(invocation -> { throw new Exception(); });
+
+        assertThrows(NoSePudoGuardarElPaqueteException.class, () -> {
+            this.paqueteServicio.guardarPaquete(paquete);
+        });
+
+    }
+
+    @Test
+    public void queSePuedaBuscarUnPaquetePorSuIdYMeLoDevuelvaCorresctamente () throws PaqueteNoEncontradoException {
+
+        Paquete paquete = mock(Paquete.class);
+
         paquete.setId(29);
 
         when(this.paqueteRepositorio.obtenerPaquetePorId(paquete.getId())).thenReturn(paquete);
+
         Paquete paqueteEsperado = this.paqueteServicio.obtenerPaquetePorId(paquete.getId());
 
         assertThat(paqueteEsperado, equalTo(paquete));
         assertThat(paqueteEsperado.getId(), equalTo(paquete.getId()));
         verify(this.paqueteRepositorio).obtenerPaquetePorId(paquete.getId());
-    }
 
+    }
 
     @Test
     public void queSeBusqueAUnPaquetePorSuIdYNoSeLoEncuentreOcasionandoQueSeLanceUnPaqueteNoEncontradoException() throws PaqueteNoEncontradoException {
 
         Paquete paquete = mock(Paquete.class);
 
-        when(this.paqueteRepositorio.obtenerPaquetePorId(paquete.getId())).thenThrow(PaqueteNoEncontradoException.class);
+        paquete.setId(25);
+
+        when(this.paqueteRepositorio.obtenerPaquetePorId(paquete.getId())).thenAnswer(invocation -> { throw new Exception(); });
+
         assertThrows(PaqueteNoEncontradoException.class, () -> {
-            paqueteServicio.obtenerPaquetePorId(paquete.getId());
+            this.paqueteServicio.obtenerPaquetePorId(paquete.getId());
         });
 
-        verify(paqueteRepositorio, times(1)).obtenerPaquetePorId(paquete.getId());
     }
+
 }

@@ -37,26 +37,5 @@ public class MercadoPagoControlador{
             return new ResponseEntity<>("", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-/*
-    @RequestMapping(value = "/preferenciaPenalizacion", method = RequestMethod.POST)
-    public ResponseEntity<String> generarPreferenciaPenalizacion(@RequestParam("montoPenalizacion") Double montoPenalizacion) {
-        try {
-            String idPreferencia = this.mercadoPagoServicio.pagarPenalizacionMp(montoPenalizacion);
-
-            // Configuración de las URLs de retorno
-            PreferenceBackUrlsRequest backUrls = PreferenceBackUrlsRequest.builder()
-                    .success("http://localhost:8080/home")
-                    .failure("http://localhost:8080/home").build();
-
-            // Creación de la preferencia
-            PreferenceRequest prefRequest = PreferenceRequest.builder()
-                    .autoReturn("approved")
-                    .backUrls(backUrls).build();
-
-            return new ResponseEntity<>(idPreferencia, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>("", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }*/
 
 }

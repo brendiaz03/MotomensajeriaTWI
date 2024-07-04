@@ -1,8 +1,10 @@
 package com.tallerwebi.presentacion;
 
+import static org.hamcrest.Matchers.startsWith;
 import com.tallerwebi.dominio.conductor.Conductor;
 import com.tallerwebi.dominio.conductor.ConductorServicio;
 import com.tallerwebi.dominio.exceptions.UsuarioNoEncontradoException;
+import com.tallerwebi.dominio.mercadoPago.MercadoPagoServicio;
 import com.tallerwebi.dominio.vehiculo.Vehiculo;
 import com.tallerwebi.dominio.viaje.Viaje;
 import com.tallerwebi.dominio.viaje.ViajeServicio;
@@ -10,7 +12,10 @@ import com.tallerwebi.presentacion.Datos.DatosViaje;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.util.List;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -24,7 +29,8 @@ public class ConductorControladorTest {
    private ConductorServicio conductorServicio;
    private ViajeServicio viajeServicio;
    private HttpSession session;
-
+   private MercadoPagoServicio mercadoPagoServicio;
+   private RedirectAttributes redirectAttributes;
 
     @BeforeEach
    public void init() throws Exception {
@@ -32,6 +38,8 @@ public class ConductorControladorTest {
        this.viajeServicio=mock(ViajeServicio.class);
        this.session = mock(HttpSession.class);
        this.conductorControlador = new ConductorControlador(this.conductorServicio, this.viajeServicio);
+        this.mercadoPagoServicio = mock(MercadoPagoServicio.class);
+        this.redirectAttributes = mock(RedirectAttributes.class);
    }
 
     @Test
@@ -297,18 +305,31 @@ public void queSeRendericeLaVistaQueMuestraElViajeAceptadoSeleccionadoPorElCondu
 
         assertThat(mav.getViewName(), equalTo(nombreEsperado));
     }
-/*    @Test
-    public void queSeDespenaliceAUnConductorPreviamentePenalizado() throws UsuarioNoEncontradoException {
-        String nombreEsperado = "redirect:/homeConductor";
-        Integer idConductor=1;
-        Conductor conductor= mock(Conductor.class);
 
-        when(session.getAttribute("IDUSUARIO")).thenReturn(idConductor);
-        when(conductorServicio.obtenerConductorPorId(1)).thenReturn(conductor);
-        ModelAndView mav = conductorControlador.despenalizarConductor(session,idConductor);
+    @Test
+    public void queSeDespenaliceAUnConductorPenalizadoConUnMontoValidoParaMotomensajeria() throws IOException {
 
-        assertThat(mav.getViewName(), equalTo(nombreEsperado));
-        verify(conductorServicio).despenalizarConductor(conductor);
-    }*/
+        Double montoPenalizacion = 5000.0;
+
+        String redirectUrl = "https://www.mercadopago.com.ar/checkout/v1/redirect?pref_id=1867816013-7583c110-0184-4937-ad14-b76d76a35160";
+
+        when(mercadoPagoServicio.pagarPenalizacionMp(montoPenalizacion)).thenReturn(redirectUrl);
+
+        ModelAndView mav = conductorControlador.despenalizarConductor(montoPenalizacion, redirectAttributes, session);
+
+        assertThat(mav.getViewName(), startsWith("redirect:https://www.mercadopago.com.ar/checkout/v1/redirect"));
+    }
+
+    @Test
+    public void queNoSeDespenaliceUnConductorPenalizadoConUnMontoInvalidoMenorQueCincoMil() {
+
+        Double montoPenalizacion = 4999.0;
+
+        ModelAndView mav = conductorControlador.despenalizarConductor(montoPenalizacion, redirectAttributes, session);
+
+        assertThat(mav.getViewName(), equalTo("redirect:/homeConductor"));
+
+        verify(redirectAttributes).addFlashAttribute("error", "Monto de penalización inválido.");
+    }
 
 }

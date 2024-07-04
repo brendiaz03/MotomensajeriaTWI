@@ -40,17 +40,22 @@ public class UsuarioServicioTest {
     //REGISTRAR USUARIO
 
     @Test
-    public void queSeBusqueDuplicadosYAlNoEncontrarloSeRegistreCorrectamenteUnUsuarioDeTipoConductor() throws UsuarioDuplicadoException {
+    public void queSeBusqueUsuarioDuplicadoYAlNoEncontrarloSeRegistreCorrectamenteUnUsuarioDeTipoConductor() throws UsuarioDuplicadoException {
+
         DatosUsuario nuevoUsuario = mock(DatosUsuario.class);
+
         when(nuevoUsuario.getEmail()).thenReturn("facu@gmail.com");
         when(nuevoUsuario.getNombreUsuario()).thenReturn("facu");
         when(nuevoUsuario.getTipoUsuario()).thenReturn(TipoUsuario.Conductor);
 
-        // Simulamos que no se encuentra ningún duplicado
-        when(usuarioRepositorio.buscarDuplicados("facu@gmail.com", "facu")).thenReturn(null);
+        // Simulamos que buscarDuplicados lanza una excepción NoResultException
+        when(usuarioRepositorio.buscarDuplicados("facu@gmail.com", "facu")).thenThrow(new NoResultException());
 
         // Mock para el usuario que se va a guardar
-        Conductor conductor = mock(Conductor.class);
+        Conductor conductor = new Conductor();
+        conductor.setEmail("facu@gmail.com");
+        conductor.setNombreUsuario("facu");
+
         when(nuevoUsuario.toConductor()).thenReturn(conductor);
         when(usuarioRepositorio.guardarUsuario(conductor)).thenReturn(conductor);
 
@@ -63,16 +68,67 @@ public class UsuarioServicioTest {
     }
 
 
-    @Test
-    public void queSeBusqueDuplicadosYSeLanceExcepcionSiYaExisteElUsuario() {
+   /* @Test
+    public void queSeBusqueUsuarioDuplicadoYAlEncontrarloSeLanceLaExcepcionUsuarioDuplicadoExceptionSiYaExisteElUsuario() throws UsuarioDuplicadoException {
         DatosUsuario nuevoUsuario = mock(DatosUsuario.class);
-        when(nuevoUsuario.getEmail()).thenReturn("facu@gmail.com");
-        when(nuevoUsuario.getNombreUsuario()).thenReturn("facu");
+        when(nuevoUsuario.getEmail()).thenReturn("cami@gmail.com");
+        when(nuevoUsuario.getNombreUsuario()).thenReturn("Cami");
 
         Usuario usuarioDuplicado = mock(Usuario.class);
-        when(usuarioRepositorio.buscarDuplicados("facu@gmail.com", "facu")).thenReturn(usuarioDuplicado);
+        when(usuarioRepositorio.buscarDuplicados("cami@gmail.com", "Cami")).thenReturn(usuarioDuplicado);
 
-        assertThrows(UsuarioDuplicadoException.class, () -> usuarioServicio.registrarUsuario(nuevoUsuario));
+        assertThrows(UsuarioDuplicadoException.class, () -> {
+            usuarioServicio.registrarUsuario(nuevoUsuario);
+        });
+    }*/
+
+    @Test
+    public void queSeBusqueUsuarioDuplicadoYQueAlEncontrarloSeLanceLaExcepcionUsuarioDuplicadoException () throws UsuarioDuplicadoException {
+
+        DatosUsuario usuario = mock(DatosUsuario.class);
+
+        when(usuario.getEmail()).thenReturn("cami123@outlook.com");
+
+        when(usuario.getNombreUsuario()).thenReturn("Camila");
+
+        Usuario usuarioDuplicado = mock(Usuario.class);
+
+        when(this.usuarioRepositorio.buscarDuplicados("cami123@outlook.com", "Camila")).thenReturn(usuarioDuplicado);
+
+        assertThrows(UsuarioDuplicadoException.class, () -> {
+            usuarioServicio.registrarUsuario(usuario);
+        });
+
+    }
+
+    @Test
+    public void queSeBusqueDuplicadosYAlNoEncontrarloSeRegistreCorrectamenteUnUsuarioDeTipoCliente() throws UsuarioDuplicadoException {
+
+        DatosUsuario usuario = mock(DatosUsuario.class);
+
+        when(usuario.getEmail()).thenReturn("cami123@outlook.com");
+
+        when(usuario.getNombreUsuario()).thenReturn("Camila");
+
+        when(usuario.getTipoUsuario()).thenReturn(TipoUsuario.Cliente);
+
+        // Simulamos que buscarDuplicados lanza una excepción NoResultException
+        when(this.usuarioRepositorio.buscarDuplicados("cami123@outlook.com", "Camila")).thenThrow(new NoResultException());
+
+        // Mock para el usuario que se va a guardar
+        Cliente cliente = new Cliente();
+        cliente.setEmail("cami123@outlook.com");
+        cliente.setNombreUsuario("Camila");
+
+        when(usuario.toCliente()).thenReturn(cliente);
+        when(usuarioRepositorio.guardarUsuario(cliente)).thenReturn(cliente);
+
+        // Verificamos el registro del usuario
+        Usuario usuarioRegistrado = usuarioServicio.registrarUsuario(usuario);
+
+        assertNotNull(usuarioRegistrado);
+        assertEquals(cliente, usuarioRegistrado);
+        verify(usuarioRepositorio, times(1)).guardarUsuario(cliente);
     }
 
     //ACTUALIZAR USUARIO
