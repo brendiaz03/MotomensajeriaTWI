@@ -2,6 +2,8 @@ package com.tallerwebi.presentacion;
 
 import com.tallerwebi.dominio.cliente.Cliente;
 import com.tallerwebi.dominio.cliente.ClienteServicio;
+import com.tallerwebi.dominio.exceptions.ClienteNoEncontradoException;
+import com.tallerwebi.dominio.exceptions.ViajeNoEncontradoException;
 import com.tallerwebi.dominio.viaje.Viaje;
 import com.tallerwebi.dominio.viaje.ViajeServicio;
 import org.junit.jupiter.api.BeforeEach;
@@ -30,7 +32,7 @@ public class ClienteControladorTest {
     }
 
     @Test
-    public void queSeRendericeElHomeDelCliente() {
+    public void queSeRendericeElHomeDelCliente() throws ClienteNoEncontradoException {
         session.setAttribute("IDUSUARIO", 1);
         String nombreEsperado="home-cliente";
         Cliente cliente = mock(Cliente.class);
@@ -46,7 +48,7 @@ public class ClienteControladorTest {
     }
 
     @Test
-    public void queSeMuestrenLosEnviosEnProcesoDelCliente() {
+    public void queSeMuestrenLosEnviosEnProcesoDelCliente() throws ClienteNoEncontradoException {
         String nombreEsperado="envios-en-proceso";
         Cliente cliente=mock(Cliente.class);
         List<Viaje> viajesEnProceso = mock(List.class);
@@ -62,7 +64,7 @@ public class ClienteControladorTest {
     }
 
     @Test
-    public void queUnClientePuedaCancelarUnEnvioPreviamenteCreado() {
+    public void queUnClientePuedaCancelarUnEnvioPreviamenteCreado() throws ViajeNoEncontradoException {
         String nombreEsperado="redirect:/envios-en-proceso";
         Viaje viaje= mock(Viaje.class);
 
@@ -71,12 +73,12 @@ public class ClienteControladorTest {
 
         assertEquals(nombreEsperado, mav.getViewName());
         verify(viajeServicio).buscarViaje(1);
-        verify(viajeServicio).cancelarEnvío(viaje);
+        verify(viajeServicio).cancelarEnvio(viaje);
     }
 
 
     @Test
-    public void queSeRendericeLaVistaDelHistorialDeEnviosConTodosLosEnviosFinalizadosDelCliente() {
+    public void queSeRendericeLaVistaDelHistorialDeEnviosConTodosLosEnviosFinalizadosDelCliente() throws ClienteNoEncontradoException {
         String nombreEsperado="historial-envios";
         Cliente cliente=mock(Cliente.class);
         List<Viaje> viajesObtenidos = mock(List.class);
@@ -92,7 +94,7 @@ public class ClienteControladorTest {
     }
 
     @Test
-    public void queElClientePuedaVerElDetalleDeUnEnvioEnParticular() {
+    public void queElClientePuedaVerElDetalleDeUnEnvioEnParticular() throws ViajeNoEncontradoException {
         String nombreEsperado="detalle-envio";
         Cliente cliente=mock(Cliente.class);
         Viaje viaje = mock(Viaje.class);
@@ -108,7 +110,7 @@ public class ClienteControladorTest {
     }
 
     @Test
-    public void queCuandoUnClienteCanceleUnViajeEsteSeDupliqueEnLaBD() {
+    public void queCuandoUnClienteCanceleUnViajeEsteSeDupliqueEnLaBD() throws ViajeNoEncontradoException {
         String nombreEsperado="redirect:/homeCliente";
         Viaje viaje = mock(Viaje.class);
 
@@ -121,7 +123,7 @@ public class ClienteControladorTest {
     }
 
     @Test
-    public void queCuandoUnClienUnViajeEsteSeDupliqueEnLaBD() {
+    public void queCuandoUnClienUnViajeEsteSeDupliqueEnLaBD() throws ViajeNoEncontradoException {
         String nombreEsperado="redirect:/homeCliente";
         Viaje viaje = mock(Viaje.class);
 

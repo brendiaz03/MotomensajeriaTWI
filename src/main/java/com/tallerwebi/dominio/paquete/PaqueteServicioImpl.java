@@ -1,5 +1,6 @@
 package com.tallerwebi.dominio.paquete;
 
+import com.tallerwebi.dominio.exceptions.PaqueteNoEncontradoException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

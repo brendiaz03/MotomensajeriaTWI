@@ -1,7 +1,7 @@
 package com.tallerwebi.infraestructura;
 
 import com.tallerwebi.dominio.paquete.Paquete;
-import com.tallerwebi.dominio.paquete.PaqueteNoEncontradoException;
+import com.tallerwebi.dominio.exceptions.PaqueteNoEncontradoException;
 import com.tallerwebi.dominio.paquete.PaqueteRepositorio;
 import com.tallerwebi.infraestructura.config.HibernateInfraestructuraTestConfig;
 import org.hibernate.SessionFactory;

@@ -1,4 +1,4 @@
-package com.tallerwebi.dominio.paquete;
+package com.tallerwebi.dominio.exceptions;
 
 public class PaqueteNoEncontradoException extends Exception {
 

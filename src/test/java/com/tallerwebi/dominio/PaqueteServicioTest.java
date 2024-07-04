@@ -1,5 +1,6 @@
 package com.tallerwebi.dominio;
 
+import com.tallerwebi.dominio.exceptions.PaqueteNoEncontradoException;
 import com.tallerwebi.dominio.paquete.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

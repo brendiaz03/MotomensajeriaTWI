@@ -2,10 +2,12 @@ package com.tallerwebi.presentacion;
 
 import com.tallerwebi.dominio.cliente.Cliente;
 import com.tallerwebi.dominio.cliente.ClienteServicio;
-import com.tallerwebi.dominio.conductor.ConductorServicio;
+import com.tallerwebi.dominio.exceptions.ClienteNoEncontradoException;
+import com.tallerwebi.dominio.exceptions.PrecioInvalidoException;
+import com.tallerwebi.dominio.exceptions.ViajeNoEncontradoException;
 import com.tallerwebi.dominio.mercadoPago.MercadoPagoServicio;
 import com.tallerwebi.dominio.paquete.Paquete;
-import com.tallerwebi.dominio.paquete.PaqueteNoEncontradoException;
+import com.tallerwebi.dominio.exceptions.PaqueteNoEncontradoException;
 import com.tallerwebi.dominio.paquete.PaqueteServicio;
 import com.tallerwebi.dominio.viaje.Viaje;
 import com.tallerwebi.dominio.viaje.ViajeServicio;
@@ -73,8 +75,8 @@ public class ViajeControladorTest {
     @Test
     public void mostrarFormYQueElUsuarioEditeElViajeYElPaquete() {
         // Preparación
-        Viaje viaje = new Viaje();
-        Paquete paquete = new Paquete();
+        Viaje viaje = dadoQueExisteUnViaje();
+        Paquete paquete = dadoQueExisteUnPaquete();
         when(session.getAttribute("isEditViaje")).thenReturn(true);
         when(session.getAttribute("isEditPackage")).thenReturn(true);
         when(session.getAttribute("viajeActual")).thenReturn(viaje);
@@ -95,8 +97,8 @@ public class ViajeControladorTest {
     @Test
     public void mostrarFormYQueElUsuarioEditeElViaje() {
         // Preparación
-        Viaje viaje = new Viaje();
-        Paquete paquete = new Paquete();
+        Viaje viaje = dadoQueExisteUnViaje();
+        Paquete paquete = dadoQueExisteUnPaquete();
         when(session.getAttribute("isEditViaje")).thenReturn(true);
         when(session.getAttribute("isEditPackage")).thenReturn(false);
         when(session.getAttribute("viajeActual")).thenReturn(viaje);
@@ -118,8 +120,8 @@ public class ViajeControladorTest {
     @Test
     public void mostrarFormYQueElUsuarioEditeElPaquete() {
         // Preparación
-        Viaje viaje = new Viaje();
-        Paquete paquete = new Paquete();
+        Viaje viaje = dadoQueExisteUnViaje();
+        Paquete paquete = dadoQueExisteUnPaquete();
         when(session.getAttribute("isEditViaje")).thenReturn(false);
         when(session.getAttribute("isEditPackage")).thenReturn(true);
         when(session.getAttribute("viajeActual")).thenReturn(viaje);
@@ -140,8 +142,8 @@ public class ViajeControladorTest {
     @Test
     public void mostrarFormViajeYQueElUsuarioNoEditeElViajeNiElPaquete() {
         // Preparación
-        Viaje viaje = new Viaje();
-        Paquete paquete = new Paquete();
+        Viaje viaje = dadoQueExisteUnViaje();
+        Paquete paquete = dadoQueExisteUnPaquete();
         when(session.getAttribute("isEditViaje")).thenReturn(false);
         when(session.getAttribute("isEditPackage")).thenReturn(false);
         when(session.getAttribute("viajeActual")).thenReturn(viaje);
@@ -175,9 +177,8 @@ public class ViajeControladorTest {
     @Test
     public void queSePuedaEditarUnViaje() {
         // Preparación
-        Viaje viaje = new Viaje();
+        Viaje viaje = dadoQueExisteUnViaje();
         viaje.setDomicilioDeLlegada("San Justo");
-        viaje.setFecha(LocalDateTime.of(2024, 12, 1, 0, 0));
         when(request.getSession()).thenReturn(session);
 
         // Ejecución
@@ -193,26 +194,25 @@ public class ViajeControladorTest {
     @Test
     public void queSePuedaCrearUnViajeLocalmente() {
         // Preparación
-        Viaje viaje = new Viaje();
+        Viaje viaje = dadoQueExisteUnViaje();
         viaje.setDomicilioDeSalida("San Justo");
-        viaje.setFecha(LocalDateTime.of(2024, 5, 28, 0, 0));
 
         // Ejecución
-        ModelAndView modelAndView = viajeControlador.crearViajeLocalmente(viaje, session);
+        ModelAndView mav = viajeControlador.crearViajeLocalmente(viaje, session);
 
         // Validación
         verify(session).setAttribute("viajeActual", viaje);
         verify(session).setAttribute("pasoActual", 3);
-        assertEquals("redirect:/form-viaje", modelAndView.getViewName());
+        assertEquals("redirect:/form-viaje", mav.getViewName());
     }
 
     @Test
-    public void queSePuedaCrearUnViajeConUnPaqueteYUnClienteAsignado() throws PaqueteNoEncontradoException {
+    public void queSePuedaCrearUnViajeConUnPaqueteYUnClienteAsignado() throws PaqueteNoEncontradoException, ViajeNoEncontradoException, ClienteNoEncontradoException, PrecioInvalidoException {
         // Preparación
         Integer idUsuario = 1;
         Cliente cliente = new Cliente();
-        Paquete paquete = new Paquete();
-        Viaje viaje = new Viaje();
+        Paquete paquete = dadoQueExisteUnPaquete();
+        Viaje viaje = dadoQueExisteUnViaje();
         viaje.setPrecio(100.0);
         when(session.getAttribute("IDUSUARIO")).thenReturn(idUsuario);
         when(session.getAttribute("paqueteActual")).thenReturn(paquete);
@@ -220,12 +220,12 @@ public class ViajeControladorTest {
         when(clienteServicio.obtenerClientePorId(idUsuario)).thenReturn(cliente);
 
         // Ejecución
-        String viajeObtenido = viajeControlador.crearViajeConPaqueteYCliente(session);
+        ModelAndView mav = viajeControlador.crearViajeConPaqueteYCliente(session);
 
         // Validación
         verify(paqueteServicio).guardarPaquete(paquete);
         verify(viajeServicio).crearViaje(cliente, viaje, paquete);
-        assertEquals("redirect:/pagar?precio=100.0", viajeObtenido);
+        assertEquals("redirect:/pagar?precio=100.0", mav.getViewName());
     }
 
     @Test
@@ -233,8 +233,8 @@ public class ViajeControladorTest {
         // Preparación
         Integer idUsuario = 1;
         Cliente cliente = new Cliente();
-        Paquete paquete = new Paquete();
-        Viaje viaje = new Viaje();
+        Paquete paquete = dadoQueExisteUnPaquete();
+        Viaje viaje = dadoQueExisteUnViaje();
         viaje.setPrecio(100.0);
         when(session.getAttribute("IDUSUARIO")).thenReturn(idUsuario);
         when(session.getAttribute("paqueteActual")).thenReturn(paquete);
@@ -258,10 +258,10 @@ public class ViajeControladorTest {
         when(mercadoPagoServicio.pagarViajeMp(precio)).thenReturn(url);
 
         // Ejecución
-        ModelAndView urlObtenida = viajeControlador.pagarViaje(precio, redirectAttributes);
+        ModelAndView mav = viajeControlador.pagarViaje(precio, redirectAttributes);
 
         // Validación
-        assertEquals("redirect:" + url, urlObtenida.getViewName());
+        assertEquals("redirect:" + url, mav.getViewName());
     }
 
     @Test
@@ -270,11 +270,11 @@ public class ViajeControladorTest {
         Double precio = -10.0;
 
         // Ejecución
-        ModelAndView urlObtenida = viajeControlador.pagarViaje(precio, redirectAttributes);
+        ModelAndView mav = viajeControlador.pagarViaje(precio, redirectAttributes);
 
         // Validación
         verify(redirectAttributes).addFlashAttribute("error", "Precio inválido.");
-        assertEquals("redirect:/homeCliente", urlObtenida.getViewName());
+        assertEquals("redirect:/homeCliente", mav.getViewName());
     }
 
     @Test
@@ -283,11 +283,11 @@ public class ViajeControladorTest {
         Double precio = null;
 
         // Ejecución
-        ModelAndView modelAndView = viajeControlador.pagarViaje(precio, redirectAttributes);
+        ModelAndView mav = viajeControlador.pagarViaje(precio, redirectAttributes);
 
         // Validación
         verify(redirectAttributes).addFlashAttribute("error", "Precio inválido.");
-        assertEquals("redirect:/homeCliente", modelAndView.getViewName());
+        assertEquals("redirect:/homeCliente", mav.getViewName());
     }
 
     @Test
@@ -296,10 +296,18 @@ public class ViajeControladorTest {
         when(mercadoPagoServicio.pagarViajeMp(anyDouble())).thenThrow(new RuntimeException("Error al procesar el pago"));
 
         // Ejecución
-        ModelAndView modelAndView = viajeControlador.pagarViaje(100.0, redirectAttributes);
+        ModelAndView mav = viajeControlador.pagarViaje(100.0, redirectAttributes);
 
         //Validación
         verify(redirectAttributes).addFlashAttribute("error", "Error al procesar el pago");
-        assertEquals("redirect:/homeCliente", modelAndView.getViewName());
+        assertEquals("redirect:/homeCliente", mav.getViewName());
+    }
+
+    private static Viaje dadoQueExisteUnViaje() {
+        return new Viaje();
+    }
+
+    private static Paquete dadoQueExisteUnPaquete() {
+        return new Paquete();
     }
 }

@@ -1,5 +1,6 @@
 package com.tallerwebi.infraestructura;
 
+import com.tallerwebi.dominio.cliente.Cliente;
 import com.tallerwebi.dominio.conductor.Conductor;
 import com.tallerwebi.dominio.enums.TipoEstado;
 import com.tallerwebi.dominio.viaje.Viaje;
@@ -36,9 +37,9 @@ public class ViajeRepositorioTest {
     @Test
     @Transactional
     @Rollback
-    public void queSePuedanObtenerTodosLosViajesAceptadosPorElConductor(){
+    public void queSePuedaObtenerLosViajesDelConductor(){
         // Preparación
-        Integer totalDeViajesEsperados = 3;
+        Integer totalDeViajesEsperados = 4;
         Conductor conductor = dadoQueExisteUnConductor();
         dadoQueExistenViajesConUnConductorAsignado(conductor);
 
@@ -70,12 +71,15 @@ public class ViajeRepositorioTest {
     @Transactional
     @Rollback
     public void queSePuedaObtenerUnViajePorSuId(){
+        // Preparación
         Viaje viaje = dadoQueExisteUnViaje();
+        viaje.setId(1);
         this.sessionFactory.getCurrentSession().save(viaje);
 
+        // Ejecución
         Viaje viajeObtenido = this.viajeRepositorio.obtenerViajePorId(viaje.getId());
 
-        assertThat(viajeObtenido, equalTo(viaje));
+        // Validación
         assertThat(viajeObtenido.getId(), equalTo(viaje.getId()));
     }
 
@@ -83,14 +87,150 @@ public class ViajeRepositorioTest {
     @Transactional
     @Rollback
     public void queSePuedanEncontrarLosViajesCercanos(){
+        // Preparación
         Double latitudConductor = -34.665206;
         Double longitudConductor = -58.531884;
-        Integer totalDeViajesEsperados = 3;
+        Double distanciaAFiltrar = 100.0;
+        Integer totalDeViajesEsperados = 2;
         dadoQueExistenViajes();
 
-        List<Viaje> viajesCercanosObtenidos = this.viajeRepositorio.encontrarViajesCercanos(latitudConductor, longitudConductor, 100.0);
+        // Ejecución
+        List<Viaje> viajesCercanosObtenidos = this.viajeRepositorio.encontrarViajesCercanos(latitudConductor, longitudConductor, distanciaAFiltrar);
 
+        // Validación
         assertThat(viajesCercanosObtenidos.size(), equalTo(totalDeViajesEsperados));
+    }
+
+    @Test
+    @Transactional
+    @Rollback
+    public void queSePuedaObtenerTodosLosViajesPendientes() {
+        // Preparación
+        dadoQueExistenViajes();
+        Integer viajesPendientesEsperados = 2;
+
+        // Ejecución
+        List<Viaje> viajesPendientesObtenidos = viajeRepositorio.traerTodosLosViajesPendientes();
+
+        // Validación
+        assertThat(viajesPendientesObtenidos.size(), equalTo(viajesPendientesEsperados));
+    }
+
+    @Test
+    @Transactional
+    @Rollback
+    public void queSePuedaObtenerTodosLosViajesDescartadosPorElConductor() {
+        // Preparación
+        Conductor conductor = dadoQueExisteUnConductor();
+        dadoQueExistenViajesConUnConductorAsignado(conductor);
+        Integer viajesDescartadosEsperados = 2;
+
+        // Ejecución
+        List<Viaje> viajesDescartadosObtenidos = viajeRepositorio.traerTodosLosViajesDescartadosPorConductor(conductor);
+
+        // Validación
+        assertThat(viajesDescartadosObtenidos.size(), equalTo(viajesDescartadosEsperados));
+    }
+
+    @Test
+    @Transactional
+    @Rollback
+    public void queSePuedaObtenerTodosLosViajesDescartadosQueAfectanALaPenalizacionDelConductor() {
+        // Preparación
+        Conductor conductor = dadoQueExisteUnConductor();
+        dadoQueExistenViajesConUnConductorAsignado(conductor);
+        Integer viajesDescartadosEsperados = 1;
+
+        // Ejecución
+        List<Viaje> viajesDescartadosObtenidos = viajeRepositorio.traerTodosLosViajesDescartadosQueAfectanPenalizacionPorConductor(conductor);
+
+        // Validación
+        assertThat(viajesDescartadosObtenidos.size(), equalTo(viajesDescartadosEsperados));
+    }
+
+    @Test
+    @Transactional
+    @Rollback
+    public void queSePuedaObtenerTodosLosViajesCanceladosPorElConductor() {
+        // Preparación
+        Conductor conductor = dadoQueExisteUnConductor();
+        dadoQueExistenViajesConUnConductorAsignado(conductor);
+        Integer viajesCanceladosEsperados = 1;
+
+        // Ejecución
+        Integer viajesCanceladosObtenidos = viajeRepositorio.traerTodosLosViajesCanceladosPorConductor(conductor).size();
+
+        // Validación
+        assertThat(viajesCanceladosEsperados, equalTo(viajesCanceladosObtenidos));
+    }
+
+    @Test
+    @Transactional
+    @Rollback
+    public void queSePuedaGuardarUnViaje() {
+        // Preparación
+        Viaje viaje = dadoQueExisteUnViaje();
+        viaje.setId(1);
+
+        // Ejecución
+        Viaje viajeObtenido = viajeRepositorio.guardarViaje(viaje);
+
+        // Validación
+        assertThat(viaje, equalTo(viajeObtenido));
+        assertThat(viajeObtenido.getId(), equalTo(viaje.getId()));
+    }
+
+    @Test
+    @Transactional
+    @Rollback
+    public void queSePuedaObtenerViajesPorElCliente() {
+        // Preparación
+        Cliente cliente = dadoQueExisteUnCliente();
+        dadoQueExistenViajesConUnClienteAsignado(cliente);
+        Integer viajesDelClienteEsperados = 4;
+
+        // Ejecución
+        Integer viajesDelClienteObtenido = viajeRepositorio.obtenerViajesPorCliente(cliente.getId()).size();
+
+        // Validación
+        assertThat(viajesDelClienteEsperados, equalTo(viajesDelClienteObtenido));
+    }
+
+    @Test
+    @Transactional
+    @Rollback
+    public void queSePuedaGuardarUnViajeDuplicado() {
+        // Preparación
+        Viaje viaje = dadoQueExisteUnViaje();
+        viaje.setId(1);
+
+        // Ejecución
+        Viaje viajeObtenido = viajeRepositorio.guardarViaje(viaje);
+
+        // Validación
+        assertThat(viaje, equalTo(viajeObtenido));
+    }
+
+    private void dadoQueExistenViajesConUnClienteAsignado(Cliente cliente) {
+        Viaje viaje1 = new Viaje();
+        Viaje viaje2 = new Viaje();
+        Viaje viaje3 = new Viaje();
+        Viaje viaje4 = new Viaje();
+        viaje1.setCliente(cliente);
+        viaje2.setCliente(cliente);
+        viaje3.setCliente(cliente);
+        viaje4.setCliente(cliente);
+        this.sessionFactory.getCurrentSession().save(viaje1);
+        this.sessionFactory.getCurrentSession().save(viaje2);
+        this.sessionFactory.getCurrentSession().save(viaje3);
+        this.sessionFactory.getCurrentSession().save(viaje4);
+    }
+
+    private Cliente dadoQueExisteUnCliente() {
+        Cliente cliente = new Cliente();
+        cliente.setId(1);
+        this.sessionFactory.getCurrentSession().save(cliente);
+        return cliente;
     }
 
     private void dadoQueExistenViajes() {
@@ -114,7 +254,7 @@ public class ViajeRepositorioTest {
         viaje3.setLatitudDeLlegada(-34.668612);
         viaje3.setLongitudDeLlegada(-58.529116);
         viaje3.setConductor(null);
-        viaje3.setEstado(TipoEstado.PENDIENTE);
+        viaje3.setEstado(TipoEstado.CANCELADO);
         this.sessionFactory.getCurrentSession().save(viaje1);
         this.sessionFactory.getCurrentSession().save(viaje2);
         this.sessionFactory.getCurrentSession().save(viaje3);
@@ -130,12 +270,21 @@ public class ViajeRepositorioTest {
         Viaje viaje1 = new Viaje();
         Viaje viaje2 = new Viaje();
         Viaje viaje3 = new Viaje();
+        Viaje viaje4 = new Viaje();
         viaje1.setConductor(conductor);
         viaje2.setConductor(conductor);
         viaje3.setConductor(conductor);
+        viaje4.setConductor(conductor);
+        viaje1.setEstado(TipoEstado.DESCARTADO);
+        viaje1.setAfectaPenalizacion(true);
+        viaje2.setEstado(TipoEstado.DESCARTADO);
+        viaje3.setEstado(TipoEstado.PENDIENTE);
+        viaje4.setEstado(TipoEstado.CANCELADO);
+        viaje4.setAfectaPenalizacion(true);
         this.sessionFactory.getCurrentSession().save(viaje1);
         this.sessionFactory.getCurrentSession().save(viaje2);
         this.sessionFactory.getCurrentSession().save(viaje3);
+        this.sessionFactory.getCurrentSession().save(viaje4);
     }
 
     private static Viaje dadoQueExisteUnViajeQueSeLeAsignaUnConductor(Conductor conductor) {
