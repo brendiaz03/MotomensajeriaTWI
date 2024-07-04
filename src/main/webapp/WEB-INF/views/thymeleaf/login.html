@@ -9,8 +9,8 @@
     <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.0/css/bootstrap.min.css}"/>
 
     <!-- custom style -->
-    <link rel="stylesheet" th:href="@{css/login.css}"/>
     <link rel="stylesheet" th:href="@{css/main.css}"/>
+    <link rel="stylesheet" th:href="@{css/login.css}"/>
 </head>
 <body>
 <header>
@@ -40,14 +40,14 @@
             <h1 style="text-align: center" class="titulo-login">Iniciar Sesión</h1>
             <form id="loginForm" action="#" th:action="@{/validar-login}" method="POST" th:object="${datosLogin}">
                 <div>
-                    <label for="usuario">Usuario:</label>
+                    <label style="color: white" for="usuario">Usuario:</label>
                     <input type="text" class="form-control" id="usuario" name="usuario" th:field="*{usuario}">
                     <div th:if="${error}">
                         <label th:text="${error}" style="color: red;"></label>
                     </div>
                 </div>
                 <div>
-                    <label for="password" class="label-form">Contraseña:</label>
+                    <label style="color: white" for="password" class="label-form">Contraseña:</label>
                     <input type="password" class="form-control" id="password" name="password" th:field="*{password}">
                     <div th:if="${error}">
                         <label th:text="${error}" style="color: red;"></label>
@@ -56,14 +56,14 @@
 
                 <section class="sub_columna">
                     <div>
-                        <a href="/recuperar-contraseña">¿Olvidaste tu contraseña?</a>
+                        <a  href="/recuperar-contraseña">¿Olvidaste tu contraseña?</a>
                     </div>
                     <div>
                         <button type="submit" class="btn-aceptar" id="ingresar">Ingresar</button>
                     </div>
                     <div>
                         <a th:href="nuevo-usuario">
-                            <button type="button" class="btn-cancelar">Registrarse</button>
+                            <button type="button" class="btn-registrar">Registrarse</button>
                         </a>
                     </div>
                 </section>

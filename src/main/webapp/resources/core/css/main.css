@@ -1,13 +1,13 @@
 @font-face {
-    font-family: 'Codec Pro';
-    src: url('CodecPro-Bold.ttf') format('truetype');
+    font-family: 'Satoshi-Variable';
+    src: url('Satoshi-Variable.ttf') format('truetype');
 }
 
 body {
     background-image: url('imagenes/fondo.jpg'); /* Ruta de la imagen de fondo */
     background-size: cover; /* Cubre todo el tamaño del cuerpo */
     background-position: center; /* Posición centrada de la imagen */
-    font-family: "Codec Pro",sans-serif;
+    font-family: "Satoshi-Variable",sans-serif;
     height: 100%;
     margin: 0;
 }
@@ -17,56 +17,55 @@ html{
     margin: 0;
 }
 
-.btn-cancelar {
-    color: #370a37; /* Texto violeta */
-    background-color: white; /* Fondo blanco */
-    border: 3px solid #36054E;
+.btn-secundario{
+    color: #370a37;
+    background-color: white;
     border-radius: 50px;
     padding: 5px 30px 5px 30px ;
     text-decoration: none;
 }
 
-.btn-cancelar:hover {
-    background: lightgray;
-    color:#FFFFFF;
-    text-decoration: none;
-}
-.btn-aceptar {
-    color: #ffffff; /* Texto violeta */
-    background-color: #370a37; /* Fondo blanco */
-    border: none; /* Borde violeta */
+.btn-principal{
+    color: #ffffff;
+    background-color: transparent;
+    border-color: white;
     border-radius: 50px;
     padding: 5px 30px 5px 30px ;
     text-decoration: none;
 }
 
-.btn-aceptar:hover {
-    background: darkviolet;
+.btn-principal:hover {
+    background: violet;
     border-color:#36054E;
     text-decoration: none;
     color: white;
 }
-.fondo-form{
+.fondo-form {
     align-self: center;
-    background-color: #D9D9D9;
     border-radius: 50px;
     align-items: center;
     padding:3% 5% 3% 5%;
+    background: rgba(10, 10, 10, 0.2);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3),
+    inset 0 4px 8px rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    position: relative;
 }
 .form-control{
-    border-top: none; /* Elimina el borde superior */
-    border-left: none; /* Elimina el borde izquierdo */
-    border-right: none; /* Elimina el borde derecho */
-    border-bottom: 1px solid black; /* Agrega el borde inferior negro */
-    border-radius: 0; /* Elimina cualquier radio de borde */
-    background-color: #D9D9D9; /* Hace el fondo transparente para que se vea como una línea */
-    padding: 0; /* Elimina el relleno */
+    border-color: white;
+    border-radius: 15px; /* Elimina cualquier radio de borde */
+    background-color: transparent; /* Hace el fondo transparente para que se vea como una línea */
     height: 30px; /* Ajusta automáticamente la altura según el contenido */
+    color:white;
+    padding:2%;
 }
 .form-control:focus {
-    background-color: #BDBDBD;
-    border-color: #D9D9D9;
+    background-color: transparent;
     outline: none; /* Elimina el resplandor predeterminado al enfocar el campo */
+    color:white;
+    padding:2%;
 }
 .cont-precio{
     display: flex;

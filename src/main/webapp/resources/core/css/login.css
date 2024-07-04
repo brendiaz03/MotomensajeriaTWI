@@ -14,6 +14,7 @@ main {
     width: 35%;
     height: 75%;
 }
+
 .container-form-login{
     height: 100%;
     display: flex;
@@ -22,7 +23,7 @@ main {
 }
 .titulo-login {
     font-size: 30px;
-    color: #000000;
+    color: white;
     margin-bottom: 5%;
 }
 .sub_columna{
@@ -36,6 +37,12 @@ main {
 }
 .sub_columna div{
     padding:2%;
+}
+.sub_columna a{
+    color:white;
+}
+.sub_columna a:hover{
+    color:violet;
 }
 .label-form{
     margin-top: 5%;
