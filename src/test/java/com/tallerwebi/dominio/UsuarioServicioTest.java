@@ -68,21 +68,6 @@ public class UsuarioServicioTest {
         verify(usuarioRepositorio, times(1)).guardarUsuario(conductor);
     }
 
-
-   /* @Test
-    public void queSeBusqueUsuarioDuplicadoYAlEncontrarloSeLanceLaExcepcionUsuarioDuplicadoExceptionSiYaExisteElUsuario() throws UsuarioDuplicadoException {
-        DatosUsuario nuevoUsuario = mock(DatosUsuario.class);
-        when(nuevoUsuario.getEmail()).thenReturn("cami@gmail.com");
-        when(nuevoUsuario.getNombreUsuario()).thenReturn("Cami");
-
-        Usuario usuarioDuplicado = mock(Usuario.class);
-        when(usuarioRepositorio.buscarDuplicados("cami@gmail.com", "Cami")).thenReturn(usuarioDuplicado);
-
-        assertThrows(UsuarioDuplicadoException.class, () -> {
-            usuarioServicio.registrarUsuario(nuevoUsuario);
-        });
-    }*/
-
     @Test
     public void queSeBusqueUsuarioDuplicadoYQueAlEncontrarloSeLanceLaExcepcionUsuarioDuplicadoException () throws UsuarioDuplicadoException {
 
@@ -113,10 +98,8 @@ public class UsuarioServicioTest {
 
         when(usuario.getTipoUsuario()).thenReturn(TipoUsuario.Cliente);
 
-        // Simulamos que buscarDuplicados lanza una excepción NoResultException
         when(this.usuarioRepositorio.buscarDuplicados("cami123@outlook.com", "Camila")).thenThrow(new NoResultException());
 
-        // Mock para el usuario que se va a guardar
         Cliente cliente = new Cliente();
         cliente.setEmail("cami123@outlook.com");
         cliente.setNombreUsuario("Camila");
@@ -124,7 +107,6 @@ public class UsuarioServicioTest {
         when(usuario.toCliente()).thenReturn(cliente);
         when(usuarioRepositorio.guardarUsuario(cliente)).thenReturn(cliente);
 
-        // Verificamos el registro del usuario
         Usuario usuarioRegistrado = usuarioServicio.registrarUsuario(usuario);
 
         assertNotNull(usuarioRegistrado);

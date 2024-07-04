@@ -106,31 +106,6 @@ public class UsuarioControladorTest {
     }
 
 //MOSTRAR-PERFIL
-   /* @Test
-    public void queAlSolicitarRedirigirseAlPerfilSeMuestreElPerfilDelUsuario() throws Exception {
-        String viewName="perfil";
-        Usuario usuario= mock(Usuario.class);
-
-        when(this.usuarioServicio.obtenerUsuarioPorId((Integer)this.session.getAttribute("IDUSUARIO"))).thenReturn(usuario);
-        ModelAndView mav = usuarioControlador.irAPerfil(session);
-
-        assertThat(mav.getViewName(), equalToIgnoringCase(viewName));
-        assertThat(mav.getModel().get("usuario"), instanceOf(Usuario.class));
-        assertThat(mav.getModel().containsKey("mensajeError"), equalTo(false));
-    }*/
-
-/*    @Test
-    public void queAlSolicitarRedirigirseAlPerfilYNoSeEncuentreUsuarioSeMuestreUnMensajeDeError() throws UsuarioNoEncontradoException {
-        String viewName="perfil";
-        Usuario usuario= mock(Usuario.class);
-
-        when(this.usuarioServicio.obtenerUsuarioPorId((Integer)this.session.getAttribute("IDUSUARIO"))).thenThrow(UsuarioNoEncontradoException.class);
-        ModelAndView mav = usuarioControlador.irAPerfil(session);
-
-        assertThat(mav.getViewName(), equalToIgnoringCase(viewName));
-        assertThat(mav.getModel().containsKey("mensajeError"), equalTo(true));
-        assertThat(mav.getModel().containsKey("usuario"), equalTo(false));
-    }*/
 
     @Test
     public void queAlSolicitarRedirigirseAlPerfilYNoSeEncuentreUsuarioSeMuestreUnMensajeDeError() throws UsuarioNoEncontradoException {
@@ -224,20 +199,6 @@ public class UsuarioControladorTest {
         assertThat(mav.getModel().containsKey("mensajeError"), equalTo(false));
     }
 
-    /*@Test
-    public void queAlSolicitarRedirigirseALaEdicionDeFotoDePerfilYNoSeEncuentreUnUsuarioExistenteMuestreUnMensajeDeError() throws UsuarioNoEncontradoException {
-        String viewName="foto-perfil";
-        Usuario usuario= mock(Usuario.class);
-
-        when(this.usuarioServicio.obtenerUsuarioPorId((Integer) this.session.getAttribute("IDUSUARIO"))).thenThrow(new UsuarioNoEncontradoException("No se encontro al usuario."));
-        ModelAndView mav = usuarioControlador.irAEditarFotoPerfil(session);
-
-        assertThat(mav.getViewName(), equalToIgnoringCase(viewName));
-        assertThat(mav.getModel().containsKey("usuario"), equalTo(false));
-        assertThat(mav.getModel().containsKey("mensajeError"), equalTo(true));
-        assertThat(mav.getModel().get("mensajeError"), equalTo("No se encontro al usuario."));
-    }*/
-
     @Test
     public void queAlSolicitarRedirigirseALaEdicionDeFotoDePerfilYNoSeEncuentreUnUsuarioExistenteMuestreUnMensajeDeError() throws UsuarioNoEncontradoException {
 
@@ -273,20 +234,6 @@ public class UsuarioControladorTest {
         assertThat((boolean) mav.getModel().get("isEditForm"), equalTo(true));
         assertThat(mav.getModel().containsKey("mensajeError"), equalTo(false));
     }
-/*
-    @Test
-    public void queAlSolicitarEditarUsuarioNoSeEncuentreElMismoYMUestreUnMensajeDeError() throws UsuarioNoEncontradoException {
-        String viewName="form-usuario";
-        Usuario usuario= mock(Usuario.class);
-
-        when(this.usuarioServicio.obtenerUsuarioPorId((Integer)this.session.getAttribute("IDUSUARIO"))).thenThrow(UsuarioNoEncontradoException.class);
-
-        ModelAndView mav = usuarioControlador.mostrarEditarFormulario(session);
-
-        assertThat(mav.getViewName(), equalToIgnoringCase(viewName));
-        assertThat(mav.getModel().containsKey("mensajeError"), equalTo(true));
-        assertThat(mav.getModel().containsKey("usuario"), equalTo(false));
-    }*/
 
     @Test
     public void queSeLanceUsuarioNoEncontradoExcepcionAlSolicitarEditarUsuario() throws UsuarioNoEncontradoException {
