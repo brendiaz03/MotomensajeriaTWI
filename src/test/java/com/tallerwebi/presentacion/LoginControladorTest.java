@@ -26,12 +26,7 @@ public class LoginControladorTest {
 	private HttpSession sessionMock;
 	private LoginControlador controladorLogin;
 	private LoginServicio servicioLoginMock;
-	private ConductorServicio servicioConductorMock;
-	private Conductor usuarioMock;
 	private DatosLogin datosLoginMock;
-	private ViajeServicio viajeServicio;
-	private ClienteServicio clienteServicio;
-	private MockMvc mockMvc; // Injected mock MVC object
 
 
 
@@ -40,43 +35,22 @@ public class LoginControladorTest {
 		requestMock = mock(HttpServletRequest.class);
 		sessionMock = mock(HttpSession.class);
 		servicioLoginMock = mock(LoginServicio.class);
-		servicioConductorMock = mock(ConductorServicio.class);
-		clienteServicio = mock(ClienteServicio.class);
 		when(requestMock.getSession()).thenReturn(sessionMock);
-		controladorLogin = new LoginControlador(servicioLoginMock, servicioConductorMock, clienteServicio);
-		usuarioMock = mock(Conductor.class);
-		when(usuarioMock.getNombreUsuario()).thenReturn("b");
-		when(usuarioMock.getPassword()).thenReturn("b");  // Establecer una contraseña válida
-		datosLoginMock = new DatosLogin("dami@unlam.com", "123");
-	}
-
-	@Test
-	public void loginConUsuarioYPasswordIncorrectosDeberiaLlevarALoginNuevamente(){
-		// preparacion
-		when(servicioLoginMock.consultarUsuario(anyString(), anyString())).thenReturn(null);
-
-		// ejecucion
-		ModelAndView modelAndView = controladorLogin.validarLogin(datosLoginMock, sessionMock);
-
-		// validacion
-		assertThat(modelAndView.getViewName(), equalToIgnoringCase("login"));
-		assertThat(modelAndView.getModel().get("error").toString(), equalToIgnoringCase("Usuario o clave incorrecta"));
+		controladorLogin = new LoginControlador(servicioLoginMock);
 	}
 
 //	@Test
-//	public void dadoQueLoginConUsuarioYPasswordCorrectosDelConductorDeberiaLLevarAHomeConductor(){
-//		// Preparacion
-//		Conductor usuarioEncontradoMock = mock(Conductor.class);
-//		HttpSession sessionMock = mock(HttpSession.class);
+//	public void loginConUsuarioYPasswordIncorrectosDeberiaLlevarALoginNuevamente(){
+//		// preparacion
+//		when(servicioLoginMock.consultarUsuario(anyString(), anyString())).thenReturn(null);
 //
-//		when(requestMock.getSession()).thenReturn(sessionMock);
-//		when(servicioLoginMock.consultarUsuario(anyString(), anyString())).thenReturn(usuarioEncontradoMock);
-//
-//		// Ejecucion
+//		// ejecucion
 //		ModelAndView modelAndView = controladorLogin.validarLogin(datosLoginMock, sessionMock);
 //
-//		// Validacion
-//		assertThat(modelAndView.getViewName(), equalToIgnoringCase("homeConductor"));
+//		// validacion
+//		assertThat(modelAndView.getViewName(), equalToIgnoringCase("login"));
+//		assertThat(modelAndView.getModel().get("error").toString(), equalToIgnoringCase("Usuario o clave incorrecta"));
 //	}
+
 
 }

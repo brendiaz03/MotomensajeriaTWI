@@ -2,6 +2,7 @@ package com.tallerwebi.presentacion;
 
 import com.tallerwebi.dominio.cliente.Cliente;
 import com.tallerwebi.dominio.cliente.ClienteServicio;
+import com.tallerwebi.dominio.exceptions.UsuarioNoEncontradoException;
 import com.tallerwebi.dominio.mercadoPago.MercadoPagoServicio;
 import com.tallerwebi.dominio.mercadoPago.MercadoPagoServicioImpl;
 import com.tallerwebi.dominio.paquete.Paquete;
@@ -97,7 +98,7 @@ public class ViajeControlador {
     }
 
     @RequestMapping(value = "/crear-envio")
-    public String crearViajeConPaqueteYCliente(HttpSession session) throws PaqueteNoEncontradoException {
+    public String crearViajeConPaqueteYCliente(HttpSession session) throws PaqueteNoEncontradoException, UsuarioNoEncontradoException {
         // Obtiene el cliente y el paquete actual desde la sesión
         Integer idUsuario = (Integer) session.getAttribute("IDUSUARIO");
         Cliente cliente = this.clienteServicio.obtenerClientePorId(idUsuario);
