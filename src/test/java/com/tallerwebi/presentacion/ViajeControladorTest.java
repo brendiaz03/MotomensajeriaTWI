@@ -241,6 +241,28 @@ public class ViajeControladorTest {
         when(session.getAttribute("viajeActual")).thenReturn(viaje);
         when(clienteServicio.obtenerClientePorId(idUsuario)).thenReturn(cliente);
 
+//    @Test
+//    public void queSePuedaCrearUnViajeConUnPaqueteYUnClienteAsignado() throws PaqueteNoEncontradoException {
+//        // Preparación
+//        Integer idUsuario = 1;
+//        Cliente cliente = new Cliente();
+//        Paquete paquete = new Paquete();
+//        Viaje viaje = new Viaje();
+//        viaje.setPrecio(100.0);
+//        when(session.getAttribute("IDUSUARIO")).thenReturn(idUsuario);
+//        when(session.getAttribute("paqueteActual")).thenReturn(paquete);
+//        when(session.getAttribute("viajeActual")).thenReturn(viaje);
+//        when(clienteServicio.obtenerClientePorId(idUsuario)).thenReturn(cliente);
+//
+//        // Ejecución
+//        String viajeObtenido = viajeControlador.crearViajeConPaqueteYCliente(session);
+//
+//        // Validación
+//        verify(paqueteServicio).guardarPaquete(paquete);
+//        verify(viajeServicio).crearViaje(cliente, viaje, paquete);
+//        assertEquals("redirect:/pagar?precio=100.0", viajeObtenido);
+//    }
+
         // Ejecución
         doThrow(new NoSePudoGuardarElPaqueteException("No se pudo guardar el paquete en nuestro sistema.")).when(paqueteServicio).guardarPaquete(paquete);
 

@@ -10,7 +10,7 @@ import javax.swing.text.View;
 @RestController
 public class UbicacionControlador {
 
-    @PostMapping("/actualizarUbicacion")
+    @PostMapping("/actualizar-ubicacion")
     public ResponseEntity<String> ubicacion(HttpSession session,
                                             @RequestParam("latitud") double latitud,
                                             @RequestParam("longitud") double longitud,
