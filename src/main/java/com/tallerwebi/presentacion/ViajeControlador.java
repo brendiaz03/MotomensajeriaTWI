@@ -4,6 +4,7 @@ import com.tallerwebi.dominio.cliente.Cliente;
 import com.tallerwebi.dominio.cliente.ClienteServicio;
 import com.tallerwebi.dominio.exceptions.NoSePudoGuardarElPaqueteException;
 import com.tallerwebi.dominio.exceptions.PaqueteNoEncontradoException;
+import com.tallerwebi.dominio.exceptions.UsuarioNoEncontradoException;
 import com.tallerwebi.dominio.mercadoPago.MercadoPagoServicio;
 import com.tallerwebi.dominio.paquete.Paquete;
 import com.tallerwebi.dominio.paquete.PaqueteServicio;
@@ -93,18 +94,30 @@ public class ViajeControlador {
     }
 
     @RequestMapping(value = "/crear-envio")
-    public ModelAndView crearViajeConPaqueteYCliente(HttpSession session) throws PaqueteNoEncontradoException, NoSePudoGuardarElPaqueteException {
+    public ModelAndView crearViajeConPaqueteYCliente(HttpSession session) throws UsuarioNoEncontradoException, NoSePudoGuardarElPaqueteException {
         // Obtiene el cliente y el paquete actual desde la sesión
         Integer idUsuario = (Integer) session.getAttribute("IDUSUARIO");
         Cliente cliente = this.clienteServicio.obtenerClientePorId(idUsuario);
         Paquete paqueteActual = (Paquete) session.getAttribute("paqueteActual");
         Viaje viajeActual = (Viaje) session.getAttribute("viajeActual");
 
-        this.paqueteServicio.guardarPaquete(paqueteActual);
-        this.viajeServicio.crearViaje(cliente, viajeActual, paqueteActual);
+        try {
 
-        // Redirección con el precio del viaje
-        return new ModelAndView("redirect:/pagar?precio=" + viajeActual.getPrecio());
+            this.paqueteServicio.guardarPaquete(paqueteActual);
+
+            this.viajeServicio.crearViaje(cliente, viajeActual, paqueteActual);
+
+            // Redirección con el precio del viaje
+            return new ModelAndView("redirect:/pagar?precio=" + viajeActual.getPrecio());
+
+        } catch (NoSePudoGuardarElPaqueteException e) {
+
+            String error = "Error: " + e.getMessage();
+
+            return new ModelAndView(error);
+
+        }
+
     }
 
     @RequestMapping(value = "/pagar")

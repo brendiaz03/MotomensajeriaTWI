@@ -218,7 +218,9 @@ public class ConductorControlador {
 
         try {
             String redirectUrl = mercadoPagoServicio.pagarPenalizacionMp(montoPenalizacion);
+
             return new ModelAndView("redirect:" + redirectUrl);
+
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Error al procesar el pago: " + e.getMessage());
             return new ModelAndView("redirect:/homeConductor");
