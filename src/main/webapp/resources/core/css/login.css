@@ -4,17 +4,10 @@ main {
     justify-content: center; /* Alinea horizontalmente el contenido */
     height: 89vh;
 }
-.btn-aceptar{
-    width: 200px;
-}
-.btn-cancelar{
-    width: 200px;
-}
 .fondo-form{
     width: 35%;
     height: 75%;
 }
-
 .container-form-login{
     height: 100%;
     display: flex;
@@ -46,4 +39,12 @@ main {
 }
 .label-form{
     margin-top: 5%;
+}
+
+.btn-principal{
+    width: 10em;
+}
+
+.btn-secundario{
+    width: 10em;
 }

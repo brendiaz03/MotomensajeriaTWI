@@ -17,28 +17,53 @@ html{
     margin: 0;
 }
 
-.btn-secundario{
-    color: #370a37;
+.btn-principal{
+    color: purple;
     background-color: white;
+    border-color: transparent;
     border-radius: 50px;
+    width: 7em;
+    text-align: center;
     padding: 5px 30px 5px 30px ;
     text-decoration: none;
 }
 
-.btn-principal{
+.btn-principal:hover{
+    color: white;
+    background-color: purple;
+}
+
+.btn-secundario{
     color: #ffffff;
     background-color: transparent;
     border-color: white;
     border-radius: 50px;
+    text-align: center;
+    width: 7em;
     padding: 5px 30px 5px 30px ;
     text-decoration: none;
 }
 
-.btn-principal:hover {
+.btn-secundario:hover {
     background: violet;
-    border-color:#36054E;
-    text-decoration: none;
+    border-color: transparent;
     color: white;
+}
+
+.btn-terciario{
+    color: white;
+    background-color: purple;
+    border-color: transparent;
+    border-radius: 50px;
+    width: 7em;
+    text-align: center;
+    padding: 5px 30px 5px 30px ;
+    text-decoration: none;
+}
+
+.btn-terciario:hover{
+    color: purple;
+    background-color: white;
 }
 .fondo-form {
     align-self: center;
@@ -52,27 +77,62 @@ html{
     -webkit-backdrop-filter: blur(15px);
     border: 1px solid rgba(255, 255, 255, 0.5);
     position: relative;
+    color:white;
 }
+.fondo-form h2{
+    text-align: center;
+}
+
 .form-control{
     border-color: white;
-    border-radius: 15px; /* Elimina cualquier radio de borde */
-    background-color: transparent; /* Hace el fondo transparente para que se vea como una línea */
-    height: 30px; /* Ajusta automáticamente la altura según el contenido */
+    border-radius: 15px;
+    background-color: transparent;
+    height: 30px;
     color:white;
-    padding:2%;
+    padding:3%;
 }
 .form-control:focus {
     background-color: transparent;
-    outline: none; /* Elimina el resplandor predeterminado al enfocar el campo */
+    outline: none;
     color:white;
-    padding:2%;
 }
-.cont-precio{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    margin-top: 1rem;
+
+.form-control:-webkit-autofill {
+    box-shadow: 0 0 0 30px transparent inset;
+    -webkit-box-shadow: 0 0 0 30px transparent  inset;
+    color:white;
 }
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    -webkit-text-fill-color: white;
+    -webkit-box-shadow: 0 0 0 1000px transparent inset;
+    transition: background-color 5000s ease-in-out 0s;
+}
+
+input[type="number"] {
+    -moz-appearance: textfield;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/*.cont-precio{*/
+/*    display: flex;*/
+/*    flex-direction: row;*/
+/*    justify-content: space-between;*/
+/*    margin-top: 1rem;*/
+/*}*/
 .contenedor-botones{
     display: flex;
     justify-content: space-around;
@@ -91,13 +151,19 @@ h5{
     text-align: center;
     color: white;
 }
-b, strong {
-    color: #6b6b6b;}
+
 .cont{
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 1rem;
+}
+
+
+.error {
+    color: hotpink;
+    font-size: 0.9em;
+    margin-top: 5px;
 }
 .btn-terminado{
     background-color: green;

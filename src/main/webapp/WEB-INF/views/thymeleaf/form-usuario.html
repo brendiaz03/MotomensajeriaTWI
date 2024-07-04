@@ -40,7 +40,7 @@
 </header>
 <main class="main_registro">
 
-<div class="formulario_fondo">
+<div class="fondo-form">
     <h1 th:if="${isEditForm}" class="titulo_registroConductor">Editar Datos Personales</h1>
     <h1 th:unless="${isEditForm}" class="titulo_registroConductor">Registrarme</h1>
 
@@ -112,11 +112,11 @@
             </div>
         </section>
         <section class="botones">
-            <a th:if="${isEditForm}" ><button th:href="perfil" id="boton_cancelar_edit" type="button" class="boton_cancelar">Cancelar</button></a>
-            <a th:unless="${isEditForm}" ><button th:href="home" id="boton_cancelar_ingresar" type="button" class="boton_cancelar">Cancelar</button></a>
+            <a th:if="${isEditForm}" ><button th:href="perfil" id="boton_cancelar_edit" type="button" class="btn-secundario">Cancelar</button></a>
+            <a th:unless="${isEditForm}" ><button th:href="home" id="boton_cancelar_ingresar" type="button" class="btn-secundario">Cancelar</button></a>
 
-            <button th:if="${isEditForm}" type="submit"  id="boton_editar_usuario" class="boton_submit">Editar</button>
-            <button th:unless="${isEditForm}" type="submit" id="boton_reg_usuario" class="boton_submit">Registrar</button>
+            <button th:if="${isEditForm}" type="submit"  id="boton_editar_usuario" class="btn-principal">Editar</button>
+            <button th:unless="${isEditForm}" type="submit" id="boton_reg_usuario" class="btn-principal">Registrar</button>
         </section>
 
 
