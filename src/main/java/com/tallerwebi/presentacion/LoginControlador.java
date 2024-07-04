@@ -16,29 +16,30 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 @Controller
-@SessionAttributes("isUsuarioLogueado")
 public class LoginControlador {
 
     private LoginServicio loginServicio;
-    private ConductorServicio conductorServicio;
-    private ClienteServicio clienteServicio;
 
 
     @Autowired
-    public LoginControlador(LoginServicio loginServicio, ConductorServicio conductorServicio, ClienteServicio clienteServicio){
+    public LoginControlador(LoginServicio loginServicio){
         this.loginServicio = loginServicio;
-        this.conductorServicio = conductorServicio;
-        this.clienteServicio = clienteServicio;
     }
 
     @RequestMapping("/")
     public ModelAndView error1(HttpSession session) {
         return this.mostrarHome(session);
     }
+
+
     @RequestMapping("/*")
-    public ModelAndView error() {
+    public ModelAndView error(String mensajeError) {
+        ModelMap model = new ModelMap();
         String viewName= "error";
-        return new ModelAndView(viewName);
+        if(mensajeError!=null){
+            model.put("error", mensajeError);
+        }
+        return new ModelAndView(viewName, model);
     }
 
     @RequestMapping(path = "/home")
@@ -69,7 +70,6 @@ public class LoginControlador {
             if (usuario != null) {
                 session.setAttribute("IDUSUARIO", usuario.getId());
                 session.setAttribute("tipoUsuario", usuario.getTipoUsuario());
-                session.setAttribute("isUsuarioLogueado", true);
                 session.setAttribute("isEditForm", false);
                 model.put("correcto", "Usuario o clave correcta");
                 if(usuario.getTipoUsuario().equals(TipoUsuario.Conductor)){
@@ -85,7 +85,6 @@ public class LoginControlador {
 
     @RequestMapping(path = "/cerrar-sesion")
     public ModelAndView cerrarSesion(HttpSession session) throws UsuarioNoEncontradoException {
-        session.setAttribute("isUsuarioLogueado",false);
         session.invalidate();
         return mostrarHome(session);
     }

@@ -1,273 +1,305 @@
 package com.tallerwebi.presentacion;
 
+import com.tallerwebi.dominio.cliente.Cliente;
 import com.tallerwebi.dominio.cliente.ClienteServicio;
-import com.tallerwebi.dominio.conductor.Conductor;
-import com.tallerwebi.dominio.exceptions.UsuarioNoEncontradoException;
 import com.tallerwebi.dominio.conductor.ConductorServicio;
-import com.tallerwebi.dominio.enums.TipoEstado;
+import com.tallerwebi.dominio.mercadoPago.MercadoPagoServicio;
+import com.tallerwebi.dominio.paquete.Paquete;
+import com.tallerwebi.dominio.paquete.PaqueteNoEncontradoException;
 import com.tallerwebi.dominio.paquete.PaqueteServicio;
 import com.tallerwebi.dominio.viaje.Viaje;
 import com.tallerwebi.dominio.viaje.ViajeServicio;
-import com.tallerwebi.presentacion.Datos.DatosViaje;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 
+import static junit.framework.Assert.assertNotNull;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.equalToIgnoringCase;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.time.LocalDateTime;
 
 public class ViajeControladorTest {
 
     private ViajeServicio viajeServicio;
-    private ConductorServicio conductorServicio;
-    private HttpSession httpSession;
+    private HttpSession session;
     private ViajeControlador viajeControlador;
     private HttpServletRequest request;
     private ClienteServicio clienteServicio;
-
     private PaqueteServicio paqueteServicio;
-
+    private MercadoPagoServicio mercadoPagoServicio;
+    private RedirectAttributes redirectAttributes;
 
     @BeforeEach
     public void init() {
         this.viajeServicio = mock(ViajeServicio.class);
-        this.conductorServicio = mock(ConductorServicio.class);
         this.clienteServicio = mock(ClienteServicio.class);
-        this.httpSession = mock(HttpSession.class);
+        this.session = mock(HttpSession.class);
         this.request = mock(HttpServletRequest.class);
-        this.viajeControlador = new ViajeControlador(this.viajeServicio, this.conductorServicio, this.clienteServicio, this.paqueteServicio);
+        this.paqueteServicio = mock(PaqueteServicio.class);
+        this.mercadoPagoServicio = mock(MercadoPagoServicio.class);
+        this.redirectAttributes = mock(RedirectAttributes.class);
+        this.viajeControlador = new ViajeControlador(this.viajeServicio, this.clienteServicio, this.paqueteServicio, this.mercadoPagoServicio);
+    }
+
+    @Test
+    public void mostrarFormViaje() {
+        // Preparación
+        when(session.getAttribute("isEditViaje")).thenReturn(false);
+        when(session.getAttribute("isEditPackage")).thenReturn(false);
+        when(session.getAttribute("viajeActual")).thenReturn(null);
+        when(session.getAttribute("paqueteActual")).thenReturn(null);
+        when(session.getAttribute("pasoActual")).thenReturn(null);
+
+        // Ejecución
+        ModelAndView mav = viajeControlador.mostrarFormViaje(session);
+
+        // Validación
+        ModelMap model = mav.getModelMap();
+        assertEquals("form-viaje", mav.getViewName());
+        assertEquals(false, model.get("isEditViaje"));
+        assertEquals(false, model.get("isEditPackage"));
+        assertEquals("AIzaSyDcPeOyMBqG_1mZgjpei_R2ficRigdkINg", model.get("clave"));
+        assertEquals(1, model.get("pasoActual"));
+    }
+
+    @Test
+    public void mostrarFormYQueElUsuarioEditeElViajeYElPaquete() {
+        // Preparación
+        Viaje viaje = new Viaje();
+        Paquete paquete = new Paquete();
+        when(session.getAttribute("isEditViaje")).thenReturn(true);
+        when(session.getAttribute("isEditPackage")).thenReturn(true);
+        when(session.getAttribute("viajeActual")).thenReturn(viaje);
+        when(session.getAttribute("paqueteActual")).thenReturn(paquete);
+        when(session.getAttribute("pasoActual")).thenReturn(3);
+
+        // Ejecución
+        ModelAndView mav = viajeControlador.mostrarFormViaje(session);
+
+        // Validación
+        ModelMap model = mav.getModelMap();
+        assertEquals("form-viaje", mav.getViewName());
+        assertEquals(true, model.get("isEditViaje"));
+        assertEquals(true, model.get("isEditPackage"));
+        assertEquals("AIzaSyDcPeOyMBqG_1mZgjpei_R2ficRigdkINg", model.get("clave"));
+    }
+
+    @Test
+    public void mostrarFormYQueElUsuarioEditeElViaje() {
+        // Preparación
+        Viaje viaje = new Viaje();
+        Paquete paquete = new Paquete();
+        when(session.getAttribute("isEditViaje")).thenReturn(true);
+        when(session.getAttribute("isEditPackage")).thenReturn(false);
+        when(session.getAttribute("viajeActual")).thenReturn(viaje);
+        when(session.getAttribute("paqueteActual")).thenReturn(paquete);
+        when(session.getAttribute("pasoActual")).thenReturn(3);
+
+        // Ejecución
+        ModelAndView mav = viajeControlador.mostrarFormViaje(session);
+
+        // Validación
+        ModelMap model = mav.getModelMap();
+        assertEquals("form-viaje", mav.getViewName());
+        assertEquals(true, model.get("isEditViaje"));
+        assertEquals(false, model.get("isEditPackage"));
+        assertEquals("AIzaSyDcPeOyMBqG_1mZgjpei_R2ficRigdkINg", model.get("clave"));
+        assertEquals(paquete, model.get("paquete"));
+    }
+
+    @Test
+    public void mostrarFormYQueElUsuarioEditeElPaquete() {
+        // Preparación
+        Viaje viaje = new Viaje();
+        Paquete paquete = new Paquete();
+        when(session.getAttribute("isEditViaje")).thenReturn(false);
+        when(session.getAttribute("isEditPackage")).thenReturn(true);
+        when(session.getAttribute("viajeActual")).thenReturn(viaje);
+        when(session.getAttribute("paqueteActual")).thenReturn(paquete);
+        when(session.getAttribute("pasoActual")).thenReturn(3);
+
+        // Ejecución
+        ModelAndView mav = viajeControlador.mostrarFormViaje(session);
+
+        // Validación
+        ModelMap model = mav.getModelMap();
+        assertEquals("form-viaje", mav.getViewName());
+        assertEquals(false, model.get("isEditViaje"));
+        assertEquals(true, model.get("isEditPackage"));
+        assertEquals("AIzaSyDcPeOyMBqG_1mZgjpei_R2ficRigdkINg", model.get("clave"));
+    }
+
+    @Test
+    public void mostrarFormViajeYQueElUsuarioNoEditeElViajeNiElPaquete() {
+        // Preparación
+        Viaje viaje = new Viaje();
+        Paquete paquete = new Paquete();
+        when(session.getAttribute("isEditViaje")).thenReturn(false);
+        when(session.getAttribute("isEditPackage")).thenReturn(false);
+        when(session.getAttribute("viajeActual")).thenReturn(viaje);
+        when(session.getAttribute("paqueteActual")).thenReturn(paquete);
+        when(session.getAttribute("pasoActual")).thenReturn(2);
+
+        // Ejecución
+        ModelAndView mav = viajeControlador.mostrarFormViaje(session);
+
+        // Validación
+        ModelMap model = mav.getModelMap();
+        assertEquals("form-viaje", mav.getViewName());
+        assertEquals(false, model.get("isEditViaje"));
+        assertEquals(false, model.get("isEditPackage"));
+        assertEquals("AIzaSyDcPeOyMBqG_1mZgjpei_R2ficRigdkINg", model.get("clave"));
+    }
+
+    @Test
+    public void mostrarFormEditarViaje() {
+        // Preparación
+        ModelAndView mav = viajeControlador.mostrarFormEditorViaje(session);
+
+        // Ejecución
+        verify(session).setAttribute("isEditViaje", true);
+        verify(session).setAttribute("pasoActual", 2);
+
+        // Validación
+        assertEquals("redirect:/form-viaje", mav.getViewName());
+    }
+
+    @Test
+    public void queSePuedaEditarUnViaje() {
+        // Preparación
+        Viaje viaje = new Viaje();
+        viaje.setDomicilioDeLlegada("San Justo");
+        viaje.setFecha(LocalDateTime.of(2024, 12, 1, 0, 0));
+        when(request.getSession()).thenReturn(session);
+
+        // Ejecución
+        ModelAndView mav = viajeControlador.editarViaje(viaje, session);
+
+        // Validación
+        verify(session).setAttribute("isEditViaje", false);
+        verify(session).setAttribute("viajeActual", viaje);
+        verify(session).setAttribute("pasoActual", 3);
+        assertEquals("redirect:/form-viaje", mav.getViewName());
+    }
+
+    @Test
+    public void queSePuedaCrearUnViajeLocalmente() {
+        // Preparación
+        Viaje viaje = new Viaje();
+        viaje.setDomicilioDeSalida("San Justo");
+        viaje.setFecha(LocalDateTime.of(2024, 5, 28, 0, 0));
+
+        // Ejecución
+        ModelAndView modelAndView = viajeControlador.crearViajeLocalmente(viaje, session);
+
+        // Validación
+        verify(session).setAttribute("viajeActual", viaje);
+        verify(session).setAttribute("pasoActual", 3);
+        assertEquals("redirect:/form-viaje", modelAndView.getViewName());
     }
 
 //    @Test
-//    public void queSiElConductorApretaEnElBotonHistorialDeViajesSeLeMuestreLaVistaHistorialDeViajes() throws UsuarioNoEncontradoException {
+//    public void queSePuedaCrearUnViajeConUnPaqueteYUnClienteAsignado() throws PaqueteNoEncontradoException {
 //        // Preparación
-//        Conductor conductor = new Conductor();
-//        conductor.setId(1);
-//        List<DatosViaje> historialViajes = Arrays.asList(new DatosViaje(), new DatosViaje());
-//
-//        when(request.getSession()).thenReturn(httpSession);
-//        when(httpSession.getAttribute("isUsuarioLogueado")).thenReturn(true);
-//        when(httpSession.getAttribute("IDUSUARIO")).thenReturn(conductor.getId());
-//        when(conductorServicio.obtenerConductorPorId(1)).thenReturn(conductor);
-//        when(viajeServicio.obtenerHistorialDeViajes(conductor)).thenReturn(historialViajes);
-//
-//        // Ejecución
-//        ModelAndView modelAndView = viajeControlador.mostrarHistorial(request);
-//
-//        // Validación
-//        assertEquals(modelAndView.getModel().get("isUsuarioLogueado"), true);
-//        assertEquals(conductor, modelAndView.getModel().get("conductor"));
-//        assertEquals(historialViajes, modelAndView.getModel().get("viajesObtenidos"));
-//        assertThat(modelAndView.getViewName(), equalToIgnoringCase("historial-viajes"));
-//    }
-//
-//    @Test
-//    public void queCuandoElConductorAcepteElViajeLoLLeveAlViajeConElMapa() throws UsuarioNoEncontradoException {
-//        // Preparación
-//        Conductor conductor = new Conductor();
-//        conductor.setId(1);
-//        DatosViaje viaje = new DatosViaje();
-//        viaje.setIdViaje(1);
-//        //viaje.setAceptado(false);
-//
-//        when(request.getSession()).thenReturn(httpSession);
-//        when(httpSession.getAttribute("isUsuarioLogueado")).thenReturn(true);
-//        when(httpSession.getAttribute("IDUSUARIO")).thenReturn(conductor.getId());
-//        when(conductorServicio.obtenerConductorPorId(1)).thenReturn(conductor);
-//        when(viajeServicio.obtenerViajeAceptadoPorId(1)).thenReturn(viaje);
-//        doNothing().when(viajeServicio).aceptarViaje(viaje, conductor);
-//
-//        // Ejecución
-//        ModelAndView modelAndView = viajeControlador.AceptarViaje(request, viaje.getIdViaje());
-//
-//        // Validación
-//        assertEquals(modelAndView.getModel().get("isUsuarioLogueado"), true);
-//        assertEquals(conductor, modelAndView.getModel().get("conductor"));
-//        assertEquals(viaje, modelAndView.getModel().get("viaje"));
-//        assertEquals(viaje.getIdViaje(), modelAndView.getModel().get("idViaje"));
-//        assertThat(modelAndView.getViewName(), equalToIgnoringCase("viaje"));
-//    }
-//
-//    @Test
-//    public void queElConductorAlApretarEnElBotonViajesEnProcesoLoLleveALaVistaViajesEnProceso() throws UsuarioNoEncontradoException {
-//        // Preparación
-//        Conductor conductor = new Conductor();
-//        conductor.setId(1);
-//        List<Viaje> viajesEnProceso = Arrays.asList(new Viaje(), new Viaje());
-//
-//        when(request.getSession()).thenReturn(httpSession);
-//        when(httpSession.getAttribute("isUsuarioLogueado")).thenReturn(true);
-//        when(httpSession.getAttribute("IDUSUARIO")).thenReturn(1);
-//        when(conductorServicio.obtenerConductorPorId(1)).thenReturn(conductor);
-//        when(viajeServicio.obtenerViajesEnProceso(conductor)).thenReturn(viajesEnProceso);
-//
-//        // Ejecución
-//        ModelAndView modelAndView = viajeControlador.verViajesEnProceso(request);
-//
-//        // Validación
-//        assertEquals(modelAndView.getModel().get("isUsuarioLogueado"), true);
-//        assertEquals(conductor, modelAndView.getModel().get("conductor"));
-//        assertEquals(viajesEnProceso, modelAndView.getModel().get("viajesObtenidos"));
-//        assertThat(modelAndView.getViewName(), equalToIgnoringCase("viajes-aceptados"));
-//    }
-//
-//    @Test
-//    public void queElConductorPuedaVerElViajeAceptadoDesdeLaVistaViaje() throws UsuarioNoEncontradoException {
-//        // Preparación
-//        Conductor conductor = new Conductor();
-//        conductor.setId(1);
-//        DatosViaje viaje = new DatosViaje();
-//        viaje.setIdViaje(1);
-//        //viaje.setCancelado(false);
-//        //viaje.setTerminado(false);
-//        //viaje.setDescartado(false);
-//
-//        when(request.getSession()).thenReturn(httpSession);
-//        when(httpSession.getAttribute("isUsuarioLogueado")).thenReturn(true);
-//        when(httpSession.getAttribute("IDUSUARIO")).thenReturn(1);
-//        when(conductorServicio.obtenerConductorPorId(1)).thenReturn(conductor);
-//        when(viajeServicio.obtenerViajeAceptadoPorId(1)).thenReturn(viaje);
-//
-//        // Ejecución
-//        ModelAndView modelAndView = this.viajeControlador.verViaje(request, viaje.getIdViaje());
-//
-//        // Validación
-//        assertThat(modelAndView.getViewName(), equalToIgnoringCase("viaje"));
-//        //assertEquals(modelAndView.getModel().get("isUsuarioLogueado"), true);
-//        //assertEquals(conductor, modelAndView.getModel().get("conductor"));
-//        //assertEquals(viaje, modelAndView.getModel().get("viaje"));
-//        /*assertEquals(logo, modelAndView.getModel().get("logo"));
-//        assertEquals(user, modelAndView.getModel().get("user"));
-//        assertEquals(auto, modelAndView.getModel().get("auto"));
-//        assertEquals(fondo, modelAndView.getModel().get("fondo"));
-//        assertEquals(botonPS, modelAndView.getModel().get("botonPS"));*/
-//    }
-//
-//    @Test
-//    public void queSiElConductorCancelaElViajeLoRedirijaAlHome() {
-//        // Preparación
-//        Integer idViaje = 1;
-//        DatosViaje viaje = new DatosViaje();
-//        viaje.setIdViaje(idViaje);
-//        viaje.setEstado(TipoEstado.CANCELADO);
-//
-//        when(viajeServicio.obtenerViajeAceptadoPorId(idViaje)).thenReturn(viaje);
-//
-//        // Ejecución
-//        ModelAndView modelAndView = this.viajeControlador.cancelarViaje(idViaje);
-//
-//        // Validación
-//        assertThat(modelAndView.getViewName(), equalToIgnoringCase("redirect:/home"));
-//    }
-//
-//    @Test
-//    public void queSiElConductorTerminaElViajeLoRedirijaAlHome() {
-//        // Preparación
-//        Integer idViaje = 1;
-//        DatosViaje viaje = new DatosViaje();
-//        viaje.setIdViaje(idViaje);
-//        viaje.setEstado(TipoEstado.TERMINADO);
-//
-//        when(viajeServicio.obtenerViajeAceptadoPorId(idViaje)).thenReturn(viaje);
-//        doNothing().when(viajeServicio).terminarViaje(viaje);
-//
-//        // Ejecución
-//        ModelAndView modelAndView = this.viajeControlador.terminarViaje(idViaje);
-//
-//        // Validación
-//        assertThat(modelAndView.getViewName(), equalToIgnoringCase("redirect:/home"));
-//    }
-//
-//    @Test
-//    public void queSiElConductorApretaEnElBotonVolverQueVuelvaAlHome() {
-//        // Ejecución
-//        ModelAndView modelAndView = this.viajeControlador.volverAlHome();
-//
-//        // Validación
-//        assertThat(modelAndView.getViewName(), equalToIgnoringCase("redirect:/home"));
-//    }
-//
-//    @Test
-//    public void queCuandoElConductorDescarteUnViajeLoRedirijaAlHome() throws UsuarioNoEncontradoException {
-//        // Preparación
-//        Integer idViaje = 1;
-//        Conductor conductor = new Conductor();
-//        conductor.setId(1);
-//
-//        when(request.getSession()).thenReturn(httpSession);
-//        when(httpSession.getAttribute("IDUSUARIO")).thenReturn(1);
-//        when(conductorServicio.obtenerConductorPorId(1)).thenReturn(conductor);
-//        doNothing().when(viajeServicio).descartarViaje(idViaje, conductor);
-//        when(viajeServicio.estaPenalizado(conductor)).thenReturn(false);
-//
-//        // Ejecución
-//        ModelAndView mav = this.viajeControlador.descartarViaje(request, idViaje);
-//
-//        // Validación
-//        assertThat(mav.getViewName(), equalToIgnoringCase("redirect:/home"));
-//        assertThat(httpSession.getAttribute("IDUSUARIO"), equalTo(1));
-//        assertThat(conductorServicio.obtenerConductorPorId(1), equalTo(conductor));
-//        assertThat(viajeServicio.estaPenalizado(conductor), equalTo(false));
-//    }
-//
-//    @Test
-//    public void queCuandoElConductorDescarteCincoViajesLoPenalize() throws UsuarioNoEncontradoException {
-//        // Preparación
-//        Conductor conductor = new Conductor();
-//        conductor.setId(1);
-//
-//        List<Viaje> viajes = new ArrayList<>();
+//        Integer idUsuario = 1;
+//        Cliente cliente = new Cliente();
+//        Paquete paquete = new Paquete();
 //        Viaje viaje = new Viaje();
-//        viaje.setId(1);
-//        viajes.add(viaje);
-//
-//        Viaje viaje2 = new Viaje();
-//        viaje2.setId(2);
-//        viajes.add(viaje2);
-//
-//        Viaje viaje3 = new Viaje();
-//        viaje3.setId(3);
-//        viajes.add(viaje3);
-//
-//        Viaje viaje4 = new Viaje();
-//        viaje4.setId(4);
-//        viajes.add(viaje4);
-//
-//        Viaje viaje5 = new Viaje();
-//        viaje5.setId(5);
-//        viajes.add(viaje5);
-//
-//        when(request.getSession()).thenReturn(httpSession);
-//        when(httpSession.getAttribute("IDUSUARIO")).thenReturn(1);
-//        when(conductorServicio.obtenerConductorPorId(1)).thenReturn(conductor);
-//        doNothing().when(viajeServicio).descartarViaje(viaje.getId(), conductor);
-//        doNothing().when(viajeServicio).descartarViaje(viaje2.getId(), conductor);
-//        doNothing().when(viajeServicio).descartarViaje(viaje3.getId(), conductor);
-//        doNothing().when(viajeServicio).descartarViaje(viaje4.getId(), conductor);
-//        doNothing().when(viajeServicio).descartarViaje(viaje5.getId(), conductor);
-//        when(viajeServicio.estaPenalizado(conductor)).thenReturn(true);
+//        viaje.setPrecio(100.0);
+//        when(session.getAttribute("IDUSUARIO")).thenReturn(idUsuario);
+//        when(session.getAttribute("paqueteActual")).thenReturn(paquete);
+//        when(session.getAttribute("viajeActual")).thenReturn(viaje);
+//        when(clienteServicio.obtenerClientePorId(idUsuario)).thenReturn(cliente);
 //
 //        // Ejecución
-//        this.viajeControlador.descartarViaje(request, viaje.getId());
-//        this.viajeControlador.descartarViaje(request, viaje2.getId());
-//        this.viajeControlador.descartarViaje(request, viaje3.getId());
-//        this.viajeControlador.descartarViaje(request, viaje4.getId());
-//        ModelAndView mav = this.viajeControlador.descartarViaje(request, viaje5.getId());
+//        String viajeObtenido = viajeControlador.crearViajeConPaqueteYCliente(session);
 //
 //        // Validación
-//        assertThat(mav.getViewName(), equalToIgnoringCase("redirect:/home"));
-//        assertThat(httpSession.getAttribute("IDUSUARIO"), equalTo(1));
-//        assertThat(conductorServicio.obtenerConductorPorId(1), equalTo(conductor));
-//        assertThat(viajeServicio.estaPenalizado(conductor), equalTo(true));
+//        verify(paqueteServicio).guardarPaquete(paquete);
+//        verify(viajeServicio).crearViaje(cliente, viaje, paquete);
+//        assertEquals("redirect:/pagar?precio=100.0", viajeObtenido);
 //    }
+
+//    @Test
+//    public void queNoSePuedaCrearUnViajeConUnPaqueteYUnClienteSiElPaqueteNoFueEncontrado() throws PaqueteNoEncontradoException {
+//        // Preparación
+//        Integer idUsuario = 1;
+//        Cliente cliente = new Cliente();
+//        Paquete paquete = new Paquete();
+//        Viaje viaje = new Viaje();
+//        viaje.setPrecio(100.0);
+//        when(session.getAttribute("IDUSUARIO")).thenReturn(idUsuario);
+//        when(session.getAttribute("paqueteActual")).thenReturn(paquete);
+//        when(session.getAttribute("viajeActual")).thenReturn(viaje);
+//        when(clienteServicio.obtenerClientePorId(idUsuario)).thenReturn(cliente);
+//
+//        // Ejecución
+//        doThrow(new PaqueteNoEncontradoException()).when(paqueteServicio).guardarPaquete(paquete);
+//
+//        // Validación
+//        assertThrows(PaqueteNoEncontradoException.class, () -> {
+//            viajeControlador.crearViajeConPaqueteYCliente(session);
+//        });
+//    }
+
+    @Test
+    public void queSePuedaPagarUnEnvio() throws Exception {
+        // Preparación
+        Double precio = 100.0;
+        String url = "redirect:/https://mercadopago.com.ar";
+        when(mercadoPagoServicio.pagarViajeMp(precio)).thenReturn(url);
+
+        // Ejecución
+        ModelAndView urlObtenida = viajeControlador.pagarViaje(precio, redirectAttributes);
+
+        // Validación
+        assertEquals("redirect:" + url, urlObtenida.getViewName());
+    }
+
+    @Test
+    public void queNoSePuedaPagarUnEnvioSiElPrecioEsMenorACero() {
+        // Preparación
+        Double precio = -10.0;
+
+        // Ejecución
+        ModelAndView urlObtenida = viajeControlador.pagarViaje(precio, redirectAttributes);
+
+        // Validación
+        verify(redirectAttributes).addFlashAttribute("error", "Precio inválido.");
+        assertEquals("redirect:/homeCliente", urlObtenida.getViewName());
+    }
+
+    @Test
+    public void queNoSePuedaPagarUnEnvioSiElPrecioEsNulo() {
+        // Preparación
+        Double precio = null;
+
+        // Ejecución
+        ModelAndView modelAndView = viajeControlador.pagarViaje(precio, redirectAttributes);
+
+        // Validación
+        verify(redirectAttributes).addFlashAttribute("error", "Precio inválido.");
+        assertEquals("redirect:/homeCliente", modelAndView.getViewName());
+    }
+
+    @Test
+    public void queTireUnExcepcionSiSurgeUnErrorALaHoraDePagarUnEnvio() throws Exception {
+        // Preparación
+        when(mercadoPagoServicio.pagarViajeMp(anyDouble())).thenThrow(new RuntimeException("Error al procesar el pago"));
+
+        // Ejecución
+        ModelAndView modelAndView = viajeControlador.pagarViaje(100.0, redirectAttributes);
+
+        //Validación
+        verify(redirectAttributes).addFlashAttribute("error", "Error al procesar el pago");
+        assertEquals("redirect:/homeCliente", modelAndView.getViewName());
+    }
 }

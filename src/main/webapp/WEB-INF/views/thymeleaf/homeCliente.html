@@ -7,8 +7,7 @@
   <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.0/css/bootstrap.min.css}"/>
   <link rel="stylesheet" th:href="@{css/main.css}"/>
   <link rel="stylesheet" th:href="@{css/homeCliente.css}"/>
-  <link rel="stylesheet" th:href="@{css/viaje.css}"/>
-  <title>Motomensajeria</title>
+  <title>Home</title>
 </head>
 <body>
 <header>
@@ -52,8 +51,8 @@
 </header>
 <main class="homeCliente_main">
   <section class="titulos">
-    <h2>¡Bienvenido <span th:text="${cliente.nombre}"></span>!</h2>
-    <h4>¿Que vas a hacer hoy?</h4>
+    <h1 class="text-center h1-home">¡Bienvenido <span th:text="${cliente.nombre}"></span>!</h1>
+    <h5>¿Que vas a hacer hoy?</h5>
   </section>
   <a th:href="@{form-viaje}" class="crearEnvio">
     <i class="fa-solid fa-square-plus"></i>
@@ -75,8 +74,6 @@
       </div>
     </div>
   </div>
-
-
 
 
 

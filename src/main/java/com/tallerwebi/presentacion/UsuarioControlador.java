@@ -83,7 +83,8 @@ public class UsuarioControlador {
              }
           }
         } catch (Exception e) {
-            model.put("mensajeError", e.getMessage());
+            model.put("mensajeError", e.getMessage() + " Por favor, vuelva a intentarlo.");
+            return new ModelAndView("redirect:/*", model);
         }
         return new ModelAndView("perfil", model);
     }
@@ -98,7 +99,8 @@ public class UsuarioControlador {
             model.put("usuario", datosUsuario.usuarioToDTO(usuario));
             model.put("isEditForm", true);
         } catch (UsuarioNoEncontradoException e) {
-            model.put("mensajeError", e.getMessage());
+            model.put("mensajeError", e.getMessage() + " Por favor, vuelva a intentarlo.");
+            return new ModelAndView("redirect:/*", model);
         }
         return new ModelAndView(viewName, model);
     }
@@ -124,7 +126,8 @@ public class UsuarioControlador {
             Usuario usuario = usuarioServicio.obtenerUsuarioPorId((Integer)session.getAttribute("IDUSUARIO"));
             model.put("usuario", usuario);
         } catch (UsuarioNoEncontradoException e) {
-            model.put("mensajeError", e.getMessage());
+            model.put("mensajeError", e.getMessage() + " Por favor, vuelva a intentarlo.");
+            return new ModelAndView("redirect:/*", model);
         }
         return new ModelAndView(viewName, model);
     }
@@ -147,7 +150,8 @@ public class UsuarioControlador {
         try{
         usuarioServicio.borrarCuenta((Integer) session.getAttribute("IDUSUARIO"));}
         catch(UsuarioNoEncontradoException e){
-            model.put("mensajeError", e.getMessage());
+            model.put("mensajeError", e.getMessage() + " Por favor, vuelva a intentarlo.");
+            return new ModelAndView("redirect:/*", model);
         }
         return new ModelAndView("redirect:/cerrar-sesion", model);
     }
