@@ -43,14 +43,14 @@
                     <label style="color: white" for="usuario">Usuario:</label>
                     <input type="text" class="form-control" id="usuario" name="usuario" th:field="*{usuario}">
                     <div th:if="${error}">
-                        <label th:text="${error}" style="color: red;"></label>
+                        <label th:text="${error}" class="error"></label>
                     </div>
                 </div>
                 <div>
                     <label style="color: white" for="password" class="label-form">Contraseña:</label>
                     <input type="password" class="form-control" id="password" name="password" th:field="*{password}">
                     <div th:if="${error}">
-                        <label th:text="${error}" style="color: red;"></label>
+                        <label th:text="${error}" class="error"></label>
                     </div>
                 </div>
 

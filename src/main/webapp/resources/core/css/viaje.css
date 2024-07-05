@@ -197,6 +197,8 @@ p {
 #map{
     height: 500px;
     width: 100%;
+    border-radius: 50px;
+    padding:3%;
 }
 
 .contenedor-filtro {
@@ -288,4 +290,16 @@ a{
     width: auto;   /* Mantener auto para preservar la relación de aspecto */
     margin: 0 auto;
     display: block;
+}
+.fondo-form{
+    gap:30px;
+}
+span{
+    color:white;
+}
+.container{
+    display:flex;
+    flex-direction: column;
+    gap:30px;
+
 }

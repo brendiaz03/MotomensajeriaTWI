@@ -49,13 +49,15 @@
         </div>
     </nav>
 </header>
-<main role="main">
+<main role="main" class="main-historial-viajes">
             <h1 class="text-center h1-home">Historial de Viajes</h1>
-            <div th:if="${viajesObtenidos.size()==0}">
-                <h5>Todavia no hay historial disponible.</h5>
-            </div>
-    <div th:if="${viajesObtenidos != null}" >
-        <div class="cont">
+        <div th:if="${viajesObtenidos.size()==0}" class="fondo-form" id="noHayGenerico">
+             <div class="noHayGenerico">
+                <h5 >Todavia no hay historial disponible.</h5>
+                 <i class="fa-solid fa-clock-rotate-left"></i>
+             </div>
+        </div>
+    <div th:if="${viajesObtenidos != null}" class="cont">
             <div class="contenedor-solicitud" th:each="viaje : ${viajesObtenidos}">
                     <div  th:data-viaje-id="${viaje.idViaje}">
                         <div class="fondo-form">
@@ -69,21 +71,42 @@
                             </div>
 
 
-                        <div  class="contenedor-botones-hist">
-                            <div th:with="TERMINADO=${T(com.tallerwebi.dominio.enums.TipoEstado).TERMINADO}">
-                                <div th:if="${viaje.getEstado() == TERMINADO}">
-                                    <button disabled class="btn-terminado">
-                                        Terminado
-                                    </button></div>
-                            </div>
-                            <div th:with="CANCELADO=${T(com.tallerwebi.dominio.enums.TipoEstado).CANCELADO}">
-                                <div th:if="${viaje.getEstado() == CANCELADO}">
-                                <button disabled class="btn-cancelado">
-                                    Cancelado
-                                </button>
+                            <div class="contenedor-botones-hist">
+                                <div th:with="TERMINADO=${T(com.tallerwebi.dominio.enums.TipoEstado).TERMINADO}, CANCELADO=${T(com.tallerwebi.dominio.enums.TipoEstado).CANCELADO}">
+                                    <!-- Estado Terminado -->
+                                    <div th:if="${viaje.getEstado() == TERMINADO}" class="estado-viaje">
+                                        <div th:with="tipoVehiculo=${conductor.getVehiculo().getTipoDeVehiculo()}">
+                                            <div th:if="${tipoVehiculo == T(com.tallerwebi.dominio.enums.TipoVehiculo).AUTO}">
+                                                <i class="fa-solid fa-car-side"></i>
+                                            </div>
+                                            <div th:if="${tipoVehiculo == T(com.tallerwebi.dominio.enums.TipoVehiculo).CAMION}">
+                                                <i class="fa-solid fa-truck"></i>
+                                            </div>
+                                            <div th:if="${tipoVehiculo == T(com.tallerwebi.dominio.enums.TipoVehiculo).MOTO}">
+                                                <i class="fa-solid fa-motorcycle"></i>
+                                            </div>
+                                        </div>
+                                        <h2>Terminado</h2>
+                                    </div>
+
+                                    <!-- Estado Cancelado -->
+                                    <div th:if="${viaje.getEstado() == CANCELADO}" class="estado-viaje">
+                                        <div th:with="tipoVehiculo=${conductor.getVehiculo().getTipoDeVehiculo()}">
+                                            <div th:if="${tipoVehiculo == T(com.tallerwebi.dominio.enums.TipoVehiculo).AUTO}">
+                                                <i class="fa-solid fa-car-side"></i>
+                                            </div>
+                                            <div th:if="${tipoVehiculo == T(com.tallerwebi.dominio.enums.TipoVehiculo).CAMION}">
+                                                <i class="fa-solid fa-truck"></i>
+                                            </div>
+                                            <div th:if="${tipoVehiculo == T(com.tallerwebi.dominio.enums.TipoVehiculo).MOTO}">
+                                                <i class="fa-solid fa-motorcycle"></i>
+                                            </div>
+                                        </div>
+                                        <h2>Cancelado</h2>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+
                         </div>
                     </div>
                 </div>

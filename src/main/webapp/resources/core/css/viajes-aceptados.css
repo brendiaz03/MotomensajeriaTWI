@@ -31,12 +31,7 @@
     text-decoration: none;
 }
 
-.contenedor-botones {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    margin-bottom: 35px;
-}
+
 
 .titulo-solicitud{
     font-weight: 500;
@@ -89,13 +84,7 @@
     max-width: 45%;
 }
 
-.contenedor-botones {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 15px;
-    gap: 10px;
-}
+
 
 .boton-verde, .boton-rojo {
     background-color: #008cba;
@@ -128,12 +117,12 @@
     background-color: #dc3545;
 }
 
-.card-text{
+.card-text {
     color: #4f4f4f;
-    span{
-        color:black;
-    }
 }
+span{
+    color:black;
+    }
 
 p {
     font-weight: 500;
@@ -203,4 +192,38 @@ p {
     height: 500px;
     width: 100%;
 }
+.main-viajes-proceso{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    gap: 20px;
+}
 
+.fondo-form{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    height: 16em;
+    gap: 50px;
+    width: 75%;
+}
+span{
+    color:white;
+}
+
+.contenedor-botones {
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+    margin-bottom: 15px;
+    gap: 10px;
+    padding:3%;
+    border-radius: 50px;
+}
+.contenedor-botones i{
+    color:purple;
+    font-size: 60px;
+}

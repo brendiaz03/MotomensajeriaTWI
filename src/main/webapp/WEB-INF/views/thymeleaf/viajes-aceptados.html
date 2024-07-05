@@ -50,26 +50,31 @@
         </div>
     </nav>
 </header>
-<main role="main">
+<main role="main" class="main-viajes-proceso">
 
             <h1 class="text-center h1-home">Viajes en Proceso</h1>
-            <div th:if="${viajesObtenidos.size()==0}">
+            <div th:if="${viajesObtenidos.size()==0}" class="fondo-form" id="noHayGenerico">
+                <div class="noHayGenerico">
                 <h5>Actualmente no hay viajes en proceso.</h5>
+                <i class="fa-solid fa-route"></i>
             </div>
+            </div>
+
         <div th:if="${viajesObtenidos != null}" >
             <div class="cont">
             <div class="contenedor-solicitud" th:each="viaje : ${viajesObtenidos}" >
                     <div class="fondo-form">
                         <div class="cont-direcciones">
-                                    <p class="card-text"><b>Salida:</b> <span th:text="${viaje.getDomicilioDeSalida()}"></span></p>
-                                    <p class="card-text"><b>Llegada:</b> <span th:text="${viaje.getDomicilioDeLlegada()}"></span></p>
+                                    <p>Salida: <span th:text="${viaje.getDomicilioDeSalida()}"></span></p>
+                                    <p>Llegada: <span th:text="${viaje.getDomicilioDeLlegada()}"></span></p>
                         </div>
                         <div class="cont-precio">
-                            <p class="card-text"><b>Paquete de:</b> <span th:text="${viaje.getCliente().getNombre()}"></span></p>
-                            <p class="card-text"><b>Precio:</b> <span th:text="${viaje.getPrecio()} + ' ARS'"></span></p>
+                            <p>Paquete de: <span th:text="${viaje.getCliente().getNombre()}"></span></p>
+                            <p >Precio: <span th:text="${viaje.getPrecio()} + ' ARS'"></span></p>
                         </div>
                         <div class="contenedor-botones" >
-                                <a th:href="@{/viajeAceptado(idViaje=${viaje.getId()})}" class="btn-aceptar">Ver</a>
+                                <i class="fa-solid fa-map-location-dot"></i>
+                                <a th:href="@{/viajeAceptado(idViaje=${viaje.getId()})}" class="btn-terciario">Ver</a>
                         </div>
                     </div>
             </div>
