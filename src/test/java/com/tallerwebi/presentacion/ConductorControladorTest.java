@@ -3,8 +3,11 @@ package com.tallerwebi.presentacion;
 import static org.hamcrest.Matchers.startsWith;
 import com.tallerwebi.dominio.conductor.Conductor;
 import com.tallerwebi.dominio.conductor.ConductorServicio;
+import com.tallerwebi.dominio.exceptions.ClienteNoEncontradoException;
+import com.tallerwebi.dominio.exceptions.CoordenadasNoEncontradasException;
 import com.tallerwebi.dominio.exceptions.UsuarioNoEncontradoException;
 import com.tallerwebi.dominio.mercadoPago.MercadoPagoServicio;
+import com.tallerwebi.dominio.exceptions.ViajeNoEncontradoException;
 import com.tallerwebi.dominio.vehiculo.Vehiculo;
 import com.tallerwebi.dominio.viaje.Viaje;
 import com.tallerwebi.dominio.viaje.ViajeServicio;
@@ -43,7 +46,7 @@ public class ConductorControladorTest {
    }
 
     @Test
-    public void queSeRendericeElHomeDelConductorNoPenalizadoConLosViajesPendientesDisponiblesFiltradosPorLaUbicacionDelConductor() throws UsuarioNoEncontradoException {
+    public void queSeRendericeElHomeDelConductorNoPenalizadoConLosViajesPendientesDisponiblesFiltradosPorLaUbicacionDelConductor() throws UsuarioNoEncontradoException, CoordenadasNoEncontradasException {
         String nombreEsperado = "homeConductor";
         Conductor conductor=mock(Conductor.class);
         Vehiculo vehiculo=mock(Vehiculo.class);
@@ -73,7 +76,7 @@ public class ConductorControladorTest {
     }
 
     @Test
-    public void queSeRendericeElHomeDelConductorConElMensajeDePenalizacionEnCasoDeQueElMismoEstePenalizado() throws UsuarioNoEncontradoException {
+    public void queSeRendericeElHomeDelConductorConElMensajeDePenalizacionEnCasoDeQueElMismoEstePenalizado() throws UsuarioNoEncontradoException, CoordenadasNoEncontradasException {
         String nombreEsperado = "homeConductor";
         Conductor conductor=mock(Conductor.class);
         Boolean isPenalizado = true;
@@ -94,7 +97,7 @@ public class ConductorControladorTest {
     }
 
     @Test
-    public void queSeRendericeElHomeDelConductorConUnaAdvertenciaSiElConductorNoTieneUnVehiculoAsociado() throws UsuarioNoEncontradoException {
+    public void queSeRendericeElHomeDelConductorConUnaAdvertenciaSiElConductorNoTieneUnVehiculoAsociado() throws UsuarioNoEncontradoException, CoordenadasNoEncontradasException {
             String nombreEsperado = "homeConductor";
             Conductor conductor=mock(Conductor.class);
 
@@ -137,15 +140,15 @@ public class ConductorControladorTest {
 
     @Test
     public void queSeMuestreUnErrorEnElHistorialDelConductorSiNoSeEncuentraAlConductorPorMedioDeUnaUsuarioNoEncontradoException() throws UsuarioNoEncontradoException {
-        String nombreEsperado = "historial-viajes";
-        String mensajeError="Conductor no encontrado";
+        String nombreEsperado = "redirect:/*";
+        String mensajeError="Conductor no encontrado Por favor, vuelva a intentarlo.";
 
         when(session.getAttribute("IDUSUARIO")).thenReturn(1);
-        when(conductorServicio.obtenerConductorPorId(1)).thenThrow(UsuarioNoEncontradoException.class);
+        when(conductorServicio.obtenerConductorPorId(1)).thenThrow(new UsuarioNoEncontradoException("Conductor no encontrado"));
         ModelAndView mav= conductorControlador.mostrarHistorial(session);
 
         assertThat(mav.getViewName(), equalTo(nombreEsperado));
-        assertThat(mav.getModel().get("error"), equalTo(mensajeError));
+        assertThat(mav.getModel().get("mensajeError"), equalTo(mensajeError));
         verify(conductorServicio).obtenerConductorPorId(1);
         verify(viajeServicio, never()).obtenerHistorialDeViajesConductor(any(Conductor.class));
     }
@@ -170,21 +173,21 @@ public class ConductorControladorTest {
 
     @Test
     public void queSeMuestreUnErrorEnElApartadoDeViajesEnProcesoDelConductorSiNoSeEncuentraAlConductor() throws UsuarioNoEncontradoException {
-        String nombreEsperado = "viajes-aceptados";
-        String mensajeError="Conductor no encontrado";
+        String nombreEsperado = "redirect:/*";
+        String mensajeError="Conductor no encontrado Por favor, vuelva a intentarlo.";
 
         when(session.getAttribute("IDUSUARIO")).thenReturn(1);
-        when(conductorServicio.obtenerConductorPorId(1)).thenThrow(UsuarioNoEncontradoException.class);
+        when(conductorServicio.obtenerConductorPorId(1)).thenThrow(new UsuarioNoEncontradoException("Conductor no encontrado"));
         ModelAndView mav= conductorControlador.verViajesEnProceso(session);
 
         assertThat(mav.getViewName(), equalTo(nombreEsperado));
-        assertThat(mav.getModel().get("error"), equalTo(mensajeError));
+        assertThat(mav.getModel().get("mensajeError"), equalTo(mensajeError));
         verify(conductorServicio).obtenerConductorPorId(1);
         verify(viajeServicio, never()).obtenerHistorialDeViajesConductor(any(Conductor.class));
     }
 
 @Test
-public void queSeRendericeLaVistaQueMuestraElViajeAceptadoSeleccionadoPorElConductor() throws UsuarioNoEncontradoException {
+public void queSeRendericeLaVistaQueMuestraElViajeAceptadoSeleccionadoPorElConductor() throws UsuarioNoEncontradoException, ViajeNoEncontradoException {
     String nombreEsperado = "viaje";
     Conductor conductor = mock(Conductor.class);
     DatosViaje viaje = mock(DatosViaje.class);
@@ -203,7 +206,7 @@ public void queSeRendericeLaVistaQueMuestraElViajeAceptadoSeleccionadoPorElCondu
 }
 
     @Test
-    public void queUnConductorCanceleUnViajePreviamenteAceptado() throws UsuarioNoEncontradoException {
+    public void queUnConductorCanceleUnViajePreviamenteAceptado() throws UsuarioNoEncontradoException, ViajeNoEncontradoException {
         String nombreEsperado = "redirect:/homeConductor";
         Conductor conductor = mock(Conductor.class);
         DatosViaje viaje = mock(DatosViaje.class);
@@ -220,7 +223,7 @@ public void queSeRendericeLaVistaQueMuestraElViajeAceptadoSeleccionadoPorElCondu
         verify(conductorServicio).estaPenalizado(conductor);
     }
     @Test
-    public void queUnConductorTermineUnViajePreviamenteAceptado() {
+    public void queUnConductorTermineUnViajePreviamenteAceptado() throws ViajeNoEncontradoException {
         String nombreEsperado = "redirect:/homeConductor";
         DatosViaje viaje = mock(DatosViaje.class);
         Integer idViaje = 123;
@@ -242,7 +245,7 @@ public void queSeRendericeLaVistaQueMuestraElViajeAceptadoSeleccionadoPorElCondu
     }
 
     @Test
-    public void queUnConductorDescarteUnViajeDeLaListaDeViajesPendientesDelHomeConductor() throws UsuarioNoEncontradoException {
+    public void queUnConductorDescarteUnViajeDeLaListaDeViajesPendientesDelHomeConductor() throws UsuarioNoEncontradoException, ViajeNoEncontradoException, ClienteNoEncontradoException {
         String nombreEsperado = "redirect:/homeConductor";
         Conductor conductor = mock(Conductor.class);
         Viaje viaje = mock(Viaje.class);
@@ -260,7 +263,7 @@ public void queSeRendericeLaVistaQueMuestraElViajeAceptadoSeleccionadoPorElCondu
 }
 
     @Test
-    public void queSeMuestreElDetalleDeUnViajesAceptadoDelConductor() throws UsuarioNoEncontradoException {
+    public void queSeMuestreElDetalleDeUnViajesAceptadoDelConductor() throws UsuarioNoEncontradoException, ViajeNoEncontradoException {
         String nombreEsperado = "detalle-viaje";
         Conductor conductor=mock(Conductor.class);
         DatosViaje viaje = mock(DatosViaje.class);
