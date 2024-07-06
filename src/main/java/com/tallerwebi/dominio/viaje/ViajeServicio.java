@@ -49,4 +49,10 @@ public interface ViajeServicio {
     void duplicarViajeDescartado(Viaje viajeObtenido, Conductor conductor) throws ClienteNoEncontradoException, ViajeNoEncontradoException;
 
     Double calcularPrecio(Viaje viaje);
+
+    void actualizarViaje(Viaje viaje) throws ViajeNoEncontradoException;
+
+    List<Viaje> filtrarViajesDuplicados(List<Viaje> viajes, List<Viaje> viajesDescartados);
+
+    List<Viaje> compararPesosYDimesionesDeViajes(List<Viaje> viajesAMostrar, Conductor conductor);
 }

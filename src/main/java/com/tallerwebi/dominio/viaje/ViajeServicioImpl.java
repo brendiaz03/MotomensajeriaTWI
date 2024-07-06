@@ -26,23 +26,19 @@ public class ViajeServicioImpl implements ViajeServicio {
 
     @Override
     public DatosViaje obtenerViajeAceptadoPorId(Integer id) throws ViajeNoEncontradoException {
-        DatosViaje datosViaje = new DatosViaje();
-
         if (id == null || id <= 0) {
             throw new ViajeNoEncontradoException("El ID no es valido");
         }
 
-        try {
-            Viaje viaje = viajeRepositorio.obtenerViajePorId(id);
-            if (viaje == null) {
-                throw new ViajeNoEncontradoException("No se encontro el viaje");
-            }
-            return datosViaje.toDatosViaje(viaje);
-        } catch (ViajeNoEncontradoException e) {
-            throw e;
-        } catch (Exception e) {
-            throw new RuntimeException("Ocurrio un error al obtener el viaje", e);
+        Viaje viaje = viajeRepositorio.obtenerViajePorId(id);
+
+        if (viaje == null) {
+            throw new ViajeNoEncontradoException("No se encontro el viaje");
         }
+
+        DatosViaje datosViaje = new DatosViaje();
+
+        return datosViaje.toDatosViaje(viaje);
     }
 
     @Override
@@ -81,79 +77,58 @@ public class ViajeServicioImpl implements ViajeServicio {
 
     @Override
     public void aceptarViaje(DatosViaje datosViaje, Conductor conductor) throws UsuarioNoEncontradoException, ViajeNoEncontradoException {
-        try {
-            if (conductor == null) {
-                throw new UsuarioNoEncontradoException("No se encuentra logueado");
-            }
-
-            if (datosViaje == null) {
-                throw new ViajeNoEncontradoException("Los datos son nulos");
-            }
-
-            Viaje viajeAceptadoActual = this.viajeRepositorio.obtenerViajePorId(datosViaje.getIdViaje());
-
-            if (viajeAceptadoActual == null) {
-                throw new ViajeNoEncontradoException("El viaje no existe");
-            }
-
-            viajeAceptadoActual.setConductor(conductor);
-            viajeAceptadoActual.setEstado(TipoEstado.ACEPTADO);
-            viajeRepositorio.editar(viajeAceptadoActual);
-
-        } catch (UsuarioNoEncontradoException | ViajeNoEncontradoException e) {
-            throw e;
-        } catch (Exception e) {
-            throw new RuntimeException("Ocurrio un error inesperado al querer aceptar el viaje", e);
+        if (conductor == null) {
+            throw new UsuarioNoEncontradoException("No se encuentra logueado");
         }
+
+        if (datosViaje == null) {
+            throw new ViajeNoEncontradoException("Los datos son nulos");
+        }
+
+        Viaje viajeAceptadoActual = this.viajeRepositorio.obtenerViajePorId(datosViaje.getIdViaje());
+
+        if (viajeAceptadoActual == null) {
+            throw new ViajeNoEncontradoException("El viaje no existe");
+        }
+
+        viajeAceptadoActual.setConductor(conductor);
+        viajeAceptadoActual.setEstado(TipoEstado.ACEPTADO);
+        viajeRepositorio.editar(viajeAceptadoActual);
     }
 
     @Override
     public void cancelarViaje(DatosViaje datosViaje) throws ViajeNoEncontradoException {
-        try {
-            if (datosViaje == null) {
-                throw new ViajeNoEncontradoException("Los datos son nulos");
-            }
-
-            Viaje viajeAceptadoActual = this.viajeRepositorio.obtenerViajePorId(datosViaje.getIdViaje());
-
-            if (viajeAceptadoActual == null) {
-                throw new ViajeNoEncontradoException("El viaje no existe");
-            }
-
-            viajeAceptadoActual.setEstado(TipoEstado.CANCELADO);
-            viajeAceptadoActual.setFecha(LocalDateTime.now());
-            viajeAceptadoActual.setAfectaPenalizacion(true);
-            viajeRepositorio.editar(viajeAceptadoActual);
-
-        } catch (ViajeNoEncontradoException e) {
-            throw e;
-        } catch (Exception e){
-            throw new RuntimeException("Ocurrio un error al cancelar el viaje", e);
+        if (datosViaje == null) {
+            throw new ViajeNoEncontradoException("Los datos son nulos");
         }
+
+        Viaje viajeAceptadoActual = this.viajeRepositorio.obtenerViajePorId(datosViaje.getIdViaje());
+
+        if (viajeAceptadoActual == null) {
+            throw new ViajeNoEncontradoException("El viaje no existe");
+        }
+
+        viajeAceptadoActual.setEstado(TipoEstado.CANCELADO);
+        viajeAceptadoActual.setFecha(LocalDateTime.now());
+        viajeAceptadoActual.setAfectaPenalizacion(true);
+        viajeRepositorio.editar(viajeAceptadoActual);
     }
 
     @Override
     public void terminarViaje(DatosViaje datosViaje) throws ViajeNoEncontradoException {
-        try {
-            if (datosViaje == null) {
-                throw new ViajeNoEncontradoException("Los datos son nulos");
-            }
-
-            Viaje viajeAceptadoActual = this.viajeRepositorio.obtenerViajePorId(datosViaje.getIdViaje());
-
-            if (viajeAceptadoActual == null) {
-                throw new ViajeNoEncontradoException("El viaje no existe");
-            }
-
-            viajeAceptadoActual.setEstado(TipoEstado.TERMINADO);
-            viajeAceptadoActual.setFecha(LocalDateTime.now());
-            viajeRepositorio.editar(viajeAceptadoActual);
-
-        } catch (ViajeNoEncontradoException e) {
-            throw e;
-        } catch (Exception e) {
-            throw new RuntimeException("Ocurrio un problema al querer terminar un viaje");
+        if (datosViaje == null) {
+            throw new ViajeNoEncontradoException("Los datos son nulos");
         }
+
+        Viaje viajeAceptadoActual = this.viajeRepositorio.obtenerViajePorId(datosViaje.getIdViaje());
+
+        if (viajeAceptadoActual == null) {
+            throw new ViajeNoEncontradoException("El viaje no existe");
+        }
+
+        viajeAceptadoActual.setEstado(TipoEstado.TERMINADO);
+        viajeAceptadoActual.setFecha(LocalDateTime.now());
+        viajeRepositorio.editar(viajeAceptadoActual);
     }
 
     @Override
@@ -167,27 +142,21 @@ public class ViajeServicioImpl implements ViajeServicio {
         }
 
         if (paquete == null) {
-            throw new PaqueteNoEncontradoException();
+            throw new PaqueteNoEncontradoException("No se encontró el paquete buscado");
         }
 
-        try {
-            viaje.setCliente(cliente);
-            viaje.setPaquete(paquete);
-            viaje.setEstado(TipoEstado.PENDIENTE);
-            Double precio = this.calcularPrecio(viaje);
+        viaje.setCliente(cliente);
+        viaje.setPaquete(paquete);
+        viaje.setEstado(TipoEstado.PENDIENTE);
+        Double precio = this.calcularPrecio(viaje);
 
-            if (precio == null || precio <= 0) {
-                throw new PrecioInvalidoException("El precio es invalido o menor a 0");
-            }
-
-            viaje.setPrecio(precio);
-            viaje.setFecha(LocalDateTime.now());
-            return this.viajeRepositorio.guardarViaje(viaje);
-        } catch (PrecioInvalidoException e) {
-            throw e;
-        } catch (Exception e) {
-            throw new RuntimeException("Ocurrio un error inesperado al crear el viaje");
+        if (precio == null || precio <= 0) {
+            throw new PrecioInvalidoException("El precio es invalido o menor a 0");
         }
+
+        viaje.setPrecio(precio);
+        viaje.setFecha(LocalDateTime.now());
+        return this.viajeRepositorio.guardarViaje(viaje);
     }
 
     @Override
@@ -229,13 +198,9 @@ public class ViajeServicioImpl implements ViajeServicio {
             throw new ViajeNoEncontradoException("No se pudo cancelar el viaje");
         }
 
-        try {
-            viaje.setFecha(LocalDateTime.now());
-            viaje.setEstado(TipoEstado.CANCELADO);
-            this.viajeRepositorio.editar(viaje);
-        } catch (Exception e) {
-            throw new RuntimeException("Ocurrió un error al cancelar el viaje", e);
-        }
+        viaje.setFecha(LocalDateTime.now());
+        viaje.setEstado(TipoEstado.CANCELADO);
+        this.viajeRepositorio.editar(viaje);
     }
 
     @Override
@@ -271,16 +236,12 @@ public class ViajeServicioImpl implements ViajeServicio {
             throw new ViajeNoEncontradoException("Los datos son nulos");
         }
 
-        try {
-            viajeObtenido.setFecha(LocalDateTime.now());
-            viajeObtenido.setEstado(TipoEstado.PENDIENTE);
-            viajeObtenido.setCanceladoPor(null);
-            viajeObtenido.setConductor(null);
-            viajeObtenido.setEnviadoNuevamente(false);
-            this.viajeRepositorio.guardarViajeDuplicado(viajeObtenido);
-        } catch (Exception e) {
-            throw new RuntimeException("Ocurrio un error inesperado al realizar nuevamente el viaje");
-        }
+        viajeObtenido.setFecha(LocalDateTime.now());
+        viajeObtenido.setEstado(TipoEstado.PENDIENTE);
+        viajeObtenido.setCanceladoPor(null);
+        viajeObtenido.setConductor(null);
+        viajeObtenido.setEnviadoNuevamente(false);
+        this.viajeRepositorio.guardarViajeDuplicado(viajeObtenido);
     }
 
     @Override
@@ -293,15 +254,11 @@ public class ViajeServicioImpl implements ViajeServicio {
             throw new ClienteNoEncontradoException("No esta logueado");
         }
 
-        try {
-            viajeObtenido.setFecha(LocalDateTime.now());
-            viajeObtenido.setEstado(TipoEstado.DESCARTADO);
-            viajeObtenido.setConductor(conductor);
-            viajeObtenido.setAfectaPenalizacion(true);
-            this.viajeRepositorio.guardarViajeDuplicado(viajeObtenido);
-        } catch (Exception e) {
-            throw new RuntimeException("Ocurrio un error al descartar el viaje");
-        }
+        viajeObtenido.setFecha(LocalDateTime.now());
+        viajeObtenido.setEstado(TipoEstado.DESCARTADO);
+        viajeObtenido.setConductor(conductor);
+        viajeObtenido.setAfectaPenalizacion(true);
+        this.viajeRepositorio.guardarViajeDuplicado(viajeObtenido);
     }
 
     @Override
@@ -310,12 +267,8 @@ public class ViajeServicioImpl implements ViajeServicio {
             throw new ViajeNoEncontradoException("Los datos son nulos");
         }
 
-        try {
-            viajeObtenido.setEnviadoNuevamente(false);
-            this.viajeRepositorio.editar(viajeObtenido);
-        } catch (Exception e) {
-            throw new RuntimeException("Ocurrio un error al editar el viaje");
-        }
+        viajeObtenido.setEnviadoNuevamente(false);
+        this.viajeRepositorio.editar(viajeObtenido);
     }
 
     @Override
@@ -324,17 +277,13 @@ public class ViajeServicioImpl implements ViajeServicio {
             throw new ViajeNoEncontradoException("Los datos son nulos");
         }
 
-        try {
-            viajeObtenido.setEnviadoNuevamente(true);
-            this.viajeRepositorio.editar(viajeObtenido);
-        } catch (Exception e) {
-            throw new RuntimeException("Ocurrio un error al actualizar el viaje");
-        }
+        viajeObtenido.setEnviadoNuevamente(true);
+        this.viajeRepositorio.editar(viajeObtenido);
     }
 
     @Override
     public List<Viaje> obtenerHistorialDeEnvios(Integer idCliente) throws ClienteNoEncontradoException {
-        if (idCliente == null || idCliente == 0) {
+        if (idCliente == null || idCliente <= 0) {
             throw new ClienteNoEncontradoException("ID Invalido");
         }
 
@@ -351,6 +300,15 @@ public class ViajeServicioImpl implements ViajeServicio {
     }
 
     @Override
+    public void actualizarViaje(Viaje viaje) throws ViajeNoEncontradoException {
+        if (viaje == null) {
+            throw new ViajeNoEncontradoException("El viaje no existe");
+        }
+
+        viajeRepositorio.editar(viaje);
+    }
+
+    @Override
     public List<DatosViaje> filtrarViajesPorDistanciaDelConductor(Double latitudConductor, Double longitudConductor, Double distanciaAFiltrar, Conductor conductor) throws UsuarioNoEncontradoException, CoordenadasNoEncontradasException {
         if (conductor == null) {
             throw new UsuarioNoEncontradoException("No esta logueado");
@@ -360,35 +318,30 @@ public class ViajeServicioImpl implements ViajeServicio {
             throw new CoordenadasNoEncontradasException("Coordenadas del usuario no encontradas");
         }
 
-        try {
-            List<Viaje> viajes;
+        List<Viaje> viajes;
 
-            if (distanciaAFiltrar == null) {
-                viajes = this.viajeRepositorio.traerTodosLosViajesPendientes();
-                System.out.println("VIAJES PENDIENTES TOTALES: " + viajes.size());
-            } else if (distanciaAFiltrar < 0) {
-                return new ArrayList<>();
-            } else {
-                viajes = this.viajeRepositorio.encontrarViajesCercanos(latitudConductor, longitudConductor, distanciaAFiltrar);
-            }
-
-            List<Viaje> viajesDescartados = this.viajeRepositorio.traerTodosLosViajesDescartadosPorConductor(conductor);
-            System.out.println("VIAJES DESCARTADOS TOTALES: " + viajesDescartados.size());
-
-            List<Viaje> viajesAFiltrar = filtrarViajesDuplicados(viajes, viajesDescartados);
-            System.out.println("VIAJES A FILTRAR TOTALES: " + viajesAFiltrar.size());
-
-            List<Viaje> viajesAMostrar = calcularLaDistanciaDelViajeEntreLaSalidaYElDestino(viajesAFiltrar);
-            List<Viaje> viajesFiltradosDPD = this.compararPesosYDimesionesDeViajes(viajesAMostrar, conductor);
-
-            DatosViaje datosViaje = new DatosViaje();
-            return viajesFiltradosDPD.stream().limit(5).map(viaje -> datosViaje.toDatosViaje(viaje)).collect(Collectors.toList());
-        } catch (Exception e) {
-            throw new RuntimeException("Ocurrio un error al filtrar los viajes");
+        if (distanciaAFiltrar == null) {
+            viajes = this.viajeRepositorio.traerTodosLosViajesPendientes();
+        } else if (distanciaAFiltrar < 0 || distanciaAFiltrar > 10.0) {
+            throw new CoordenadasNoEncontradasException("Distancia invalida");
+        } else {
+            viajes = this.viajeRepositorio.encontrarViajesCercanos(latitudConductor, longitudConductor, distanciaAFiltrar);
         }
+
+        List<Viaje> viajesDescartados = this.viajeRepositorio.traerTodosLosViajesDescartadosPorConductor(conductor);
+
+        List<Viaje> viajesAFiltrar = filtrarViajesDuplicados(viajes, viajesDescartados);
+
+        List<Viaje> viajesAMostrar = calcularLaDistanciaDelViajeEntreLaSalidaYElDestino(viajesAFiltrar);
+
+        List<Viaje> viajesFiltradosDPD = this.compararPesosYDimesionesDeViajes(viajesAMostrar, conductor);
+
+        DatosViaje datosViaje = new DatosViaje();
+
+        return viajesFiltradosDPD.stream().limit(5).map(viaje -> datosViaje.toDatosViaje(viaje)).collect(Collectors.toList());
     }
 
-    private List<Viaje> filtrarViajesDuplicados(List<Viaje> viajes, List<Viaje> viajesDescartados) {
+    public List<Viaje> filtrarViajesDuplicados(List<Viaje> viajes, List<Viaje> viajesDescartados) {
         return viajes.stream()
                 .filter(viaje -> viajesDescartados.stream().noneMatch(viajeDescartado ->
                         viaje.getPaquete().getId().equals(viajeDescartado.getPaquete().getId()) &&
@@ -397,7 +350,7 @@ public class ViajeServicioImpl implements ViajeServicio {
                 .collect(Collectors.toList());
     }
 
-    private List<Viaje> compararPesosYDimesionesDeViajes(List<Viaje> viajesAMostrar, Conductor conductor) {
+    public List<Viaje> compararPesosYDimesionesDeViajes(List<Viaje> viajesAMostrar, Conductor conductor) {
         List <Viaje> filtrados=new ArrayList<>();
 
         for ( Viaje viaje :viajesAMostrar){

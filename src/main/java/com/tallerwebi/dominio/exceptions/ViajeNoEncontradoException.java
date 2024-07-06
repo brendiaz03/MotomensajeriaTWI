@@ -5,4 +5,5 @@ public class ViajeNoEncontradoException extends Exception {
     public ViajeNoEncontradoException(String mensaje) {
         super(mensaje);
     }
+
 }

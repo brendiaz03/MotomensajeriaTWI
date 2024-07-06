@@ -34,7 +34,7 @@ public class ClienteControladorTest {
     }
 
     @Test
-    public void testDadoQueUnClienteEstaLogueadoYConSuIDEnLaSessionMostrarHomeCliente() throws UsuarioNoEncontradoException {
+    public void testDadoQueUnClienteEstaLogueadoYConSuIDEnLaSessionMostrarHomeCliente() throws UsuarioNoEncontradoException, ClienteNoEncontradoException {
         // Preparación
         HttpSession sessionMock = mock(HttpSession.class);
         Integer idUsuario = 1;
@@ -55,7 +55,7 @@ public class ClienteControladorTest {
     }
 
     @Test
-    public void testDadoQueElClienteNoTieneEnviosEnProcesoMostrarPantallaEnviosEnProceso() throws UsuarioNoEncontradoException {
+    public void testDadoQueElClienteNoTieneEnviosEnProcesoMostrarPantallaEnviosEnProceso() throws UsuarioNoEncontradoException, ClienteNoEncontradoException {
         // Preparación
         HttpSession sessionMock = mock(HttpSession.class);
         Integer idUsuario = 1;
@@ -76,7 +76,7 @@ public class ClienteControladorTest {
     }
 
     @Test
-    public void testDadoQueElClienteCancelaEnvioQueLoRedirijaAEnviosEnProceso() {
+    public void testDadoQueElClienteCancelaEnvioQueLoRedirijaAEnviosEnProceso() throws ViajeNoEncontradoException {
         // Preparación
         Integer idViaje = 1;
         Viaje viajeMock = new Viaje();
@@ -87,8 +87,6 @@ public class ClienteControladorTest {
 
         // Verificación
         assertThat(modelAndView.getViewName(), equalTo("redirect:/envios-en-proceso"));
-        verify(viajeServicioMock, times(1)).cancelarEnvío(viajeMock);
+        verify(viajeServicioMock, times(1)).cancelarEnvio(viajeMock);
     }
-
-
 }

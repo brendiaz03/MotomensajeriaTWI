@@ -17,18 +17,12 @@ public class PaqueteServicioImpl implements PaqueteServicio {
     }
 
     @Override
-    public Paquete guardarPaquete(Paquete paquete) throws NoSePudoGuardarElPaqueteException {
-
-        try {
-
-            return this.paqueteRepositorio.guardarPaquete(paquete);
-
-        } catch (Exception e) {
-
-            throw new NoSePudoGuardarElPaqueteException("No se pudo guardar el paquete en nuestro sistema.");
-
+    public Paquete guardarPaquete(Paquete paquete) throws PaqueteNoEncontradoException {
+        if (paquete == null) {
+            throw new PaqueteNoEncontradoException("No se pudo guardar el paquete en nuestro sistema");
         }
 
+        return this.paqueteRepositorio.guardarPaquete(paquete);
     }
 
     @Override

@@ -140,15 +140,15 @@ public class ConductorControladorTest {
 
     @Test
     public void queSeMuestreUnErrorEnElHistorialDelConductorSiNoSeEncuentraAlConductorPorMedioDeUnaUsuarioNoEncontradoException() throws UsuarioNoEncontradoException {
-        String nombreEsperado = "historial-viajes";
-        String mensajeError="Conductor no encontrado";
+        String nombreEsperado = "redirect:/*";
+        String mensajeError="Conductor no encontrado Por favor, vuelva a intentarlo.";
 
         when(session.getAttribute("IDUSUARIO")).thenReturn(1);
-        when(conductorServicio.obtenerConductorPorId(1)).thenThrow(UsuarioNoEncontradoException.class);
+        when(conductorServicio.obtenerConductorPorId(1)).thenThrow(new UsuarioNoEncontradoException("Conductor no encontrado"));
         ModelAndView mav= conductorControlador.mostrarHistorial(session);
 
         assertThat(mav.getViewName(), equalTo(nombreEsperado));
-        assertThat(mav.getModel().get("error"), equalTo(mensajeError));
+        assertThat(mav.getModel().get("mensajeError"), equalTo(mensajeError));
         verify(conductorServicio).obtenerConductorPorId(1);
         verify(viajeServicio, never()).obtenerHistorialDeViajesConductor(any(Conductor.class));
     }
@@ -173,15 +173,15 @@ public class ConductorControladorTest {
 
     @Test
     public void queSeMuestreUnErrorEnElApartadoDeViajesEnProcesoDelConductorSiNoSeEncuentraAlConductor() throws UsuarioNoEncontradoException {
-        String nombreEsperado = "viajes-aceptados";
-        String mensajeError="Conductor no encontrado";
+        String nombreEsperado = "redirect:/*";
+        String mensajeError="Conductor no encontrado Por favor, vuelva a intentarlo.";
 
         when(session.getAttribute("IDUSUARIO")).thenReturn(1);
-        when(conductorServicio.obtenerConductorPorId(1)).thenThrow(UsuarioNoEncontradoException.class);
+        when(conductorServicio.obtenerConductorPorId(1)).thenThrow(new UsuarioNoEncontradoException("Conductor no encontrado"));
         ModelAndView mav= conductorControlador.verViajesEnProceso(session);
 
         assertThat(mav.getViewName(), equalTo(nombreEsperado));
-        assertThat(mav.getModel().get("error"), equalTo(mensajeError));
+        assertThat(mav.getModel().get("mensajeError"), equalTo(mensajeError));
         verify(conductorServicio).obtenerConductorPorId(1);
         verify(viajeServicio, never()).obtenerHistorialDeViajesConductor(any(Conductor.class));
     }

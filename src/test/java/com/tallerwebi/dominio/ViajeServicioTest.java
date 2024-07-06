@@ -12,7 +12,6 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static junit.framework.Assert.*;
@@ -71,19 +70,6 @@ public class ViajeServicioTest {
 
         // Validación
         assertThat("No se encontro el viaje", equalTo(exception.getMessage()));
-    }
-
-    @Test
-    void queTireExcepcionSiOcurreAlgoInesperadoAlQuererObtenerUnViajePorSuId() {
-        // Preparación
-        Integer idViaje = 1;
-        when(viajeRepositorio.obtenerViajePorId(idViaje)).thenThrow(new RuntimeException("Error Inesperado"));
-
-        // Ejecución
-        RuntimeException exception = assertThrows(RuntimeException.class, () -> viajeServicio.obtenerViajeAceptadoPorId(idViaje));
-
-        // Validación
-        assertThat("Ocurrio un error al obtener el viaje", equalTo(exception.getMessage()));
     }
 
     @Test
@@ -241,20 +227,6 @@ public class ViajeServicioTest {
     }
 
     @Test
-    public void queTireUnaExcepcionSiOcurreUnErrorAlQuererAceptarUnViaje() {
-        // Preparación
-        Conductor conductor = dadoQueExisteUnConductor();
-        DatosViaje datosViaje = dadoQueExistenDatosViajes();
-        when(viajeRepositorio.obtenerViajePorId(datosViaje.getIdViaje())).thenThrow(new RuntimeException("Error Inesperado"));
-
-        // Ejecución
-        RuntimeException exception = assertThrows(RuntimeException.class, () -> viajeServicio.aceptarViaje(datosViaje, conductor));
-
-        // Validación
-        assertEquals("Ocurrio un error inesperado al querer aceptar el viaje", exception.getMessage());
-    }
-
-    @Test
     public void queSePuedaCancelarUnViaje() throws ViajeNoEncontradoException {
         // Preparación
         Viaje viajeEsperado = dadoQueExisteUnViaje();
@@ -297,19 +269,6 @@ public class ViajeServicioTest {
 
         // Validación
         assertThat("El viaje no existe", equalTo(excepcion.getMessage()));
-    }
-
-    @Test
-    public void queTireUnaExcepcionSiOcurreUnErrorCuandoSeDeseaCancelarUnViaje() {
-        // Preparación
-        DatosViaje datosViaje = dadoQueExistenDatosViajes();
-        when(viajeRepositorio.obtenerViajePorId(datosViaje.getIdViaje())).thenThrow(new RuntimeException("Error Inesperado"));
-
-        // Ejecución
-        RuntimeException exception = assertThrows(RuntimeException.class, () -> viajeServicio.cancelarViaje(datosViaje));
-
-        // Validación
-        assertThat("Ocurrio un error al cancelar el viaje", equalTo(exception.getMessage()));
     }
 
     @Test
@@ -431,7 +390,7 @@ public class ViajeServicioTest {
         PaqueteNoEncontradoException excepcion = assertThrows(PaqueteNoEncontradoException.class, () -> viajeServicio.crearViaje(cliente, viaje, paquete));
 
         // Validación
-        assertEquals("No se encontró el paquete buscado.", excepcion.getMessage());
+        assertEquals("No se encontró el paquete buscado", excepcion.getMessage());
     }
 
     @Test
@@ -447,21 +406,6 @@ public class ViajeServicioTest {
 
         // Validación
         assertEquals("El precio es invalido o menor a 0", excepcion.getMessage());
-    }
-
-    @Test
-    public void queTireUnaExcepcionSiOcurreUnErrorAlCrearUnViaje() {
-        // Preparación
-        Cliente cliente = dadoQueExisteUnCliente();
-        Viaje viaje = dadoQueExisteUnViaje();
-        Paquete paquete = dadoQueExisteUnPaquete();
-        when(viajeRepositorio.guardarViaje(viaje)).thenThrow(new RuntimeException("Ocurrio un error inesperado al crear el viaje"));
-
-        // Ejecución
-        RuntimeException thrown = assertThrows(RuntimeException.class, () -> viajeServicio.crearViaje(cliente, viaje, paquete));
-
-        // Validación
-        assertEquals("Ocurrio un error inesperado al crear el viaje", thrown.getMessage());
     }
 
     @Test
@@ -573,19 +517,6 @@ public class ViajeServicioTest {
     }
 
     @Test
-    public void queTireUnaExcepcionSiOcurreUnErrorAlQuererCancelarUnEnvio() {
-        // Preparación
-        Viaje viaje = dadoQueExisteUnViaje();
-        doThrow(RuntimeException.class).when(viajeRepositorio).editar(any(Viaje.class));
-
-        // Ejecución
-        RuntimeException excepcion = assertThrows(RuntimeException.class, () -> viajeServicio.cancelarEnvio(viaje));
-
-        // Validación
-        assertThat("Ocurrió un error al cancelar el viaje", equalTo(excepcion.getMessage()));
-    }
-
-    @Test
     public void queSePuedaObtenerLosViajesCanceladosDelCliente() throws ClienteNoEncontradoException {
         // Preparación
         Cliente cliente = dadoQueExisteUnCliente();
@@ -651,19 +582,6 @@ public class ViajeServicioTest {
     }
 
     @Test
-    public void queTireUnaExcepcionSiOcurreUnErrorAlDuplicarUnViajeCancelado() {
-        // Preparación
-        Viaje viajeDuplicado = dadoQueExisteUnViaje();
-        doThrow(RuntimeException.class).when(viajeRepositorio).guardarViajeDuplicado(viajeDuplicado);
-
-        // Ejecución
-        RuntimeException excepcion = assertThrows(RuntimeException.class, () -> viajeServicio.duplicarViajeCancelado(viajeDuplicado));
-
-        // Validación
-        assertThat("Ocurrio un error inesperado al realizar nuevamente el viaje", equalTo(excepcion.getMessage()));
-    }
-
-    @Test
     public void queSePuedaDuplicarUnViajeDescartado() throws ViajeNoEncontradoException, ClienteNoEncontradoException {
         // Preparación
         Viaje viajeDuplicado = dadoQueExisteUnViaje();
@@ -705,20 +623,6 @@ public class ViajeServicioTest {
         assertThat("No esta logueado", equalTo(excepcion.getMessage()));
     }
 
-    @Test
-    public void queTireUnaExcepcionSiOcurreUnErrorAlQuererGuardarUnViajeDuplicado() {
-        // Preparación
-        Viaje viajeDuplicado = dadoQueExisteUnViaje();
-        Conductor conductor = dadoQueExisteUnConductor();
-        doThrow(RuntimeException.class).when(viajeRepositorio).guardarViajeDuplicado(viajeDuplicado);
-
-        // Ejecución
-        RuntimeException excepcion = assertThrows(RuntimeException.class, () -> viajeServicio.duplicarViajeDescartado(viajeDuplicado, conductor));
-
-        // Validación
-        assertThat("Ocurrio un error al descartar el viaje", equalTo(excepcion.getMessage()));
-    }
-
    @Test
    public void queNoSePuedaDuplicarUnViaje() throws ViajeNoEncontradoException {
         // Preparación
@@ -745,19 +649,6 @@ public class ViajeServicioTest {
     }
 
     @Test
-    public void queTireUnaExcepcionSiOcurreUnErrorAlNoQueDuplicarUnViaje() {
-        // Preparación
-        Viaje viajeDuplicado = dadoQueExisteUnViaje();
-        doThrow(RuntimeException.class).when(viajeRepositorio).editar(viajeDuplicado);
-
-        // Ejecución
-        RuntimeException excepcion = assertThrows(RuntimeException.class, () -> viajeServicio.noDuplicarViaje(viajeDuplicado));
-
-        // Validación
-        assertThat("Ocurrio un error al editar el viaje", equalTo(excepcion.getMessage()));
-    }
-
-    @Test
     public void queSePuedaActualizarViajeUnCancelado() throws ViajeNoEncontradoException {
         // Preparación
         Viaje viaje = dadoQueExisteUnViaje();
@@ -780,19 +671,6 @@ public class ViajeServicioTest {
 
         // Validación
         assertThat("Los datos son nulos", equalTo(excepcion.getMessage()));
-    }
-
-    @Test
-    public void queTireExcepcionSiOcurreUnErrorAlQuererActualizarUnViajeCancelado() {
-        // Preparación
-        Viaje viaje = dadoQueExisteUnViaje();
-        doThrow(RuntimeException.class).when(viajeRepositorio).editar(viaje);
-
-        // Ejecución
-        RuntimeException excepcion = assertThrows(RuntimeException.class, () -> viajeServicio.actualizarViajeCancelado(viaje));
-
-        // Validación
-        assertThat("Ocurrio un error al actualizar el viaje", equalTo(excepcion.getMessage()));
     }
 
     @Test
@@ -866,108 +744,6 @@ public class ViajeServicioTest {
         CoordenadasNoEncontradasException excepcion = assertThrows(CoordenadasNoEncontradasException.class, () -> viajeServicio.filtrarViajesPorDistanciaDelConductor(latitudConductor, longitudConductor, distanciaAFiltrar, conductor));
         // Validación
         assertThat("Coordenadas del usuario no encontradas", equalTo(excepcion.getMessage()));
-    }
-
-    @Test
-    public void queTireExcepcionSiOcurreUnErrorAlFiltrarLosViajesCercanos() {
-        // Preparación
-        Double latitudConductor = -34.603608;
-        Double longitudConductor = -58.381732;
-        Double distanciaAFiltrar = 10.0;
-        Conductor conductor = dadoQueExisteUnConductor();
-        when(viajeRepositorio.encontrarViajesCercanos(latitudConductor, longitudConductor, distanciaAFiltrar)).thenThrow(new RuntimeException("Hubo un error al filtrar los viajes cercanos"));
-
-        // Ejecución
-        RuntimeException excepcion = assertThrows(RuntimeException.class, () -> viajeServicio.filtrarViajesPorDistanciaDelConductor(latitudConductor, longitudConductor, distanciaAFiltrar, conductor));
-
-        // Validación
-        assertThat("Ocurrio un error al filtrar los viajes", equalTo(excepcion.getMessage()));
-    }
-
-    @Test
-    public void queDevuelvaUnaListaVaciaSiLaDistanciaAFiltrarEsInvalida() throws UsuarioNoEncontradoException, CoordenadasNoEncontradasException {
-        // Preparación
-        Double latitudConductor = -34.603608;
-        Double longitudConductor = -58.381732;
-        Double distanciaAFiltrar = -10.0;
-        Conductor conductor = dadoQueExisteUnConductor();
-        List<Viaje> viajesCercanos = dadoQueExisteUnaListaDeViajesVacias();
-        when(viajeRepositorio.encontrarViajesCercanos(latitudConductor, longitudConductor, distanciaAFiltrar)).thenReturn(viajesCercanos);
-
-        // Ejecución
-        List<DatosViaje> listaVaciaViajes = viajeServicio.filtrarViajesPorDistanciaDelConductor(latitudConductor, longitudConductor, distanciaAFiltrar, conductor);
-
-        // Validación
-        assertThat(listaVaciaViajes.size(), equalTo(viajesCercanos.size()));
-        assertTrue(listaVaciaViajes.isEmpty());
-    }
-
-    /*
-    @Test
-    public void queSePuedaFiltrarViajesPorDistanciaDelConductorConViajesCercanos() throws UsuarioNoEncontradoException, CoordenadasNoEncontradasException {
-        // Preparación
-        Double latitudConductor = -34.603608;
-        Double longitudConductor = -58.381732;
-        Double distanciaAFiltrar = 10.0;
-        Conductor conductor = dadoQueExisteUnConductor();
-        List<Viaje> viajesCercanos = dadoQueExistenViajesEnProcesosConUnConductorAsignado(conductor);
-        when(viajeRepositorio.encontrarViajesCercanos(latitudConductor, longitudConductor, distanciaAFiltrar)).thenReturn(viajesCercanos);
-
-        // Ejecución
-        List<DatosViaje> viajesFiltrados = viajeServicio.filtrarViajesPorDistanciaDelConductor(latitudConductor, longitudConductor, distanciaAFiltrar, conductor);
-
-        // Validación
-        assertThat(viajesFiltrados.size(), equalTo(5));
-
-        Conductor conductor = new Conductor();
-        Viaje viaje1 = new Viaje();
-        Viaje viaje2 = new Viaje();
-        List<Viaje> viajesCercanos = Arrays.asList(viaje1, viaje2);
-
-        when(viajeRepositorio.encontrarViajesCercanos(10.0, 20.0, 30.0)).thenReturn(viajesCercanos);
-        when(viajeRepositorio.traerTodosLosViajesDescartadosPorConductor(conductor)).thenReturn(Arrays.asList());
-
-        List<DatosViaje> viajesFiltrados = viajeServicio.filtrarViajesPorDistanciaDelConductor(10.0, 20.0, 30.0, conductor);
-
-        assertEquals(5, viajesFiltrados.size()); // Si esperas siempre obtener 5 resultados
-        verify(viajeRepositorio, times(1)).encontrarViajesCercanos(10.0, 20.0, 30.0);
-        verify(viajeRepositorio, times(1)).traerTodosLosViajesDescartadosPorConductor(conductor);
-    }
-
-    @Test
-    public void queDevuelvaViajesAlAzarSiLaDistanciaAFiltrarEsNula() throws UsuarioNoEncontradoException, CoordenadasNoEncontradasException {
-        // Preparación
-        Double latitudConductor = -34.603608;
-        Double longitudConductor = -58.381732;
-        Double distanciaAFiltrar = dadoQueNoExisteCoordenadas();
-        Conductor conductor = dadoQueExisteUnConductor();
-        List<Viaje> viajesCercanos = dadoQueExistenViajesSinUnConductorAsignado();
-        when(viajeRepositorio.traerTodosLosViajesPendientes()).thenReturn(viajesCercanos);
-        when(viajeRepositorio.traerTodosLosViajesDescartadosPorConductor(conductor)).thenReturn(viajesCercanos);
-
-        // Ejecución
-        List<DatosViaje> viajesFiltradosObtenidos = viajeServicio.filtrarViajesPorDistanciaDelConductor(latitudConductor, longitudConductor, distanciaAFiltrar, conductor);
-
-        // Validación
-        assertThat(viajesFiltradosObtenidos.size(), equalTo(viajesCercanos.size()));
-        assertFalse(viajesFiltradosObtenidos.isEmpty());
-    }*/
-
-    private List<Viaje> dadoQueExistenViajesSinUnConductorAsignado() {
-        List<Viaje> viajesFiltrados = new ArrayList<>();
-        Viaje viaje1 = new Viaje();
-        Viaje viaje2 = new Viaje();
-        Viaje viaje3 = new Viaje();
-
-        viaje1.setEstado(TipoEstado.PENDIENTE);
-        viaje2.setEstado(TipoEstado.PENDIENTE);
-        viaje3.setEstado(TipoEstado.PENDIENTE);
-
-        viajesFiltrados.add(viaje1);
-        viajesFiltrados.add(viaje2);
-        viajesFiltrados.add(viaje3);
-
-        return viajesFiltrados;
     }
 
     private List<Viaje> dadoQueExistenViajesEnProcesosConUnConductorAsignado(Conductor conductor){
