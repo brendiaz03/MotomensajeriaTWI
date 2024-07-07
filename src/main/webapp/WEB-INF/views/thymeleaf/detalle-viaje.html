@@ -4,11 +4,11 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <script src="https://kit.fontawesome.com/ca80211b53.js" crossorigin="anonymous"></script>
-    <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.0/css/bootstrap.min.css}"/>
     <link rel="stylesheet" th:href="@{css/main.css}"/>
     <link rel="stylesheet" th:href="@{css/home.css}"/>
     <link rel="stylesheet" th:href="@{css/viaje.css}"/>
     <link rel="stylesheet" th:href="@{css/detalle-viaje.css}"/>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.0/css/bootstrap.min.css}"/>
 
     <title>Motomensajeria</title>
 </head>
@@ -47,7 +47,7 @@
                     <img th:src="${user.getImagenBase64()}" alt=",,," style="height: 20px;width: 20px">
                 </div>
             </a>
-            <a th:href="@{cerrar-sesion}"><i class="fa-solid fa-arrow-right-from-bracket" style=" border-radius:25px; padding:11px; background-color: white; color: #36054E; transition: color 0.3s;" onmouseover="this.style.color='white';this.style.backgroundColor='lightgray'" onmouseout="this.style.color='purple'; this.style.backgroundColor='white'" ></i></a>
+            <a th:href="@{cerrar-sesion}"><i class="fa-solid fa-arrow-right-from-bracket" style=" border-radius:25px; padding:11px; background-color: white; color: #370a37; transition: color 0.3s;" onmouseover="this.style.color='white';this.style.backgroundColor='transparent';this.style.borderColor='white';this.style.border='1px solid white'" onmouseout="this.style.color='#370a37'; this.style.backgroundColor='white'" ></i></a>
         </div>
     </nav>
 </header>

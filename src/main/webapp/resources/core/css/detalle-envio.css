@@ -8,4 +8,12 @@ img{
     height: 60%;
     width: 80%;
 }
-
+.fondo-form{
+    width: 100%;
+}
+.datos_pri{
+    width: 60%;
+}
+.datos_sec{
+    width: 40%;
+}

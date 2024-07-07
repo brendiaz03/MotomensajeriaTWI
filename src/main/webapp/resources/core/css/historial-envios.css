@@ -1,11 +1,38 @@
 main{
     display: flex;
     justify-content: center;
-    height: 100%;
-    align-items: center;
-}
-img{
-    height: 60%;
-    width: 80%;
+    flex-direction: column;
+    gap:30px;
 }
 
+#noHayGenerico{
+    width: 70%;
+}
+
+.fondo-form{
+    display: flex;
+    flex-direction: row;
+}
+
+.viajes-proceso-img{
+    width: 70%;
+}
+
+.contenedor-boton-cancelar {
+    padding:3% 5% 3% 5%;
+
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+    margin-bottom: 15px;
+    gap: 10px;
+    border-radius: 50px;
+    width: 30%;
+}
+.contenedor-boton-cancelar i{
+    color:white;
+    font-size: 60px;
+}

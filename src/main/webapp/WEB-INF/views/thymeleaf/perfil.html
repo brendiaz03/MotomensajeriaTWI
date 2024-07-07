@@ -5,10 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Perfil</title>
     <script src="https://kit.fontawesome.com/ca80211b53.js" crossorigin="anonymous"></script>
-    <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.0/css/bootstrap.min.css}"/>
     <script th:src="@{/js/perfil.js}"> </script>
     <link rel="stylesheet" th:href="@{css/main.css}"/>
     <link rel="stylesheet" th:href="@{css/perfil.css}"/>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.0/css/bootstrap.min.css}"/>
+
 </head>
 <body>
 <header>
@@ -51,7 +52,7 @@
                     <img th:src="@{/imagenes/user.png}" alt=",,," style="height: 20px;width: 20px">
                 </div>
             </a>
-            <a th:href="@{cerrar-sesion}"><i class="fa-solid fa-arrow-right-from-bracket" style=" border-radius:25px; padding:11px; background-color: white; color: #36054E; transition: color 0.3s;" onmouseover="this.style.color='white';this.style.backgroundColor='lightgray'" onmouseout="this.style.color='purple'; this.style.backgroundColor='white'" ></i></a>
+            <a th:href="@{cerrar-sesion}"><i class="fa-solid fa-arrow-right-from-bracket" style=" border-radius:25px; padding:11px; background-color: white; color: #370a37; transition: color 0.3s;" onmouseover="this.style.color='white';this.style.backgroundColor='transparent';this.style.borderColor='white';this.style.border='1px solid white'" onmouseout="this.style.color='#370a37'; this.style.backgroundColor='white'" ></i>></a>
         </div>
     </nav>
 </header>
@@ -59,9 +60,9 @@
     <div class="container d-flex justify-content-center">
     <!-- TARJETA IZQUIERDA -->
 
-        <div class="card mx-3 p-3" style="width: 18rem;height: 35rem; background-color: #D9D9D9;  border-radius: 50px;">
+        <div class="card mx-3 p-3" style="width: 14rem;height: 35rem; background-color: white;  border-radius: 50px;">
             <div class="container d-flex justify-content-center align-items-center">
-                <div class="rounded-circle bg-secondary d-flex justify-content-center align-items-center" style="width: 100px; height: 100px;">
+                <div class="rounded-circle d-flex justify-content-center align-items-center" style="width: 100px; height: 100px; background-color: #36054E" onmouseover="this.style.backgroundColor='#ef6292'" onmouseout="this.style.backgroundColor='#36054E'">
                     <a th:href="foto-perfil" style="display: flex; justify-content: center; align-items: center;">
                         <div class="container d-flex justify-content-center align-items-center"  th:if="${usuario.getImagenPerfil() != null}">
                             <img alt="img" class="d-block rounded-circle" th:src="'data:image/jpg;charset=utf-8;base64,' + ${usuario.getImageDataBase64()}" style="width: 100px; height: 100px;"/>
@@ -87,12 +88,12 @@
 
 
         <!-- TARJETA DERECHA 1 DE 3 (PERFIL) -->
-        <div id="perfil" class="card mx-3 p-3" style="width: 30rem;height: 35rem; background-color: #D9D9D9;  border-radius: 50px;">
+        <div id="perfil" class="card mx-3 p-3" style="color: white; width: 30rem;height: 35rem; background: rgba(10, 10, 10, 0.2);box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3),inset 0 4px 8px rgba(255, 255, 255, 0.3);backdrop-filter: blur(15px);-webkit-backdrop-filter: blur(15px);border: 1px solid rgba(255, 255, 255, 0.5);  border-radius: 50px;">
             <div class="card-body">
                 <h5 class="card-title text-center p-2"><strong>Perfil</strong></h5>
                 <div class="d-flex justify-content-between pt-3">
                     <p class="card-text"><strong>Mis datos personales</strong></p>
-                    <a  th:href="@{form-editar}"><i class="fa-solid fa-pen-to-square"  style="color: #36054E; transition: color 0.3s;" onmouseover="this.style.color='purple'" onmouseout="this.style.color='#36054E'"></i></a><!-- redirect al controller de registro conductor-->
+                    <a  th:href="@{form-editar}"><i class="fa-solid fa-pen-to-square"  style="color: white; transition: color 0.3s;" onmouseover="this.style.color='#ef6292'" onmouseout="this.style.color='white'"></i></a><!-- redirect al controller de registro conductor-->
                 </div>
             </div>
             <div class="card-body">
@@ -104,16 +105,19 @@
         </div>
 
     <!-- TARJETA DERECHA 2 DE 3 (VEHICULO) -->
-        <div th:if="${usuario.getTipoUsuario() == T(com.tallerwebi.dominio.enums.TipoUsuario).Conductor}" id="vehiculo" class="card mx-3 p-3" style="width: 30rem;height: 35rem; background-color: #D9D9D9;  border-radius: 50px;">
-            <div class="card-body">
+        <div th:if="${usuario.getTipoUsuario() == T(com.tallerwebi.dominio.enums.TipoUsuario).Conductor}" id="vehiculo" class="card mx-3 p-3" style=" color:white; width: 30rem;height: 35rem; background: rgba(10, 10, 10, 0.2);box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3),inset 0 4px 8px rgba(255, 255, 255, 0.3);backdrop-filter: blur(15px);-webkit-backdrop-filter: blur(15px);border: 1px solid rgba(255, 255, 255, 0.5);  border-radius: 50px;">
+                <div class="card-body">
                 <h5 class="card-title text-center p-2"><strong>Vehículo</strong></h5>
-                </div>
+
+
+
                 <div th:if="${noVehiculo==false}">
                     <div class="d-flex justify-content-between pt-3">
                         <p class="card-text"><strong>Información del Vehículo</strong></p>
-                        <a th:href="@{form-vehiculo-editar}"><i class="fa-solid fa-pen-to-square" style="color: #36054E; transition: color 0.3s;" onmouseover="this.style.color='purple'" onmouseout="this.style.color='#36054E'"></i></a>
+                        <a th:href="@{form-vehiculo-editar}"><i class="fa-solid fa-pen-to-square" style="color: white; transition: color 0.3s;" onmouseover="this.style.color='#ef6292'" onmouseout="this.style.color='white'"></i></a>
                     </div>
-                <div class="card-body">
+                    <br><br><br>
+                <div class="card-body info-veh">
                     <p>Patente: <strong th:text="${usuario.getVehiculo().getPatente()}"></strong></p>
                     <p>Modelo: <strong th:text="${usuario.getVehiculo().getModelo()}"></strong></p>
                     <p>Color: <strong th:text="${usuario.getVehiculo().getColor()}"></strong></p>
@@ -126,21 +130,22 @@
                     </div>
                 </div>
             </div>
+        </div>
 
         <!-- TARJETA DERECHA 3 DE 3 (SOPORTE EN LÍNEA) -->
-        <div id="seguridad" class="card mx-3 p-3" style="width: 30rem;height: 35rem; background-color: #D9D9D9;  border-radius: 50px;">
+        <div id="seguridad" class="card mx-3 p-3" style="color:white;width: 30rem;height: 35rem; background: rgba(10, 10, 10, 0.2);box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3),inset 0 4px 8px rgba(255, 255, 255, 0.3);backdrop-filter: blur(15px);-webkit-backdrop-filter: blur(15px);border: 1px solid rgba(255, 255, 255, 0.5);  border-radius: 50px;">
             <div class="card-body">
                 <h5 class="card-title text-center p-2"><strong>Seguridad</strong></h5>
             </div>
             <div class="card-body">
                 <h4>Cuenta</h4>
-                <a href="javascript:void(0)"  class="confirm-link"  style="text-decoration: none; color: black; transition: color 0.3s;" onmouseover="this.style.color='purple'" onmouseout="this.style.color='black'">
+                <a href="javascript:void(0)"  class="confirm-link"  style="text-decoration: none; color: white; transition: color 0.3s;" onmouseover="this.style.color='#ef6292'" onmouseout="this.style.color='white'">
                     <p>Cerrar Cuenta</p></a>
                 <form  id="form-cerrar-cuenta" th:action="@{/borrar-cuenta}" method="GET">
                 </form>
                 <br><br>
                 <h4>Ayuda</h4>
-                <a href="#" style="text-decoration: none; color: black; transition: color 0.3s;" onmouseover="this.style.color='purple'" onmouseout="this.style.color='black'">
+                <a th:href="ayuda" style="text-decoration: none; color: white; transition: color 0.3s;" onmouseover="this.style.color='#ef6292'" onmouseout="this.style.color='white'">
                     <p>Chatea con nuestro soporte online aquí.</p></a> <!--Redirect a la pag de soporte-->
             </div>
         </div>

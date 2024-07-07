@@ -18,7 +18,7 @@ html{
 }
 
 .btn-principal{
-    color: purple;
+    color: #370a37;
     background-color: white;
     border-color: transparent;
     border-radius: 50px;
@@ -26,11 +26,12 @@ html{
     text-align: center;
     padding: 5px 30px 5px 30px ;
     text-decoration: none;
+    transition: background-color 0.3s;
 }
 
 .btn-principal:hover{
     color: white;
-    background-color: purple;
+    background-color: #370a37;
 }
 
 .btn-secundario{
@@ -43,10 +44,11 @@ html{
     padding: 5px 30px 5px 30px ;
     text-decoration: none;
     align-content: center;
+    transition: background-color 0.3s;
 }
 
 .btn-secundario:hover {
-    background: violet;
+    background: #370a37;
     border-color: transparent;
     color: white;
 }
@@ -71,13 +73,14 @@ html{
 
 .btn-terciario{
     color: white;
-    background-color: purple;
+    background-color: #36054E;
     border-color: transparent;
     border-radius: 50px;
     width: 7em;
     text-align: center;
     padding: 5px 30px 5px 30px ;
     text-decoration: none;
+    transition: background-color 0.3s;
 }
 
 .btn-terciario:hover{

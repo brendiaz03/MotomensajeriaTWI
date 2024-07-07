@@ -27,6 +27,8 @@ main {
     align-items: center;
     justify-content: center;
     margin-top: 5%;
+    transition: background-color 0.3s;
+
 }
 .sub_columna div{
     padding:2%;

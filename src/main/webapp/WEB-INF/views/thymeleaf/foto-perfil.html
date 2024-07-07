@@ -57,7 +57,7 @@
 </header>
 <main style="height: 40rem">
   <div class="main_registro">
-    <div class="formulario_fondo">
+    <div class="fondo-form">
       <h1 class="titulo_registroConductor">Foto de Perfil</h1>
       <form id="conductorForm" th:action="@{/subir-foto}" th:object="${usuario}" method="POST" enctype="multipart/form-data">
         <section class="formulario">
@@ -77,16 +77,14 @@
             <div class="contenedor_botones">
               <div>
                 <a th:href="@{/perfil}" id="backToProfile">
-                  <button class="boton_subir_imagen" type="button">
+                  <button class="btn-secundario" type="button">
                     <i class="fa-solid fa-xmark"></i>
                   </button>
                 </a>
-              </div>
-              <div class="boton_contenedor">
-                <input th:field="*{imagenPerfil}" type="file" name="image" accept="image/*" class="form-control-file" onchange="previewImage(event)">
-              </div>
+              </div >
+                <input th:field="*{imagenPerfil}" type="file" name="image" accept="image/*" class="btn-principal" onchange="previewImage(event)">
               <div>
-                <button type="submit" class="boton_subir_imagen">
+                <button type="submit" class="btn-secundario">
                   <i class="fa-solid fa-upload"></i>
                 </button>
               </div>

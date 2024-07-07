@@ -5,14 +5,14 @@
     align-items: center;
 }
 
-
-
 .fondo-form {
     display: flex;
     flex-direction: column;
     width: 100%;
     justify-content: center;
 }
+
+
 .fondo-form-filtro{
     align-self: center;
     border-radius: 50px;
@@ -103,18 +103,28 @@
     display: flex;
     flex-direction: row;
     justify-content: space-around;
+    gap:30px;
 }
 
 #filtrado{
     background-color: white;
 }
 
+#filtro-distancia{
+    width: 300px;
+    padding: 0 3%;
+    background-color: #36054E;
+    color:white;
+    height: auto;
+    border-radius: 50px;
+    text-align: center;
+}
+
+
 .label-filtro {
     color:purple;
 }
-.form-control{
-    width: 50%;
-}
+
 .contenedor-botones{
     display: flex;
     flex-direction: row;

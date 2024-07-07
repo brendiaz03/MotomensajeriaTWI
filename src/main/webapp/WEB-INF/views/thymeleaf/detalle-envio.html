@@ -47,7 +47,7 @@
                 </div>
             </a>
             <a th:href="@{cerrar-sesion}">
-                <i class="fa-solid fa-arrow-right-from-bracket" style="border-radius:25px; padding:11px; background-color: white; color: #36054E; transition: color 0.3s;" onmouseover="this.style.color='white';this.style.backgroundColor='lightgray'" onmouseout="this.style.color='#36054E'; this.style.backgroundColor='white'"></i>
+                <i class="fa-solid fa-arrow-right-from-bracket" style=" border-radius:25px; padding:11px; background-color: white; color: #370a37; transition: color 0.3s;" onmouseover="this.style.color='white';this.style.backgroundColor='transparent';this.style.borderColor='white';this.style.border='1px solid white'" onmouseout="this.style.color='#370a37'; this.style.backgroundColor='white'" ></i>
             </a>
         </div>
     </nav>
@@ -58,28 +58,36 @@
         <div></div>
     </section>
     <section>
-        <div class="card mt-3 contenedor-viaje">
+        <div class="fondo-form">
             <div class="card-body contenedor-datos-viaje flex">
-                <div>
-                    <p class="card-text"><b>Direccion de Salida:</b> <span th:text="${viaje.getDomicilioDeSalida()}"></span></p>
-                    <p class="card-text"><b>Direccion de Llegada:</b> <span th:text="${viaje.getDomicilioDeLlegada()}"></span></p>
-                    <p class="card-text"><b>Precio:</b> $<span th:text="${viaje.getPrecio()}"></span> ARS</p>
+                <div class="datos_pri">
+                    <p >Direccion de Salida: <span th:text="${viaje.getDomicilioDeSalida()}"></span></p>
+                    <p >Direccion de Llegada: <span th:text="${viaje.getDomicilioDeLlegada()}"></span></p>
+                    <p >Precio: $<span th:text="${viaje.getPrecio()}"></span> ARS</p>
                 </div>
-                <div>
+                <div class="datos_sec">
                     <div id="datosMapDetalleEnvios" th:data-latitud-salida="${viaje.latitudDeSalida}" th:data-longitud-salida="${viaje.longitudDeSalida}" th:data-latitud-llegada="${viaje.latitudDeLlegada}" th:data-longitud-llegada="${viaje.longitudDeLlegada}"></div>
                 </div>
             </div>
+            <div>
             <div class="contenedor-botones" style="margin-top: 4%">
+                <div>
                 <div class="contenedor-boton-cancelar" th:with="TERMINADO=${T(com.tallerwebi.dominio.enums.TipoEstado).TERMINADO}">
-                    <div th:if="${viaje.getEstado() == TERMINADO}" class="terminado">Terminado</div>
+                    <div th:if="${viaje.getEstado() == TERMINADO}">
+                        <p>Viaje Terminado</p>
+                    </div>
                 </div>
                 <div class="contenedor-boton-cancelar" th:with="CANCELADO=${T(com.tallerwebi.dominio.enums.TipoEstado).CANCELADO}">
-                    <div th:if="${viaje.getEstado() == CANCELADO}" class="cancelado">Cancelado</div>
+                    <div th:if="${viaje.getEstado() == CANCELADO}">
+                    <p>Viaje Cancelado</p>
+                    </div>
+                </div>
                 </div>
                 <div class="contenedor-boton-cancelar" >
-                    <a th:href="@{historial-envios}" class="boton-enlace boton-volver" id="volver">Volver</a>
+                    <a th:href="@{historial-envios}" id="volver"><button class="btn-secundario">Volver</button></a>
                 </div>
             </div>
+        </div>
         </div>
     </section>
 </main>

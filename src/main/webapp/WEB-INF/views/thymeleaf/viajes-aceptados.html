@@ -45,8 +45,7 @@
                 </div>
             </a>
             <a th:href="@{cerrar-sesion}">
-                <i class="fa-solid fa-arrow-right-from-bracket" style="border-radius:25px; padding:11px; background-color: white; color: #36054E; transition: color 0.3s;" onmouseover="this.style.color='white';this.style.backgroundColor='lightgray'" onmouseout="this.style.color='#36054E'; this.style.backgroundColor='white'"></i>
-            </a>
+                <i class="fa-solid fa-arrow-right-from-bracket" style=" border-radius:25px; padding:11px; background-color: white; color: #370a37; transition: color 0.3s;" onmouseover="this.style.color='white';this.style.backgroundColor='transparent';this.style.borderColor='white';this.style.border='1px solid white'" onmouseout="this.style.color='#370a37'; this.style.backgroundColor='white'" ></i>            </a>
         </div>
     </nav>
 </header>
@@ -74,7 +73,7 @@
                         </div>
                         <div class="contenedor-botones" >
                                 <i class="fa-solid fa-map-location-dot"></i>
-                                <a th:href="@{/viajeAceptado(idViaje=${viaje.getId()})}" class="btn-terciario">Ver</a>
+                                <a th:href="@{/viajeAceptado(idViaje=${viaje.getId()})}" ><button class="btn-principal">Ver</button></a>
                         </div>
                     </div>
             </div>

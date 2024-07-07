@@ -21,6 +21,10 @@
     padding-bottom:4%;
     flex-grow: 1;
 }
+#tipoUsuario option{
+    background-color: #36054E;
+     color:white;
+}
 
 .columna{
     display: flex;

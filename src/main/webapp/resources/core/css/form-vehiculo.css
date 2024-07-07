@@ -39,6 +39,19 @@ box-sizing: border-box;
     color:white;
 }
 
+#tipoVehiculo option{
+    background-color: #36054E;
+    color:white;
+}
+#color option{
+    background-color: #36054E;
+    color:white;
+}
+#modelo option{
+    background-color: #36054E;
+    color:white;
+}
+
 .errores{
     width: 80%;
     background: #36054E;

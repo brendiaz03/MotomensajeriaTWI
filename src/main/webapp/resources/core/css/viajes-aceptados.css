@@ -212,7 +212,11 @@ span{
 }
 
 .contenedor-botones {
-    background-color: white;
+    padding:3% 5% 3% 5%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3),
+    inset 0 4px 8px rgba(255, 255, 255, 0.3);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
     display: flex;
     justify-content: center;
     flex-direction: column;
@@ -220,10 +224,9 @@ span{
     align-items: center;
     margin-bottom: 15px;
     gap: 10px;
-    padding:3%;
     border-radius: 50px;
 }
 .contenedor-botones i{
-    color:purple;
+    color:white;
     font-size: 60px;
 }
