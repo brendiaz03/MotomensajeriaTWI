@@ -44,21 +44,24 @@
                 </div>
             </a>
             <a th:href="@{cerrar-sesion}">
-                <i class="fa-solid fa-arrow-right-from-bracket" style="border-radius:25px; padding:11px; background-color: white; color: #36054E; transition: color 0.3s;" onmouseover="this.style.color='white';this.style.backgroundColor='lightgray'" onmouseout="this.style.color='#36054E'; this.style.backgroundColor='white'"></i>
+                <i class="fa-solid fa-arrow-right-from-bracket" style=" border-radius:25px; padding:11px; background-color: white; color: #370a37; transition: color 0.3s;" onmouseover="this.style.color='white';this.style.backgroundColor='transparent';this.style.borderColor='white';this.style.border='1px solid white'" onmouseout="this.style.color='#370a37'; this.style.backgroundColor='white'" ></i>
             </a>
         </div>
     </nav>
 </header>
 <main class="main-envios-proceso">
-        <section class="titulo-envios">
-            <h1 style="color:white">Envíos en Proceso</h1>
-            <div th:if="${viajesEnProceso == null || #lists.isEmpty(viajesEnProceso)}">
-                <h2 style="border-radius:25px;text-align:center;color:white;background-color: black; padding:2%;">Actualmente no hay envíos en proceso.</h2>
-            </div>
-        </section>
+
+    <h1 class="text-center h1-home">Envios en Proceso</h1>
+    <div th:if="${viajesEnProceso == null || #lists.isEmpty(viajesEnProceso)}" class="fondo-form" id="noHayGenerico">
+        <div class="noHayGenerico">
+        <h5>Actualmente no hay envíos en proceso.</h5>
+            <i class="fa-solid fa-boxes-packing"></i>
+        </div>
+    </div>
+
     <section th:if="${viajesEnProceso != null && !#lists.isEmpty(viajesEnProceso)}" style="background-color: transparent; border:none; padding:0; margin:0;">
         <article class="tarjeta-viaje-proceso" th:each="viaje : ${viajesEnProceso}" style="background-color: transparent; border:none; padding:0; margin-bottom: 20px;">
-            <div class="info-basica-envio ">
+            <div class="info-basica-envio">
                 <div>
                     <p>Destinatario: <span th:text="${viaje.getPaquete().getDestinatario()}"></span></p>
                     <p>Dirección del destinatario: <span th:text="${viaje.getDomicilioDeLlegada()}"></span></p>
@@ -79,7 +82,7 @@
                 <form th:action="@{cancelar-envio}" method="post">
                     <input type="hidden" id="idViaje" name="idViaje" th:value="${viaje.getId()}">
                     <button type="submit" class="icon-button" th:id="'cancelar-envio-' + ${viaje.getId()}">
-                        <i class="fa-solid fa-trash-can"></i>
+                        <i class="fa-solid fa-rectangle-xmark"></i>
                     </button>
                 </form>
             </div>

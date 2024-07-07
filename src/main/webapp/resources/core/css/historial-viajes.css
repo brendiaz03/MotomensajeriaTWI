@@ -1,7 +1,51 @@
 .cont-precio {
-    margin-top: 0rem;
+    width: 30%;
+}
+.cont-direcciones{
+    width: 50%;
+
 }
 .contenedor-botones-hist {
     display: flex;
     justify-content: center;
+    flex-direction: column;
+    width: 20%;
+
 }
+.main-historial-viajes{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+.fondo-form{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    height: 16em;
+    gap: 50px;
+}
+
+.estado-viaje{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+}
+
+.estado-viaje i{
+   font-size: 60px;
+}
+
+.estado-viaje h2{
+    font-size: 25px;
+}
+
+.cont{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    width: 80%;
+}
+

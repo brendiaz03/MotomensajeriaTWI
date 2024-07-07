@@ -9,7 +9,7 @@
 
 
 .pasos_realizar_envio div {
-    background-color: #D9D9D9;
+    background-color: white;
     border-radius: 50px;
     padding: 20px;
     justify-content: space-around;
@@ -39,26 +39,28 @@
 
 .formularios_envio {
     width: 70%;
-    background-color: #D9D9D9;
     border-radius: 50px;
-    padding: 20px;
+    padding: 0;
     display: flex;
     flex-direction: column;
     gap: 20px;
     justify-content: space-between;
 }
 
+
+
 .salir {
-    justify-content: right;
-    color: #36054E;
+    color: white;
     font-size: 2em;
+    font-weight: normal;
     justify-items: right;
     display: flex;
     justify-content: flex-end;
     text-decoration: none;
+    transition: color 0.3s;
 }
 .salir:hover{
-    color:darkviolet;
+    color:#ef6292;
 }
 
 .botones {
@@ -69,32 +71,6 @@
     margin-top: 20px;
 }
 
-.boton_submit {
-    width: 262px;
-    height: 67px;
-    background: #36054E;
-    border-radius: 50px;
-    color: white;
-}
-
-.boton_submit:hover {
-    background: darkviolet;
-    border-color: #36054E;
-}
-
-.form-control {
-    border: none;
-    border-bottom: 1px solid black;
-    border-radius: 0;
-    background-color: #D9D9D9;
-    height: 30px;
-}
-
-.form-control:focus {
-    background-color: #BDBDBD;
-    border-color: #D9D9D9;
-    outline: none;
-}
 
 .formulario {
     display: flex;
@@ -114,6 +90,12 @@
     font-size: 25px;
     text-align: center;
 }
+#viajeForm{
+    height: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
 
 .foto {
     height: 8em;
@@ -123,21 +105,12 @@
 }
 
 
-
-.errores {
-    color: red;
-    font-size: 0.9em;
-}
-
-.error {
-    color: red;
-    display: none;
-}
-
 .detalles {
     display: flex;
     justify-content: space-around;
     flex-wrap: wrap;
+    border:1px solid white;
+    border-radius: 50px;
 }
 
 .detalles div{
@@ -145,14 +118,25 @@
 
 }
 .detalle-paq, .detalle-via {
-    flex: 1; /* Cada elemento ocupa la mitad del espacio disponible */
-    padding: 20px; /* Añade espacio interno para separación */
-    text-align: center; /* Centra el contenido */
-    box-sizing: border-box; /* Incluye el padding en el tamaño total */
+    flex: 1;
+    padding: 20px;
+    text-align: center;
+    box-sizing: border-box;
 }
 
 @media (max-width: 768px) {
     .detalle-paq, .detalle-via {
         flex: 100%; /* En pantallas más pequeñas, ocupa el 100% del ancho */
     }
+}
+.btn-principal{
+    width: 20%;
+}
+.fondo-form{
+    height: 700px;
+    width: 100%;
+}
+
+#boton_pagar_envio{
+    width: 100%;
 }

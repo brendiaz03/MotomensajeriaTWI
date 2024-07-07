@@ -11,8 +11,8 @@
 
     <!-- custom style -->
     <!--<link rel="stylesheet" th:href="@{/css/home.css}"/></head>-->
-    <link rel="stylesheet" th:href="@{/css/form-vehiculo.css}"/>
     <link rel="stylesheet" th:href="@{/css/main.css}"/>
+    <link rel="stylesheet" th:href="@{/css/form-vehiculo.css}"/>
 </head>
 
 <body>
@@ -50,7 +50,7 @@
 </header>
 <main>
 
-    <div class="formulario_fondo">
+    <div class="fondo-form">
         <h1 class="titulo_registroConductor">Registrar Vehículo</h1>
         <form th:action="${isEditForm ? 'editar-vehiculo' : 'registrar-vehiculo'}" method="post" th:object="${vehiculo}" novalidate>
         <section class="formulario">
@@ -58,7 +58,7 @@
                 <div>
                     <label for="tipoVehiculo">Tipo de Vehiculo:</label>
                     <select id="tipoVehiculo" name="tipoVehiculo" class="form-control" th:field="*{tipoDeVehiculo}">
-                        <option value="">Seleccione un tipo de vehiculo</option>
+                        <option value="" th:text="'Seleccione un tipo de Vehiculo'"></option>
                         <option th:each="tipo : ${T(com.tallerwebi.dominio.enums.TipoVehiculo).values()}"
                                 th:value="${tipo}"
                                 th:selected="${vehiculo.getTipoDeVehiculo() != null and tipo.name() == vehiculo.getTipoDeVehiculo().name()}"
@@ -69,25 +69,29 @@
                 </div>
 
                 <div>
-                    <label for="modelo" class="nombre fuente_formulario_registro">Modelo</label><br>
-                    <select class="form-control" id="modelo" th:field="*{modelo}">
-                        <option value="">Seleccione un modelo</option>
+                    <label for="modelo" >Modelo</label><br>
+                    <select  id="modelo" class="form-control" th:field="*{modelo}">
+                        <option value="" th:text="'Seleccione un Modelo'"></option>
                         <option th:each="tipo : ${T(com.tallerwebi.dominio.enums.ModeloVehiculo).values()}"
                                 th:value="${tipo}" th:text="${tipo}">
                         </option>
                     </select>
                     <span id="modeloError" class="error"></span>
                 </div>
+
                 <div>
                     <label for="color" class="nombre fuente_formulario_registro">Color</label><br>
                     <select class="form-control" id="color" th:field="*{color}">
-                        <option value="">Seleccione un color</option>
+                        <option value="" th:text="'Seleccione un Color'"></option>
                         <option th:each="tipo : ${T(com.tallerwebi.dominio.enums.Color).values()}"
                                 th:value="${tipo}" th:text="${tipo}">
                         </option>
                     </select>
                     <span id="colorError" class="error"></span>
                 </div>
+            </div>
+
+            <div class="columna">
                 <div>
                     <label for="patente" class="apellido fuente_formulario_registro">Patente</label>
                     <input type="text" class="form-control" id="patente" name="patente" th:field="*{patente}" th:readonly="${editar}">
@@ -95,7 +99,6 @@
                     <span class="error" th:if="${mensajeError != null and !mensajeError.isEmpty()}" >
                         <p th:text="${mensajeError}"></p></span>
                 </div>
-                <div class="columna">
                     <div>
                         <label for="pesoSoportado" class="nombreUsuario fuente_formulario_registro">Peso Soportado (kg)</label>
                         <input type="text" class="form-control" id="pesoSoportado" name="pesoSoportado" th:field="*{pesoSoportado}">
@@ -106,16 +109,15 @@
                         <input type="text" class="form-control" id="dimensionDisponible" name="dimensionDisponible" th:field="*{dimensionDisponible}">
                         <span id="dimensionDisponibleError" class="error"></span>
                     </div>
-                </div>
             </div>
         </section>
 
 
         <section class="botones">
-            <a th:if="${isEditForm}" th:href="perfil"><button type="button" class="boton_cancelar">Cancelar</button></a>
-            <a th:unless="${isEditForm}" th:href="home"><button type="button" class="boton_cancelar">Cancelar</button></a>
-            <button th:if="${isEditForm}" type="submit" id="boton_editar_vehiculo" class="boton_submit">Editar</button>
-            <button th:unless="${isEditForm}" type="submit" id="boton_reg_vehiculo" class="boton_submit">Registrar</button>
+            <a th:if="${isEditForm}" th:href="perfil"><button type="button" class="btn-secundario">Cancelar</button></a>
+            <a th:unless="${isEditForm}" th:href="home"><button type="button" class="btn-secundario">Cancelar</button></a>
+            <button th:if="${isEditForm}" type="submit" id="boton_editar_vehiculo" class="btn-principal">Editar</button>
+            <button th:unless="${isEditForm}" type="submit" id="boton_reg_vehiculo" class="btn-principal">Registrar</button>
         </section>
     </form>
 
