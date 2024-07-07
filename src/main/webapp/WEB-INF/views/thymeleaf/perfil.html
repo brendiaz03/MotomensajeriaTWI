@@ -52,7 +52,7 @@
                     <img th:src="@{/imagenes/user.png}" alt=",,," style="height: 20px;width: 20px">
                 </div>
             </a>
-            <a th:href="@{cerrar-sesion}"><i class="fa-solid fa-arrow-right-from-bracket" style=" border-radius:25px; padding:11px; background-color: white; color: #370a37; transition: color 0.3s;" onmouseover="this.style.color='white';this.style.backgroundColor='transparent';this.style.borderColor='white';this.style.border='1px solid white'" onmouseout="this.style.color='#370a37'; this.style.backgroundColor='white'" ></i>></a>
+            <a th:href="@{cerrar-sesion}"><i class="fa-solid fa-arrow-right-from-bracket" style=" border-radius:25px; padding:11px; background-color: white; color: #370a37; transition: color 0.3s;" onmouseover="this.style.color='white';this.style.backgroundColor='transparent';this.style.borderColor='white';this.style.border='1px solid white'" onmouseout="this.style.color='#370a37'; this.style.backgroundColor='white'" ></i></a>
         </div>
     </nav>
 </header>
@@ -126,7 +126,7 @@
                 <div th:if="${noVehiculo==true}">
                     <div class="noVehiculo">
                         <p>Usted no tiene registrado ningún vehículo. Para continuar registre uno aquí.</p>
-                        <a th:href="form-vehiculo" class="btn-aceptar">Registrar Vehículo</a>
+                        <a th:href="form-vehiculo" ><button class="btn-principal">Registrar Vehículo</button></a>
                     </div>
                 </div>
             </div>

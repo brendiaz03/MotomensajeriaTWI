@@ -101,3 +101,10 @@ p.card-text.option{
 p.card-text.option:hover{
     background-color: #ef6292;
 }
+
+.btn-principal{
+    width: 12em;
+}
+.noVehiculo{
+text-align: center
+}
