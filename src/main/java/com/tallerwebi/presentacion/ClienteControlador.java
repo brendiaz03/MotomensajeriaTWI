@@ -4,6 +4,8 @@ import com.tallerwebi.dominio.cliente.Cliente;
 import com.tallerwebi.dominio.cliente.ClienteServicio;
 
 import com.tallerwebi.dominio.exceptions.UsuarioNoEncontradoException;
+import com.tallerwebi.dominio.exceptions.ClienteNoEncontradoException;
+import com.tallerwebi.dominio.exceptions.ViajeNoEncontradoException;
 import com.tallerwebi.dominio.viaje.Viaje;
 import com.tallerwebi.dominio.viaje.ViajeServicio;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,10 +33,15 @@ public class ClienteControlador {
     }
 
     @RequestMapping("/homeCliente")
-    public ModelAndView mostrarHomeCliente(HttpSession session) {
+    public ModelAndView mostrarHomeCliente(HttpSession session) throws ClienteNoEncontradoException {
         ModelMap model = new ModelMap();
+        Cliente cliente;
         try{
-            Cliente cliente = clienteServicio.obtenerClientePorId((Integer) session.getAttribute("IDUSUARIO"));
+             cliente = clienteServicio.obtenerClientePorId((Integer) session.getAttribute("IDUSUARIO"));
+        }catch (UsuarioNoEncontradoException e){
+            model.put("mensajeError", e.getMessage() + " Por favor, vuelva a intentarlo.");
+            return new ModelAndView("redirect:/*", model);
+        }
             List<Viaje> viajesCancelados = this.viajeServicio.obtenerViajesCanceladosDelCliente(cliente.getId());
 
             if(!viajesCancelados.isEmpty()) {
@@ -46,10 +53,7 @@ public class ClienteControlador {
             String viewName = "homeCliente";
             this.reiniciarVariables(session);
             return new ModelAndView(viewName, model);
-        }catch (UsuarioNoEncontradoException e){
-            model.put("mensajeError", e.getMessage() + " Por favor, vuelva a intentarlo.");
-            return new ModelAndView("redirect:/*", model);
-        }
+
     }
 
     public void reiniciarVariables(HttpSession session){
@@ -61,7 +65,7 @@ public class ClienteControlador {
     }
 
     @RequestMapping("/envios-en-proceso")
-    public ModelAndView mostrarEnviosEnProceso(HttpSession session){
+    public ModelAndView mostrarEnviosEnProceso(HttpSession session) throws ClienteNoEncontradoException {
         ModelMap model= new ModelMap();
         String viewName= "envios-en-proceso";
         try {
@@ -82,14 +86,14 @@ public class ClienteControlador {
     }
 
     @RequestMapping(value = "/cancelar-envio", method = RequestMethod.POST)
-    public ModelAndView cancelarEnvio(@RequestParam Integer idViaje) {
+    public ModelAndView cancelarEnvio(@RequestParam Integer idViaje) throws ViajeNoEncontradoException {
         Viaje viaje = viajeServicio.buscarViaje(idViaje);
-        viajeServicio.cancelarEnvío(viaje);
+        viajeServicio.cancelarEnvio(viaje);
         return new ModelAndView("redirect:/envios-en-proceso");
     }
 
     @RequestMapping("/duplicarViajeCancelado")
-    public ModelAndView duplicarViajeCancelado(@RequestParam("idViaje") Integer idViaje) {
+    public ModelAndView duplicarViajeCancelado(@RequestParam("idViaje") Integer idViaje) throws ViajeNoEncontradoException {
         Viaje viajeObtenido = this.viajeServicio.obtenerViajePorId(idViaje);
         this.viajeServicio.actualizarViajeCancelado(viajeObtenido);
         this.viajeServicio.duplicarViajeCancelado(viajeObtenido);
@@ -97,14 +101,14 @@ public class ClienteControlador {
     }
 
     @RequestMapping("/noDuplicarViaje")
-    public ModelAndView noDuplicarViaje(@RequestParam("idViaje") Integer idViaje) {
+    public ModelAndView noDuplicarViaje(@RequestParam("idViaje") Integer idViaje) throws ViajeNoEncontradoException {
         Viaje viajeObtenido = this.viajeServicio.obtenerViajePorId(idViaje);
         this.viajeServicio.noDuplicarViaje(viajeObtenido);
         return new ModelAndView("redirect:/homeCliente");
     }
 
     @RequestMapping("/historial-envios")
-    public ModelAndView mostrarHistorialEnvios(HttpSession session) {
+    public ModelAndView mostrarHistorialEnvios(HttpSession session) throws ClienteNoEncontradoException {
         ModelMap model= new ModelMap();
         String viewName = "historial-envios";
         try {
@@ -129,7 +133,7 @@ public class ClienteControlador {
     }
 
     @RequestMapping("/detalle-envio")
-    public ModelAndView mostrarDetalleDelEnvio(@RequestParam ("idViaje") Integer idViaje, HttpSession session){
+    public ModelAndView mostrarDetalleDelEnvio(@RequestParam ("idViaje") Integer idViaje, HttpSession session) throws ViajeNoEncontradoException {
         ModelMap model= new ModelMap();
         String claveGoogleMaps = "AIzaSyDcPeOyMBqG_1mZgjpei_R2ficRigdkINg";
         try {
