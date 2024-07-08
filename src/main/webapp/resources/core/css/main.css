@@ -1,13 +1,13 @@
 @font-face {
-    font-family: 'Codec Pro';
-    src: url('CodecPro-Bold.ttf') format('truetype');
+    font-family: 'Satoshi-Variable';
+    src: url('Satoshi-Variable.ttf') format('truetype');
 }
 
 body {
     background-image: url('imagenes/fondo.jpg'); /* Ruta de la imagen de fondo */
     background-size: cover; /* Cubre todo el tamaño del cuerpo */
     background-position: center; /* Posición centrada de la imagen */
-    font-family: "Codec Pro",sans-serif;
+    font-family: "Satoshi-Variable",sans-serif;
     height: 100%;
     margin: 0;
 }
@@ -17,69 +17,153 @@ html{
     margin: 0;
 }
 
-.btn-cancelar {
-    color: #370a37; /* Texto violeta */
-    background-color: white; /* Fondo blanco */
-    border: 3px solid #36054E;
+.btn-principal{
+    color: #370a37;
+    background-color: white;
+    border-color: transparent;
     border-radius: 50px;
+    width: 7em;
+    text-align: center;
     padding: 5px 30px 5px 30px ;
     text-decoration: none;
+    transition: background-color 0.3s;
 }
 
-.btn-cancelar:hover {
-    background: lightgray;
-    color:#FFFFFF;
-    text-decoration: none;
+.btn-principal:hover{
+    color: white;
+    background-color: #370a37;
 }
-.btn-aceptar {
-    color: #ffffff; /* Texto violeta */
-    background-color: #370a37; /* Fondo blanco */
-    border: none; /* Borde violeta */
+
+.btn-secundario{
+    color: #ffffff;
+    background-color: transparent;
+    border-color: white;
     border-radius: 50px;
+    text-align: center;
+    width: 7em;
     padding: 5px 30px 5px 30px ;
     text-decoration: none;
+    align-content: center;
+    transition: background-color 0.3s;
 }
 
-.btn-aceptar:hover {
-    background: darkviolet;
-    border-color:#36054E;
-    text-decoration: none;
+.btn-secundario:hover {
+    background: #370a37;
+    border-color: transparent;
     color: white;
 }
-.fondo-form{
+
+#noHayGenerico{
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+}
+
+#noHayGenerico i{
+    font-size: 150px;
+}
+.noHayGenerico{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 30px;
+}
+
+.btn-terciario{
+    color: white;
+    background-color: #36054E;
+    border-color: transparent;
+    border-radius: 50px;
+    width: 7em;
+    text-align: center;
+    padding: 5px 30px 5px 30px ;
+    text-decoration: none;
+    transition: background-color 0.3s;
+}
+
+.btn-terciario:hover{
+    color: white;
+    border-color: transparent;
+    background-color: hotpink;
+}
+
+
+.fondo-form {
     align-self: center;
-    background-color: #D9D9D9;
     border-radius: 50px;
     align-items: center;
     padding:3% 5% 3% 5%;
+    background: rgba(10, 10, 10, 0.2);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3),
+    inset 0 4px 8px rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    position: relative;
+    color:white;
 }
+.fondo-form h2{
+    text-align: center;
+}
+
 .form-control{
-    border-top: none; /* Elimina el borde superior */
-    border-left: none; /* Elimina el borde izquierdo */
-    border-right: none; /* Elimina el borde derecho */
-    border-bottom: 1px solid black; /* Agrega el borde inferior negro */
-    border-radius: 0; /* Elimina cualquier radio de borde */
-    background-color: #D9D9D9; /* Hace el fondo transparente para que se vea como una línea */
-    padding: 0; /* Elimina el relleno */
-    height: 30px; /* Ajusta automáticamente la altura según el contenido */
+    border-color: white;
+    border-radius: 15px;
+    background-color: transparent;
+    height: 30px;
+    color:white;
+    padding: 0 10px;
 }
 .form-control:focus {
-    background-color: #BDBDBD;
-    border-color: #D9D9D9;
-    outline: none; /* Elimina el resplandor predeterminado al enfocar el campo */
+    background-color: transparent;
+    outline: none;
+    color:white;
 }
-.cont-precio{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    margin-top: 1rem;
+
+.form-control:-webkit-autofill {
+    box-shadow: 0 0 0 30px transparent inset;
+    -webkit-box-shadow: 0 0 0 30px transparent  inset;
+    color:white;
 }
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    -webkit-text-fill-color: white;
+    -webkit-box-shadow: 0 0 0 1000px transparent inset;
+    transition: background-color 5000s ease-in-out 0s;
+}
+
+input[type="number"] {
+    -moz-appearance: textfield;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/*.cont-precio{*/
+/*    display: flex;*/
+/*    flex-direction: row;*/
+/*    justify-content: space-between;*/
+/*    margin-top: 1rem;*/
+/*}*/
 .contenedor-botones{
     display: flex;
     justify-content: space-around;
 }
 .contenedor-solicitud{
-    width: 60%;
+    width: 75%;
     display: flex;
     flex-direction: column;
     gap: 1rem
@@ -92,13 +176,18 @@ h5{
     text-align: center;
     color: white;
 }
-b, strong {
-    color: #6b6b6b;}
+
 .cont{
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 1rem;
+}
+
+.error {
+    color: lightpink;
+    font-size: 0.9em;
+    margin-top: 5px;
 }
 .btn-terminado{
     background-color: green;

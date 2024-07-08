@@ -41,7 +41,7 @@ public class VistaCrearEnvio extends VistaWeb {
     }
 
     public void darClickEnIniciarSesion(){
-        this.darClickEnElElemento(".boton_submit");
+        this.darClickEnElElemento(".btn-aceptar");
     }
 
     public void darClickEnCrearEnvio() {

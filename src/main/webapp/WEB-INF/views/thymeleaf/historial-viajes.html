@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <script src="https://kit.fontawesome.com/ca80211b53.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.0/css/bootstrap.min.css}"/>
-    <link rel="stylesheet" th:href="@{css/historial-viajes.css}"/>
     <link rel="stylesheet" th:href="@{css/main.css}"/>
+    <link rel="stylesheet" th:href="@{css/historial-viajes.css}"/>
     <title>Historial</title>
 </head>
 <body>
@@ -44,18 +44,19 @@
                 </div>
             </a>
             <a th:href="@{cerrar-sesion}">
-                <i class="fa-solid fa-arrow-right-from-bracket" style="border-radius:25px; padding:11px; background-color: white; color: #36054E; transition: color 0.3s;" onmouseover="this.style.color='white';this.style.backgroundColor='lightgray'" onmouseout="this.style.color='#36054E'; this.style.backgroundColor='white'"></i>
-            </a>
+                <i class="fa-solid fa-arrow-right-from-bracket" style=" border-radius:25px; padding:11px; background-color: white; color: #370a37; transition: color 0.3s;" onmouseover="this.style.color='white';this.style.backgroundColor='transparent';this.style.borderColor='white';this.style.border='1px solid white'" onmouseout="this.style.color='#370a37'; this.style.backgroundColor='white'" ></i>            </a>
         </div>
     </nav>
 </header>
-<main role="main">
+<main role="main" class="main-historial-viajes">
             <h1 class="text-center h1-home">Historial de Viajes</h1>
-            <div th:if="${viajesObtenidos.size()==0}">
-                <h5>Todavia no hay historial disponible.</h5>
-            </div>
-    <div th:if="${viajesObtenidos != null}" >
-        <div class="cont">
+        <div th:if="${viajesObtenidos.size()==0}" class="fondo-form" id="noHayGenerico">
+             <div class="noHayGenerico">
+                <h5 >Todavia no hay historial disponible.</h5>
+                 <i class="fa-solid fa-clock-rotate-left"></i>
+             </div>
+        </div>
+    <div th:if="${viajesObtenidos != null}" class="cont">
             <div class="contenedor-solicitud" th:each="viaje : ${viajesObtenidos}">
                     <div  th:data-viaje-id="${viaje.idViaje}">
                         <div class="fondo-form">
@@ -69,21 +70,42 @@
                             </div>
 
 
-                        <div  class="contenedor-botones-hist">
-                            <div th:with="TERMINADO=${T(com.tallerwebi.dominio.enums.TipoEstado).TERMINADO}">
-                                <div th:if="${viaje.getEstado() == TERMINADO}">
-                                    <button disabled class="btn-terminado">
-                                        Terminado
-                                    </button></div>
-                            </div>
-                            <div th:with="CANCELADO=${T(com.tallerwebi.dominio.enums.TipoEstado).CANCELADO}">
-                                <div th:if="${viaje.getEstado() == CANCELADO}">
-                                <button disabled class="btn-cancelado">
-                                    Cancelado
-                                </button>
+                            <div class="contenedor-botones-hist">
+                                <div th:with="TERMINADO=${T(com.tallerwebi.dominio.enums.TipoEstado).TERMINADO}, CANCELADO=${T(com.tallerwebi.dominio.enums.TipoEstado).CANCELADO}">
+                                    <!-- Estado Terminado -->
+                                    <div th:if="${viaje.getEstado() == TERMINADO}" class="estado-viaje">
+                                        <div th:with="tipoVehiculo=${conductor.getVehiculo().getTipoDeVehiculo()}">
+                                            <div th:if="${tipoVehiculo == T(com.tallerwebi.dominio.enums.TipoVehiculo).AUTO}">
+                                                <i class="fa-solid fa-car-side"></i>
+                                            </div>
+                                            <div th:if="${tipoVehiculo == T(com.tallerwebi.dominio.enums.TipoVehiculo).CAMION}">
+                                                <i class="fa-solid fa-truck"></i>
+                                            </div>
+                                            <div th:if="${tipoVehiculo == T(com.tallerwebi.dominio.enums.TipoVehiculo).MOTO}">
+                                                <i class="fa-solid fa-motorcycle"></i>
+                                            </div>
+                                        </div>
+                                        <h2>Terminado</h2>
+                                    </div>
+
+                                    <!-- Estado Cancelado -->
+                                    <div th:if="${viaje.getEstado() == CANCELADO}" class="estado-viaje">
+                                        <div th:with="tipoVehiculo=${conductor.getVehiculo().getTipoDeVehiculo()}">
+                                            <div th:if="${tipoVehiculo == T(com.tallerwebi.dominio.enums.TipoVehiculo).AUTO}">
+                                                <i class="fa-solid fa-car-side"></i>
+                                            </div>
+                                            <div th:if="${tipoVehiculo == T(com.tallerwebi.dominio.enums.TipoVehiculo).CAMION}">
+                                                <i class="fa-solid fa-truck"></i>
+                                            </div>
+                                            <div th:if="${tipoVehiculo == T(com.tallerwebi.dominio.enums.TipoVehiculo).MOTO}">
+                                                <i class="fa-solid fa-motorcycle"></i>
+                                            </div>
+                                        </div>
+                                        <h2>Cancelado</h2>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+
                         </div>
                     </div>
                 </div>

@@ -2,8 +2,21 @@ document.addEventListener('DOMContentLoaded', function() {
     iniciarAutocompletado();
 
     var form = document.getElementById('viajeForm');
+    var botonCrear = document.getElementById('boton_crear_viaje');
+
+    botonCrear.addEventListener('click', function(event) {
+        if (!validarFormulario()) {
+            event.preventDefault(); // Evita que se envíe el formulario si hay errores
+        }
+    });
 
     form.addEventListener('submit', function(event) {
+        if (!validarFormulario()) {
+            event.preventDefault(); // Evita que se envíe el formulario si hay errores
+        }
+    });
+
+    function validarFormulario() {
         // Reiniciar mensajes de error
         var errors = document.querySelectorAll('.error');
         errors.forEach(function(error) {
@@ -42,10 +55,8 @@ document.addEventListener('DOMContentLoaded', function() {
             valid = false;
         }
 
-        if (!valid) {
-            event.preventDefault(); // Evita que se envíe el formulario si hay errores
-        }
-    });
+        return valid;
+    }
 
     function mostrarError(id, mensaje) {
         const errorMessage = document.getElementById(id);
@@ -72,7 +83,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             document.getElementById('latitudSalida').value = place.geometry.location.lat();
             document.getElementById('longitudSalida').value = place.geometry.location.lng();
-            ocultarError('direccionSalidaError');
         });
 
         autocompleteLlegada.addListener('place_changed', function () {
@@ -83,13 +93,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             document.getElementById('latitudLlegada').value = place.geometry.location.lat();
             document.getElementById('longitudLlegada').value = place.geometry.location.lng();
-            ocultarError('direccionLlegadaError');
         });
-
-        function ocultarError(id) {
-            const errorMessage = document.getElementById(id);
-            errorMessage.textContent = '';
-            errorMessage.style.display = 'none';
-        }
     }
 });

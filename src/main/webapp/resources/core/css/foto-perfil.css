@@ -50,7 +50,7 @@ main{
 
 .titulo_registroConductor {
     font-size: 30px;
-    color: #000000;
+    color: white;
     margin: 3%;
 }
 .form-control{
@@ -81,17 +81,7 @@ main{
     gap: 6rem;
     justify-content:center;
 }
-.boton_submit {
-    width: 262px;
-    height: 67px;
-    background: #36054E;
-    border-radius: 50px;
-    color:white;
-}
-.boton_submit:hover {
-    background: darkviolet;
-    border-color:#36054E;
-}
+
 .boton_cancelar {
     width: 242px;
     height: 68px;
@@ -99,6 +89,7 @@ main{
     border: 3px solid #36054E;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     border-radius: 50px;
+    transition: background-color 0.3s;
 }
 .boton_cancelar:hover {
     background: lightgray;
@@ -108,8 +99,6 @@ main{
 
 input[type="file"] {
     /* Oculta el texto del archivo seleccionado */
-    color: transparent !important;
-    background: #36054E;
     width: 100%;
     border-radius: 50px;
     border: none; /* Elimina el borde */
@@ -118,6 +107,8 @@ input[type="file"] {
     padding: 1%; /* Elimina el relleno */
     height: 3em; /* Ajusta automáticamente la altura según el contenido */
     cursor: pointer; /* Cambia el cursor al pasar por encima */
+    display: flex;
+    justify-content: center;
 }
 input[type="file"]::-webkit-file-upload-button {
     /* Oculta el texto predeterminado del botón */
@@ -130,17 +121,14 @@ input[type="file"]::-webkit-file-upload-button {
 input[type="file"]::before {
     content: 'Seleccionar Imagen';
     font-size: 16px;
-    color: white;
-    padding: 5% 10%; /* Ajusta el padding para centrar verticalmente el texto y separarlo del borde */
+    padding: 4% 10%; /* Ajusta el padding para centrar verticalmente el texto y separarlo del borde */
     text-align: center; /* Centra horizontalmente el texto */
     display: block; /* Cambia a bloque para aplicar el padding correctamente */
     margin: auto; /* Centra horizontalmente el contenido */
 }
 
 
-input[type="file"]:hover {
-    background: darkviolet;
-}
+
 
 .user_default,
 .user_new {
@@ -156,16 +144,14 @@ input[type="file"]:hover {
     align-items: center;
     gap:3em;
 }
-.boton_subir_imagen{
+.btn-secundario{
     width: 60px;
     height: 50px;
-    background: #FFFFFF;
-    border: 3px solid #36054E;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     border-radius: 50px;
-}
+    padding: 0;
 
-.boton_subir_imagen:hover {
-    background: lightgray;
-    color:#FFFFFF;
+}
+.fondo-form{
+    color:white;
+    text-align: center;
 }

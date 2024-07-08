@@ -44,8 +44,7 @@
                 </div>
             </a>
             <a th:href="@{cerrar-sesion}">
-                <i class="fa-solid fa-arrow-right-from-bracket" style="border-radius:25px; padding:11px; background-color: white; color: #36054E; transition: color 0.3s;" onmouseover="this.style.color='white';this.style.backgroundColor='lightgray'" onmouseout="this.style.color='#36054E'; this.style.backgroundColor='white'"></i>
-            </a>
+                <i class="fa-solid fa-arrow-right-from-bracket" style=" border-radius:25px; padding:11px; background-color: white; color: #370a37; transition: color 0.3s;" onmouseover="this.style.color='white';this.style.backgroundColor='transparent';this.style.borderColor='white';this.style.border='1px solid white'" onmouseout="this.style.color='#370a37'; this.style.backgroundColor='white'" ></i>            </a>
         </div>
     </nav>
 </header>
@@ -57,26 +56,26 @@
     <section>
         <div class="fondo-form">
                 <div class="cont-direcciones">
-                    <p class="card-text"><b>Direccion de Salida:</b> <span th:text="${viaje.getDomicilioDeSalida()}"></span></p>
-                    <p class="card-text"><b>Direccion de Llegada:</b> <span th:text="${viaje.getDomicilioDeLlegada()}"></span></p>
+                    <p>Direccion de Salida: <span th:text="${viaje.getDomicilioDeSalida()}"></span></p>
+                    <p>Direccion de Llegada: <span th:text="${viaje.getDomicilioDeLlegada()}"></span></p>
                 </div>
             <div>
                 <div id="datosMap" th:data-latitud-salida="${viaje.latitudDeSalida}" th:data-longitud-salida="${viaje.longitudDeSalida}" th:data-latitud-llegada="${viaje.latitudDeLlegada}" th:data-longitud-llegada="${viaje.longitudDeLlegada}"></div>
             </div>
                 <div class="cont-precio">
-                    <p class="card-text"><b>Paquete de:</b> <span th:text="${viaje.getNombreDelCliente()}"></span></p>
-                    <p class="card-text"><b>Precio:</b> $<span th:text="${viaje.getPrecio()}"></span> ARS</p>
+                    <p>Paquete de: <span th:text="${viaje.getNombreDelCliente()}"></span></p>
+                    <p >Precio: $<span th:text="${viaje.getPrecio()}"></span> ARS</p>
                 </div>
 
             <div class="contenedor-botones">
                 <div>
-                    <a th:href="@{volver}" class="btn-volver">Volver</a>
+                    <a th:href="@{volver}"><button type="button" class="btn-secundario">Volver</button></a>
                 </div>
                 <div>
-                    <a th:href="@{/cancelar-viaje(idViaje=${viaje.getIdViaje()})}" class="btn-cancelado">Cancelar</a>
+                    <a th:href="@{/cancelar-viaje(idViaje=${viaje.getIdViaje()})}"> <button type="button" class="btn-secundario">Cancelar</button></a>
                 </div>
                 <div>
-                    <a th:href="@{/terminar-viaje(idViaje=${viaje.getIdViaje()})}" class="btn-terminado">Terminar</a>
+                    <a th:href="@{/terminar-viaje(idViaje=${viaje.getIdViaje()})}"> <button type="button" class="btn-principal">Terminar</button></a>
                 </div>
             </div>
         </div>

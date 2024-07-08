@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
+    // Acordeón
     const items = document.querySelectorAll('.item_acordeon');
 
     items.forEach(item => {
@@ -12,11 +13,9 @@ document.addEventListener("DOMContentLoaded", () => {
             item.classList.toggle('active');
         });
     });
-});
 
-
-document.addEventListener("DOMContentLoaded", function() {
-    var modal = document.getElementById('viajeCanceladoModal');
+    // Modal
+    const modal = document.getElementById('viajeCanceladoModal');
     if (modal) {
         modal.classList.add('show');
     }
