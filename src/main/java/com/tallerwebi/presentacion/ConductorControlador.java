@@ -1,10 +1,7 @@
 package com.tallerwebi.presentacion;
 
 import com.tallerwebi.dominio.conductor.*;
-import com.tallerwebi.dominio.exceptions.ClienteNoEncontradoException;
-import com.tallerwebi.dominio.exceptions.CoordenadasNoEncontradasException;
-import com.tallerwebi.dominio.exceptions.UsuarioNoEncontradoException;
-import com.tallerwebi.dominio.exceptions.ViajeNoEncontradoException;
+import com.tallerwebi.dominio.exceptions.*;
 import com.tallerwebi.dominio.mercadoPago.MercadoPagoServicio;
 import com.tallerwebi.dominio.mercadoPago.MercadoPagoServicioImpl;
 import com.tallerwebi.dominio.viaje.Viaje;
@@ -199,9 +196,15 @@ public class ConductorControlador {
 
 
     @RequestMapping(value = "/filtrarPorDistancia", method = RequestMethod.POST)
-    public ModelAndView filtrarPorDistancia(HttpSession session, @RequestParam Double distancia) throws UsuarioNoEncontradoException {
-            session.setAttribute("distancia", distancia);
-            return new ModelAndView("redirect:/homeConductor");
+    public ModelAndView filtrarPorDistancia(HttpSession session, @RequestParam Double distancia) {
+        ModelMap model = new ModelMap();
+        if (distancia < 0 || distancia > 10 || distancia == null) {
+            model.put("mensajeError", "Distancia a filtrar invalida");
+            return new ModelAndView("redirect:/*", model);
+        }
+
+        session.setAttribute("distancia", distancia);
+        return new ModelAndView("redirect:/homeConductor");
     }
 
     @RequestMapping(path = "/ubicacion")
