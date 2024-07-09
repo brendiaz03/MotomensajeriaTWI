@@ -97,17 +97,18 @@ public class ViajeServicioImpl implements ViajeServicio {
     }
 
     @Override
-    public void cancelarViaje(DatosViaje datosViaje) throws ViajeNoEncontradoException {
-        if (datosViaje == null) {
+    public void cancelarViaje(Viaje viaje) throws ViajeNoEncontradoException {
+        if (viaje == null) {
             throw new ViajeNoEncontradoException("Los datos son nulos");
         }
 
-        Viaje viajeAceptadoActual = this.viajeRepositorio.obtenerViajePorId(datosViaje.getIdViaje());
+        Viaje viajeAceptadoActual = this.viajeRepositorio.obtenerViajePorId(viaje.getId());
 
         if (viajeAceptadoActual == null) {
             throw new ViajeNoEncontradoException("El viaje no existe");
         }
 
+        viajeAceptadoActual.setCanceladoPor(viaje.getConductor().getId());
         viajeAceptadoActual.setEstado(TipoEstado.CANCELADO);
         viajeAceptadoActual.setFecha(LocalDateTime.now());
         viajeAceptadoActual.setAfectaPenalizacion(true);
@@ -198,6 +199,7 @@ public class ViajeServicioImpl implements ViajeServicio {
             throw new ViajeNoEncontradoException("No se pudo cancelar el viaje");
         }
 
+        viaje.setCanceladoPor(viaje.getCliente().getId());
         viaje.setFecha(LocalDateTime.now());
         viaje.setEstado(TipoEstado.CANCELADO);
         this.viajeRepositorio.editar(viaje);

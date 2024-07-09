@@ -3,11 +3,8 @@ package com.tallerwebi.presentacion;
 import static org.hamcrest.Matchers.startsWith;
 import com.tallerwebi.dominio.conductor.Conductor;
 import com.tallerwebi.dominio.conductor.ConductorServicio;
-import com.tallerwebi.dominio.exceptions.ClienteNoEncontradoException;
-import com.tallerwebi.dominio.exceptions.CoordenadasNoEncontradasException;
-import com.tallerwebi.dominio.exceptions.UsuarioNoEncontradoException;
+import com.tallerwebi.dominio.exceptions.*;
 import com.tallerwebi.dominio.mercadoPago.MercadoPagoServicio;
-import com.tallerwebi.dominio.exceptions.ViajeNoEncontradoException;
 import com.tallerwebi.dominio.vehiculo.Vehiculo;
 import com.tallerwebi.dominio.viaje.Viaje;
 import com.tallerwebi.dominio.viaje.ViajeServicio;
@@ -209,12 +206,12 @@ public void queSeRendericeLaVistaQueMuestraElViajeAceptadoSeleccionadoPorElCondu
     public void queUnConductorCanceleUnViajePreviamenteAceptado() throws UsuarioNoEncontradoException, ViajeNoEncontradoException {
         String nombreEsperado = "redirect:/homeConductor";
         Conductor conductor = mock(Conductor.class);
-        DatosViaje viaje = mock(DatosViaje.class);
+        Viaje viaje = mock(Viaje.class);
         Integer idViaje = 123;
 
         when(session.getAttribute("IDUSUARIO")).thenReturn(1);
         when(conductorServicio.obtenerConductorPorId(1)).thenReturn(conductor);
-        when(viajeServicio.obtenerViajeAceptadoPorId(idViaje)).thenReturn(viaje);
+        when(viajeServicio.obtenerViajePorId(idViaje)).thenReturn(viaje);
         ModelAndView mav = conductorControlador.cancelarViaje(session, idViaje);
 
         assertThat(mav.getViewName(), equalTo(nombreEsperado));
@@ -291,7 +288,7 @@ public void queSeRendericeLaVistaQueMuestraElViajeAceptadoSeleccionadoPorElCondu
 }
 
     @Test
-    public void queSeElConductorFiltrePorUnaDistanciaEspecificaLosViajesPendientesDisponibles() throws UsuarioNoEncontradoException {
+    public void queSeElConductorFiltrePorUnaDistanciaEspecificaLosViajesPendientesDisponibles() {
         Double distancia = 10.0;
 
         ModelAndView mav = conductorControlador.filtrarPorDistancia(session, distancia);
