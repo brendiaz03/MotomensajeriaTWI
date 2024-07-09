@@ -1,20 +1,3 @@
-function confirmarEliminacion(event) {
-    event.preventDefault(); // Evitar el envío automático del formulario
-
-    if (confirm("¿Está seguro que desea cancelar este envío?")) {
-        // Si el usuario confirma, encontrar y enviar el formulario
-        const form = event.target.closest('form');
-        if (form) {
-            form.submit();
-        } else {
-            console.error("No se pudo encontrar el formulario");
-        }
-    } else {
-        // Si el usuario cancela, no hacer nada
-        return false;
-    }
-}
-
 document.addEventListener("DOMContentLoaded", () => {
     const items = document.querySelectorAll('.tarjeta-viaje-proceso');
 
@@ -32,10 +15,24 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
     });
+});
 
-    // Agregar el evento onclick a los botones de eliminación
-    const deleteButtons = document.querySelectorAll('.icon-button');
-    deleteButtons.forEach(button => {
-        button.addEventListener('click', confirmarEliminacion);
+document.addEventListener('DOMContentLoaded', function () {
+    const openPopupButtons = document.querySelectorAll('.open-confirm-popup');
+    const confirmPopup = document.getElementById('confirm-popup');
+    const closePopupButton = document.getElementById('close-popup');
+    const popupForm = document.getElementById('confirm-form');
+    const popupIdInput = document.getElementById('popup-idViaje');
+
+    openPopupButtons.forEach(button => {
+        button.addEventListener('click', function () {
+            const viajeId = this.getAttribute('data-id');
+            popupIdInput.value = viajeId;
+            confirmPopup.classList.add('show');
+        });
+    });
+
+    closePopupButton.addEventListener('click', function () {
+        confirmPopup.classList.remove('show');
     });
 });

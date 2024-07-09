@@ -93,10 +93,85 @@ color:#370a37;
     transition: background-color 0.3s;
 }
 
+.icon-button-cancelar {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    outline: none;
+    transition: background-color 0.3s;
+}
+
 .icon-button i {
     color: #370a37;
 }
 
 .icon-button:hover i {
     color: #ef6292;
+}
+
+#confirm-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 8px;
+    padding: 50px;
+    box-shadow: 0 0 20px rgba(0, 123, 255, 0.2);
+    z-index: 1000;
+    text-align: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s, visibility 0.3s;
+}
+
+#confirm-popup.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+#confirm-popup div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#confirm-popup p {
+    margin-bottom: 20px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #FFFFFF;
+}
+
+#confirm-popup button {
+    margin: 5px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.eliminar-envio {
+    background-color: #FFFFFF;
+    color: #370a37;
+    border-color: transparent;
+}
+
+.eliminar-envio:hover {
+    background-color: #370a37;
+    color: #FFFFFF;
+}
+
+.cancelar-eliminacion {
+    background-color: transparent;
+    color: #FFFFFF;
+    border: #FFFFFF;
+}
+
+.cancelar-eliminacion:hover {
+    background-color: #370a37;
+    border: none;
 }

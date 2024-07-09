@@ -49,6 +49,11 @@ public class ConductorControlador {
                 (Double)session.getAttribute("latitud"),
                 (Double)session.getAttribute("longitud"),
                 distanciaAFiltrar, conductor);
+
+        if (distanciaAFiltrar != null) {
+            model.put("seleccionado", distanciaAFiltrar);
+        }
+
         model.put("viajes", viajesCercanosPendientes);
         model.put("cantidadDeViajes", viajesCercanosPendientes.size());
         model.put("noVehiculo",false);
@@ -198,7 +203,7 @@ public class ConductorControlador {
     @RequestMapping(value = "/filtrarPorDistancia", method = RequestMethod.POST)
     public ModelAndView filtrarPorDistancia(HttpSession session, @RequestParam Double distancia) {
         ModelMap model = new ModelMap();
-        if (distancia < 0 || distancia > 10 || distancia == null) {
+        if (distancia < 0 || distancia > 10) {
             model.put("mensajeError", "Distancia a filtrar invalida");
             return new ModelAndView("redirect:/*", model);
         }

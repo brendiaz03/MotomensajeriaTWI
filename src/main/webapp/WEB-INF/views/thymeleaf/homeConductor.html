@@ -91,11 +91,11 @@
       <div class="fondo-form-filtro" id="filtrado" th:if="${noVehiculo==false}">
         <label class="label-filtro">Cantidad de solicitudes:  <span th:text="${cantidadDeViajes}"></span> </label>
         <form class="formFiltro" th:action="@{/filtrarPorDistancia}" method="post">
-          <select class="form-control" id="filtro-distancia" name="distancia">
-              <option value="" selected class="option-filtro" th:text="'Filtrar viajes por distancia'"></option>
-              <option value=2.0 class="option-filtro">2 Kilometros</option>
-              <option value=5.0 class="option-filtro">5 Kilometros</option>
-              <option value=10.0 class="option-filtro">10 Kilometros</option>
+          <label for="filtro-distancia"></label><select class="form-control" id="filtro-distancia" name="distancia">
+              <option value="0.0" selected class="option-filtro" th:text="'Filtrar viajes por distancia'"></option>
+              <option value=2.0 class="option-filtro" th:selected="${seleccionado == 2.0}">2 Kilometros</option>
+              <option value=5.0 class="option-filtro" th:selected="${seleccionado == 5.0}">5 Kilometros</option>
+              <option value=10.0 class="option-filtro" th:selected="${seleccionado == 10.0}">10 Kilometros</option>
             </select>
             <button type="submit" class="btn-terciario">Aceptar</button>
         </form>

@@ -7,12 +7,11 @@
     <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.0/css/bootstrap.min.css}"/>
     <link rel="stylesheet" th:href="@{/css/main.css}"/>
     <link rel="stylesheet" th:href="@{/css/envios-en-proceso.css}"/>
-
 </head>
 <body>
 <header>
     <nav class="navbar navbar-expand-lg mx-4">
-        <div class="d-flex align-items-center bg-violet"> <!-- Div pegado a la izquierda -->
+        <div class="d-flex align-items-center bg-violet">
             <a th:href="homeCliente" class="mx-2">
                 <img th:src="@{/imagenes/logo.png}" class="d-block w-100 bg-violet" alt=",,," style="height: 50px;width: 50px">
             </a>
@@ -78,19 +77,25 @@
                 </div>
             </div>
             <div class="info-botones">
-                <i class="fa-solid fa-circle-info toggle-info"></i>
-                <form th:action="@{cancelar-envio}" method="post">
-                    <input type="hidden" id="idViaje" name="idViaje" th:value="${viaje.getId()}">
-                    <button type="submit" class="icon-button" th:id="'cancelar-envio-' + ${viaje.getId()}">
-                        <i class="fa-solid fa-rectangle-xmark"></i>
-                    </button>
-                </form>
+                <i class="fa-solid fa-circle-info toggle-info" th:id="'ver-detalle-' + ${viaje.getId()}"></i>
+                <button type="button" class="icon-button-cancelar open-confirm-popup" th:data-id="${viaje.getId()}">
+                    <i class="fa-solid fa-rectangle-xmark"></i>
+                </button>
             </div>
 
         </article>
     </section>
 
-
+    <div id="confirm-popup">
+        <div>
+            <p>¿Desea aceptar eliminar el envío?</p>
+            <form id="confirm-form" th:action="@{cancelar-envio}" method="post">
+                <input type="hidden" id="popup-idViaje" name="idViaje">
+                <button type="submit" class="eliminar-envio">Sí</button>
+                <button type="button" id="close-popup" class="cancelar-eliminacion">No</button>
+            </form>
+        </div>
+    </div>
 </main>
 
 </body>

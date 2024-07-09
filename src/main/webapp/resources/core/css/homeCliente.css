@@ -132,7 +132,7 @@ a:hover{
     visibility: hidden;
     opacity: 0;
     transition: opacity 0.3s ease, visibility 0.3s ease;
-    z-index: 1000; /* Asegúrate de que el valor sea mayor que cualquier otro elemento en tu página */
+    z-index: 1000;
 }
 
 .modal-viaje {
