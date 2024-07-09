@@ -86,14 +86,18 @@
         </article>
     </section>
 
-    <div id="confirm-popup">
-        <div>
-            <p>¿Desea aceptar eliminar el envío?</p>
-            <form id="confirm-form" th:action="@{cancelar-envio}" method="post">
-                <input type="hidden" id="popup-idViaje" name="idViaje">
-                <button type="submit" class="eliminar-envio">Sí</button>
-                <button type="button" id="close-popup" class="cancelar-eliminacion">No</button>
-            </form>
+    <div id="confirm-popup" class="modal-overlay">
+        <div class="fondo-form">
+            <div>
+                <p>¿Desea aceptar eliminar el envío?</p>
+                <div class="modal-footer-viaje">
+                    <form id="confirm-form" th:action="@{cancelar-envio}" method="post">
+                    <input type="hidden" id="popup-idViaje" name="idViaje">
+                    <a><button type="submit" class="btn-principal">Si</button></a>
+                </form>
+                    <a><button type="button" id="close-popup" class="btn-secundario">No</button></a>
+                </div>
+            </div>
         </div>
     </div>
 </main>

@@ -54,7 +54,7 @@
 </header>
 <main role="main" class="container">
 
-  <section th:if="${isPenalizado}" class="fondo-form" th:attr="data-penalizacion=${conductor.getHoraPenalizacion()}">
+  <section th:if="${isPenalizado}" class="isPenalizado fondo-form" th:attr="data-penalizacion=${conductor.getHoraPenalizacion()}">
 
     <h2>Usted ha sido penalizado.</h2>
     <h4>Dentro de las próximas <span id="contador"></span> usted podrá volver a realizar envíos.</h4>
@@ -63,10 +63,16 @@
       <img class="imgPenalizado" th:src="@{/imagenes/penalizado.png}" alt=",,,"><br>
       <p>En caso de querer retomar en el momento con los envíos, puede pagar la multa</p>
 
-      <form th:action="@{/despenalizar}" method="POST" id="formDespenalizar" class="botones">
+      <form th:action="@{/despenalizar}" method="POST" class="botones">
         <input type="hidden" th:value="${conductor.getId()}" name="conductorId"/>
         <input type="hidden" th:value="${conductor.getMontoPenalizacion()}" name="montoPenalizacion"/>
         <button type="submit" class="btn-principal" id="btn-penalizacion">Pagar Penalización</button>
+      </form>
+    </div>
+
+    <div>
+      <form th:action="@{/despenalizar-timer}" method="POST" class="botones" id="formDespenalizar" hidden="hidden">
+        <input type="hidden" th:value="${conductor.getId()}" name="conductorId"/>
       </form>
     </div>
 

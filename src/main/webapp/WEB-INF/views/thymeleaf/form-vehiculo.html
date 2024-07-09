@@ -114,8 +114,9 @@
 
 
         <section class="botones">
-            <a th:if="${isEditForm}" th:href="perfil"><button type="button" class="btn-secundario">Cancelar</button></a>
-            <a th:unless="${isEditForm}" th:href="home"><button type="button" class="btn-secundario">Cancelar</button></a>
+            <a th:if="${isEditForm && estaLogeado}" th:href="perfil"><button type="button" class="btn-secundario">Cancelar</button></a>
+            <a th:unless="${estaLogeado}" th:href="home"><button type="button" class="btn-secundario">Cancelar</button></a>
+            <a th:if="${estaLogeado && !isEditForm}" th:href="homeConductor"><button type="button" class="btn-secundario">Cancelar</button></a>
             <button th:if="${isEditForm}" type="submit" id="boton_editar_vehiculo" class="btn-principal">Editar</button>
             <button th:unless="${isEditForm}" type="submit" id="boton_reg_vehiculo" class="btn-principal">Registrar</button>
         </section>

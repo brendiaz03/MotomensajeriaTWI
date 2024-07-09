@@ -110,68 +110,59 @@ color:#370a37;
     color: #ef6292;
 }
 
-#confirm-popup {
+.modal-overlay {
     position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     background: rgba(0, 0, 0, 0.5);
-    border-radius: 8px;
-    padding: 50px;
-    box-shadow: 0 0 20px rgba(0, 123, 255, 0.2);
-    z-index: 1000;
-    text-align: center;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.3s, visibility 0.3s;
-}
-
-#confirm-popup.show {
-    opacity: 1;
-    visibility: visible;
-}
-
-#confirm-popup div {
     display: flex;
-    flex-direction: column;
+    justify-content: center;
     align-items: center;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    z-index: 1000;
 }
 
-#confirm-popup p {
-    margin-bottom: 20px;
-    font-size: 16px;
-    font-weight: bold;
-    color: #FFFFFF;
+.modal-viaje {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    max-width: 550px;
+    width: 100%;
+    z-index: 1001; /* Asegúrate de que el modal esté por encima del overlay */
 }
 
-#confirm-popup button {
-    margin: 5px;
+
+.modal-overlay.show {
+    visibility: visible;
+    opacity: 1;
+}
+
+.modal-footer-viaje a {
+    display: inline-block;
     padding: 10px 20px;
+    margin: 5px;
     border: none;
+    color: white;
+    text-decoration: none;
     border-radius: 5px;
-    font-size: 14px;
-    cursor: pointer;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s ease;
 }
 
-.eliminar-envio {
-    background-color: #FFFFFF;
-    color: #370a37;
-    border-color: transparent;
+
+.modal-footer-viaje .btn-secondary {
+    background-color: #6c757d;
 }
 
-.eliminar-envio:hover {
-    background-color: #370a37;
-    color: #FFFFFF;
+.modal-footer-viaje .btn-secondary:hover {
+    background-color: #5a6268;
 }
 
-.cancelar-eliminacion {
-    background-color: transparent;
-    color: #FFFFFF;
-    border: #FFFFFF;
-}
-
-.cancelar-eliminacion:hover {
-    background-color: #370a37;
-    border: none;
+.fondo-form{
+    text-align: center;
 }

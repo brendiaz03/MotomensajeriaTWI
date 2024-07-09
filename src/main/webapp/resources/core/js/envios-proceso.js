@@ -17,22 +17,23 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
-document.addEventListener('DOMContentLoaded', function () {
-    const openPopupButtons = document.querySelectorAll('.open-confirm-popup');
-    const confirmPopup = document.getElementById('confirm-popup');
-    const closePopupButton = document.getElementById('close-popup');
-    const popupForm = document.getElementById('confirm-form');
-    const popupIdInput = document.getElementById('popup-idViaje');
+document.addEventListener("DOMContentLoaded", function() {
+    const confirmPopup = document.getElementById("confirm-popup");
+    const openPopupButtons = document.querySelectorAll(".open-confirm-popup");
+    const closePopupButtons = document.querySelectorAll("#close-popup-no");
+    const popupIdViaje = document.getElementById("popup-idViaje");
 
     openPopupButtons.forEach(button => {
-        button.addEventListener('click', function () {
-            const viajeId = this.getAttribute('data-id');
-            popupIdInput.value = viajeId;
-            confirmPopup.classList.add('show');
+        button.addEventListener("click", function() {
+            const idViaje = this.getAttribute("data-id");
+            popupIdViaje.value = idViaje;
+            confirmPopup.classList.add("show");
         });
     });
 
-    closePopupButton.addEventListener('click', function () {
-        confirmPopup.classList.remove('show');
+    closePopupButtons.forEach(button => {
+        button.addEventListener("click", function() {
+            confirmPopup.classList.remove("show");
+        });
     });
 });

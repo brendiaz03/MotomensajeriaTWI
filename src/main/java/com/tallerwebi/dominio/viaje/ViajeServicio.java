@@ -22,7 +22,7 @@ public interface ViajeServicio {
 
     List<Viaje> calcularLaDistanciaDelViajeEntreLaSalidaYElDestino(List<Viaje> viajes);
 
-    void cancelarViaje(DatosViaje viaje) throws ViajeNoEncontradoException;
+    void cancelarViaje(Viaje viaje) throws ViajeNoEncontradoException;
 
     void terminarViaje(DatosViaje viaje) throws ViajeNoEncontradoException;
 

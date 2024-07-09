@@ -68,6 +68,7 @@ public class LoginControlador {
                 session.setAttribute("IDUSUARIO", usuario.getId());
                 session.setAttribute("tipoUsuario", usuario.getTipoUsuario());
                 session.setAttribute("isEditForm", false);
+                session.setAttribute("estaLogeado",true);
                 model.put("correcto", "Usuario o clave correcta");
                 if(usuario.getTipoUsuario().equals(TipoUsuario.Conductor)){
                     return new ModelAndView("ubicacion", model);

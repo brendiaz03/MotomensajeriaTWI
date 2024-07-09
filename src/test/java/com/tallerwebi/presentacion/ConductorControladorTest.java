@@ -206,12 +206,12 @@ public void queSeRendericeLaVistaQueMuestraElViajeAceptadoSeleccionadoPorElCondu
     public void queUnConductorCanceleUnViajePreviamenteAceptado() throws UsuarioNoEncontradoException, ViajeNoEncontradoException {
         String nombreEsperado = "redirect:/homeConductor";
         Conductor conductor = mock(Conductor.class);
-        DatosViaje viaje = mock(DatosViaje.class);
+        Viaje viaje = mock(Viaje.class);
         Integer idViaje = 123;
 
         when(session.getAttribute("IDUSUARIO")).thenReturn(1);
         when(conductorServicio.obtenerConductorPorId(1)).thenReturn(conductor);
-        when(viajeServicio.obtenerViajeAceptadoPorId(idViaje)).thenReturn(viaje);
+        when(viajeServicio.obtenerViajePorId(idViaje)).thenReturn(viaje);
         ModelAndView mav = conductorControlador.cancelarViaje(session, idViaje);
 
         assertThat(mav.getViewName(), equalTo(nombreEsperado));
