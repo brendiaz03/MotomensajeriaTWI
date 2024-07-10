@@ -45,8 +45,8 @@ public class VistaCrearEnvioE2E {
 
     @Test
     void unUsuarioClienteIniciaSesionYCreaUnEnvioExitosamente() {
-        vistaCrearEnvio.escribirNombreUsuario("Cliente");
-        vistaCrearEnvio.escribirClave("test");
+        vistaCrearEnvio.escribirNombreUsuario("bren");
+        vistaCrearEnvio.escribirClave("4215");
         vistaCrearEnvio.darClickEnIniciarSesion();
         vistaCrearEnvio.darClickEnCrearEnvio();
         vistaCrearEnvio.escribirPesoPaquete("10.0");
@@ -69,8 +69,8 @@ public class VistaCrearEnvioE2E {
 
     @Test
     void unUsuarioClienteIniciaSesionYCancelaLaCreacionEnElTercerPaso() {
-        vistaCrearEnvio.escribirNombreUsuario("Cliente");
-        vistaCrearEnvio.escribirClave("test");
+        vistaCrearEnvio.escribirNombreUsuario("bren");
+        vistaCrearEnvio.escribirClave("4215");
         vistaCrearEnvio.darClickEnIniciarSesion();
         vistaCrearEnvio.darClickEnCrearEnvio();
         vistaCrearEnvio.escribirPesoPaquete("10.0");
@@ -90,8 +90,8 @@ public class VistaCrearEnvioE2E {
 
     @Test
     void unUsuarioClienteIniciaSesionYSeDirigeACrearPaqueteYEnviaElFormularioVacioPorEndeSalenTodosLosErroresDeValidacion() {
-        vistaCrearEnvio.escribirNombreUsuario("Cliente");
-        vistaCrearEnvio.escribirClave("test");
+        vistaCrearEnvio.escribirNombreUsuario("bren");
+        vistaCrearEnvio.escribirClave("4215");
         vistaCrearEnvio.darClickEnIniciarSesion();
         vistaCrearEnvio.darClickEnCrearEnvio();
         vistaCrearEnvio.darClickEnCrearPaquete();
@@ -112,8 +112,8 @@ public class VistaCrearEnvioE2E {
 
     @Test
     void unUsuarioClienteIniciaSesionYCreaUnPaqueteYEnviaElFormularioDeViajeVacioPorEndeSalenTodosLosErroresDeValidacion() {
-        vistaCrearEnvio.escribirNombreUsuario("Cliente");
-        vistaCrearEnvio.escribirClave("test");
+        vistaCrearEnvio.escribirNombreUsuario("bren");
+        vistaCrearEnvio.escribirClave("4215");
         vistaCrearEnvio.darClickEnIniciarSesion();
         vistaCrearEnvio.darClickEnCrearEnvio();
         vistaCrearEnvio.escribirPesoPaquete("10.0");

@@ -48,7 +48,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Función para mostrar el popup de confirmación
     function openPopup() {
-        document.getElementById('confirmPopup').style.display = 'block';
+        document.getElementById('confirmPopup').style.display = 'flex';
     }
 
     // Función para cerrar el popup de confirmación

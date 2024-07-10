@@ -42,7 +42,42 @@
           <div class="cont-imagen-auto">
             <img th:src="@{/imagenes/auto-home.svg}" id="img-auto" alt="Imagen de Auto">
           </div>
+  <div id="confirmPopup" class="modal-overlay">
+    <div class="fondo-form">
+      <p>Usuario creado correctamente, por favor, inicie sesión.</p>
+        <div class="d-flex justify-content-center">
+          <button  class="btn-principal" id="confirmNo">Aceptar</button>
+      </div>
+    </div>
+  </div>
 </main>
+<script>
+  // Función para mostrar el popup de confirmación
+  function openPopup() {
+    document.getElementById('confirmPopup').style.display = 'flex';
+  }
+
+  // Función para cerrar el popup de confirmación
+  function closePopup() {
+    document.getElementById('confirmPopup').style.display = 'none';
+  }
+
+  // Event listener para el enlace de "Cerrar Cuenta"
+  document.addEventListener("DOMContentLoaded", function() {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('registroExitoso') === 'true') {
+      openPopup();
+    }else{
+      closePopup();
+    }
+  });
+
+
+  // Event listener para el botón "No" dentro del popup de confirmación
+  document.getElementById('confirmNo').addEventListener('click', function () {
+    closePopup(); // Cerrar el popup si se selecciona "No"
+  });
+</script>
 <script type="text/javascript" th:src="@{webjars/bootstrap/5.2.0/js/bootstrap.min.js}"></script>
 </body>
 </html>
