@@ -50,7 +50,24 @@ public class VistaVerEnvios {
         vistaEnvios.escribirContrasenia("123");
         vistaEnvios.darClickEnIniciarSesion();
         vistaEnvios.darClickEnEnviosEnProceso();
-        vistaEnvios.darClickEnCancelarEnvio(30);
+        vistaEnvios.darClickEnCancelarEnvio(52);
+        vistaEnvios.darClickEnHistorialDeEnvios();
+    }
+
+    @Test
+    void verTodosLosEnviosYVerElDetalleDeUno() {
+        vistaEnvios.escribirUsuario("Joaco");
+        vistaEnvios.escribirContrasenia("123");
+        vistaEnvios.darClickEnIniciarSesion();
+        vistaEnvios.darClickEnEnviosEnProceso();
+        vistaEnvios.darClickEnVerDetalle(50);
+    }
+
+    @Test
+    void verHistorialDeEnvios() {
+        vistaEnvios.escribirUsuario("Joaco");
+        vistaEnvios.escribirContrasenia("123");
+        vistaEnvios.darClickEnIniciarSesion();
         vistaEnvios.darClickEnHistorialDeEnvios();
     }
 }

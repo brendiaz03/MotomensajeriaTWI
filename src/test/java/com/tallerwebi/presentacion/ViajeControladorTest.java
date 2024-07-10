@@ -2,6 +2,7 @@ package com.tallerwebi.presentacion;
 
 import com.tallerwebi.dominio.cliente.Cliente;
 import com.tallerwebi.dominio.cliente.ClienteServicio;
+import com.tallerwebi.dominio.enums.TipoEstado;
 import com.tallerwebi.dominio.exceptions.*;
 import com.tallerwebi.dominio.mercadoPago.MercadoPagoServicio;
 import com.tallerwebi.dominio.paquete.Paquete;
@@ -322,9 +323,10 @@ public class ViajeControladorTest {
         Double precio = 100.0;
         Integer idViaje = 1;
         Viaje viaje = dadoQueExisteUnViaje();
+        viaje.setId(idViaje);
         String url = "redirect:/https://mercadopago.com.ar";
         when(mercadoPagoServicio.pagarViajeMp(precio)).thenReturn(url);
-        when(session.getAttribute("IDVIAJE")).thenReturn(1);
+        when(session.getAttribute("viajeActual")).thenReturn(viaje);
         when(viajeServicio.obtenerViajePorId(idViaje)).thenReturn(viaje);
         doNothing().when(viajeServicio).actualizarViaje(viaje);
 
@@ -366,7 +368,9 @@ public class ViajeControladorTest {
         // Preparación
         Integer idViaje = 1;
         Double precio = 100.0;
-        when(session.getAttribute("IDVIAJE")).thenReturn(idViaje);
+        Viaje viaje = dadoQueExisteUnViaje();
+        viaje.setId(idViaje);
+        when(session.getAttribute("viajeActual")).thenReturn(viaje);
         when(viajeServicio.obtenerViajePorId(idViaje)).thenThrow(new ViajeNoEncontradoException("ID Invalido"));
 
         // Ejecución

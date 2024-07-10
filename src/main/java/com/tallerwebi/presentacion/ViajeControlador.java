@@ -142,7 +142,8 @@ public class ViajeControlador {
             }
 
             String redirectUrl = mercadoPagoServicio.pagarViajeMp(precioDelViaje);
-            Viaje viaje = this.viajeServicio.obtenerViajePorId((Integer) session.getAttribute("IDVIAJE"));
+            Viaje viajeObtenido = (Viaje) session.getAttribute("viajeActual");
+            Viaje viaje = this.viajeServicio.obtenerViajePorId(viajeObtenido.getId());
             viaje.setEstado(TipoEstado.PENDIENTE);
             this.viajeServicio.actualizarViaje(viaje);
             return new ModelAndView("redirect:" + redirectUrl);

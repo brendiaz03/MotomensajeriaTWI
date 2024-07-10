@@ -32,4 +32,8 @@ public class VistaEnvios extends VistaWeb {
     public void darClickEnHistorialDeEnvios() {
         this.darClickEnElElemento("#historial-envios");
     }
+
+    public void darClickEnVerDetalle(Integer idDelEnvio) {
+        this.darClickEnElElemento("#ver-detalle-" + idDelEnvio);
+    }
 }
