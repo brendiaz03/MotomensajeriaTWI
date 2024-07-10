@@ -56,9 +56,7 @@ public class UsuarioRepositorioImpl implements UsuarioRepositorio {
     @Override
     @Transactional
     public void eliminarCuentaDeUsuario(Usuario usuario) {
-
         Session session = this.sessionFactory.getCurrentSession();
-
         session.delete(usuario);
 
     }

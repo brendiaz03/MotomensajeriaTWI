@@ -23,6 +23,7 @@ public class LoginRepositorioImpl implements LoginRepositorio {
         return (Usuario) sessionFactory.getCurrentSession().createCriteria(Usuario.class)
                 .add(Restrictions.eq("nombreUsuario", username))
                 .add(Restrictions.eq("password", password))
+                .add(Restrictions.eq("eliminado", null))
                 .uniqueResult();
     }
 }

@@ -89,17 +89,12 @@ public class UsuarioServicioImpl implements UsuarioServicio {
 
     @Override
     public void borrarCuenta(Integer idUsuario) throws UsuarioNoEncontradoException {
-
         try {
-
             Usuario usuario = this.usuarioRepositorio.getUsuarioById(idUsuario);
-
-            this.usuarioRepositorio.eliminarCuentaDeUsuario(usuario);
-
+            usuario.setEliminado(true);
+            this.usuarioRepositorio.editarUsuario(usuario);
         } catch (NoResultException e) {
-
             throw new UsuarioNoEncontradoException("No se encontro al usuario.");
-
         }
     }
 
