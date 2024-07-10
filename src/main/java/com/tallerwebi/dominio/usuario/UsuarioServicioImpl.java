@@ -27,16 +27,18 @@ public class UsuarioServicioImpl implements UsuarioServicio {
     @Override
     public Usuario registrarUsuario(DatosUsuario usuario) throws UsuarioDuplicadoException {
         try{
-            Usuario duplicado=this.usuarioRepositorio.buscarDuplicados(usuario.getEmail(), usuario.getNombreUsuario());
+            Usuario duplicado = this.usuarioRepositorio.buscarDuplicados(usuario.getEmail(), usuario.getNombreUsuario());
             throw new UsuarioDuplicadoException("Usuario o Email ya existentes");
         }catch (NoResultException e){
             if(usuario.getTipoUsuario() == TipoUsuario.Conductor){
                 Conductor conductor = usuario.toConductor();
                 conductor.setPenalizado(false);
                 conductor.setCantPenalizacion(0);
+                conductor.setEliminado(false);
                 return usuarioRepositorio.guardarUsuario(conductor);
             }else{
                 Cliente cliente = usuario.toCliente();
+                cliente.setEliminado(false);
                 return usuarioRepositorio.guardarUsuario(cliente);
             }
         }

@@ -33,7 +33,6 @@ public class UsuarioRepositorioImpl implements UsuarioRepositorio {
         Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
         query.setParameter("email", email);
         query.setParameter("nombreUsuario", nombreUsuario);
-
         return (Usuario) query.getSingleResult();
     }
 
