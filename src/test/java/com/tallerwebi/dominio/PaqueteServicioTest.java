@@ -1,7 +1,9 @@
 package com.tallerwebi.dominio;
 
+import com.tallerwebi.dominio.exceptions.PaqueteNoEncontradoException;
 import com.tallerwebi.dominio.exceptions.NoSePudoGuardarElPaqueteException;
 import com.tallerwebi.dominio.exceptions.PaqueteNoEncontradoException;
+import com.tallerwebi.dominio.exceptions.UsuarioNoEncontradoException;
 import com.tallerwebi.dominio.paquete.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,7 +27,7 @@ public class PaqueteServicioTest {
     }
 
     @Test
-    public void queSePuedaGuardarUnNuevoPaqueteYMeDevuelvaElMismo() throws NoSePudoGuardarElPaqueteException {
+    public void queSePuedaGuardarUnNuevoPaqueteYMeDevuelvaElMismo() throws PaqueteNoEncontradoException {
 
         Paquete paquete = mock(Paquete.class);
 
@@ -40,13 +42,13 @@ public class PaqueteServicioTest {
     }
 
     @Test
-    public void queAlIntentarGuardarUnPaqueteNoSePuedaGuardarYMeLanceLaExcepcionNoSePudoGuardarElPaqueteException() throws NoSePudoGuardarElPaqueteException {
+    public void queAlIntentarGuardarUnPaqueteNoSePuedaGuardarYMeLanceLaExcepcionNoSePudoGuardarElPaqueteException() {
 
         Paquete paquete = mock(Paquete.class);
 
-        when(this.paqueteRepositorio.guardarPaquete(paquete)).thenAnswer(invocation -> { throw new Exception(); });
+        when(this.paqueteRepositorio.guardarPaquete(paquete)).thenAnswer(invocation -> { throw new PaqueteNoEncontradoException("No se pudo guardar el paquete"); });
 
-        assertThrows(NoSePudoGuardarElPaqueteException.class, () -> {
+        assertThrows(PaqueteNoEncontradoException.class, () -> {
             this.paqueteServicio.guardarPaquete(paquete);
         });
 

@@ -4,12 +4,6 @@ main {
     justify-content: center; /* Alinea horizontalmente el contenido */
     height: 89vh;
 }
-.btn-aceptar{
-    width: 200px;
-}
-.btn-cancelar{
-    width: 200px;
-}
 .fondo-form{
     width: 35%;
     height: 75%;
@@ -22,7 +16,7 @@ main {
 }
 .titulo-login {
     font-size: 30px;
-    color: #000000;
+    color: white;
     margin-bottom: 5%;
 }
 .sub_columna{
@@ -33,10 +27,26 @@ main {
     align-items: center;
     justify-content: center;
     margin-top: 5%;
+    transition: background-color 0.3s;
+
 }
 .sub_columna div{
     padding:2%;
 }
+.sub_columna a{
+    color:white;
+}
+.sub_columna a:hover{
+    color:violet;
+}
 .label-form{
     margin-top: 5%;
+}
+
+.btn-principal{
+    width: 10em;
+}
+
+.btn-secundario{
+    width: 10em;
 }

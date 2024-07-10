@@ -4,11 +4,11 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <script src="https://kit.fontawesome.com/ca80211b53.js" crossorigin="anonymous"></script>
-    <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.0/css/bootstrap.min.css}"/>
     <link rel="stylesheet" th:href="@{css/main.css}"/>
-    <link rel="stylesheet" th:href="@{css/home.css}"/>
-    <link rel="stylesheet" th:href="@{css/viaje.css}"/>
     <link rel="stylesheet" th:href="@{css/historial-envios.css}"/>
+    <!--    <link rel="stylesheet" th:href="@{css/viaje.css}"/>-->
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.0/css/bootstrap.min.css}"/>
+
 
     <title>Motomensajeria</title>
 </head>
@@ -49,23 +49,23 @@
                 </div>
             </a>
             <a th:href="@{cerrar-sesion}">
-                <i class="fa-solid fa-arrow-right-from-bracket" style="border-radius:25px; padding:11px; background-color: white; color: #36054E; transition: color 0.3s;" onmouseover="this.style.color='white';this.style.backgroundColor='lightgray'" onmouseout="this.style.color='#36054E'; this.style.backgroundColor='white'"></i>
-            </a>
+                <i class="fa-solid fa-arrow-right-from-bracket" style=" border-radius:25px; padding:11px; background-color: white; color: #370a37; transition: color 0.3s;" onmouseover="this.style.color='white';this.style.backgroundColor='transparent';this.style.borderColor='white';this.style.border='1px solid white'" onmouseout="this.style.color='#370a37'; this.style.backgroundColor='white'" ></i>            </a>
         </div>
     </nav>
 </header>
 <main role="main" class="container">
-    <div class="container">
-        <div class="card-header">
-            <h1 class="text-center titulo-viajes" style="align-self: center;text-align: center">Historial de Envíos</h1>
-            <div th:if="${viajesObtenidos == null || #lists.isEmpty(viajesObtenidos)}">
-                <h2 style="border-radius:25px;text-align:center;color:white;background-color: black; padding:2%;">No hay historial disponible. Solicite envíos de paquetes para poder visualizarlos aquí.</h2>
-            </div>
-        </div>
-        <div class="card mt-3 contenedor-viajes" style="background-color: transparent; border: none;" th:unless="${#lists.isEmpty(viajesObtenidos)}">
+            <h1 class="text-center h1-home">Historial de Envíos</h1>
+            <div th:if="${viajesObtenidos == null || #lists.isEmpty(viajesObtenidos)}" class="fondo-form" id="noHayGenerico">
+                <div class="noHayGenerico">
+                    <h5>No hay historial disponible. Solicite envíos de paquetes para poder visualizarlos aquí.</h5 >
+                    <i class="fa-solid fa-clock-rotate-left"></i>
+                </div>
+              </div>
+
+        <div class="card mt-3" style="background-color: transparent; border: none;" th:unless="${#lists.isEmpty(viajesObtenidos)}">
             <div class="card-body" th:each="viaje : ${viajesObtenidos}">
-                <div class="card mt-3 ml-3 contenedor-datos-viajes-aceptados">
-                    <div class="card-body viaje" th:data-viaje-id="${viaje.id}">
+
+                    <div class="fondo-form" th:data-viaje-id="${viaje.id}">
                         <div class="viajes-proceso-img">
                             <div>
                                 <p class="card-text"><b>Salida:</b> <span th:text="${viaje.getDomicilioDeSalida()}"></span></p>
@@ -80,20 +80,38 @@
                         </div>
                         <div class="contenedor-boton-cancelar">
                             <div th:with="TERMINADO=${T(com.tallerwebi.dominio.enums.TipoEstado).TERMINADO}">
-                                <div th:if="${viaje.getEstado() == TERMINADO}" class="terminado">Terminado</div>
+                                <div th:if="${viaje.getEstado() == TERMINADO}" class="terminado">
+                                    <i class="fa-regular fa-circle-check"></i>
+                                    <p>Terminado</p>
+                                </div>
+
                             </div>
-                            <div th:with="CANCELADO=${T(com.tallerwebi.dominio.enums.TipoEstado).CANCELADO}">
-                                <div th:if="${viaje.getEstado() == CANCELADO}" class="cancelado">Cancelado</div>
+                            <div th:with="CANCELADO=${T(com.tallerwebi.dominio.enums.TipoEstado).CANCELADO}" >
+                                   <div th:if="${viaje.getEstado() == CANCELADO}" class="cancelado">
+                                       <i class="fa-solid fa-xmark"></i>
+                                       <p>Cancelado</p>
+                                   </div>
                             </div>
                             <div>
-                                <a th:href="@{/detalle-envio(idViaje=${viaje.getId()})}" class="boton-verde" th:id="'detalle-' + ${viaje.getId()}">Ver detalle</a>
+                                <div th:with="tipoVehiculo=${viaje.conductor != null && viaje.conductor.vehiculo != null ? viaje.conductor.vehiculo.tipoDeVehiculo : ''}">
+                                    <div>
+                                    <div th:if="${tipoVehiculo == T(com.tallerwebi.dominio.enums.TipoVehiculo).AUTO}">
+                                        <i class="fa-solid fa-car-side"></i>
+                                    </div>
+                                    <div th:if="${tipoVehiculo == T(com.tallerwebi.dominio.enums.TipoVehiculo).CAMION}">
+                                        <i class="fa-solid fa-truck"></i>
+                                    </div>
+                                    <div th:if="${tipoVehiculo == T(com.tallerwebi.dominio.enums.TipoVehiculo).MOTO}">
+                                        <i class="fa-solid fa-motorcycle"></i>
+                                    </div>
+                                </div>
+                                <br><a th:href="@{/detalle-envio(idViaje=${viaje.getId()})}" class="btn-principal" th:id="'detalle-' + ${viaje.getId()}">Ver detalle</a>
+                                </div>
                             </div>
                         </div>
-                    </div>
                 </div>
             </div>
         </div>
-    </div>
 </main>
 <script type="text/javascript" th:src="@{webjars/bootstrap/5.2.0/js/bootstrap.min.js}"></script>
 </body>

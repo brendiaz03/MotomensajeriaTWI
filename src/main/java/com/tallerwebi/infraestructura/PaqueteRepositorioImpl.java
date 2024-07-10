@@ -1,6 +1,7 @@
 package com.tallerwebi.infraestructura;
 
 import com.tallerwebi.dominio.paquete.Paquete;
+import com.tallerwebi.dominio.exceptions.PaqueteNoEncontradoException;
 import com.tallerwebi.dominio.paquete.PaqueteRepositorio;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;

@@ -44,8 +44,7 @@
         </div>
       </a>
       <a th:href="@{cerrar-sesion}">
-        <i class="fa-solid fa-arrow-right-from-bracket" style="border-radius:25px; padding:11px; background-color: white; color: #36054E; transition: color 0.3s;" onmouseover="this.style.color='white';this.style.backgroundColor='lightgray'" onmouseout="this.style.color='#36054E'; this.style.backgroundColor='white'"></i>
-      </a>
+        <i class="fa-solid fa-arrow-right-from-bracket" style=" border-radius:25px; padding:11px; background-color: white; color: #370a37; transition: color 0.3s;" onmouseover="this.style.color='white';this.style.backgroundColor='transparent';this.style.borderColor='white';this.style.border='1px solid white'" onmouseout="this.style.color='#370a37'; this.style.backgroundColor='white'" ></i>      </a>
     </div>
   </nav>
 </header>
@@ -61,21 +60,19 @@
 
 
   <div th:if="${hayViajesCancelados}">
-    <div id="viajeCanceladoModal" class="modal-overlay">
-      <div class="modal-viaje">
+    <div id="viajeCanceladoModal" class="modal-overlay show">
+      <div class="fondo-form">
         <div th:each="viaje : ${viajes}">
           <h3>Su viaje con destino a <span th:text="${viaje.getDomicilioDeLlegada()}"></span> ha sido rechazado</h3>
           <p>¿Desea volver a realizar el paquete con los mismos datos?</p>
           <div class="modal-footer-viaje">
-            <a th:href="@{/duplicarViajeCancelado(idViaje=${viaje.getId()})}">Aceptar</a>
-            <a class="btn-secondary" th:href="@{/noDuplicarViaje(idViaje=${viaje.getId()})}">Rechazar</a>
+            <a th:href="@{/duplicarViajeCancelado(idViaje=${viaje.getId()})}"><button class="btn-principal">Aceptar</button></a>
+            <a th:href="@{/noDuplicarViaje(idViaje=${viaje.getId()})}"><button class="btn-secundario">Rechazar</button></a>
           </div>
         </div>
       </div>
     </div>
   </div>
-
-
 
   <section class="acordeon">
     <h2>¿Necesitas Ayuda?</h2>
@@ -107,6 +104,7 @@
       </div>
     </article>
   </section>
+
 
 
 </main>

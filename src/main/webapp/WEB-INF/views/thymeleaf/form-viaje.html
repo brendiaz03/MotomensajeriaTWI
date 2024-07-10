@@ -36,7 +36,7 @@
     <!---------------------------------------------->
     <article class="paso_paquete" th:if="${pasoActual == 1}">
 
-        <div class="formulario_fondo">
+        <div class="fondo-form">
             <div style="display:flex;justify-content: right">
                 <a th:href="homeCliente" class="salir"><i class="fa-regular fa-circle-xmark"></i></a>
             </div>
@@ -92,8 +92,8 @@
                 </section>
 
                 <section class="botones">
-                    <button th:if="${isEditPackage}" type="submit" class="boton_submit" id="boton_editar_paquete">Editar</button>
-                    <button th:unless="${isEditPackage}" type="submit" class="boton_submit" id="boton_crear_paquete">Crear</button>
+                    <button th:if="${isEditPackage}" type="submit" class="btn-principal" id="boton_editar_paquete">Editar</button>
+                    <button th:unless="${isEditPackage}" type="submit" class="btn-principal" id="boton_crear_paquete">Crear</button>
                 </section>
             </form>
 
@@ -102,7 +102,7 @@
     <!---------------------------------------------->
     <!-------- PASO 2 DE 4, CREAR VIAJE ------------>
     <!---------------------------------------------->
-    <article th:if="${pasoActual == 2}">
+    <article th:if="${pasoActual == 2}" class="fondo-form">
         <div style="display:flex;justify-content: right">
             <a th:href="homeCliente" class="salir"><i class="fa-regular fa-circle-xmark"></i></a>
         </div>
@@ -131,7 +131,7 @@
         </section>
         <section class="botones">
                 <!-- Botón Ingresar / Editar -->
-            <button type="submit" class="boton_submit" id="boton_crear_viaje">Crear</button> <!-- js on click / y si no encuentra coord que no submitee-->
+            <button type="submit" class="btn-principal" id="boton_crear_viaje">Crear</button> <!-- js on click / y si no encuentra coord que no submitee-->
             </section>
         </form>
     </article>
@@ -139,7 +139,7 @@
     <!---------------------------------------------->
     <!-------- PASO 3----------->
     <!---------------------------------------------->
-    <article th:if="${pasoActual == 3}">
+    <article th:if="${pasoActual == 3}" class="fondo-form">
         <div style="display:flex;justify-content: right">
             <a th:href="homeCliente" class="salir"><i class="fa-regular fa-circle-xmark"></i></a>
         </div>
@@ -151,21 +151,19 @@
             <div class="detalle-paq">
                 <div style="display: flex; flex-direction: row; gap:1em">
                         <p style="text-align: center;font-size: 20px" class="card-text" ><strong>Paquete</strong></p><br>
-                        <a th:href="form-editar-paquete" id="boton_ir_editar_paquete"><i class="fa-solid fa-pen-to-square"  style="color: #36054E; transition: color 0.3s;" onmouseover="this.style.color='purple'" onmouseout="this.style.color='#36054E'"></i></a>
+                        <a th:href="form-editar-paquete" id="boton_ir_editar_paquete"><i class="fa-solid fa-pen-to-square"  style="color: white; transition: color 0.3s;" onmouseover="this.style.color='#ef6292'" onmouseout="this.style.color='white'"></i></a>
                 </div>
                 <div>
                     <p>Peso del Paquete: <strong th:text="${paquete.getPeso()}+'kg'"></strong></p>
                     <p>Dimesion del Paquete: <strong th:text="${paquete.getDimension()}+'cm³'"></strong></p>
                     <p>Nombre del Destinatario: <strong th:text="${paquete.getDestinatario()}"></strong></p>
                     <span th:if="${paquete.getEsFragil()==true}"><p>Paquete frágil</p></span>
-
-
                 </div>
            </div>
             <div class="detalle-via">
                 <div style="display: flex; flex-direction: row; gap:1em">
                     <p style="text-align: center;font-size: 20px" class="card-text"><strong>Viaje</strong></p><br>
-                    <a th:href="form-editar-viaje" id="boton_ir_editar_viaje"><i class="fa-solid fa-pen-to-square"  style="color: #36054E; transition: color 0.3s;" onmouseover="this.style.color='purple'" onmouseout="this.style.color='#36054E'"></i></a>
+                    <a th:href="form-editar-viaje" id="boton_ir_editar_viaje"><i class="fa-solid fa-pen-to-square"  style="color: white; transition: color 0.3s;" onmouseover="this.style.color='#ef6292'" onmouseout="this.style.color='white'"></i></a>
                 </div>
                 <div>
                     <p>Dirección de Salida: <strong th:text="${viaje.getDomicilioDeSalida()}"></strong></p>
@@ -175,7 +173,7 @@
         </div>
 
         <section class="botones">
-            <a th:href="@{crear-envio}" ><button class="boton_submit" id="boton_pagar_envio">Pagar</button></a>
+            <a th:href="@{crear-envio}" ><button class="btn-principal" id="boton_pagar_envio">Pagar</button></a>
         </section>
 
     </article>

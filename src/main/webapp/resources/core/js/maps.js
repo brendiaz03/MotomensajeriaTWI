@@ -1,11 +1,263 @@
 window.onload = function() {
     getDriverLocation();
 };
-
+const mapStyles = [
+    {
+        "featureType": "all",
+        "elementType": "labels",
+        "stylers": [
+            {
+                "visibility": "on"
+            }
+        ]
+    },
+    {
+        "featureType": "all",
+        "elementType": "labels.text.fill",
+        "stylers": [
+            {
+                "saturation": 36
+            },
+            {
+                "color": "#000000"
+            },
+            {
+                "lightness": 40
+            }
+        ]
+    },
+    {
+        "featureType": "all",
+        "elementType": "labels.text.stroke",
+        "stylers": [
+            {
+                "visibility": "on"
+            },
+            {
+                "color": "#000000"
+            },
+            {
+                "lightness": 16
+            }
+        ]
+    },
+    {
+        "featureType": "all",
+        "elementType": "labels.icon",
+        "stylers": [
+            {
+                "visibility": "off"
+            }
+        ]
+    },
+    {
+        "featureType": "administrative",
+        "elementType": "geometry.fill",
+        "stylers": [
+            {
+                "color": "#000000"
+            },
+            {
+                "lightness": 20
+            }
+        ]
+    },
+    {
+        "featureType": "administrative",
+        "elementType": "geometry.stroke",
+        "stylers": [
+            {
+                "color": "#000000"
+            },
+            {
+                "lightness": 17
+            },
+            {
+                "weight": 1.2
+            }
+        ]
+    },
+    {
+        "featureType": "administrative.country",
+        "elementType": "labels.text.fill",
+        "stylers": [
+            {
+                "color": "#838383"
+            }
+        ]
+    },
+    {
+        "featureType": "administrative.locality",
+        "elementType": "labels.text.fill",
+        "stylers": [
+            {
+                "color": "#c4c4c4"
+            }
+        ]
+    },
+    {
+        "featureType": "administrative.neighborhood",
+        "elementType": "labels.text.fill",
+        "stylers": [
+            {
+                "color": "#aaaaaa"
+            }
+        ]
+    },
+    {
+        "featureType": "landscape",
+        "elementType": "geometry",
+        "stylers": [
+            {
+                "color": "#000000"
+            },
+            {
+                "lightness": 20
+            }
+        ]
+    },
+    {
+        "featureType": "poi",
+        "elementType": "geometry",
+        "stylers": [
+            {
+                "color": "#000000"
+            },
+            {
+                "lightness": 21
+            },
+            {
+                "visibility": "on"
+            }
+        ]
+    },
+    {
+        "featureType": "poi.business",
+        "elementType": "geometry",
+        "stylers": [
+            {
+                "visibility": "on"
+            }
+        ]
+    },
+    {
+        "featureType": "road.highway",
+        "elementType": "geometry.fill",
+        "stylers": [
+            {
+                "color": "#6e6e6e"
+            },
+            {
+                "lightness": "0"
+            }
+        ]
+    },
+    {
+        "featureType": "road.highway",
+        "elementType": "geometry.stroke",
+        "stylers": [
+            {
+                "visibility": "off"
+            }
+        ]
+    },
+    {
+        "featureType": "road.highway",
+        "elementType": "labels.text.fill",
+        "stylers": [
+            {
+                "color": "#ffffff"
+            }
+        ]
+    },
+    {
+        "featureType": "road.arterial",
+        "elementType": "geometry",
+        "stylers": [
+            {
+                "color": "#000000"
+            },
+            {
+                "lightness": 18
+            }
+        ]
+    },
+    {
+        "featureType": "road.arterial",
+        "elementType": "geometry.fill",
+        "stylers": [
+            {
+                "color": "#575757"
+            }
+        ]
+    },
+    {
+        "featureType": "road.arterial",
+        "elementType": "labels.text.fill",
+        "stylers": [
+            {
+                "color": "#ffffff"
+            }
+        ]
+    },
+    {
+        "featureType": "road.arterial",
+        "elementType": "labels.text.stroke",
+        "stylers": [
+            {
+                "color": "#2c2c2c"
+            }
+        ]
+    },
+    {
+        "featureType": "road.local",
+        "elementType": "geometry",
+        "stylers": [
+            {
+                "color": "#000000"
+            },
+            {
+                "lightness": 16
+            }
+        ]
+    },
+    {
+        "featureType": "road.local",
+        "elementType": "labels.text.fill",
+        "stylers": [
+            {
+                "color": "#999999"
+            }
+        ]
+    },
+    {
+        "featureType": "transit",
+        "elementType": "geometry",
+        "stylers": [
+            {
+                "color": "#000000"
+            },
+            {
+                "lightness": 19
+            }
+        ]
+    },
+    {
+        "featureType": "water",
+        "elementType": "geometry",
+        "stylers": [
+            {
+                "color": "#000000"
+            },
+            {
+                "lightness": 17
+            }
+        ]
+    }
+];
 function getDriverLocation() {
     if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(showDriverPosition, showError, {
-        });
+        navigator.geolocation.getCurrentPosition(showDriverPosition, showError, {});
     } else {
         document.getElementById("driverLocation").innerText = "La geolocalización no es soportada por este navegador.";
     }
@@ -15,7 +267,7 @@ function showDriverPosition(position) {
     let latitudActual = position.coords.latitude;
     let longitudActual = position.coords.longitude;
 
-    iniciarMapa(latitudActual, longitudActual)
+    iniciarMapa(latitudActual, longitudActual);
 }
 
 function showError(error) {
@@ -43,28 +295,34 @@ function iniciarMapa(latitudActual, longitudActual){
     const latitudLlegada = parseFloat(contenedorDeLosDatos.dataset.latitudLlegada);
     const longitudLlegada = parseFloat(contenedorDeLosDatos.dataset.longitudLlegada);
 
+    // Verifica que todas las coordenadas sean números válidos
+    if (isNaN(latitudActual) || isNaN(longitudActual) || isNaN(latitudSalida) || isNaN(longitudSalida) || isNaN(latitudLlegada) || isNaN(longitudLlegada)) {
+        console.error("Una o más coordenadas no son números válidos.");
+        return;
+    }
+
     const map = new google.maps.Map(document.getElementById('map'), {
         center: {lat: latitudActual, lng: longitudActual},
         zoom: 12,
-        mapId: "DEMO_MAP_ID"
+        styles: mapStyles, // Aplica los estilos aquí
     });
 
     const markerConductor = new google.maps.Marker({
         position: {lat: latitudActual, lng: longitudActual},
         map: map,
-        label: 'Ubicación actual',
+        title: 'Ubicación actual'
     });
 
     const markerSalida = new google.maps.Marker({
         position: {lat: latitudSalida, lng: longitudSalida},
         map: map,
-        label: 'Salida del Paquete'
+        title: 'Salida del Paquete'
     });
 
     const markerDestino = new google.maps.Marker({
         position: {lat: latitudLlegada, lng: longitudLlegada},
         map: map,
-        label: 'Destino del paquete'
+        title: 'Destino del paquete'
     });
 
     const directionsServiceRuta1 = new google.maps.DirectionsService();
@@ -117,7 +375,7 @@ function iniciarMapa(latitudActual, longitudActual){
 
             directionsRendererRuta2.setOptions({
                 polylineOptions: {
-                    strokeColor: '#ff0000',
+                    strokeColor: '#ef6292',
                     strokeWeight: 5
                 }
             });
@@ -133,6 +391,4 @@ function iniciarMapa(latitudActual, longitudActual){
             console.error('Solicitud de direcciones fallida debido a: ' + statusRuta2);
         }
     });
-
-
 }

@@ -23,11 +23,11 @@ public class ClienteServicioImpl implements ClienteServicio {
     }
 
     @Override
-    public Cliente obtenerClientePorId(Integer idusuario) throws UsuarioNoEncontradoException {
-        try{
-            return this.clienteRepositorio.obtenerClientePorId(idusuario);
-        }catch(NoResultException e){
-        throw new UsuarioNoEncontradoException("No se encontro al usuario.");
+    public Cliente obtenerClientePorId(Integer idUsuario) throws UsuarioNoEncontradoException {
+        if (idUsuario == null) {
+            throw new UsuarioNoEncontradoException("No se encontro al usuario.");
+        }
+
+        return this.clienteRepositorio.obtenerClientePorId(idUsuario);
     }
-}
 }

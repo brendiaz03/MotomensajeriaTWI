@@ -2,11 +2,8 @@ package com.tallerwebi.presentacion;
 
 import com.tallerwebi.dominio.cliente.Cliente;
 import com.tallerwebi.dominio.cliente.ClienteServicio;
-import com.tallerwebi.dominio.conductor.Conductor;
+import com.tallerwebi.dominio.exceptions.*;
 import com.tallerwebi.dominio.enums.TipoEstado;
-import com.tallerwebi.dominio.exceptions.NoSePudoGuardarElPaqueteException;
-import com.tallerwebi.dominio.exceptions.PaqueteNoEncontradoException;
-import com.tallerwebi.dominio.exceptions.UsuarioNoEncontradoException;
 import com.tallerwebi.dominio.mercadoPago.MercadoPagoServicio;
 import com.tallerwebi.dominio.paquete.Paquete;
 import com.tallerwebi.dominio.paquete.PaqueteServicio;
@@ -17,9 +14,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 
 @Controller
 public class ViajeControlador {
@@ -27,7 +24,7 @@ public class ViajeControlador {
     private final ViajeServicio viajeServicio;
     private final ClienteServicio clienteServicio;
     private final PaqueteServicio paqueteServicio;
-    private MercadoPagoServicio mercadoPagoServicio;
+    private final MercadoPagoServicio mercadoPagoServicio;
 
     @Autowired
     public ViajeControlador(ViajeServicio viajeServicio, ClienteServicio clienteServicio, PaqueteServicio paqueteServicio, MercadoPagoServicio mercadoPagoServicio){
@@ -35,8 +32,9 @@ public class ViajeControlador {
         this.clienteServicio = clienteServicio;
         this.paqueteServicio = paqueteServicio;
         this.mercadoPagoServicio = mercadoPagoServicio;
-
+        
     }
+
     @RequestMapping("/form-viaje")
     public ModelAndView mostrarFormViaje(HttpSession session) {
         ModelMap model = new ModelMap();
@@ -80,69 +78,78 @@ public class ViajeControlador {
 
     @RequestMapping(value = "/editar-viaje", method = RequestMethod.POST)
     public ModelAndView editarViaje(@ModelAttribute("viaje") Viaje viaje, HttpSession session){
+        ModelMap model = new ModelMap();
 
-        session.setAttribute("isEditViaje", false);
-        session.setAttribute("viajeActual", viaje);
-        session.setAttribute("pasoActual", 3);
-        return new ModelAndView("redirect:/form-viaje");
+        try {
+            if (viaje == null) {
+                throw new ViajeNoEncontradoException("Viaje no encontrado");
+            }
+
+            session.setAttribute("isEditViaje", false);
+            session.setAttribute("viajeActual", viaje);
+            session.setAttribute("pasoActual", 3);
+            return new ModelAndView("redirect:/form-viaje");
+        } catch (ViajeNoEncontradoException e) {
+            model.put("mensajeError", e.getMessage());
+            return new ModelAndView("redirect:/*", model);
+        }
     }
 
     @RequestMapping(value = "/crear-viaje", method = RequestMethod.POST, consumes = "application/x-www-form-urlencoded")
     public ModelAndView crearViajeLocalmente(@ModelAttribute("viaje") Viaje viaje, HttpSession session){
-        session.setAttribute("viajeActual", viaje);
-        session.setAttribute("pasoActual", 3);
+        ModelMap model = new ModelMap();
 
-        return new ModelAndView("redirect:/form-viaje");
+        try {
+            if (viaje == null) {
+                throw new ViajeNoEncontradoException("Viaje no encontrado");
+            }
+
+            session.setAttribute("viajeActual", viaje);
+            session.setAttribute("pasoActual", 3);
+            return new ModelAndView("redirect:/form-viaje");
+        } catch (ViajeNoEncontradoException e) {
+            model.put("mensajeError", e.getMessage());
+            return new ModelAndView("redirect:/*", model);
+        }
     }
 
     @RequestMapping(value = "/crear-envio")
-    public ModelAndView crearViajeConPaqueteYCliente(HttpSession session) throws UsuarioNoEncontradoException, NoSePudoGuardarElPaqueteException {
-        // Obtiene el cliente y el paquete actual desde la sesión
+    public ModelAndView crearViajeConPaqueteYCliente(HttpSession session) {
+        ModelMap model = new ModelMap();
         Integer idUsuario = (Integer) session.getAttribute("IDUSUARIO");
-        Cliente cliente = this.clienteServicio.obtenerClientePorId(idUsuario);
         Paquete paqueteActual = (Paquete) session.getAttribute("paqueteActual");
         Viaje viajeActual = (Viaje) session.getAttribute("viajeActual");
 
         try {
-
+            Cliente cliente = this.clienteServicio.obtenerClientePorId(idUsuario);
             this.paqueteServicio.guardarPaquete(paqueteActual);
-
             this.viajeServicio.crearViaje(cliente, viajeActual, paqueteActual);
-
-            // Redirección con el precio del viaje
             return new ModelAndView("redirect:/pagar?precio=" + viajeActual.getPrecio());
-
-        } catch (NoSePudoGuardarElPaqueteException e) {
-
-            String error = "Error: " + e.getMessage();
-
-            return new ModelAndView(error);
-
+        } catch (PaqueteNoEncontradoException | ViajeNoEncontradoException | ClienteNoEncontradoException | PrecioInvalidoException | UsuarioNoEncontradoException e) {
+            model.put("mensajeError", e.getMessage());
+            return new ModelAndView("redirect:/*", model);
         }
-
     }
 
     @RequestMapping(value = "/pagar")
-    public ModelAndView pagarViaje(@RequestParam("precio") Double precioDelViaje, RedirectAttributes redirectAttributes, HttpSession session) {
-        if (precioDelViaje != null && precioDelViaje > 0) {
-            try {
-                String redirectUrl = mercadoPagoServicio.pagarViajeMp(precioDelViaje);
+    public ModelAndView pagarViaje(@RequestParam("precio") Double precioDelViaje, HttpSession session) {
+        ModelMap model = new ModelMap();
 
-                Viaje viaje = this.viajeServicio.obtenerViajePorId((Integer)session.getAttribute("IDVIAJE"));
+        try {
 
-                viaje.setEstado(TipoEstado.PENDIENTE);
-
-                this.viajeServicio.actualizarViaje(viaje);
-
-                return new ModelAndView("redirect:" + redirectUrl);
-
-            } catch (Exception e) {
-                redirectAttributes.addFlashAttribute("error", "Error al procesar el pago");
-                return new ModelAndView("redirect:/homeCliente");
+            if (precioDelViaje == null || precioDelViaje <= 0) {
+                throw new PrecioInvalidoException("Valor Invalido");
             }
-        }
 
-        redirectAttributes.addFlashAttribute("error", "Precio inválido.");
-        return new ModelAndView("redirect:/homeCliente");
+            String redirectUrl = mercadoPagoServicio.pagarViajeMp(precioDelViaje);
+            Viaje viajeObtenido = (Viaje) session.getAttribute("viajeActual");
+            Viaje viaje = this.viajeServicio.obtenerViajePorId(viajeObtenido.getId());
+            viaje.setEstado(TipoEstado.PENDIENTE);
+            this.viajeServicio.actualizarViaje(viaje);
+            return new ModelAndView("redirect:" + redirectUrl);
+        } catch (ViajeNoEncontradoException | PrecioInvalidoException | IOException e) {
+            model.put("mensajeError", e.getMessage());
+            return new ModelAndView("redirect:/*", model);
+        }
     }
 }
