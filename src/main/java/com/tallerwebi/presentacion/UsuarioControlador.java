@@ -65,7 +65,7 @@ public class UsuarioControlador {
             } else {
                 Cliente cliente = (Cliente) usuario;
                 session.setAttribute("IDUSUARIO", cliente.getId());
-                return new ModelAndView("redirect:/home");
+                return new ModelAndView("redirect:/home?registroExitoso=true");
             }
         } catch (UsuarioDuplicadoException e) {
             return this.mostrarForm(nuevoUsuario, e.getMessage(), session);

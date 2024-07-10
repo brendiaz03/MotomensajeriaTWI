@@ -20,9 +20,11 @@ public class LoginRepositorioImpl implements LoginRepositorio {
     @Override
 
     public Usuario buscarUsuarioPorUsernameYPassword(String username, String password) {
+        Boolean eliminado = false;
         return (Usuario) sessionFactory.getCurrentSession().createCriteria(Usuario.class)
                 .add(Restrictions.eq("nombreUsuario", username))
                 .add(Restrictions.eq("password", password))
+                .add(Restrictions.eq("eliminado", eliminado))
                 .uniqueResult();
     }
 }

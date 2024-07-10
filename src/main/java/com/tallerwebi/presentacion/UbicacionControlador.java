@@ -18,6 +18,7 @@ public class UbicacionControlador {
         session.setAttribute("latitud", latitud);
         session.setAttribute("longitud", longitud);
         session.setAttribute("precision", precision);
+
         HttpHeaders headers = new HttpHeaders();
         headers.add("Location", "/homeConductor");
         return new ResponseEntity<>(headers, HttpStatus.FOUND);

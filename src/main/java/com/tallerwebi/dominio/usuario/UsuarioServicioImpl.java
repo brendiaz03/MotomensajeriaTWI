@@ -27,16 +27,18 @@ public class UsuarioServicioImpl implements UsuarioServicio {
     @Override
     public Usuario registrarUsuario(DatosUsuario usuario) throws UsuarioDuplicadoException {
         try{
-            Usuario duplicado=this.usuarioRepositorio.buscarDuplicados(usuario.getEmail(), usuario.getNombreUsuario());
+            Usuario duplicado = this.usuarioRepositorio.buscarDuplicados(usuario.getEmail(), usuario.getNombreUsuario());
             throw new UsuarioDuplicadoException("Usuario o Email ya existentes");
         }catch (NoResultException e){
             if(usuario.getTipoUsuario() == TipoUsuario.Conductor){
                 Conductor conductor = usuario.toConductor();
                 conductor.setPenalizado(false);
                 conductor.setCantPenalizacion(0);
+                conductor.setEliminado(false);
                 return usuarioRepositorio.guardarUsuario(conductor);
             }else{
                 Cliente cliente = usuario.toCliente();
+                cliente.setEliminado(false);
                 return usuarioRepositorio.guardarUsuario(cliente);
             }
         }
@@ -89,17 +91,12 @@ public class UsuarioServicioImpl implements UsuarioServicio {
 
     @Override
     public void borrarCuenta(Integer idUsuario) throws UsuarioNoEncontradoException {
-
         try {
-
             Usuario usuario = this.usuarioRepositorio.getUsuarioById(idUsuario);
-
-            this.usuarioRepositorio.eliminarCuentaDeUsuario(usuario);
-
+            usuario.setEliminado(true);
+            this.usuarioRepositorio.editarUsuario(usuario);
         } catch (NoResultException e) {
-
             throw new UsuarioNoEncontradoException("No se encontro al usuario.");
-
         }
     }
 
