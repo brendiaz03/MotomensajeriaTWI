@@ -65,8 +65,10 @@
   // Event listener para el enlace de "Cerrar Cuenta"
   document.addEventListener("DOMContentLoaded", function() {
     const params = new URLSearchParams(window.location.search);
-    if (params.has('registroExitoso') && params.get('registroExitoso') === 'true') {
+    if (params.get('registroExitoso') === 'true') {
       openPopup();
+    }else{
+      closePopup();
     }
   });
 
