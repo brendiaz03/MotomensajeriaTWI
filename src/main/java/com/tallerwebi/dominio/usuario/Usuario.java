@@ -44,6 +44,9 @@ public abstract class Usuario {
     @Column(name = "tipoUsuario")
     private TipoUsuario tipoUsuario;
 
+    @Column(name = "eliminado")
+    private Boolean eliminado;
+
     @Lob
     private byte[] imagenPerfil;
 
@@ -164,5 +167,13 @@ public abstract class Usuario {
 
     public void setViajes(List<Viaje> viajes) {
         this.viajes = viajes;
+    }
+
+    public Boolean getEliminado() {
+        return eliminado;
+    }
+
+    public void setEliminado(Boolean eliminado) {
+        this.eliminado = eliminado;
     }
 }

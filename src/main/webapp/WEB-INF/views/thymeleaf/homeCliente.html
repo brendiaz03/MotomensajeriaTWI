@@ -66,8 +66,8 @@
           <h3>Su viaje con destino a <span th:text="${viaje.getDomicilioDeLlegada()}"></span> ha sido rechazado</h3>
           <p>¿Desea volver a realizar el paquete con los mismos datos?</p>
           <div class="modal-footer-viaje">
-            <a th:href="@{/noDuplicarViaje(idViaje=${viaje.getId()})}"><button class="btn-secundario">Rechazar</button></a>
             <a th:href="@{/duplicarViajeCancelado(idViaje=${viaje.getId()})}"><button class="btn-principal">Aceptar</button></a>
+            <a th:href="@{/noDuplicarViaje(idViaje=${viaje.getId()})}"><button class="btn-secundario">Rechazar</button></a>
           </div>
         </div>
       </div>

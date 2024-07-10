@@ -32,6 +32,9 @@ public class VehiculoControlador {
     public ModelAndView mostrarRegistroDelVehiculo(Vehiculo nuevoVehiculo,String mensajeError,HttpSession session) throws UsuarioNoEncontradoException {
         ModelMap model = new ModelMap();
         String viewName = "form-vehiculo";
+        Boolean estaLogeado = (session != null && session.getAttribute("estaLogeado") != null) ? (Boolean) session.getAttribute("estaLogeado") : false;
+        System.out.println("ACA ESTA EL ESTADO: " + estaLogeado);
+        model.put("estaLogeado", estaLogeado);
         if(mensajeError==null||mensajeError.isEmpty()){
             model.put("mensajeError",null);
         }else{
@@ -65,7 +68,12 @@ public class VehiculoControlador {
         try{
             Vehiculo vehiculo = vehiculoServicio.registrarVehiculo(nuevoVehiculo);
             conductorServicio.RelacionarVehiculoAConductor((Integer)session.getAttribute("IDUSUARIO"), vehiculo);
-            return new ModelAndView("redirect:/perfil");
+            if ((session != null && session.getAttribute("estaLogeado") != null)) {
+                return new ModelAndView("redirect:/homeConductor");
+            } else {
+                return new ModelAndView("redirect:/home");
+            }
+
         }catch(VehiculoDuplicadoException | UsuarioNoEncontradoException e){
             return this.mostrarRegistroDelVehiculo(nuevoVehiculo,e.getMessage(),session);
         }

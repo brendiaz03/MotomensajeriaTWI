@@ -227,29 +227,30 @@ public class ViajeServicioTest {
     }
 
     @Test
-    public void queSePuedaCancelarUnViaje() throws ViajeNoEncontradoException {
+    public void queSePuedaCancelarUnViajeee() throws ViajeNoEncontradoException {
         // Preparación
         Viaje viajeEsperado = dadoQueExisteUnViaje();
-        DatosViaje datosViaje = dadoQueExistenDatosViajes();
-        datosViaje.setIdViaje(1);
-        when(viajeRepositorio.obtenerViajePorId(datosViaje.getIdViaje())).thenReturn(viajeEsperado);
-        viajeEsperado.setEstado(TipoEstado.CANCELADO);
-        viajeEsperado.setFecha(LocalDateTime.now());
+        Viaje datosViaje = dadoQueExisteUnViaje();
+        Conductor conductor = dadoQueExisteUnConductor();
+        viajeEsperado.setId(1);
+        datosViaje.setId(1);
+        datosViaje.setEstado(TipoEstado.PENDIENTE);
+        datosViaje.setConductor(conductor);
+        when(viajeRepositorio.obtenerViajePorId(viajeEsperado.getId())).thenReturn(viajeEsperado);
         doNothing().when(viajeRepositorio).editar(viajeEsperado);
 
         // Ejecución
         this.viajeServicio.cancelarViaje(datosViaje);
 
         // Validación
-        verify(viajeRepositorio).obtenerViajePorId(datosViaje.getIdViaje());
         assertThat(viajeEsperado.getEstado(), equalTo(TipoEstado.CANCELADO));
-        verify(viajeRepositorio).editar(viajeEsperado);
+        assertEquals(datosViaje.getConductor().getId(), viajeEsperado.getCanceladoPor());
     }
 
     @Test
     public void queNoSePuedaCancelarUnViajeSiElDatosViajesEsNulo() {
         // Preparación
-        DatosViaje datosViaje = dadoQueNoExisteDatosViaje();
+        Viaje datosViaje = dadoQueNoExisteUnViaje();
 
         // Ejecución
         ViajeNoEncontradoException excepcion = assertThrows(ViajeNoEncontradoException.class, () -> viajeServicio.cancelarViaje(datosViaje));
@@ -261,8 +262,8 @@ public class ViajeServicioTest {
     @Test
     public void queNoSePuedaCancelarUnViajeSiElViajeObtenidoEsNulo() {
         // Preparación
-        DatosViaje datosViaje = dadoQueExistenDatosViajes();
-        when(viajeRepositorio.obtenerViajePorId(datosViaje.getIdViaje())).thenReturn(null);
+        Viaje datosViaje = dadoQueExisteUnViaje();
+        when(viajeRepositorio.obtenerViajePorId(datosViaje.getId())).thenReturn(null);
 
         // Ejecución
         ViajeNoEncontradoException excepcion = assertThrows(ViajeNoEncontradoException.class, () -> viajeServicio.cancelarViaje(datosViaje));
