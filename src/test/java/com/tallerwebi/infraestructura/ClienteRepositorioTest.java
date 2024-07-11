@@ -36,7 +36,7 @@ public class ClienteRepositorioTest {
     @Test
     @Transactional
     @Rollback
-    public void obtengoUnClienteExistenteEnLaBD() {
+    public void creoUnClienteYLoGuardoEnLaBaseDeDatosParaLuegoPoderObtenerloPorSuId() {
         Cliente cliente =new Cliente();
         cliente.setId(1);
         cliente.setNombre("Marcos");
@@ -46,18 +46,5 @@ public class ClienteRepositorioTest {
         assertNotNull(clienteObtenido);
         assertEquals("Marcos", clienteObtenido.getNombre());
     }
-
-    /*@Test
-    @Transactional
-    @Rollback
-    public void buscarUnClienteNoExistenteLaBD() {
-        Cliente cliente =new Cliente();
-        cliente.setId(1);
-        cliente.setNombre("Marcos");
-        usuarioRepositorio.guardarUsuario(cliente);
-
-        Cliente clienteObtenido = clienteRepositorio.obtenerClientePorId(3);
-        assertNull(clienteObtenido);
-    }*/
 
 }
