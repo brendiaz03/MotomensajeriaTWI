@@ -71,12 +71,15 @@ public class SpringWebConfig implements WebMvcConfigurer {
     }
     // Spring + Thymeleaf
     // Configure Thymeleaf View Resolver
+    // Spring + Thymeleaf
     @Bean
     public ThymeleafViewResolver viewResolver() {
         ThymeleafViewResolver viewResolver = new ThymeleafViewResolver();
         viewResolver.setTemplateEngine(templateEngine());
+        viewResolver.setCharacterEncoding("UTF-8");
         return viewResolver;
     }
+
 
     @Override
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
