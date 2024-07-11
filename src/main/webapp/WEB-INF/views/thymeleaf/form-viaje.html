@@ -14,7 +14,7 @@
 <header>
     <nav class="navbar navbar-expand-lg mx-4">
         <div class="d-flex align-items-center bg-violet"> <!-- Div pegado a la izquierda -->
-            <a th:href="homeCliente" class="mx-2">
+            <a th:href="home-cliente" class="mx-2">
                 <img th:src="@{/imagenes/logo.png}" class="d-block w-100 bg-violet" alt=",,," style="height: 50px;width: 50px">
             </a>
         </div>
@@ -37,7 +37,7 @@
 
         <div class="fondo-form">
             <div style="display:flex;justify-content: right">
-                <a th:href="homeCliente" class="salir"><i class="fa-regular fa-circle-xmark"></i></a>
+                <a th:href="home-cliente" class="salir"><i class="fa-regular fa-circle-xmark"></i></a>
             </div>
             <h1 th:if="${isEditPackage}" class="titulo_registroViaje">Editar Paquete</h1>
             <h1 th:unless="${isEditPackage}" class="titulo_registroViaje">Crear Paquete</h1>
@@ -103,7 +103,7 @@
     <!---------------------------------------------->
     <article th:if="${pasoActual == 2}" class="fondo-form">
         <div style="display:flex;justify-content: right">
-            <a th:href="homeCliente" class="salir"><i class="fa-regular fa-circle-xmark"></i></a>
+            <a th:href="home-cliente" class="salir"><i class="fa-regular fa-circle-xmark"></i></a>
         </div>
         <h1 th:if="${isEditViaje}" class="titulo_registroViaje">Editar Viaje</h1>
         <h1 th:unless="${isEditViaje}" class="titulo_registroViaje">Crear Viaje</h1>
@@ -140,7 +140,7 @@
     <!---------------------------------------------->
     <article th:if="${pasoActual == 3}" class="fondo-form">
         <div style="display:flex;justify-content: right">
-            <a th:href="homeCliente" class="salir"><i class="fa-regular fa-circle-xmark"></i></a>
+            <a th:href="home-cliente" class="salir"><i class="fa-regular fa-circle-xmark"></i></a>
         </div>
         <h1 class="titulo_registroViaje">Detalles del Envío</h1>
         <div style="display:flex; justify-content: center">

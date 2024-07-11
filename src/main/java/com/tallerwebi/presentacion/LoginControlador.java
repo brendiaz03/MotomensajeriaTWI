@@ -70,10 +70,10 @@ public class LoginControlador {
                 session.setAttribute("isEditForm", false);
                 session.setAttribute("estaLogeado",true);
                 model.put("correcto", "Usuario o clave correcta");
-                if(usuario.getTipoUsuario().equals(TipoUsuario.Conductor)){
+                if(usuario.getTipoUsuario().equals(TipoUsuario.conductor)){
                     return new ModelAndView("ubicacion", model);
                 }else{
-                    return new ModelAndView("redirect:/homeCliente", model);
+                    return new ModelAndView("redirect:/home-cliente", model);
                 }
             }else{
                 String mensajeError= "Usuario o clave incorrecta";

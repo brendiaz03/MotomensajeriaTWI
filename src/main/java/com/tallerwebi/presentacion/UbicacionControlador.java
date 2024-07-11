@@ -20,7 +20,7 @@ public class UbicacionControlador {
         session.setAttribute("precision", precision);
 
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Location", "/homeConductor");
+        headers.add("Location", "/home-conductor");
         return new ResponseEntity<>(headers, HttpStatus.FOUND);
     }
 }

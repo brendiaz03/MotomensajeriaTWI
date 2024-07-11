@@ -185,7 +185,7 @@ public class ViajeServicioImpl implements ViajeServicio {
         List<Viaje> viajesVista = new ArrayList<>();
 
         for (Viaje viajeObtenido : viajes) {
-            if(viajeObtenido.getEstado().equals(TipoEstado.PENDIENTE)){
+            if(viajeObtenido.getEstado().equals(TipoEstado.PENDIENTE) || viajeObtenido.getEstado().equals(TipoEstado.ACEPTADO)){
                 viajesVista.add(viajeObtenido);
             }
         }
@@ -322,7 +322,7 @@ public class ViajeServicioImpl implements ViajeServicio {
 
         List<Viaje> viajes;
 
-        if (distanciaAFiltrar == null) {
+        if (distanciaAFiltrar == null || distanciaAFiltrar == 0.0) {
             viajes = this.viajeRepositorio.traerTodosLosViajesPendientes();
         } else if (distanciaAFiltrar < 0 || distanciaAFiltrar > 10.0) {
             throw new CoordenadasNoEncontradasException("Distancia invalida");

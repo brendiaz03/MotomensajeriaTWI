@@ -20,12 +20,12 @@
     <nav class="navbar navbar-expand-lg mx-4">
         <div class="d-flex align-items-center bg-violet"> <!-- Div pegado a la izquierda -->
             <div th:if="${noVehiculo}">
-                <a th:href="${noVehiculo == true && estaLogueado==true ? 'homeConductor' : 'home'}" class="mx-2">
+                <a th:href="${noVehiculo == true && estaLogueado==true ? 'home-conductor' : 'home'}" class="mx-2">
                     <img th:src="@{/imagenes/logo.png}" class="d-block w-100 bg-violet" alt=",,," style="height: 50px;width: 50px">
                 </a>
             </div>
             <div th:if="${!noVehiculo}">
-                <a th:href="homeConductor" class="mx-2">
+                <a th:href="home-conductor" class="mx-2">
                     <img th:src="@{/imagenes/logo.png}" class="d-block w-100 bg-violet" alt=",,," style="height: 50px;width: 50px">
                 </a>
             </div>
@@ -34,10 +34,10 @@
         <div class="collapse navbar-collapse justify-content-end"> <!-- Div pegado a la derecha -->
             <ul class="navbar-nav mr-auto">
                 <li th:if="${noVehiculo}" class="nav-item active p-2">
-                    <a th:href="${noVehiculo == true && estaLogueado==true ? 'homeConductor' : 'home'}" class="nav-link p-2 text-white">Inicio</a>
+                    <a th:href="${noVehiculo == true && estaLogueado==true ? 'home-conductor' : 'home'}" class="nav-link p-2 text-white">Inicio</a>
                 </li>
                 <li th:if="${!noVehiculo}" class="nav-item active p-2">
-                    <a th:href="homeConductor" class="nav-link p-2 text-white">Inicio</a>
+                    <a th:href="home-conductor" class="nav-link p-2 text-white">Inicio</a>
                 </li>
                 <li class="nav-item p-2">
                     <a th:href="compania" class="nav-link p-2 text-white" href="#">Compañía</a>
@@ -116,7 +116,7 @@
         <section class="botones">
             <a th:if="${isEditForm && estaLogeado}" th:href="perfil"><button type="button" class="btn-secundario">Cancelar</button></a>
             <a th:unless="${estaLogeado}" th:href="home"><button type="button" class="btn-secundario">Cancelar</button></a>
-            <a th:if="${estaLogeado && !isEditForm}" th:href="homeConductor"><button type="button" class="btn-secundario">Cancelar</button></a>
+            <a th:if="${estaLogeado && !isEditForm}" th:href="home-conductor"><button type="button" class="btn-secundario">Cancelar</button></a>
             <button th:if="${isEditForm}" type="submit" id="boton_editar_vehiculo" class="btn-principal">Editar</button>
             <button th:unless="${isEditForm}" type="submit" id="boton_reg_vehiculo" class="btn-principal">Registrar</button>
         </section>

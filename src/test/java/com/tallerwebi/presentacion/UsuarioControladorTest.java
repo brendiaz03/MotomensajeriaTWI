@@ -71,7 +71,7 @@ public class UsuarioControladorTest {
 
     @Test
     public void queAlSolicitarRegistrarUsuarioSeRegistreUnCliente() throws Exception {
-        String redireccionCliente="redirect:/home";
+        String redireccionCliente="redirect:/home?registroExitoso=true";
         DatosUsuario nuevo = mock(DatosUsuario.class);
         Cliente nuevoCliente = mock(Cliente.class);
         Integer idUsuario = 1;
@@ -150,7 +150,7 @@ public class UsuarioControladorTest {
 
         Conductor conductor = mock(Conductor.class);
 
-        when(conductor.getTipoUsuario()).thenReturn(TipoUsuario.Conductor);
+        when(conductor.getTipoUsuario()).thenReturn(TipoUsuario.conductor);
         when(conductor.getVehiculo()).thenReturn(mock(Vehiculo.class));
 
         when(this.usuarioServicio.obtenerUsuarioPorId((Integer) this.session.getAttribute("IDUSUARIO"))).thenReturn(conductor);
@@ -170,7 +170,7 @@ public class UsuarioControladorTest {
 
         Conductor conductor = mock(Conductor.class);
 
-        when(conductor.getTipoUsuario()).thenReturn(TipoUsuario.Conductor);
+        when(conductor.getTipoUsuario()).thenReturn(TipoUsuario.conductor);
         when(conductor.getVehiculo()).thenReturn(null);
 
         when(this.usuarioServicio.obtenerUsuarioPorId((Integer) this.session.getAttribute("IDUSUARIO"))).thenReturn(conductor);
@@ -262,7 +262,7 @@ public class UsuarioControladorTest {
         Conductor conductor = mock(Conductor.class);
 
         when(conductor.getVehiculo()).thenReturn(null); // Conductor sin vehículo
-        when(conductor.getTipoUsuario()).thenReturn(TipoUsuario.Conductor);
+        when(conductor.getTipoUsuario()).thenReturn(TipoUsuario.conductor);
 
         when(this.usuarioServicio.obtenerUsuarioPorId((Integer)this.session.getAttribute("IDUSUARIO"))).thenReturn(conductor);
 
@@ -277,7 +277,7 @@ public class UsuarioControladorTest {
     public void queAlSolicitarEditarUsuarioSeEdite() throws Exception {
         String redireccionPerfil = "redirect:/perfil";
         DatosUsuario usuarioEditado = mock(DatosUsuario.class);
-        TipoUsuario tipoUsuario = TipoUsuario.Conductor;
+        TipoUsuario tipoUsuario = TipoUsuario.conductor;
         Integer idUsuario = 1;
 
         when(session.getAttribute("IDUSUARIO")).thenReturn(idUsuario);
