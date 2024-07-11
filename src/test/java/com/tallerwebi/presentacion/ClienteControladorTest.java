@@ -5,6 +5,8 @@ import com.tallerwebi.dominio.cliente.ClienteServicio;
 import com.tallerwebi.dominio.exceptions.ClienteNoEncontradoException;
 import com.tallerwebi.dominio.exceptions.ViajeNoEncontradoException;
 import com.tallerwebi.dominio.exceptions.UsuarioNoEncontradoException;
+import com.tallerwebi.dominio.mercadoPago.MercadoPagoServicio;
+import com.tallerwebi.dominio.paquete.PaqueteServicio;
 import com.tallerwebi.dominio.viaje.Viaje;
 import com.tallerwebi.dominio.viaje.ViajeServicio;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,8 +15,10 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
+import static org.mockito.ArgumentMatchers.any;
 
 import static org.hamcrest.Matchers.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 
@@ -25,12 +29,16 @@ public class ClienteControladorTest {
     private ViajeServicio viajeServicioMock;
     private ClienteControlador clienteControlador;
     private HttpSession session;
+    private ViajeControlador viajeControlador;
+    private PaqueteServicio paqueteServicioMock;
+    private MercadoPagoServicio mercadoPagoServicio;
 
     @BeforeEach
     public void setUp() {
         clienteServicioMock = mock(ClienteServicio.class);
         viajeServicioMock = mock(ViajeServicio.class);
         clienteControlador = new ClienteControlador(clienteServicioMock, viajeServicioMock);
+        viajeControlador = new ViajeControlador(viajeServicioMock, clienteServicioMock, paqueteServicioMock, mercadoPagoServicio);
     }
 
     @Test
@@ -89,4 +97,40 @@ public class ClienteControladorTest {
         assertThat(modelAndView.getViewName(), equalTo("redirect:/envios-en-proceso"));
         verify(viajeServicioMock, times(1)).cancelarEnvio(viajeMock);
     }
+
+    @Test
+    public void testDadoUnIdViajeExistenteCuandoSeDuplicaViajeCanceladoEntoncesDeberiaRedirigirAHomeCliente() throws ViajeNoEncontradoException {
+
+        Integer idViaje = 1;
+
+        Viaje viaje = new Viaje();
+
+        when(viajeServicioMock.obtenerViajePorId(idViaje)).thenReturn(viaje);
+
+        ModelAndView modelAndView = clienteControlador.duplicarViajeCancelado(idViaje);
+
+        verify(viajeServicioMock).obtenerViajePorId(idViaje);
+        verify(viajeServicioMock).actualizarViajeCancelado(viaje);
+        verify(viajeServicioMock).duplicarViajeCancelado(viaje);
+
+        assertThat(modelAndView.getViewName(), equalTo("redirect:/home-cliente"));
+
+    }
+
+    @Test
+    public void testDadoUnIdViajeInexistenteCuandoSeDuplicaViajeCanceladoEntoncesDeberiaLanzarViajeNoEncontradoException() throws ViajeNoEncontradoException {
+
+        Integer idViaje = 1;
+
+        when(viajeServicioMock.obtenerViajePorId(idViaje)).thenThrow(new ViajeNoEncontradoException("Viaje no encontrado"));
+
+        assertThrows(ViajeNoEncontradoException.class, () -> {
+            clienteControlador.duplicarViajeCancelado(idViaje);
+        });
+
+        verify(viajeServicioMock).obtenerViajePorId(idViaje);
+        verify(viajeServicioMock, never()).actualizarViajeCancelado(any(Viaje.class));
+        verify(viajeServicioMock, never()).duplicarViajeCancelado(any(Viaje.class));
+    }
+
 }
