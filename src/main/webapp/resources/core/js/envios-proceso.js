@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
 document.addEventListener("DOMContentLoaded", function() {
     const confirmPopup = document.getElementById("confirm-popup");
     const openPopupButtons = document.querySelectorAll(".open-confirm-popup");
-    const closePopupButtons = document.querySelectorAll("#close-popup-no");
+    const closePopupButtons = document.querySelectorAll("#close-popup");
     const popupIdViaje = document.getElementById("popup-idViaje");
 
     openPopupButtons.forEach(button => {
