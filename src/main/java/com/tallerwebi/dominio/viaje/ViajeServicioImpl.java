@@ -322,7 +322,7 @@ public class ViajeServicioImpl implements ViajeServicio {
 
         List<Viaje> viajes;
 
-        if (distanciaAFiltrar == null) {
+        if (distanciaAFiltrar == null || distanciaAFiltrar == 0.0) {
             viajes = this.viajeRepositorio.traerTodosLosViajesPendientes();
         } else if (distanciaAFiltrar < 0 || distanciaAFiltrar > 10.0) {
             throw new CoordenadasNoEncontradasException("Distancia invalida");
