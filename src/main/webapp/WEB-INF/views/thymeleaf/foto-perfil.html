@@ -13,7 +13,7 @@
 <header>
   <nav class="navbar navbar-expand-lg mx-4">
     <div class="d-flex align-items-center bg-violet"> <!-- Div pegado a la izquierda -->
-      <a th:href="${usuario != null && usuario.tipoUsuario != null ? 'home' + usuario.tipoUsuario : 'home'}" class="mx-2">
+      <a th:href="${usuario != null && usuario.tipoUsuario != null ? 'home-' + usuario.tipoUsuario : 'home'}" class="mx-2">
         <img th:src="@{/imagenes/logo.png}" class="d-block w-100 bg-violet" alt=",,," style="height: 50px;width: 50px">
       </a>
     </div>
@@ -21,7 +21,7 @@
     <div class="collapse navbar-collapse justify-content-end"> <!-- Div pegado a la derecha -->
       <ul class="navbar-nav mr-auto">
         <li class="nav-item active  p-2">
-          <a th:href="home" class="nav-link p-2 text-white" href="#">Inicio</a>
+          <a th:href="${usuario != null && usuario.tipoUsuario != null ? 'home-' + usuario.tipoUsuario : 'home'}" class="nav-link p-2 text-white">Inicio</a>
         </li>
         <li class="nav-item p-2">
           <a th:href="compania" class="nav-link p-2 text-white" href="#">Compañía</a>
@@ -35,10 +35,10 @@
         <li class="nav-item p-2" th:if="${usuario.getTipoUsuario() == T(com.tallerwebi.dominio.enums.TipoUsuario).conductor}">
           <a th:href="historial" class="nav-link p-2 text-white" href="#">Historial de Viajes</a>
         </li>
-        <li class="nav-item p-2" th:if="${usuario!=null && usuario.getTipoUsuario() == T(com.tallerwebi.dominio.enums.TipoUsuario).cliente}">
+        <li class="nav-item p-2" th:if="${usuario.getTipoUsuario() == T(com.tallerwebi.dominio.enums.TipoUsuario).cliente}">
           <a th:href="envios-en-proceso" class="nav-link p-2 text-white">Envios en Proceso</a>
         </li>
-        <li class="nav-item p-2" th:if="${usuario!=null && usuario.getTipoUsuario() == T(com.tallerwebi.dominio.enums.TipoUsuario).cliente}">
+        <li class="nav-item p-2" th:if="${usuario.getTipoUsuario() == T(com.tallerwebi.dominio.enums.TipoUsuario).cliente}">
           <a th:href="historial-envios" class="nav-link p-2 text-white" href="#">Historial de Envios</a>
         </li>
       </ul>
@@ -62,16 +62,27 @@
       <form id="conductorForm" th:action="@{/subir-foto}" th:object="${usuario}" method="POST" enctype="multipart/form-data">
         <section class="formulario">
           <div class="columna">
-            <div class="imagen_contenedor" id="imagenPerfilContenedor" th:if="${usuario.getImagenPerfil() != null}">
-              <img id="imagenPerfil" alt="img" th:src="'data:image/jpg;charset=utf-8;base64,' + ${usuario.getImageDataBase64()}" class="figure"/>
+<!--            <div class="imagen_contenedor" id="imagenPerfilContenedor" th:if="${usuario.getImagenPerfil() != null}">-->
+<!--              <img id="imagenPerfil" alt="img" th:src="'data:image/jpg;charset=utf-8;base64,' + ${usuario.getImageDataBase64()}" class="figure"/>-->
+<!--            </div>-->
+
+<!--            <div class="imagen_contenedor" id="imagenUserContenedor" th:if="${usuario.getImagenPerfil() == null}">-->
+<!--              <img id="imagenUser" th:src="@{/imagenes/user.png}" class="figure"/>-->
+<!--            </div>-->
+
+<!--            <div class="imagen_contenedor" id="imagenNuevaContenedor" style="display: none;">-->
+<!--              <img id="imagenNueva" alt="New Image Preview" class="figure"/>-->
+<!--            </div>-->
+            <div class="imagen_contenedor" id="imagenActualContenedor" th:if="${usuario.getImagenPerfil() != null}">
+              <img id="imagenActual" alt="Imagen Actual" th:src="'data:image/jpg;charset=utf-8;base64,' + ${usuario.getImageDataBase64()}" class="figure"/>
             </div>
 
-            <div class="imagen_contenedor" id="imagenUserContenedor" th:if="${usuario.getImagenPerfil() == null}">
-              <img id="imagenUser" th:src="@{/imagenes/user.png}" class="figure"/>
+            <div class="imagen_contenedor" id="imagenDefaultContenedor" th:if="${usuario.getImagenPerfil() == null}">
+              <img id="imagenDefault" alt="Imagen Default" th:src="@{/imagenes/user.png}" class="figure"/>
             </div>
 
             <div class="imagen_contenedor" id="imagenNuevaContenedor" style="display: none;">
-              <img id="imagenNueva" alt="New Image Preview" class="figure"/>
+              <img id="imagenNueva" alt="Nueva Imagen Previa" class="figure"/>
             </div>
 
             <div class="contenedor_botones">
@@ -97,33 +108,31 @@
 </main>
 </body>
 <script>
-    function previewImage(event) {
+  function previewImage(event) {
     const imagenInput = event.target;
     if (imagenInput.files && imagenInput.files[0]) {
-    const reader = new FileReader();
-    reader.onload = function (e) {
-    const imagenPerfil = document.getElementById('imagenPerfil');
-    const imagenNuevaElement = document.getElementById('imagenNueva');
-    const imagenUser = document.getElementById('imagenUser');
-    const imagenPerfilContenedor = document.getElementById('imagenPerfilContenedor');
-    const imagenUserContenedor = document.getElementById('imagenUserContenedor');
-    const imagenNuevaContenedor = document.getElementById('imagenNuevaContenedor');
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        const imagenActualContenedor = document.getElementById('imagenActualContenedor');
+        const imagenDefaultContenedor = document.getElementById('imagenDefaultContenedor');
+        const imagenNuevaElement = document.getElementById('imagenNueva');
+        const imagenNuevaContenedor = document.getElementById('imagenNuevaContenedor');
 
-    if (imagenPerfil) {
-    imagenPerfilContenedor.style.display = 'none';
-  }
-    if (imagenUser) {
-    imagenUserContenedor.style.display = 'none';
-  }
-    imagenNuevaElement.style.display = 'inline';
-    imagenNuevaElement.src = e.target.result;
-    imagenNuevaContenedor.style.display = 'inline';
-  };
-    reader.readAsDataURL(imagenInput.files[0]);
-  }
+        if (imagenActualContenedor) {
+          imagenActualContenedor.style.display = 'none';
+        }
+        if (imagenDefaultContenedor) {
+          imagenDefaultContenedor.style.display = 'none';
+        }
+
+        imagenNuevaElement.src = e.target.result;
+        imagenNuevaContenedor.style.display = 'block';
+      };
+      reader.readAsDataURL(imagenInput.files[0]);
+    }
   }
 
-    document.getElementById('backToProfile').addEventListener('click', function(event) {
+  document.getElementById('backToProfile').addEventListener('click', function(event) {
     event.preventDefault();
     window.location.href = this.href;
   });
