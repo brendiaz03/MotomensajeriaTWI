@@ -33,7 +33,7 @@ public class VehiculoControladorTest {
     }
 
     @Test
-    public void testMostrarEditarVehiculo() {
+    public void dadoUnUsuarioCuandoSeMuestraEditarVehiculoEntoncesRedirigeAFormVehiculo() {
         // Preparación
         HttpSession sessionMock = mock(HttpSession.class);
 
@@ -46,7 +46,7 @@ public class VehiculoControladorTest {
     }
 
     @Test
-    void testMostrarRegistroDelVehiculo_LoggedOut() throws UsuarioNoEncontradoException {
+    void dadoUnUsuarioNoLogeadoCuandoSeMuestraRegistroDelVehiculoEntoncesMuestraFormVehiculoSinEstarLogeado() throws UsuarioNoEncontradoException {
 
         Boolean logeado = false;
 
@@ -67,7 +67,7 @@ public class VehiculoControladorTest {
     }
 
     @Test
-    void testMostrarRegistroDelVehiculo_NoError() throws UsuarioNoEncontradoException {
+    void dadoUnUsuarioLogeadoSinErrorCuandoSeMuestraElRegistroDelVehiculoEntoncesMuestraFormVehiculo() throws UsuarioNoEncontradoException {
 
         when(session.getAttribute("isEditForm")).thenReturn(true);
 
@@ -86,7 +86,7 @@ public class VehiculoControladorTest {
     }
 
     @Test
-    void testMostrarRegistroDelVehiculo_Error() throws UsuarioNoEncontradoException {
+    void dadoUnUsuarioLogeadoConErrorCuandoSeMuestraElRegistroDelVehiculoEntoncesMuestraFormVehiculoConError() throws UsuarioNoEncontradoException {
 
         when(session.getAttribute("estaLogeado")).thenReturn(true);
 
@@ -106,7 +106,7 @@ public class VehiculoControladorTest {
 
 
     @Test
-    void testMostrarRegistroDelVehiculo_UsuarioNoEncontrado() throws UsuarioNoEncontradoException {
+    void dadoUnUsuarioNoEncontradoCuandoSeMuestraRegistroDelVehiculoEntoncesRedirigeConMensajeError() throws UsuarioNoEncontradoException {
 
         when(session.getAttribute("estaLogeado")).thenReturn(true);
 
@@ -121,7 +121,7 @@ public class VehiculoControladorTest {
     }
 
     @Test
-    void testMostrarRegistroDelVehiculo_IsEditForm() throws UsuarioNoEncontradoException {
+    void dadoUnUsuarioLogeadoYQueEstaEditandoElVehiculoEntoncesMuestraFormVehiculoParaEditar() throws UsuarioNoEncontradoException {
 
         when(session.getAttribute("estaLogeado")).thenReturn(true);
 
@@ -146,7 +146,7 @@ public class VehiculoControladorTest {
     }
 
     @Test
-    void testMostrarRegistroDelVehiculo_NoVehiculo() throws UsuarioNoEncontradoException {
+    void dadoUnUsuarioLogeadoSinVehiculoCuandoSeMuestraElRegistroDelVehiculoEntoncesMuestraFormVehiculoSinVehiculo() throws UsuarioNoEncontradoException {
 
         when(session.getAttribute("estaLogeado")).thenReturn(true);
 
@@ -166,7 +166,7 @@ public class VehiculoControladorTest {
     }
 
     @Test
-    void testRegistrarVehiculo_LoggedIn() throws UsuarioNoEncontradoException, VehiculoDuplicadoException {
+    void dadoUnUsuarioLogeadoCuandoRegistraUnVehiculoEntoncesRedirigeAHomeConductor() throws UsuarioNoEncontradoException, VehiculoDuplicadoException {
 
         Vehiculo nuevoVehiculo = new Vehiculo();
 
@@ -186,7 +186,7 @@ public class VehiculoControladorTest {
     }
 
     @Test
-    void testRegistrarVehiculo_NotLoggedIn() throws UsuarioNoEncontradoException, VehiculoDuplicadoException {
+    void dadoUnUsuarioNoLogeadoCuandoRegistraUnVehiculoEntoncesRedirigeAHomeConRegistroExitoso() throws UsuarioNoEncontradoException, VehiculoDuplicadoException {
 
         Vehiculo nuevoVehiculo = new Vehiculo();
 
@@ -205,7 +205,7 @@ public class VehiculoControladorTest {
     }
 
     @Test
-    void testEditarVehiculo_Success() throws UsuarioNoEncontradoException {
+    void dadoUnUsuarioLogeadoCuandoEditaUnVehiculoEntoncesRedirigeAPerfil() throws UsuarioNoEncontradoException {
 
         Vehiculo nuevoVehiculo = new Vehiculo();
 
@@ -232,7 +232,7 @@ public class VehiculoControladorTest {
     }
 
     @Test
-    void testEditarVehiculo_UsuarioNoEncontradoException() throws UsuarioNoEncontradoException {
+    void dadoUnUsuarioNoEncontradoCuandoEditaElVehiculoEntoncesRedirigeConMensajeError() throws UsuarioNoEncontradoException {
 
         Vehiculo nuevoVehiculo = new Vehiculo();
 
