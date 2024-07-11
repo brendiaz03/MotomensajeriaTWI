@@ -44,7 +44,7 @@ public class ConductorControladorTest {
 
     @Test
     public void queSeRendericeElHomeDelConductorNoPenalizadoConLosViajesPendientesDisponiblesFiltradosPorLaUbicacionDelConductor() throws UsuarioNoEncontradoException, CoordenadasNoEncontradasException {
-        String nombreEsperado = "homeConductor";
+        String nombreEsperado = "home-conductor";
         Conductor conductor=mock(Conductor.class);
         Vehiculo vehiculo=mock(Vehiculo.class);
         List<DatosViaje> viajesPendientes = mock(List.class);
@@ -74,7 +74,7 @@ public class ConductorControladorTest {
 
     @Test
     public void queSeRendericeElHomeDelConductorConElMensajeDePenalizacionEnCasoDeQueElMismoEstePenalizado() throws UsuarioNoEncontradoException, CoordenadasNoEncontradasException {
-        String nombreEsperado = "homeConductor";
+        String nombreEsperado = "home-conductor";
         Conductor conductor=mock(Conductor.class);
         Boolean isPenalizado = true;
 
@@ -95,7 +95,7 @@ public class ConductorControladorTest {
 
     @Test
     public void queSeRendericeElHomeDelConductorConUnaAdvertenciaSiElConductorNoTieneUnVehiculoAsociado() throws UsuarioNoEncontradoException, CoordenadasNoEncontradasException {
-            String nombreEsperado = "homeConductor";
+            String nombreEsperado = "home-conductor";
             Conductor conductor=mock(Conductor.class);
 
             when(session.getAttribute("IDUSUARIO")).thenReturn(1);
@@ -204,7 +204,7 @@ public void queSeRendericeLaVistaQueMuestraElViajeAceptadoSeleccionadoPorElCondu
 
     @Test
     public void queUnConductorCanceleUnViajePreviamenteAceptado() throws UsuarioNoEncontradoException, ViajeNoEncontradoException {
-        String nombreEsperado = "redirect:/homeConductor";
+        String nombreEsperado = "redirect:/home-conductor";
         Conductor conductor = mock(Conductor.class);
         Viaje viaje = mock(Viaje.class);
         Integer idViaje = 123;
@@ -221,7 +221,7 @@ public void queSeRendericeLaVistaQueMuestraElViajeAceptadoSeleccionadoPorElCondu
     }
     @Test
     public void queUnConductorTermineUnViajePreviamenteAceptado() throws ViajeNoEncontradoException {
-        String nombreEsperado = "redirect:/homeConductor";
+        String nombreEsperado = "redirect:/home-conductor";
         DatosViaje viaje = mock(DatosViaje.class);
         Integer idViaje = 123;
 
@@ -243,7 +243,7 @@ public void queSeRendericeLaVistaQueMuestraElViajeAceptadoSeleccionadoPorElCondu
 
     @Test
     public void queUnConductorDescarteUnViajeDeLaListaDeViajesPendientesDelHomeConductor() throws UsuarioNoEncontradoException, ViajeNoEncontradoException, ClienteNoEncontradoException {
-        String nombreEsperado = "redirect:/homeConductor";
+        String nombreEsperado = "redirect:/home-conductor";
         Conductor conductor = mock(Conductor.class);
         Viaje viaje = mock(Viaje.class);
         Integer idViaje = 123;
@@ -294,7 +294,7 @@ public void queSeRendericeLaVistaQueMuestraElViajeAceptadoSeleccionadoPorElCondu
         ModelAndView mav = conductorControlador.filtrarPorDistancia(session, distancia);
 
         verify(session).setAttribute("distancia", distancia);
-        assertThat(mav.getViewName(), equalTo("redirect:/homeConductor"));
+        assertThat(mav.getViewName(), equalTo("redirect:/home-conductor"));
     }
 
     @Test
@@ -327,7 +327,7 @@ public void queSeRendericeLaVistaQueMuestraElViajeAceptadoSeleccionadoPorElCondu
 
         ModelAndView mav = conductorControlador.despenalizarConductor(montoPenalizacion, redirectAttributes, session);
 
-        assertThat(mav.getViewName(), equalTo("redirect:/homeConductor"));
+        assertThat(mav.getViewName(), equalTo("redirect:/home-conductor"));
 
         verify(redirectAttributes).addFlashAttribute("error", "Monto de penalización inválido.");
     }

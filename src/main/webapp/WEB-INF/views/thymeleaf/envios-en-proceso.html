@@ -12,14 +12,14 @@
 <header>
     <nav class="navbar navbar-expand-lg mx-4">
         <div class="d-flex align-items-center bg-violet">
-            <a th:href="homeCliente" class="mx-2">
+            <a th:href="home-cliente" class="mx-2">
                 <img th:src="@{/imagenes/logo.png}" class="d-block w-100 bg-violet" alt=",,," style="height: 50px;width: 50px">
             </a>
         </div>
         <div class="collapse navbar-collapse justify-content-end">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item active  p-2">
-                    <a th:href="homeCliente" class="nav-link p-2 text-white" href="#">Inicio</a>
+                    <a th:href="home-cliente" class="nav-link p-2 text-white" href="#">Inicio</a>
                 </li>
                 <li class="nav-item p-2">
                     <a th:href="compania" class="nav-link p-2 text-white" href="#">Compañía</a>
@@ -89,13 +89,13 @@
     <div id="confirm-popup" class="modal-overlay">
         <div class="fondo-form">
             <div>
-                <p>¿Desea aceptar eliminar el envío?</p>
+                <p>¿Desea eliminar el envío?</p>
                 <div class="modal-footer-viaje">
+                    <a><button type="button" id="close-popup" class="btn-secundario">Cancelar</button></a>
                     <form id="confirm-form" th:action="@{cancelar-envio}" method="post">
                     <input type="hidden" id="popup-idViaje" name="idViaje">
-                    <a><button type="submit" class="btn-principal">Si</button></a>
+                    <a><button type="submit" class="btn-principal">Aceptar</button></a>
                 </form>
-                    <a><button type="button" id="close-popup" class="btn-secundario">No</button></a>
                 </div>
             </div>
         </div>

@@ -78,7 +78,7 @@ public class UsuarioControlador {
         try {
             Usuario usuario = usuarioServicio.obtenerUsuarioPorId((Integer) session.getAttribute("IDUSUARIO"));
             model.put("usuario", usuario);
-            if (usuario.getTipoUsuario().equals(TipoUsuario.Conductor)) {
+            if (usuario.getTipoUsuario().equals(TipoUsuario.conductor)) {
                 Conductor conductor = (Conductor) usuario;
                 if (conductor.getVehiculo() != null) {
                     model.put("noVehiculo", false);

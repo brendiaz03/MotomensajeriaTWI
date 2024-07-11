@@ -32,7 +32,7 @@ public class ClienteControlador {
         this.viajeServicio=viajeServicio;
     }
 
-    @RequestMapping("/homeCliente")
+    @RequestMapping("/home-cliente")
     public ModelAndView mostrarHomeCliente(HttpSession session) throws ClienteNoEncontradoException {
         ModelMap model = new ModelMap();
         Cliente cliente;
@@ -50,7 +50,7 @@ public class ClienteControlador {
             }
 
             model.put("cliente", cliente);
-            String viewName = "homeCliente";
+            String viewName = "home-cliente";
             this.reiniciarVariables(session);
             return new ModelAndView(viewName, model);
 
@@ -97,14 +97,14 @@ public class ClienteControlador {
         Viaje viajeObtenido = this.viajeServicio.obtenerViajePorId(idViaje);
         this.viajeServicio.actualizarViajeCancelado(viajeObtenido);
         this.viajeServicio.duplicarViajeCancelado(viajeObtenido);
-        return new ModelAndView("redirect:/homeCliente");
+        return new ModelAndView("redirect:/home-cliente");
     }
 
     @RequestMapping("/noDuplicarViaje")
     public ModelAndView noDuplicarViaje(@RequestParam("idViaje") Integer idViaje) throws ViajeNoEncontradoException {
         Viaje viajeObtenido = this.viajeServicio.obtenerViajePorId(idViaje);
         this.viajeServicio.noDuplicarViaje(viajeObtenido);
-        return new ModelAndView("redirect:/homeCliente");
+        return new ModelAndView("redirect:/home-cliente");
     }
 
     @RequestMapping("/historial-envios")
