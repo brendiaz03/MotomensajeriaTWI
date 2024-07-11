@@ -71,7 +71,7 @@ public class VehiculoControlador {
             if ((session != null && session.getAttribute("estaLogeado") != null)) {
                 return new ModelAndView("redirect:/home-conductor");
             } else {
-                return new ModelAndView("redirect:/home");
+                return new ModelAndView("redirect:/home?registroExitoso=true");
             }
 
         }catch(VehiculoDuplicadoException | UsuarioNoEncontradoException e){
