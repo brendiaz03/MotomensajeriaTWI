@@ -33,7 +33,7 @@ html{
 
 .btn-principal:hover{
     color: white;
-    background-color: #370a37;
+    background-color: hotpink;
 }
 
 .btn-secundario{
@@ -50,7 +50,7 @@ html{
 }
 
 .btn-secundario:hover {
-    background: #370a37;
+    background: hotpink;
     border-color: transparent;
     color: white;
 }

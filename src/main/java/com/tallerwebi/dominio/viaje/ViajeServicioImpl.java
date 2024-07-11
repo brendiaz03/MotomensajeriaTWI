@@ -405,12 +405,12 @@ public class ViajeServicioImpl implements ViajeServicio {
             precioBaseEnvio += (precioxKm * (Math.round(distancia)) - 3.0);
         }
 
-        if(peso > 2.0){
-            precioBaseEnvio += (precioxKg * (Math.round(peso)) - 2.0);
+        if(peso > 3.0){
+            precioBaseEnvio += (precioxKg * (Math.round(peso)) - 3.0);
         }
 
-        if(dimension > 30.0) {
-            precioBaseEnvio += (precioxCm * (Math.round(dimension)) - 30.0);
+        if(dimension > 40.0) {
+            precioBaseEnvio += (precioxCm * (Math.round(dimension)) - 40.0);
         }
 
         return precioBaseEnvio;
