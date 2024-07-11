@@ -45,8 +45,6 @@ public class ConductorControlador {
         List<DatosViaje> viajesCercanosPendientes;
 
         Double distanciaAFiltrar = (Double) session.getAttribute("distancia");
-            System.out.println("distanciaaa");
-            System.out.println(distanciaAFiltrar);
         viajesCercanosPendientes = this.viajeServicio.filtrarViajesPorDistanciaDelConductor(
                 (Double)session.getAttribute("latitud"),
                 (Double)session.getAttribute("longitud"),

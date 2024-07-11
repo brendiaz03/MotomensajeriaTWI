@@ -33,7 +33,6 @@ public class VehiculoControlador {
         ModelMap model = new ModelMap();
         String viewName = "form-vehiculo";
         Boolean estaLogeado = (session != null && session.getAttribute("estaLogeado") != null) ? (Boolean) session.getAttribute("estaLogeado") : false;
-        System.out.println("ACA ESTA EL ESTADO: " + estaLogeado);
         model.put("estaLogeado", estaLogeado);
         if(mensajeError==null||mensajeError.isEmpty()){
             model.put("mensajeError",null);
