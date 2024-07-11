@@ -29,16 +29,16 @@
         <li class="nav-item p-2">
           <a th:href="ayuda" class="nav-link p-2 text-white" href="#">Ayuda</a>
         </li>
-        <li class="nav-item p-2" th:if="${usuario.getTipoUsuario() == T(com.tallerwebi.dominio.enums.TipoUsuario).Conductor}">
+        <li class="nav-item p-2" th:if="${usuario.getTipoUsuario() == T(com.tallerwebi.dominio.enums.TipoUsuario).conductor}">
           <a th:href="viajes-en-proceso" class="nav-link p-2 text-white">Viajes en Proceso</a>
         </li>
-        <li class="nav-item p-2" th:if="${usuario.getTipoUsuario() == T(com.tallerwebi.dominio.enums.TipoUsuario).Conductor}">
+        <li class="nav-item p-2" th:if="${usuario.getTipoUsuario() == T(com.tallerwebi.dominio.enums.TipoUsuario).conductor}">
           <a th:href="historial" class="nav-link p-2 text-white" href="#">Historial de Viajes</a>
         </li>
-        <li class="nav-item p-2" th:if="${usuario!=null && usuario.getTipoUsuario() == T(com.tallerwebi.dominio.enums.TipoUsuario).Cliente}">
+        <li class="nav-item p-2" th:if="${usuario!=null && usuario.getTipoUsuario() == T(com.tallerwebi.dominio.enums.TipoUsuario).cliente}">
           <a th:href="envios-en-proceso" class="nav-link p-2 text-white">Envios en Proceso</a>
         </li>
-        <li class="nav-item p-2" th:if="${usuario!=null && usuario.getTipoUsuario() == T(com.tallerwebi.dominio.enums.TipoUsuario).Cliente}">
+        <li class="nav-item p-2" th:if="${usuario!=null && usuario.getTipoUsuario() == T(com.tallerwebi.dominio.enums.TipoUsuario).cliente}">
           <a th:href="historial-envios" class="nav-link p-2 text-white" href="#">Historial de Envios</a>
         </li>
       </ul>

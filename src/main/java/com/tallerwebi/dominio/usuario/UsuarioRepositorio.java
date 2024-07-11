@@ -11,6 +11,4 @@ public interface UsuarioRepositorio {
 
     Usuario getUsuarioById(Integer id);
 
-    @Transactional
-    void eliminarCuentaDeUsuario(Usuario usuario);
 }

@@ -30,7 +30,7 @@ public class UsuarioServicioImpl implements UsuarioServicio {
             Usuario duplicado = this.usuarioRepositorio.buscarDuplicados(usuario.getEmail(), usuario.getNombreUsuario());
             throw new UsuarioDuplicadoException("Usuario o Email ya existentes");
         }catch (NoResultException e){
-            if(usuario.getTipoUsuario() == TipoUsuario.Conductor){
+            if(usuario.getTipoUsuario() == TipoUsuario.conductor){
                 Conductor conductor = usuario.toConductor();
                 conductor.setPenalizado(false);
                 conductor.setCantPenalizacion(0);
@@ -47,18 +47,22 @@ public class UsuarioServicioImpl implements UsuarioServicio {
     @Override
     public void actualizarUsuario(DatosUsuario usuario, TipoUsuario tipoUsuario) throws UsuarioNoEncontradoException {
         try{
-        if(TipoUsuario.Conductor == tipoUsuario) {
+        if(TipoUsuario.conductor == tipoUsuario) {
             Conductor usuarioEditado = usuario.toConductor();
             Conductor conductor = (Conductor) this.usuarioRepositorio.getUsuarioById(usuarioEditado.getId());
             usuarioEditado.setVehiculo(conductor.getVehiculo());
             usuarioEditado.setTipoUsuario(conductor.getTipoUsuario());
             usuarioEditado.setImagenPerfil(conductor.getImagenPerfil());
+            usuarioEditado.setCantPenalizacion(conductor.getCantPenalizacion());
+            usuarioEditado.setPenalizado(conductor.getPenalizado());
+            usuarioEditado.setEliminado(false);
             usuarioRepositorio.editarUsuario(usuarioEditado);
         }else{
             Cliente usuarioEditado = usuario.toCliente();
             Cliente cliente = (Cliente) this.usuarioRepositorio.getUsuarioById(usuarioEditado.getId());
             usuarioEditado.setTipoUsuario(cliente.getTipoUsuario());
             usuarioEditado.setImagenPerfil(cliente.getImagenPerfil());
+            usuarioEditado.setEliminado(false);
             usuarioRepositorio.editarUsuario(usuarioEditado);
         }}
         catch (Exception e){

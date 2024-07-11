@@ -64,7 +64,7 @@ public class VistaCrearEnvioE2E {
         vistaCrearEnvio.darClickEnPagarEnvio();
 
         String url = vistaCrearEnvio.obtenerURLActual();
-        assertThat(url, containsStringIgnoringCase("/homeCliente"));
+        assertThat(url, containsStringIgnoringCase("/home-cliente"));
     }
 
     @Test
@@ -85,7 +85,7 @@ public class VistaCrearEnvioE2E {
         vistaCrearEnvio.darClickEnBotonCancelar();
 
         String url = vistaCrearEnvio.obtenerURLActual();
-        assertThat(url, containsStringIgnoringCase("/homeCliente"));
+        assertThat(url, containsStringIgnoringCase("/home-cliente"));
     }
 
     @Test

@@ -47,7 +47,7 @@ public class UsuarioServicioTest {
 
         when(nuevoUsuario.getEmail()).thenReturn("facu@gmail.com");
         when(nuevoUsuario.getNombreUsuario()).thenReturn("facu");
-        when(nuevoUsuario.getTipoUsuario()).thenReturn(TipoUsuario.Conductor);
+        when(nuevoUsuario.getTipoUsuario()).thenReturn(TipoUsuario.conductor);
 
         // Simulamos que buscarDuplicados lanza una excepción NoResultException
         when(usuarioRepositorio.buscarDuplicados("facu@gmail.com", "facu")).thenThrow(new NoResultException());
@@ -96,7 +96,7 @@ public class UsuarioServicioTest {
 
         when(usuario.getNombreUsuario()).thenReturn("Camila");
 
-        when(usuario.getTipoUsuario()).thenReturn(TipoUsuario.Cliente);
+        when(usuario.getTipoUsuario()).thenReturn(TipoUsuario.cliente);
 
         when(this.usuarioRepositorio.buscarDuplicados("cami123@outlook.com", "Camila")).thenThrow(new NoResultException());
 
@@ -120,7 +120,7 @@ public class UsuarioServicioTest {
     public void queSeActualiceCorrectamenteUnUsuarioDeTipoConductor() throws UsuarioNoEncontradoException {
         DatosUsuario datosUsuario = mock(DatosUsuario.class);
         when(datosUsuario.getId()).thenReturn(1);
-        when(datosUsuario.getTipoUsuario()).thenReturn(TipoUsuario.Conductor);
+        when(datosUsuario.getTipoUsuario()).thenReturn(TipoUsuario.conductor);
 
         Conductor conductorExistente = mock(Conductor.class);
         when(usuarioRepositorio.getUsuarioById(1)).thenReturn(conductorExistente);
@@ -129,7 +129,7 @@ public class UsuarioServicioTest {
         when(datosUsuario.toConductor()).thenReturn(conductorEditado);
         when(conductorEditado.getId()).thenReturn(1);
 
-        usuarioServicio.actualizarUsuario(datosUsuario, TipoUsuario.Conductor);
+        usuarioServicio.actualizarUsuario(datosUsuario, TipoUsuario.conductor);
 
         verify(usuarioRepositorio, times(1)).editarUsuario(conductorEditado);
     }
@@ -139,7 +139,7 @@ public class UsuarioServicioTest {
     public void queSeActualiceCorrectamenteUnUsuarioDeTipoCliente() throws UsuarioNoEncontradoException {
         DatosUsuario datosUsuario = mock(DatosUsuario.class);
         when(datosUsuario.getId()).thenReturn(1);
-        when(datosUsuario.getTipoUsuario()).thenReturn(TipoUsuario.Cliente);
+        when(datosUsuario.getTipoUsuario()).thenReturn(TipoUsuario.cliente);
 
         Cliente clienteExistente = mock(Cliente.class);
         when(usuarioRepositorio.getUsuarioById(1)).thenReturn(clienteExistente);
@@ -148,7 +148,7 @@ public class UsuarioServicioTest {
         when(datosUsuario.toCliente()).thenReturn(clienteEditado);
         when(clienteEditado.getId()).thenReturn(1);
 
-        usuarioServicio.actualizarUsuario(datosUsuario, TipoUsuario.Cliente);
+        usuarioServicio.actualizarUsuario(datosUsuario, TipoUsuario.cliente);
 
         verify(usuarioRepositorio, times(1)).editarUsuario(clienteEditado);
     }
@@ -160,7 +160,7 @@ public class UsuarioServicioTest {
         when(datosUsuario.getId()).thenReturn(1);
         when(usuarioRepositorio.getUsuarioById(1)).thenThrow(new NoResultException());
 
-        assertThrows(UsuarioNoEncontradoException.class, () -> usuarioServicio.actualizarUsuario(datosUsuario, TipoUsuario.Conductor));
+        assertThrows(UsuarioNoEncontradoException.class, () -> usuarioServicio.actualizarUsuario(datosUsuario, TipoUsuario.conductor));
     }
 
     //OBTENER USUARIO POR ID
@@ -221,7 +221,7 @@ public class UsuarioServicioTest {
     }
 
     @Test
-    public void queSeBorreLaCuentaDeUnUsuarioExistenteCorrectamente() throws UsuarioNoEncontradoException {
+    public void dadoQueExisteUnUsuarioQueQuiereCerrarSuCuentaQueSeActualiceComoEliminadoTrue() throws UsuarioNoEncontradoException {
 
         Usuario usuario = mock(Usuario.class);
 
@@ -229,7 +229,7 @@ public class UsuarioServicioTest {
 
         usuarioServicio.borrarCuenta(1);
 
-        verify(usuarioRepositorio, times(1)).eliminarCuentaDeUsuario(usuario);
+        verify(usuarioRepositorio, times(1)).editarUsuario(usuario);
 
     }
 

@@ -49,7 +49,7 @@ public class ClienteControladorTest {
         ModelAndView modelAndView = clienteControlador.mostrarHomeCliente(sessionMock);
 
         // Verificación
-        assertThat(modelAndView.getViewName(), equalTo("homeCliente"));
+        assertThat(modelAndView.getViewName(), equalTo("home-cliente"));
         assertThat(modelAndView.getModel().get("cliente"), sameInstance(clienteMock));
         assertThat(modelAndView.getModel().containsKey("hayViajesCancelados"), is(false));
     }

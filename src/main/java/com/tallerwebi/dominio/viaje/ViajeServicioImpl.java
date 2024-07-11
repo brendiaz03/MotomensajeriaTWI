@@ -185,7 +185,7 @@ public class ViajeServicioImpl implements ViajeServicio {
         List<Viaje> viajesVista = new ArrayList<>();
 
         for (Viaje viajeObtenido : viajes) {
-            if(viajeObtenido.getEstado().equals(TipoEstado.PENDIENTE)){
+            if(viajeObtenido.getEstado().equals(TipoEstado.PENDIENTE) || viajeObtenido.getEstado().equals(TipoEstado.ACEPTADO)){
                 viajesVista.add(viajeObtenido);
             }
         }

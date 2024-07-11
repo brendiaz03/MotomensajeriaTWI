@@ -44,7 +44,7 @@ public class UsuarioRepositorioTest {
 
         nuevoCliente.setNombreUsuario("testcliente");
 
-        nuevoCliente.setTipoUsuario(TipoUsuario.Cliente);
+        nuevoCliente.setTipoUsuario(TipoUsuario.cliente);
 
         Usuario usuarioGuardado = usuarioRepositorio.guardarUsuario(nuevoCliente);
 
@@ -66,7 +66,7 @@ public class UsuarioRepositorioTest {
 
         clienteExistente.setNombreUsuario("duplicado");
 
-        clienteExistente.setTipoUsuario(TipoUsuario.Cliente);
+        clienteExistente.setTipoUsuario(TipoUsuario.cliente);
 
         usuarioRepositorio.guardarUsuario(clienteExistente);
 
@@ -91,7 +91,7 @@ public class UsuarioRepositorioTest {
 
         clienteExistente.setNombreUsuario("original");
 
-        clienteExistente.setTipoUsuario(TipoUsuario.Cliente);
+        clienteExistente.setTipoUsuario(TipoUsuario.cliente);
 
         Usuario usuarioGuardado = usuarioRepositorio.guardarUsuario(clienteExistente);
 
@@ -116,7 +116,7 @@ public class UsuarioRepositorioTest {
 
         nuevoCliente.setNombreUsuario("testuser");
 
-        nuevoCliente.setTipoUsuario(TipoUsuario.Cliente);
+        nuevoCliente.setTipoUsuario(TipoUsuario.cliente);
 
         Usuario usuarioGuardado = usuarioRepositorio.guardarUsuario(nuevoCliente);
 
@@ -126,27 +126,6 @@ public class UsuarioRepositorioTest {
         assertEquals(usuarioGuardado.getId(), usuarioObtenido.getId());
         assertEquals("test@example.com", usuarioObtenido.getEmail());
         assertEquals("testuser", usuarioObtenido.getNombreUsuario());
-
-    }
-
-    @Test
-    @Transactional
-    @Rollback
-    public void queSePuedaEliminarLaCuentaDeUnUsuarioExistente() {
-
-        Cliente clienteExistente = new Cliente();
-
-        clienteExistente.setEmail("Cami@lalala.com");
-
-        clienteExistente.setNombreUsuario("Cami");
-
-        clienteExistente.setTipoUsuario(TipoUsuario.Cliente);
-
-        Usuario usuarioExistente = usuarioRepositorio.guardarUsuario(clienteExistente);
-
-        this.usuarioRepositorio.eliminarCuentaDeUsuario(usuarioExistente);
-
-        assertNull(sessionFactory.getCurrentSession().get(Usuario.class, usuarioExistente.getId()));
 
     }
 

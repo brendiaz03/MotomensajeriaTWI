@@ -69,9 +69,9 @@ public class VehiculoControlador {
             Vehiculo vehiculo = vehiculoServicio.registrarVehiculo(nuevoVehiculo);
             conductorServicio.RelacionarVehiculoAConductor((Integer)session.getAttribute("IDUSUARIO"), vehiculo);
             if ((session != null && session.getAttribute("estaLogeado") != null)) {
-                return new ModelAndView("redirect:/homeConductor");
+                return new ModelAndView("redirect:/home-conductor");
             } else {
-                return new ModelAndView("redirect:/home");
+                return new ModelAndView("redirect:/home?registroExitoso=true");
             }
 
         }catch(VehiculoDuplicadoException | UsuarioNoEncontradoException e){
