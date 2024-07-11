@@ -62,17 +62,6 @@
       <form id="conductorForm" th:action="@{/subir-foto}" th:object="${usuario}" method="POST" enctype="multipart/form-data">
         <section class="formulario">
           <div class="columna">
-<!--            <div class="imagen_contenedor" id="imagenPerfilContenedor" th:if="${usuario.getImagenPerfil() != null}">-->
-<!--              <img id="imagenPerfil" alt="img" th:src="'data:image/jpg;charset=utf-8;base64,' + ${usuario.getImageDataBase64()}" class="figure"/>-->
-<!--            </div>-->
-
-<!--            <div class="imagen_contenedor" id="imagenUserContenedor" th:if="${usuario.getImagenPerfil() == null}">-->
-<!--              <img id="imagenUser" th:src="@{/imagenes/user.png}" class="figure"/>-->
-<!--            </div>-->
-
-<!--            <div class="imagen_contenedor" id="imagenNuevaContenedor" style="display: none;">-->
-<!--              <img id="imagenNueva" alt="New Image Preview" class="figure"/>-->
-<!--            </div>-->
             <div class="imagen_contenedor" id="imagenActualContenedor" th:if="${usuario.getImagenPerfil() != null}">
               <img id="imagenActual" alt="Imagen Actual" th:src="'data:image/jpg;charset=utf-8;base64,' + ${usuario.getImageDataBase64()}" class="figure"/>
             </div>
