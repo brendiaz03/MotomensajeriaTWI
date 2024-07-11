@@ -133,4 +133,175 @@ public class ClienteControladorTest {
         verify(viajeServicioMock, never()).duplicarViajeCancelado(any(Viaje.class));
     }
 
+    @Test
+    public void dadoUnIdViajeExistenteCuandoNoSeDuplicaElViajeEntoncesRedirigeAHomeCliente() throws ViajeNoEncontradoException {
+
+        Integer idViaje = 1;
+
+        Viaje viajeMock = new Viaje();
+
+        when(viajeServicioMock.obtenerViajePorId(idViaje)).thenReturn(viajeMock);
+
+        ModelAndView modelAndView = clienteControlador.noDuplicarViaje(idViaje);
+
+        verify(viajeServicioMock, times(1)).obtenerViajePorId(idViaje);
+        verify(viajeServicioMock, times(1)).noDuplicarViaje(viajeMock);
+        assertThat(modelAndView.getViewName(), equalTo("redirect:/home-cliente"));
+    }
+
+    @Test
+    public void dadoUnIdViajeInexistenteCuandoNoSeDuplicaElViajeEntoncesSeLanzaViajeNoEncontradoException() throws ViajeNoEncontradoException {
+
+        Integer idViaje = 1;
+
+        when(viajeServicioMock.obtenerViajePorId(idViaje)).thenThrow(new ViajeNoEncontradoException("Viaje no encontrado"));
+
+        assertThrows(ViajeNoEncontradoException.class, () -> {
+            clienteControlador.noDuplicarViaje(idViaje);
+        });
+
+        verify(viajeServicioMock, times(1)).obtenerViajePorId(idViaje);
+        verify(viajeServicioMock, never()).noDuplicarViaje(any(Viaje.class));
+    }
+
+    @Test
+    public void dadoUnClienteConEnviosCuandoSeMuestraElHistorialDeEnviosEntoncesDevuelveElHistorialDeEnvios() throws ClienteNoEncontradoException, UsuarioNoEncontradoException {
+
+        HttpSession sessionMock = mock(HttpSession.class);
+
+        Integer idCliente = 1;
+
+        Cliente clienteMock = new Cliente();
+
+        clienteMock.setId(idCliente);
+
+        List<Viaje> viajesObtenidosMock = new ArrayList<>();
+
+        viajesObtenidosMock.add(new Viaje());
+
+        when(sessionMock.getAttribute("IDUSUARIO")).thenReturn(idCliente);
+        when(clienteServicioMock.obtenerClientePorId(idCliente)).thenReturn(clienteMock);
+        when(viajeServicioMock.obtenerHistorialDeEnvios(idCliente)).thenReturn(viajesObtenidosMock);
+
+        ModelAndView modelAndView = clienteControlador.mostrarHistorialEnvios(sessionMock);
+
+        assertThat(modelAndView.getViewName(), equalTo("historial-envios"));
+        assertThat(modelAndView.getModel().get("cliente"), sameInstance(clienteMock));
+        assertThat(modelAndView.getModel().get("viajesObtenidos"), sameInstance(viajesObtenidosMock));
+        assertThat(modelAndView.getModel().containsKey("sinEnvios"), equalTo(false));
+    }
+
+    @Test
+    public void dadoUnClienteSinEnviosCuandoSePideMostrarHistorialDeEnviosEntoncesDevuelveElHistorialDeEnviosSinEnvios() throws ClienteNoEncontradoException, UsuarioNoEncontradoException {
+
+        HttpSession sessionMock = mock(HttpSession.class);
+
+        Integer idCliente = 1;
+
+        Cliente clienteMock = new Cliente();
+
+        clienteMock.setId(idCliente);
+
+        List<Viaje> viajesObtenidosMock = new ArrayList<>();
+
+        when(sessionMock.getAttribute("IDUSUARIO")).thenReturn(idCliente);
+        when(clienteServicioMock.obtenerClientePorId(idCliente)).thenReturn(clienteMock);
+        when(viajeServicioMock.obtenerHistorialDeEnvios(idCliente)).thenReturn(viajesObtenidosMock);
+
+        ModelAndView modelAndView = clienteControlador.mostrarHistorialEnvios(sessionMock);
+
+        assertThat(modelAndView.getViewName(), equalTo("historial-envios"));
+        assertThat(modelAndView.getModel().get("cliente"), sameInstance(clienteMock));
+        assertThat(modelAndView.getModel().containsKey("sinEnvios"), equalTo(true));
+    }
+
+    @Test
+    public void dadoUnClienteNoEncontradoCuandoSeMuestraElHistorialDeEnviosEntoncesRedirigeConMensajeErrorYLanzaLaExcepcionUsuarioNoEncontradoException() throws ClienteNoEncontradoException, UsuarioNoEncontradoException {
+
+        HttpSession sessionMock = mock(HttpSession.class);
+
+        Integer idCliente = 1;
+
+        when(sessionMock.getAttribute("IDUSUARIO")).thenReturn(idCliente);
+
+        doThrow(new UsuarioNoEncontradoException("Cliente no encontrado")).when(clienteServicioMock).obtenerClientePorId(idCliente);
+
+        ModelAndView modelAndView = clienteControlador.mostrarHistorialEnvios(sessionMock);
+
+        assertThat(modelAndView.getViewName(), equalTo("redirect:/*"));
+        assertThat(modelAndView.getModel().get("mensajeError"), equalTo("Cliente no encontrado Por favor, vuelva a intentarlo."));
+    }
+
+    @Test
+    public void dadoQueExistenUnClienteYUnViajeValidosCuandoSeMuestraElDetalleDelEnvioEntoncesDevuelveElDetalleDelEnvio() throws ClienteNoEncontradoException, UsuarioNoEncontradoException, ViajeNoEncontradoException {
+
+        HttpSession sessionMock = mock(HttpSession.class);
+
+        Integer idCliente = 1;
+
+        Integer idViaje = 1;
+
+        Cliente clienteMock = new Cliente();
+
+        clienteMock.setId(idCliente);
+
+        Viaje viajeMock = new Viaje();
+
+        when(sessionMock.getAttribute("IDUSUARIO")).thenReturn(idCliente);
+        when(clienteServicioMock.obtenerClientePorId(idCliente)).thenReturn(clienteMock);
+        when(viajeServicioMock.obtenerViajePorId(idViaje)).thenReturn(viajeMock);
+
+        ModelAndView modelAndView = clienteControlador.mostrarDetalleDelEnvio(idViaje, sessionMock);
+
+        assertThat(modelAndView.getViewName(), equalTo("detalle-envio"));
+        assertThat(modelAndView.getModel().get("cliente"), sameInstance(clienteMock));
+        assertThat(modelAndView.getModel().get("viaje"), sameInstance(viajeMock));
+        assertThat(modelAndView.getModel().get("clave"), equalTo("AIzaSyDcPeOyMBqG_1mZgjpei_R2ficRigdkINg"));
+    }
+
+    @Test
+    public void dadoUnClienteNoEncontradoCuandoSeQuiereMostrarElDetalleDelEnvioEntoncesRedirigeConMensajeErrorYLanzaUsuarioNoEncontradoException() throws ClienteNoEncontradoException, UsuarioNoEncontradoException, ViajeNoEncontradoException {
+
+        HttpSession sessionMock = mock(HttpSession.class);
+
+        Integer idCliente = 1;
+
+        Integer idViaje = 1;
+
+        when(sessionMock.getAttribute("IDUSUARIO")).thenReturn(idCliente);
+
+        doThrow(new UsuarioNoEncontradoException("Cliente no encontrado")).when(clienteServicioMock).obtenerClientePorId(idCliente);
+
+        ModelAndView modelAndView = clienteControlador.mostrarDetalleDelEnvio(idViaje, sessionMock);
+
+        assertThat(modelAndView.getViewName(), equalTo("redirect:/*"));
+        assertThat(modelAndView.getModel().get("mensajeError"), equalTo("Cliente no encontrado Por favor, vuelva a intentarlo."));
+    }
+
+    @Test
+    public void dadoUnViajeNoEncontradoCuandoSeQuiereMostrarElDetalleDelEnvioEntoncesSeLanzaViajeNoEncontradoException() throws ClienteNoEncontradoException, UsuarioNoEncontradoException, ViajeNoEncontradoException {
+
+        HttpSession sessionMock = mock(HttpSession.class);
+
+        Integer idCliente = 1;
+
+        Integer idViaje = 1;
+
+        Cliente clienteMock = new Cliente();
+
+        clienteMock.setId(idCliente);
+
+        when(sessionMock.getAttribute("IDUSUARIO")).thenReturn(idCliente);
+
+        when(clienteServicioMock.obtenerClientePorId(idCliente)).thenReturn(clienteMock);
+
+        doThrow(new ViajeNoEncontradoException("Viaje no encontrado")).when(viajeServicioMock).obtenerViajePorId(idViaje);
+
+        assertThrows(ViajeNoEncontradoException.class, () -> {
+            clienteControlador.mostrarDetalleDelEnvio(idViaje, sessionMock);
+        });
+
+        verify(viajeServicioMock).obtenerViajePorId(idViaje);
+    }
+
 }
