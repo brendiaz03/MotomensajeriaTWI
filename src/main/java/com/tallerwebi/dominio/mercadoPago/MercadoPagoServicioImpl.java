@@ -65,7 +65,6 @@ import org.json.JSONObject;
 
             // Obtiene el ID de preferencia de la respuesta y forma la URL de redirección
             String preferenceId = jsonResponse.getString("id");
-            System.out.println("JSON enviado: " + jsonBody.toString());
             return "https://www.mercadopago.com.ar/checkout/v1/redirect?pref_id=" + preferenceId;
         }
     }
@@ -116,7 +115,6 @@ import org.json.JSONObject;
 
             // Obtiene el ID de preferencia de la respuesta y forma la URL de redirección
             String preferenceId = jsonResponse.getString("id");
-            System.out.println("JSON enviado: " + jsonBody.toString());
             return "https://www.mercadopago.com.ar/checkout/v1/redirect?pref_id=" + preferenceId;
         }
     }

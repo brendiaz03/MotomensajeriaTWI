@@ -185,7 +185,7 @@ public class ViajeServicioImpl implements ViajeServicio {
         List<Viaje> viajesVista = new ArrayList<>();
 
         for (Viaje viajeObtenido : viajes) {
-            if(viajeObtenido.getEstado().equals(TipoEstado.PENDIENTE)){
+            if(viajeObtenido.getEstado().equals(TipoEstado.PENDIENTE) || viajeObtenido.getEstado().equals(TipoEstado.ACEPTADO)){
                 viajesVista.add(viajeObtenido);
             }
         }
@@ -322,7 +322,7 @@ public class ViajeServicioImpl implements ViajeServicio {
 
         List<Viaje> viajes;
 
-        if (distanciaAFiltrar == null) {
+        if (distanciaAFiltrar == null || distanciaAFiltrar == 0.0) {
             viajes = this.viajeRepositorio.traerTodosLosViajesPendientes();
         } else if (distanciaAFiltrar < 0 || distanciaAFiltrar > 10.0) {
             throw new CoordenadasNoEncontradasException("Distancia invalida");
@@ -397,20 +397,20 @@ public class ViajeServicioImpl implements ViajeServicio {
         Double dimension = viaje.getPaquete().getDimension();
 
         double precioBaseEnvio = 1800.0;
-        double precioxKm = 400.0;
-        double precioxKg = 200.0;
-        double precioxCm = 30.0;
+        double precioxKm = 200.0;
+        double precioxKg = 100.0;
+        double precioxCm = 5.0;
 
         if(distancia > 3.0){
             precioBaseEnvio += (precioxKm * (Math.round(distancia)) - 3.0);
         }
 
-        if(peso > 2.0){
-            precioBaseEnvio += (precioxKg * (Math.round(peso)) - 2.0);
+        if(peso > 3.0){
+            precioBaseEnvio += (precioxKg * (Math.round(peso)) - 3.0);
         }
 
-        if(dimension > 30.0) {
-            precioBaseEnvio += (precioxCm * (Math.round(dimension)) - 30.0);
+        if(dimension > 40.0) {
+            precioBaseEnvio += (precioxCm * (Math.round(dimension)) - 40.0);
         }
 
         return precioBaseEnvio;

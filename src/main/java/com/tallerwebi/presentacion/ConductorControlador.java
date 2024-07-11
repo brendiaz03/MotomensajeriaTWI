@@ -29,10 +29,10 @@ public class ConductorControlador {
         this.mercadoPagoServicio = new MercadoPagoServicioImpl();
     }
 
-    @GetMapping("/homeConductor")
+    @GetMapping("/home-conductor")
     public ModelAndView mostrarHomeConductor(HttpSession session) throws UsuarioNoEncontradoException, CoordenadasNoEncontradasException {
         ModelMap model = new ModelMap();
-        String viewName = "homeConductor";
+        String viewName = "home-conductor";
         Conductor conductor = conductorServicio.obtenerConductorPorId((Integer) session.getAttribute("IDUSUARIO"));
         model.put("conductor", conductor);
 
@@ -155,14 +155,14 @@ public class ConductorControlador {
         Conductor conductor = conductorServicio.obtenerConductorPorId((Integer) session.getAttribute("IDUSUARIO"));
         viajeServicio.cancelarViaje(viaje);
         this.conductorServicio.estaPenalizado(conductor);
-        return new ModelAndView("redirect:/homeConductor");
+        return new ModelAndView("redirect:/home-conductor");
     }
 
     @RequestMapping("/terminar-viaje")
     public ModelAndView terminarViaje(@RequestParam("idViaje") Integer idViaje) throws ViajeNoEncontradoException {
         DatosViaje viaje = viajeServicio.obtenerViajeAceptadoPorId(idViaje);
         viajeServicio.terminarViaje(viaje);
-        return new ModelAndView("redirect:/homeConductor");
+        return new ModelAndView("redirect:/home-conductor");
     }
 
     @RequestMapping("/volver")
@@ -175,7 +175,7 @@ public class ConductorControlador {
         Conductor conductor = conductorServicio.obtenerConductorPorId((Integer) session.getAttribute("IDUSUARIO"));
         this.viajeServicio.duplicarViajeDescartado(this.viajeServicio.obtenerViajePorId(idViaje), conductor);
         this.conductorServicio.estaPenalizado(conductor);
-        return new ModelAndView("redirect:/homeConductor");
+        return new ModelAndView("redirect:/home-conductor");
     }
 
     @RequestMapping("/detalle")
@@ -209,7 +209,7 @@ public class ConductorControlador {
         }
 
         session.setAttribute("distancia", distancia);
-        return new ModelAndView("redirect:/homeConductor");
+        return new ModelAndView("redirect:/home-conductor");
     }
 
     @RequestMapping(path = "/ubicacion")
@@ -224,7 +224,7 @@ public class ConductorControlador {
 
         if (montoPenalizacion == null || montoPenalizacion < 5000) {
             redirectAttributes.addFlashAttribute("error", "Monto de penalización inválido.");
-            return new ModelAndView("redirect:/homeConductor");
+            return new ModelAndView("redirect:/home-conductor");
         }
 
         try {
@@ -238,7 +238,7 @@ public class ConductorControlador {
 
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Error al procesar el pago: " + e.getMessage());
-            return new ModelAndView("redirect:/homeConductor");
+            return new ModelAndView("redirect:/home-conductor");
         }
     }
 
@@ -246,7 +246,7 @@ public class ConductorControlador {
     public ModelAndView despenalizarConductorPorTimer(HttpSession session) throws UsuarioNoEncontradoException {
         Conductor conductor = this.conductorServicio.obtenerConductorPorId((Integer)session.getAttribute("IDUSUARIO"));
         this.conductorServicio.despenalizarConductor(conductor);
-        return new ModelAndView("redirect:/homeConductor");
+        return new ModelAndView("redirect:/home-conductor");
     }
 
 }

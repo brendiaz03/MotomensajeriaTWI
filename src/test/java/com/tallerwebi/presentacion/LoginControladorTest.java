@@ -69,7 +69,7 @@ public class LoginControladorTest {
 		// Preparación
 		DatosLogin datosLogin = new DatosLogin("usuario", "password");
 		Usuario usuarioMock = mock(Usuario.class);
-		when(usuarioMock.getTipoUsuario()).thenReturn(TipoUsuario.Conductor);
+		when(usuarioMock.getTipoUsuario()).thenReturn(TipoUsuario.conductor);
 		when(loginServicioMock.consultarUsuario(datosLogin.getUsuario(), datosLogin.getPassword())).thenReturn(usuarioMock);
 
 		// Ejecución
@@ -87,14 +87,14 @@ public class LoginControladorTest {
 		// Preparación
 		DatosLogin datosLogin = new DatosLogin("usuario", "password");
 		Usuario usuarioMock = mock(Usuario.class);
-		when(usuarioMock.getTipoUsuario()).thenReturn(TipoUsuario.Cliente);
+		when(usuarioMock.getTipoUsuario()).thenReturn(TipoUsuario.cliente);
 		when(loginServicioMock.consultarUsuario(datosLogin.getUsuario(), datosLogin.getPassword())).thenReturn(usuarioMock);
 
 		// Ejecución
 		ModelAndView modelAndView = loginControlador.validarLogin(datosLogin, sessionMock);
 
 		// Validación
-		assertThat(modelAndView.getViewName(), equalToIgnoringCase("redirect:/homeCliente"));
+		assertThat(modelAndView.getViewName(), equalToIgnoringCase("redirect:/home-cliente"));
 		verify(sessionMock, times(1)).setAttribute("IDUSUARIO", usuarioMock.getId());
 		verify(sessionMock, times(1)).setAttribute("tipoUsuario", usuarioMock.getTipoUsuario());
 		verify(sessionMock, times(1)).setAttribute("isEditForm", false);

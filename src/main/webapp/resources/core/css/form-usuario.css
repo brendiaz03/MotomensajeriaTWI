@@ -88,8 +88,9 @@
     outline: none;
 }
 
-
-
-
+.form-control:disabled {
+    background-color: #e9ecef5e;
+    opacity: 1;
+}
 
 
