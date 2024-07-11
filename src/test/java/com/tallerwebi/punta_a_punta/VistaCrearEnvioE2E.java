@@ -103,9 +103,9 @@ public class VistaCrearEnvioE2E {
         String destinatarioError = vistaCrearEnvio.obtenerMensajeDeErrorPaqueteDestinatario();
 
 
-        assertThat("Ingrese un peso vÃ¡lido (mayor a 0).", containsStringIgnoringCase(pesoError));
-        assertThat("Seleccione si el paquete es frÃ¡gil o no.", containsStringIgnoringCase(esFragilError));
-        assertThat("Ingrese una dimensiÃ³n vÃ¡lida (mayor a 0).", containsStringIgnoringCase(dimensionError));
+        assertThat("Ingrese un peso válido (mayor a 0).", containsStringIgnoringCase(pesoError));
+        assertThat("Seleccione si el paquete es frágil o no.", containsStringIgnoringCase(esFragilError));
+        assertThat("Ingrese una dimensión válida (mayor a 0).", containsStringIgnoringCase(dimensionError));
         assertThat("Ingrese el nombre del destinatario.", containsStringIgnoringCase(destinatarioError));
 
     }
@@ -127,7 +127,7 @@ public class VistaCrearEnvioE2E {
         String dirreccionSalidaError = vistaCrearEnvio.obtenerMensajeDeErrorViajeDireccionSalida();
         String dirreccionLlegadaError = vistaCrearEnvio.obtenerMensajeDeErrorViajeDireccionLlegada();
 
-        assertThat("Debe seleccionar una direcciÃ³n de salida vÃ¡lida del autocompletado.", containsStringIgnoringCase(dirreccionSalidaError));
-        assertThat("Debe seleccionar una direcciÃ³n de llegada vÃ¡lida del autocompletado.", containsStringIgnoringCase(dirreccionLlegadaError));
+        assertThat("Debe seleccionar una dirección de salida válida del autocompletado.", containsStringIgnoringCase(dirreccionSalidaError));
+        assertThat("Debe seleccionar una dirección de llegada válida del autocompletado.", containsStringIgnoringCase(dirreccionLlegadaError));
     }
 }
