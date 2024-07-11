@@ -2,6 +2,9 @@ package com.tallerwebi.dominio;
 
 import com.tallerwebi.dominio.cliente.Cliente;
 import com.tallerwebi.dominio.conductor.Conductor;
+import com.tallerwebi.dominio.conductor.ConductorRepositorio;
+import com.tallerwebi.dominio.conductor.ConductorServicio;
+import com.tallerwebi.dominio.conductor.ConductorServicioImpl;
 import com.tallerwebi.dominio.enums.TipoEstado;
 import com.tallerwebi.dominio.exceptions.*;
 import com.tallerwebi.dominio.paquete.Paquete;
@@ -12,6 +15,7 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static junit.framework.Assert.*;
@@ -846,6 +850,101 @@ public class ViajeServicioTest {
         Cliente cliente = new Cliente();
         cliente.setId(1);
         return cliente;
+    }
+
+    @Test
+    public void queSePuedaObtenerUnViajeCreadoPorSuIdYQueMeDevuelvaElViaje() throws ViajeNoEncontradoException {
+
+        Viaje viaje = new Viaje();
+
+        Integer id = 1;
+
+        when(viajeRepositorio.obtenerViajePorId(id)).thenReturn(viaje);
+
+        Viaje viajeEncontrado = viajeServicio.obtenerViajePorId(id);
+
+        assertThat(viajeEncontrado, equalTo(viaje));
+
+    }
+
+    @Test
+    public void queNoSePuedaObtenerUnViajeCreadoPorSuIdYQueMeLanceLaExcepcionViajeNoEncontradoException() {
+
+        Integer idInvalido = 0;
+
+        when(viajeRepositorio.obtenerViajePorId(idInvalido)).thenReturn(null);
+
+        assertThrows(ViajeNoEncontradoException.class, () -> viajeServicio.obtenerViajePorId(idInvalido));
+
+    }
+
+    @Test
+    public void queUnViajeExistentePuedaSerEditado () throws ViajeNoEncontradoException {
+
+        Viaje viaje = new Viaje();
+
+        viajeServicio.actualizarViaje(viaje);
+
+        verify(viajeRepositorio, times(1)).editar(viaje);
+    }
+
+    @Test
+    public void queUnViajeNoPuedaSerEditadoPorqueEsNullNoSeEncuentraYSeLanceViajeNoEncontradoException () throws ViajeNoEncontradoException {
+
+        assertThrows(ViajeNoEncontradoException.class, () -> viajeServicio.actualizarViaje(null));
+
+    }
+
+    @Test
+    public void queSeCreeUnListadoDeViajesUnListadoDeViajesDescartadosYCadaViajeConUnPaqueteParaQueSePuedanCrearViajesDuplicadosYSeLosPuedaFiltrarCorrectamente() {
+
+        List<Viaje> viajes = new ArrayList<>();
+
+        List<Viaje> viajesDescartados = new ArrayList<>();
+
+        Paquete paquete1 = new Paquete();
+
+        paquete1.setId(1);
+
+        Viaje viaje1 = new Viaje();
+
+        viaje1.setPaquete(paquete1);
+
+        viaje1.setDomicilioDeSalida("Salida1");
+
+        viaje1.setDomicilioDeLlegada("Llegada1");
+
+        Paquete paquete2 = new Paquete();
+
+        paquete2.setId(2);
+
+        Viaje viaje2 = new Viaje();
+
+        viaje2.setPaquete(paquete2);
+
+        viaje2.setDomicilioDeSalida("Salida2");
+
+        viaje2.setDomicilioDeLlegada("Llegada2");
+
+        Viaje viaje3 = new Viaje();
+
+        viaje3.setPaquete(paquete1);
+
+        viaje3.setDomicilioDeSalida("Salida1");
+
+        viaje3.setDomicilioDeLlegada("Llegada1");
+
+
+        viajes.add(viaje1);
+
+        viajes.add(viaje2);
+
+        viajesDescartados.add(viaje3);
+
+        List<Viaje> result = viajeServicio.filtrarViajesDuplicados(viajes, viajesDescartados);
+
+        assertEquals(1, result.size());
+        assertEquals(viaje2, result.get(0));
     }
 
     private static Conductor dadoQueExisteUnConductor() {
